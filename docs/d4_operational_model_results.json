@@ -1,0 +1,2445 @@
+{
+  "task": "D4",
+  "generated_at_utc": "2026-08-28T08:32:55.235267+00:00",
+  "model_version": "operational_fixed_ridge_residual_v1",
+  "model_name": "operational_fixed_ridge_residual",
+  "evidence_framing": {
+    "specification_frozen_after_d1_results": true,
+    "confirmatory_evaluation": false,
+    "exploratory_development_evaluation": true,
+    "nested_model_selection_performed": false,
+    "locked_test_eligible": false,
+    "preregistered_before_all_development_outcomes": false,
+    "note": "The alpha and channel come from D1's preregistered conservative fallback, but D1's development metrics were already seen when D4 froze them. Calling this preregistered would be false."
+  },
+  "frozen_specification": {
+    "alpha": 100.0,
+    "nonferrous_channel": "none",
+    "fit_intercept": true,
+    "allowed_commodities": [
+      "brent_crude_usd_bbl",
+      "rubber_rss3_usd_kg"
+    ],
+    "excluded_commodities": [
+      "aluminum_usd_mt",
+      "copper_usd_mt"
+    ],
+    "aluminum_predictors_present": false,
+    "copper_predictors_present": false,
+    "shared_io_sector_107_used": false,
+    "hyperparameter_search": false,
+    "inner_cross_validation": false,
+    "model_averaging": false,
+    "outcome_based_feature_selection": false
+  },
+  "upstream_invariants": {
+    "d3": {
+      "issue_months": 15,
+      "issue_months_expected": 15,
+      "development_start": "2024-01",
+      "development_end": "2025-03",
+      "latest_stress_is_t_minus_1": true,
+      "calibration_ends_at_t_minus_1": true,
+      "label_rule": "target_available_month <= t",
+      "benchmarks": {
+        "1": "operational_persistence_latest_published",
+        "3": "operational_persistence_trailing_3m_max"
+      },
+      "secondary_comparator": "operational_no_contraction",
+      "locked_test_evaluated": false
+    },
+    "c4": {
+      "variants_present": [
+        "primary_direct_lag2",
+        "structural_sensitivity_total_lag2",
+        "timing_sensitivity_direct_lag1"
+      ],
+      "primary_variant": "primary_direct_lag2",
+      "eligible_pairs": 43,
+      "eligible_pairs_expected": 43,
+      "ineligible_pairs": 5,
+      "ind06_rubber_eligible": false,
+      "forbidden_variant_absent": true
+    },
+    "history_ceiling": {
+      "raw_stress_begins": "2022-01",
+      "raw_stress_begins_expected": "2022-01",
+      "first_origin_with_24_observations": "2024-01",
+      "compatible_pre_2022_history_available": false,
+      "cross_base_splicing_permitted": false,
+      "development_origin_extension_supported": false,
+      "development_origin_count_ceiling": 15,
+      "new_feasibility_test_performed": false
+    },
+    "all_reproduced": true
+  },
+  "timing_sensitivity_availability": {
+    "rule": "commodity_first_seen_issue_date <= d3_forecast_issue_date",
+    "available_origins": [
+      "2024-01-01",
+      "2024-02-01",
+      "2024-03-01",
+      "2024-04-01",
+      "2024-05-01",
+      "2024-06-01",
+      "2024-07-01",
+      "2024-08-01",
+      "2024-09-01",
+      "2024-10-01",
+      "2024-11-01",
+      "2024-12-01",
+      "2025-01-01",
+      "2025-02-01",
+      "2025-03-01"
+    ],
+    "unavailable_origins": [],
+    "fully_available": true,
+    "imputed": false,
+    "substituted_with_primary": false,
+    "per_origin": [
+      {
+        "forecast_origin_month": "2024-01-01",
+        "d3_issue_date": "2024-01-31",
+        "commodity_reference_month": "2023-12-01",
+        "commodity_publication_date": "2024-01-03",
+        "calendar_delay_days": 3,
+        "availability_status": "verified_from_archived_issue",
+        "state": "available"
+      },
+      {
+        "forecast_origin_month": "2024-02-01",
+        "d3_issue_date": "2024-02-29",
+        "commodity_reference_month": "2024-01-01",
+        "commodity_publication_date": "2024-02-01",
+        "calendar_delay_days": 1,
+        "availability_status": "verified_from_archived_issue",
+        "state": "available"
+      },
+      {
+        "forecast_origin_month": "2024-03-01",
+        "d3_issue_date": "2024-03-28",
+        "commodity_reference_month": "2024-02-01",
+        "commodity_publication_date": "2024-03-04",
+        "calendar_delay_days": 4,
+        "availability_status": "verified_from_archived_issue",
+        "state": "available"
+      },
+      {
+        "forecast_origin_month": "2024-04-01",
+        "d3_issue_date": "2024-04-30",
+        "commodity_reference_month": "2024-03-01",
+        "commodity_publication_date": "2024-04-02",
+        "calendar_delay_days": 2,
+        "availability_status": "verified_from_archived_issue",
+        "state": "available"
+      },
+      {
+        "forecast_origin_month": "2024-05-01",
+        "d3_issue_date": "2024-05-30",
+        "commodity_reference_month": "2024-04-01",
+        "commodity_publication_date": "2024-05-02",
+        "calendar_delay_days": 2,
+        "availability_status": "verified_from_archived_issue",
+        "state": "available"
+      },
+      {
+        "forecast_origin_month": "2024-06-01",
+        "d3_issue_date": "2024-06-28",
+        "commodity_reference_month": "2024-05-01",
+        "commodity_publication_date": "2024-06-04",
+        "calendar_delay_days": 4,
+        "availability_status": "verified_from_archived_issue",
+        "state": "available"
+      },
+      {
+        "forecast_origin_month": "2024-07-01",
+        "d3_issue_date": "2024-07-31",
+        "commodity_reference_month": "2024-06-01",
+        "commodity_publication_date": "2024-07-02",
+        "calendar_delay_days": 2,
+        "availability_status": "verified_from_archived_issue",
+        "state": "available"
+      },
+      {
+        "forecast_origin_month": "2024-08-01",
+        "d3_issue_date": "2024-08-30",
+        "commodity_reference_month": "2024-07-01",
+        "commodity_publication_date": "2024-08-02",
+        "calendar_delay_days": 2,
+        "availability_status": "verified_from_archived_issue",
+        "state": "available"
+      },
+      {
+        "forecast_origin_month": "2024-09-01",
+        "d3_issue_date": "2024-09-26",
+        "commodity_reference_month": "2024-08-01",
+        "commodity_publication_date": "2024-09-03",
+        "calendar_delay_days": 3,
+        "availability_status": "verified_from_archived_issue",
+        "state": "available"
+      },
+      {
+        "forecast_origin_month": "2024-10-01",
+        "d3_issue_date": "2024-10-30",
+        "commodity_reference_month": "2024-09-01",
+        "commodity_publication_date": "2024-10-02",
+        "calendar_delay_days": 2,
+        "availability_status": "verified_from_archived_issue",
+        "state": "available"
+      },
+      {
+        "forecast_origin_month": "2024-11-01",
+        "d3_issue_date": "2024-11-27",
+        "commodity_reference_month": "2024-10-01",
+        "commodity_publication_date": "2024-11-04",
+        "calendar_delay_days": 4,
+        "availability_status": "verified_from_archived_issue",
+        "state": "available"
+      },
+      {
+        "forecast_origin_month": "2024-12-01",
+        "d3_issue_date": "2024-12-27",
+        "commodity_reference_month": "2024-11-01",
+        "commodity_publication_date": "2024-12-02",
+        "calendar_delay_days": 2,
+        "availability_status": "verified_from_archived_issue",
+        "state": "available"
+      },
+      {
+        "forecast_origin_month": "2025-01-01",
+        "d3_issue_date": "2025-01-30",
+        "commodity_reference_month": "2024-12-01",
+        "commodity_publication_date": "2025-01-03",
+        "calendar_delay_days": 3,
+        "availability_status": "verified_from_archived_issue",
+        "state": "available"
+      },
+      {
+        "forecast_origin_month": "2025-02-01",
+        "d3_issue_date": "2025-02-27",
+        "commodity_reference_month": "2025-01-01",
+        "commodity_publication_date": "2025-02-04",
+        "calendar_delay_days": 4,
+        "availability_status": "verified_from_archived_issue",
+        "state": "available"
+      },
+      {
+        "forecast_origin_month": "2025-03-01",
+        "d3_issue_date": "2025-03-28",
+        "commodity_reference_month": "2025-02-01",
+        "commodity_publication_date": "2025-03-25",
+        "calendar_delay_days": 25,
+        "availability_status": "verified_from_archived_issue",
+        "state": "available"
+      }
+    ]
+  },
+  "training_diagnostics": [
+    {
+      "variant": "primary_direct_lag2",
+      "forecast_origin_month": "2024-01-01",
+      "horizon": 1,
+      "label_permitted_rows": 23,
+      "feature_usable_rows": 21,
+      "excluded_feature_origins": [
+        "2022-01-01",
+        "2022-02-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "primary_direct_lag2",
+      "forecast_origin_month": "2024-01-01",
+      "horizon": 3,
+      "label_permitted_rows": 21,
+      "feature_usable_rows": 18,
+      "excluded_feature_origins": [
+        "2022-01-01",
+        "2022-02-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [
+        "2022-03-01"
+      ],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "primary_direct_lag2",
+      "forecast_origin_month": "2024-02-01",
+      "horizon": 1,
+      "label_permitted_rows": 24,
+      "feature_usable_rows": 22,
+      "excluded_feature_origins": [
+        "2022-01-01",
+        "2022-02-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "primary_direct_lag2",
+      "forecast_origin_month": "2024-02-01",
+      "horizon": 3,
+      "label_permitted_rows": 22,
+      "feature_usable_rows": 19,
+      "excluded_feature_origins": [
+        "2022-01-01",
+        "2022-02-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [
+        "2022-03-01"
+      ],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "primary_direct_lag2",
+      "forecast_origin_month": "2024-03-01",
+      "horizon": 1,
+      "label_permitted_rows": 25,
+      "feature_usable_rows": 23,
+      "excluded_feature_origins": [
+        "2022-01-01",
+        "2022-02-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "primary_direct_lag2",
+      "forecast_origin_month": "2024-03-01",
+      "horizon": 3,
+      "label_permitted_rows": 23,
+      "feature_usable_rows": 20,
+      "excluded_feature_origins": [
+        "2022-01-01",
+        "2022-02-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [
+        "2022-03-01"
+      ],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "primary_direct_lag2",
+      "forecast_origin_month": "2024-04-01",
+      "horizon": 1,
+      "label_permitted_rows": 26,
+      "feature_usable_rows": 24,
+      "excluded_feature_origins": [
+        "2022-01-01",
+        "2022-02-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "primary_direct_lag2",
+      "forecast_origin_month": "2024-04-01",
+      "horizon": 3,
+      "label_permitted_rows": 24,
+      "feature_usable_rows": 21,
+      "excluded_feature_origins": [
+        "2022-01-01",
+        "2022-02-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [
+        "2022-03-01"
+      ],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "primary_direct_lag2",
+      "forecast_origin_month": "2024-05-01",
+      "horizon": 1,
+      "label_permitted_rows": 27,
+      "feature_usable_rows": 25,
+      "excluded_feature_origins": [
+        "2022-01-01",
+        "2022-02-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "primary_direct_lag2",
+      "forecast_origin_month": "2024-05-01",
+      "horizon": 3,
+      "label_permitted_rows": 25,
+      "feature_usable_rows": 22,
+      "excluded_feature_origins": [
+        "2022-01-01",
+        "2022-02-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [
+        "2022-03-01"
+      ],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "primary_direct_lag2",
+      "forecast_origin_month": "2024-06-01",
+      "horizon": 1,
+      "label_permitted_rows": 28,
+      "feature_usable_rows": 26,
+      "excluded_feature_origins": [
+        "2022-01-01",
+        "2022-02-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "primary_direct_lag2",
+      "forecast_origin_month": "2024-06-01",
+      "horizon": 3,
+      "label_permitted_rows": 26,
+      "feature_usable_rows": 23,
+      "excluded_feature_origins": [
+        "2022-01-01",
+        "2022-02-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [
+        "2022-03-01"
+      ],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "primary_direct_lag2",
+      "forecast_origin_month": "2024-07-01",
+      "horizon": 1,
+      "label_permitted_rows": 29,
+      "feature_usable_rows": 27,
+      "excluded_feature_origins": [
+        "2022-01-01",
+        "2022-02-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "primary_direct_lag2",
+      "forecast_origin_month": "2024-07-01",
+      "horizon": 3,
+      "label_permitted_rows": 27,
+      "feature_usable_rows": 24,
+      "excluded_feature_origins": [
+        "2022-01-01",
+        "2022-02-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [
+        "2022-03-01"
+      ],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "primary_direct_lag2",
+      "forecast_origin_month": "2024-08-01",
+      "horizon": 1,
+      "label_permitted_rows": 30,
+      "feature_usable_rows": 28,
+      "excluded_feature_origins": [
+        "2022-01-01",
+        "2022-02-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "primary_direct_lag2",
+      "forecast_origin_month": "2024-08-01",
+      "horizon": 3,
+      "label_permitted_rows": 28,
+      "feature_usable_rows": 25,
+      "excluded_feature_origins": [
+        "2022-01-01",
+        "2022-02-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [
+        "2022-03-01"
+      ],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "primary_direct_lag2",
+      "forecast_origin_month": "2024-09-01",
+      "horizon": 1,
+      "label_permitted_rows": 31,
+      "feature_usable_rows": 29,
+      "excluded_feature_origins": [
+        "2022-01-01",
+        "2022-02-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "primary_direct_lag2",
+      "forecast_origin_month": "2024-09-01",
+      "horizon": 3,
+      "label_permitted_rows": 29,
+      "feature_usable_rows": 26,
+      "excluded_feature_origins": [
+        "2022-01-01",
+        "2022-02-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [
+        "2022-03-01"
+      ],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "primary_direct_lag2",
+      "forecast_origin_month": "2024-10-01",
+      "horizon": 1,
+      "label_permitted_rows": 32,
+      "feature_usable_rows": 30,
+      "excluded_feature_origins": [
+        "2022-01-01",
+        "2022-02-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "primary_direct_lag2",
+      "forecast_origin_month": "2024-10-01",
+      "horizon": 3,
+      "label_permitted_rows": 30,
+      "feature_usable_rows": 27,
+      "excluded_feature_origins": [
+        "2022-01-01",
+        "2022-02-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [
+        "2022-03-01"
+      ],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "primary_direct_lag2",
+      "forecast_origin_month": "2024-11-01",
+      "horizon": 1,
+      "label_permitted_rows": 33,
+      "feature_usable_rows": 31,
+      "excluded_feature_origins": [
+        "2022-01-01",
+        "2022-02-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "primary_direct_lag2",
+      "forecast_origin_month": "2024-11-01",
+      "horizon": 3,
+      "label_permitted_rows": 31,
+      "feature_usable_rows": 28,
+      "excluded_feature_origins": [
+        "2022-01-01",
+        "2022-02-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [
+        "2022-03-01"
+      ],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "primary_direct_lag2",
+      "forecast_origin_month": "2024-12-01",
+      "horizon": 1,
+      "label_permitted_rows": 34,
+      "feature_usable_rows": 32,
+      "excluded_feature_origins": [
+        "2022-01-01",
+        "2022-02-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "primary_direct_lag2",
+      "forecast_origin_month": "2024-12-01",
+      "horizon": 3,
+      "label_permitted_rows": 32,
+      "feature_usable_rows": 29,
+      "excluded_feature_origins": [
+        "2022-01-01",
+        "2022-02-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [
+        "2022-03-01"
+      ],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "primary_direct_lag2",
+      "forecast_origin_month": "2025-01-01",
+      "horizon": 1,
+      "label_permitted_rows": 35,
+      "feature_usable_rows": 33,
+      "excluded_feature_origins": [
+        "2022-01-01",
+        "2022-02-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "primary_direct_lag2",
+      "forecast_origin_month": "2025-01-01",
+      "horizon": 3,
+      "label_permitted_rows": 33,
+      "feature_usable_rows": 30,
+      "excluded_feature_origins": [
+        "2022-01-01",
+        "2022-02-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [
+        "2022-03-01"
+      ],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "primary_direct_lag2",
+      "forecast_origin_month": "2025-02-01",
+      "horizon": 1,
+      "label_permitted_rows": 36,
+      "feature_usable_rows": 34,
+      "excluded_feature_origins": [
+        "2022-01-01",
+        "2022-02-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "primary_direct_lag2",
+      "forecast_origin_month": "2025-02-01",
+      "horizon": 3,
+      "label_permitted_rows": 34,
+      "feature_usable_rows": 31,
+      "excluded_feature_origins": [
+        "2022-01-01",
+        "2022-02-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [
+        "2022-03-01"
+      ],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "primary_direct_lag2",
+      "forecast_origin_month": "2025-03-01",
+      "horizon": 1,
+      "label_permitted_rows": 37,
+      "feature_usable_rows": 35,
+      "excluded_feature_origins": [
+        "2022-01-01",
+        "2022-02-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "primary_direct_lag2",
+      "forecast_origin_month": "2025-03-01",
+      "horizon": 3,
+      "label_permitted_rows": 35,
+      "feature_usable_rows": 32,
+      "excluded_feature_origins": [
+        "2022-01-01",
+        "2022-02-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [
+        "2022-03-01"
+      ],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "timing_sensitivity_direct_lag1",
+      "forecast_origin_month": "2024-01-01",
+      "horizon": 1,
+      "label_permitted_rows": 23,
+      "feature_usable_rows": 22,
+      "excluded_feature_origins": [
+        "2022-01-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "timing_sensitivity_direct_lag1",
+      "forecast_origin_month": "2024-01-01",
+      "horizon": 3,
+      "label_permitted_rows": 21,
+      "feature_usable_rows": 18,
+      "excluded_feature_origins": [
+        "2022-01-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [
+        "2022-02-01",
+        "2022-03-01"
+      ],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "timing_sensitivity_direct_lag1",
+      "forecast_origin_month": "2024-02-01",
+      "horizon": 1,
+      "label_permitted_rows": 24,
+      "feature_usable_rows": 23,
+      "excluded_feature_origins": [
+        "2022-01-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "timing_sensitivity_direct_lag1",
+      "forecast_origin_month": "2024-02-01",
+      "horizon": 3,
+      "label_permitted_rows": 22,
+      "feature_usable_rows": 19,
+      "excluded_feature_origins": [
+        "2022-01-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [
+        "2022-02-01",
+        "2022-03-01"
+      ],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "timing_sensitivity_direct_lag1",
+      "forecast_origin_month": "2024-03-01",
+      "horizon": 1,
+      "label_permitted_rows": 25,
+      "feature_usable_rows": 24,
+      "excluded_feature_origins": [
+        "2022-01-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "timing_sensitivity_direct_lag1",
+      "forecast_origin_month": "2024-03-01",
+      "horizon": 3,
+      "label_permitted_rows": 23,
+      "feature_usable_rows": 20,
+      "excluded_feature_origins": [
+        "2022-01-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [
+        "2022-02-01",
+        "2022-03-01"
+      ],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "timing_sensitivity_direct_lag1",
+      "forecast_origin_month": "2024-04-01",
+      "horizon": 1,
+      "label_permitted_rows": 26,
+      "feature_usable_rows": 25,
+      "excluded_feature_origins": [
+        "2022-01-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "timing_sensitivity_direct_lag1",
+      "forecast_origin_month": "2024-04-01",
+      "horizon": 3,
+      "label_permitted_rows": 24,
+      "feature_usable_rows": 21,
+      "excluded_feature_origins": [
+        "2022-01-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [
+        "2022-02-01",
+        "2022-03-01"
+      ],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "timing_sensitivity_direct_lag1",
+      "forecast_origin_month": "2024-05-01",
+      "horizon": 1,
+      "label_permitted_rows": 27,
+      "feature_usable_rows": 26,
+      "excluded_feature_origins": [
+        "2022-01-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "timing_sensitivity_direct_lag1",
+      "forecast_origin_month": "2024-05-01",
+      "horizon": 3,
+      "label_permitted_rows": 25,
+      "feature_usable_rows": 22,
+      "excluded_feature_origins": [
+        "2022-01-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [
+        "2022-02-01",
+        "2022-03-01"
+      ],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "timing_sensitivity_direct_lag1",
+      "forecast_origin_month": "2024-06-01",
+      "horizon": 1,
+      "label_permitted_rows": 28,
+      "feature_usable_rows": 27,
+      "excluded_feature_origins": [
+        "2022-01-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "timing_sensitivity_direct_lag1",
+      "forecast_origin_month": "2024-06-01",
+      "horizon": 3,
+      "label_permitted_rows": 26,
+      "feature_usable_rows": 23,
+      "excluded_feature_origins": [
+        "2022-01-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [
+        "2022-02-01",
+        "2022-03-01"
+      ],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "timing_sensitivity_direct_lag1",
+      "forecast_origin_month": "2024-07-01",
+      "horizon": 1,
+      "label_permitted_rows": 29,
+      "feature_usable_rows": 28,
+      "excluded_feature_origins": [
+        "2022-01-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "timing_sensitivity_direct_lag1",
+      "forecast_origin_month": "2024-07-01",
+      "horizon": 3,
+      "label_permitted_rows": 27,
+      "feature_usable_rows": 24,
+      "excluded_feature_origins": [
+        "2022-01-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [
+        "2022-02-01",
+        "2022-03-01"
+      ],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "timing_sensitivity_direct_lag1",
+      "forecast_origin_month": "2024-08-01",
+      "horizon": 1,
+      "label_permitted_rows": 30,
+      "feature_usable_rows": 29,
+      "excluded_feature_origins": [
+        "2022-01-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "timing_sensitivity_direct_lag1",
+      "forecast_origin_month": "2024-08-01",
+      "horizon": 3,
+      "label_permitted_rows": 28,
+      "feature_usable_rows": 25,
+      "excluded_feature_origins": [
+        "2022-01-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [
+        "2022-02-01",
+        "2022-03-01"
+      ],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "timing_sensitivity_direct_lag1",
+      "forecast_origin_month": "2024-09-01",
+      "horizon": 1,
+      "label_permitted_rows": 31,
+      "feature_usable_rows": 30,
+      "excluded_feature_origins": [
+        "2022-01-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "timing_sensitivity_direct_lag1",
+      "forecast_origin_month": "2024-09-01",
+      "horizon": 3,
+      "label_permitted_rows": 29,
+      "feature_usable_rows": 26,
+      "excluded_feature_origins": [
+        "2022-01-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [
+        "2022-02-01",
+        "2022-03-01"
+      ],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "timing_sensitivity_direct_lag1",
+      "forecast_origin_month": "2024-10-01",
+      "horizon": 1,
+      "label_permitted_rows": 32,
+      "feature_usable_rows": 31,
+      "excluded_feature_origins": [
+        "2022-01-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "timing_sensitivity_direct_lag1",
+      "forecast_origin_month": "2024-10-01",
+      "horizon": 3,
+      "label_permitted_rows": 30,
+      "feature_usable_rows": 27,
+      "excluded_feature_origins": [
+        "2022-01-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [
+        "2022-02-01",
+        "2022-03-01"
+      ],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "timing_sensitivity_direct_lag1",
+      "forecast_origin_month": "2024-11-01",
+      "horizon": 1,
+      "label_permitted_rows": 33,
+      "feature_usable_rows": 32,
+      "excluded_feature_origins": [
+        "2022-01-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "timing_sensitivity_direct_lag1",
+      "forecast_origin_month": "2024-11-01",
+      "horizon": 3,
+      "label_permitted_rows": 31,
+      "feature_usable_rows": 28,
+      "excluded_feature_origins": [
+        "2022-01-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [
+        "2022-02-01",
+        "2022-03-01"
+      ],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "timing_sensitivity_direct_lag1",
+      "forecast_origin_month": "2024-12-01",
+      "horizon": 1,
+      "label_permitted_rows": 34,
+      "feature_usable_rows": 33,
+      "excluded_feature_origins": [
+        "2022-01-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "timing_sensitivity_direct_lag1",
+      "forecast_origin_month": "2024-12-01",
+      "horizon": 3,
+      "label_permitted_rows": 32,
+      "feature_usable_rows": 29,
+      "excluded_feature_origins": [
+        "2022-01-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [
+        "2022-02-01",
+        "2022-03-01"
+      ],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "timing_sensitivity_direct_lag1",
+      "forecast_origin_month": "2025-01-01",
+      "horizon": 1,
+      "label_permitted_rows": 35,
+      "feature_usable_rows": 34,
+      "excluded_feature_origins": [
+        "2022-01-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "timing_sensitivity_direct_lag1",
+      "forecast_origin_month": "2025-01-01",
+      "horizon": 3,
+      "label_permitted_rows": 33,
+      "feature_usable_rows": 30,
+      "excluded_feature_origins": [
+        "2022-01-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [
+        "2022-02-01",
+        "2022-03-01"
+      ],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "timing_sensitivity_direct_lag1",
+      "forecast_origin_month": "2025-02-01",
+      "horizon": 1,
+      "label_permitted_rows": 36,
+      "feature_usable_rows": 35,
+      "excluded_feature_origins": [
+        "2022-01-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "timing_sensitivity_direct_lag1",
+      "forecast_origin_month": "2025-02-01",
+      "horizon": 3,
+      "label_permitted_rows": 34,
+      "feature_usable_rows": 31,
+      "excluded_feature_origins": [
+        "2022-01-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [
+        "2022-02-01",
+        "2022-03-01"
+      ],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "timing_sensitivity_direct_lag1",
+      "forecast_origin_month": "2025-03-01",
+      "horizon": 1,
+      "label_permitted_rows": 37,
+      "feature_usable_rows": 36,
+      "excluded_feature_origins": [
+        "2022-01-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "timing_sensitivity_direct_lag1",
+      "forecast_origin_month": "2025-03-01",
+      "horizon": 3,
+      "label_permitted_rows": 35,
+      "feature_usable_rows": 32,
+      "excluded_feature_origins": [
+        "2022-01-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [
+        "2022-02-01",
+        "2022-03-01"
+      ],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "structural_sensitivity_total_lag2",
+      "forecast_origin_month": "2024-01-01",
+      "horizon": 1,
+      "label_permitted_rows": 23,
+      "feature_usable_rows": 21,
+      "excluded_feature_origins": [
+        "2022-01-01",
+        "2022-02-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "structural_sensitivity_total_lag2",
+      "forecast_origin_month": "2024-01-01",
+      "horizon": 3,
+      "label_permitted_rows": 21,
+      "feature_usable_rows": 18,
+      "excluded_feature_origins": [
+        "2022-01-01",
+        "2022-02-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [
+        "2022-03-01"
+      ],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "structural_sensitivity_total_lag2",
+      "forecast_origin_month": "2024-02-01",
+      "horizon": 1,
+      "label_permitted_rows": 24,
+      "feature_usable_rows": 22,
+      "excluded_feature_origins": [
+        "2022-01-01",
+        "2022-02-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "structural_sensitivity_total_lag2",
+      "forecast_origin_month": "2024-02-01",
+      "horizon": 3,
+      "label_permitted_rows": 22,
+      "feature_usable_rows": 19,
+      "excluded_feature_origins": [
+        "2022-01-01",
+        "2022-02-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [
+        "2022-03-01"
+      ],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "structural_sensitivity_total_lag2",
+      "forecast_origin_month": "2024-03-01",
+      "horizon": 1,
+      "label_permitted_rows": 25,
+      "feature_usable_rows": 23,
+      "excluded_feature_origins": [
+        "2022-01-01",
+        "2022-02-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "structural_sensitivity_total_lag2",
+      "forecast_origin_month": "2024-03-01",
+      "horizon": 3,
+      "label_permitted_rows": 23,
+      "feature_usable_rows": 20,
+      "excluded_feature_origins": [
+        "2022-01-01",
+        "2022-02-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [
+        "2022-03-01"
+      ],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "structural_sensitivity_total_lag2",
+      "forecast_origin_month": "2024-04-01",
+      "horizon": 1,
+      "label_permitted_rows": 26,
+      "feature_usable_rows": 24,
+      "excluded_feature_origins": [
+        "2022-01-01",
+        "2022-02-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "structural_sensitivity_total_lag2",
+      "forecast_origin_month": "2024-04-01",
+      "horizon": 3,
+      "label_permitted_rows": 24,
+      "feature_usable_rows": 21,
+      "excluded_feature_origins": [
+        "2022-01-01",
+        "2022-02-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [
+        "2022-03-01"
+      ],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "structural_sensitivity_total_lag2",
+      "forecast_origin_month": "2024-05-01",
+      "horizon": 1,
+      "label_permitted_rows": 27,
+      "feature_usable_rows": 25,
+      "excluded_feature_origins": [
+        "2022-01-01",
+        "2022-02-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "structural_sensitivity_total_lag2",
+      "forecast_origin_month": "2024-05-01",
+      "horizon": 3,
+      "label_permitted_rows": 25,
+      "feature_usable_rows": 22,
+      "excluded_feature_origins": [
+        "2022-01-01",
+        "2022-02-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [
+        "2022-03-01"
+      ],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "structural_sensitivity_total_lag2",
+      "forecast_origin_month": "2024-06-01",
+      "horizon": 1,
+      "label_permitted_rows": 28,
+      "feature_usable_rows": 26,
+      "excluded_feature_origins": [
+        "2022-01-01",
+        "2022-02-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "structural_sensitivity_total_lag2",
+      "forecast_origin_month": "2024-06-01",
+      "horizon": 3,
+      "label_permitted_rows": 26,
+      "feature_usable_rows": 23,
+      "excluded_feature_origins": [
+        "2022-01-01",
+        "2022-02-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [
+        "2022-03-01"
+      ],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "structural_sensitivity_total_lag2",
+      "forecast_origin_month": "2024-07-01",
+      "horizon": 1,
+      "label_permitted_rows": 29,
+      "feature_usable_rows": 27,
+      "excluded_feature_origins": [
+        "2022-01-01",
+        "2022-02-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "structural_sensitivity_total_lag2",
+      "forecast_origin_month": "2024-07-01",
+      "horizon": 3,
+      "label_permitted_rows": 27,
+      "feature_usable_rows": 24,
+      "excluded_feature_origins": [
+        "2022-01-01",
+        "2022-02-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [
+        "2022-03-01"
+      ],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "structural_sensitivity_total_lag2",
+      "forecast_origin_month": "2024-08-01",
+      "horizon": 1,
+      "label_permitted_rows": 30,
+      "feature_usable_rows": 28,
+      "excluded_feature_origins": [
+        "2022-01-01",
+        "2022-02-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "structural_sensitivity_total_lag2",
+      "forecast_origin_month": "2024-08-01",
+      "horizon": 3,
+      "label_permitted_rows": 28,
+      "feature_usable_rows": 25,
+      "excluded_feature_origins": [
+        "2022-01-01",
+        "2022-02-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [
+        "2022-03-01"
+      ],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "structural_sensitivity_total_lag2",
+      "forecast_origin_month": "2024-09-01",
+      "horizon": 1,
+      "label_permitted_rows": 31,
+      "feature_usable_rows": 29,
+      "excluded_feature_origins": [
+        "2022-01-01",
+        "2022-02-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "structural_sensitivity_total_lag2",
+      "forecast_origin_month": "2024-09-01",
+      "horizon": 3,
+      "label_permitted_rows": 29,
+      "feature_usable_rows": 26,
+      "excluded_feature_origins": [
+        "2022-01-01",
+        "2022-02-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [
+        "2022-03-01"
+      ],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "structural_sensitivity_total_lag2",
+      "forecast_origin_month": "2024-10-01",
+      "horizon": 1,
+      "label_permitted_rows": 32,
+      "feature_usable_rows": 30,
+      "excluded_feature_origins": [
+        "2022-01-01",
+        "2022-02-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "structural_sensitivity_total_lag2",
+      "forecast_origin_month": "2024-10-01",
+      "horizon": 3,
+      "label_permitted_rows": 30,
+      "feature_usable_rows": 27,
+      "excluded_feature_origins": [
+        "2022-01-01",
+        "2022-02-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [
+        "2022-03-01"
+      ],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "structural_sensitivity_total_lag2",
+      "forecast_origin_month": "2024-11-01",
+      "horizon": 1,
+      "label_permitted_rows": 33,
+      "feature_usable_rows": 31,
+      "excluded_feature_origins": [
+        "2022-01-01",
+        "2022-02-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "structural_sensitivity_total_lag2",
+      "forecast_origin_month": "2024-11-01",
+      "horizon": 3,
+      "label_permitted_rows": 31,
+      "feature_usable_rows": 28,
+      "excluded_feature_origins": [
+        "2022-01-01",
+        "2022-02-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [
+        "2022-03-01"
+      ],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "structural_sensitivity_total_lag2",
+      "forecast_origin_month": "2024-12-01",
+      "horizon": 1,
+      "label_permitted_rows": 34,
+      "feature_usable_rows": 32,
+      "excluded_feature_origins": [
+        "2022-01-01",
+        "2022-02-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "structural_sensitivity_total_lag2",
+      "forecast_origin_month": "2024-12-01",
+      "horizon": 3,
+      "label_permitted_rows": 32,
+      "feature_usable_rows": 29,
+      "excluded_feature_origins": [
+        "2022-01-01",
+        "2022-02-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [
+        "2022-03-01"
+      ],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "structural_sensitivity_total_lag2",
+      "forecast_origin_month": "2025-01-01",
+      "horizon": 1,
+      "label_permitted_rows": 35,
+      "feature_usable_rows": 33,
+      "excluded_feature_origins": [
+        "2022-01-01",
+        "2022-02-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "structural_sensitivity_total_lag2",
+      "forecast_origin_month": "2025-01-01",
+      "horizon": 3,
+      "label_permitted_rows": 33,
+      "feature_usable_rows": 30,
+      "excluded_feature_origins": [
+        "2022-01-01",
+        "2022-02-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [
+        "2022-03-01"
+      ],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "structural_sensitivity_total_lag2",
+      "forecast_origin_month": "2025-02-01",
+      "horizon": 1,
+      "label_permitted_rows": 36,
+      "feature_usable_rows": 34,
+      "excluded_feature_origins": [
+        "2022-01-01",
+        "2022-02-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "structural_sensitivity_total_lag2",
+      "forecast_origin_month": "2025-02-01",
+      "horizon": 3,
+      "label_permitted_rows": 34,
+      "feature_usable_rows": 31,
+      "excluded_feature_origins": [
+        "2022-01-01",
+        "2022-02-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [
+        "2022-03-01"
+      ],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "structural_sensitivity_total_lag2",
+      "forecast_origin_month": "2025-03-01",
+      "horizon": 1,
+      "label_permitted_rows": 37,
+      "feature_usable_rows": 35,
+      "excluded_feature_origins": [
+        "2022-01-01",
+        "2022-02-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    },
+    {
+      "variant": "structural_sensitivity_total_lag2",
+      "forecast_origin_month": "2025-03-01",
+      "horizon": 3,
+      "label_permitted_rows": 35,
+      "feature_usable_rows": 32,
+      "excluded_feature_origins": [
+        "2022-01-01",
+        "2022-02-01"
+      ],
+      "excluded_feature_reason": "insufficient_registered_feature_history",
+      "excluded_benchmark_origins": [
+        "2022-03-01"
+      ],
+      "excluded_benchmark_reason": "insufficient_operational_benchmark_history"
+    }
+  ],
+  "training_count_reconciliation": [
+    {
+      "horizon": 1,
+      "outer_origin": "2024-01",
+      "label_permitted_expected": 276,
+      "label_permitted_actual": 276,
+      "label_permitted_matches": true,
+      "feature_usable_expected": 252,
+      "feature_usable_actual": 252,
+      "feature_usable_matches": true,
+      "excluded_feature_origins": [
+        "2022-01-01",
+        "2022-02-01"
+      ],
+      "excluded_benchmark_origins": [],
+      "deviation_reason": null
+    },
+    {
+      "horizon": 1,
+      "outer_origin": "2025-03",
+      "label_permitted_expected": 444,
+      "label_permitted_actual": 444,
+      "label_permitted_matches": true,
+      "feature_usable_expected": 420,
+      "feature_usable_actual": 420,
+      "feature_usable_matches": true,
+      "excluded_feature_origins": [
+        "2022-01-01",
+        "2022-02-01"
+      ],
+      "excluded_benchmark_origins": [],
+      "deviation_reason": null
+    },
+    {
+      "horizon": 3,
+      "outer_origin": "2024-01",
+      "label_permitted_expected": 252,
+      "label_permitted_actual": 252,
+      "label_permitted_matches": true,
+      "feature_usable_expected": 228,
+      "feature_usable_actual": 216,
+      "feature_usable_matches": false,
+      "excluded_feature_origins": [
+        "2022-01-01",
+        "2022-02-01"
+      ],
+      "excluded_benchmark_origins": [
+        "2022-03-01"
+      ],
+      "deviation_reason": "The h=3 operational benchmark reads max(S_{u-3}, S_{u-2}, S_{u-1}). At u=2022-03 that window reaches 2021-12, before B3's stress series begins in 2022-01, so no achievable benchmark exists at that origin and no residual can be defined against one. The brief's expected count accounts only for the feature-history gate and does not anticipate this additional operational-benchmark boundary. The row is excluded and reported, not imputed."
+    },
+    {
+      "horizon": 3,
+      "outer_origin": "2025-03",
+      "label_permitted_expected": 420,
+      "label_permitted_actual": 420,
+      "label_permitted_matches": true,
+      "feature_usable_expected": 396,
+      "feature_usable_actual": 384,
+      "feature_usable_matches": false,
+      "excluded_feature_origins": [
+        "2022-01-01",
+        "2022-02-01"
+      ],
+      "excluded_benchmark_origins": [
+        "2022-03-01"
+      ],
+      "deviation_reason": "The h=3 operational benchmark reads max(S_{u-3}, S_{u-2}, S_{u-1}). At u=2022-03 that window reaches 2021-12, before B3's stress series begins in 2022-01, so no achievable benchmark exists at that origin and no residual can be defined against one. The brief's expected count accounts only for the feature-history gate and does not anticipate this additional operational-benchmark boundary. The row is excluded and reported, not imputed."
+    }
+  ],
+  "degenerate_design_summary": {
+    "primary_direct_lag2": {
+      "rows_total": 360,
+      "rows_degenerate": 180,
+      "degenerate_industries": [
+        "IND-01",
+        "IND-03",
+        "IND-06",
+        "IND-07",
+        "IND-10",
+        "IND-11"
+      ],
+      "fitted_industries": [
+        "IND-02",
+        "IND-04",
+        "IND-05",
+        "IND-08",
+        "IND-09",
+        "IND-12"
+      ],
+      "meaning": "For a degenerate industry every eligible conditioned predictor is a structural constant (the exposure coefficient is zero), so the X-only zero-variance rule removes all of them, the residual is 0.0 and the prediction equals the D3 benchmark exactly."
+    },
+    "structural_sensitivity_total_lag2": {
+      "rows_total": 360,
+      "rows_degenerate": 0,
+      "degenerate_industries": [],
+      "fitted_industries": [
+        "IND-01",
+        "IND-02",
+        "IND-03",
+        "IND-04",
+        "IND-05",
+        "IND-06",
+        "IND-07",
+        "IND-08",
+        "IND-09",
+        "IND-10",
+        "IND-11",
+        "IND-12"
+      ],
+      "meaning": "For a degenerate industry every eligible conditioned predictor is a structural constant (the exposure coefficient is zero), so the X-only zero-variance rule removes all of them, the residual is 0.0 and the prediction equals the D3 benchmark exactly."
+    },
+    "timing_sensitivity_direct_lag1": {
+      "rows_total": 360,
+      "rows_degenerate": 180,
+      "degenerate_industries": [
+        "IND-01",
+        "IND-03",
+        "IND-06",
+        "IND-07",
+        "IND-10",
+        "IND-11"
+      ],
+      "fitted_industries": [
+        "IND-02",
+        "IND-04",
+        "IND-05",
+        "IND-08",
+        "IND-09",
+        "IND-12"
+      ],
+      "meaning": "For a degenerate industry every eligible conditioned predictor is a structural constant (the exposure coefficient is zero), so the X-only zero-variance rule removes all of them, the residual is 0.0 and the prediction equals the D3 benchmark exactly."
+    }
+  },
+  "prediction_counts": {
+    "total": 1080,
+    "by_variant_horizon": {
+      "primary_direct_lag2__h1": 180,
+      "primary_direct_lag2__h3": 180,
+      "timing_sensitivity_direct_lag1__h1": 180,
+      "timing_sensitivity_direct_lag1__h3": 180,
+      "structural_sensitivity_total_lag2__h1": 180,
+      "structural_sensitivity_total_lag2__h3": 180
+    }
+  },
+  "evaluation": {
+    "1": {
+      "benchmark_name": "operational_persistence_latest_published",
+      "model": {
+        "rows": 180,
+        "macro_industry_mae": 17.56162884850166,
+        "pooled_mae": 17.561628848501652,
+        "macro_industry_rmse": 21.517632352605148,
+        "pooled_rmse": 22.109177852567182,
+        "median_absolute_error": 15.674469003539151,
+        "pooled_spearman": 0.6838327316583064,
+        "per_industry_mae": {
+          "IND-01": 21.70392707718453,
+          "IND-02": 17.094370741938985,
+          "IND-03": 13.544061774930942,
+          "IND-04": 17.787527786070562,
+          "IND-05": 21.946441587743283,
+          "IND-06": 24.83607809558951,
+          "IND-07": 16.010194306617073,
+          "IND-08": 18.118511070167823,
+          "IND-09": 11.29366094062697,
+          "IND-10": 14.046078018634315,
+          "IND-11": 14.643736932153011,
+          "IND-12": 19.71495785036284
+        },
+        "by_development_block": {
+          "DEV-1": 15.9289925179069,
+          "DEV-2": 15.172368216962868,
+          "DEV-3": 21.58352581063519
+        },
+        "clipped_prediction_count": 6,
+        "high_stress": {
+          "threshold": 85.0,
+          "observed_events": 21,
+          "predicted_events": 29,
+          "true_positive": 15,
+          "false_positive": 14,
+          "false_negative": 6,
+          "precision": 0.5172413793103449,
+          "recall": 0.7142857142857143,
+          "f1": 0.6000000000000001,
+          "pr_auc": 0.4887441786255777,
+          "pr_auc_undefined_reason": null
+        },
+        "severe_counts": {
+          "threshold": 95.0,
+          "observed_events": 12,
+          "predicted_events": 16,
+          "both": 4,
+          "reporting": "descriptive_counts_only",
+          "note": "Too few events for stable rate metrics; not used for selection."
+        }
+      },
+      "model_macro_mae_ci": {
+        "point_estimate": 17.56162884850166,
+        "ci_low": 15.172005016145597,
+        "ci_high": 20.114830916242784,
+        "replications": 1000,
+        "block_length_months": 3,
+        "seed": 20260828,
+        "cluster_unit": "forecast_origin_month",
+        "n_month_clusters": 15,
+        "keeps_all_industries_together": true
+      },
+      "operational_persistence": {
+        "rows": 180,
+        "macro_industry_mae": 17.094469420180285,
+        "pooled_mae": 17.094469420180282,
+        "macro_industry_rmse": 20.742740359732483,
+        "pooled_rmse": 21.367471960435513,
+        "median_absolute_error": 14.932432432432432,
+        "pooled_spearman": 0.6918365730425987,
+        "per_industry_mae": {
+          "IND-01": 21.70392707718453,
+          "IND-02": 15.744954803469756,
+          "IND-03": 13.544061774930942,
+          "IND-04": 16.705280021727162,
+          "IND-05": 22.65048151983448,
+          "IND-06": 24.83607809558951,
+          "IND-07": 16.010194306617073,
+          "IND-08": 17.038521932732145,
+          "IND-09": 9.8766947699495,
+          "IND-10": 14.046078018634315,
+          "IND-11": 14.643736932153011,
+          "IND-12": 18.333623789340997
+        },
+        "by_development_block": {
+          "DEV-1": 16.164814814814815,
+          "DEV-2": 14.261617495870835,
+          "DEV-3": 20.8569759498552
+        },
+        "clipped_prediction_count": 0,
+        "high_stress": {
+          "threshold": 85.0,
+          "observed_events": 21,
+          "predicted_events": 23,
+          "true_positive": 13,
+          "false_positive": 10,
+          "false_negative": 8,
+          "precision": 0.5652173913043478,
+          "recall": 0.6190476190476191,
+          "f1": 0.5909090909090909,
+          "pr_auc": 0.5680990721087374,
+          "pr_auc_undefined_reason": null
+        },
+        "severe_counts": {
+          "threshold": 95.0,
+          "observed_events": 12,
+          "predicted_events": 12,
+          "both": 4,
+          "reporting": "descriptive_counts_only",
+          "note": "Too few events for stable rate metrics; not used for selection."
+        }
+      },
+      "operational_no_contraction": {
+        "rows": 180,
+        "macro_industry_mae": 19.445323994788307,
+        "pooled_mae": 19.44532399478831,
+        "macro_industry_rmse": 23.331501220882064,
+        "pooled_rmse": 24.661738816245368,
+        "median_absolute_error": 14.495798319327733,
+        "pooled_spearman": 0.605857859192945,
+        "per_industry_mae": {
+          "IND-01": 26.45403939864913,
+          "IND-02": 11.108253510187604,
+          "IND-03": 12.051294087844445,
+          "IND-04": 12.963133563362435,
+          "IND-05": 20.630516325538945,
+          "IND-06": 19.20157493373502,
+          "IND-07": 30.333028248544977,
+          "IND-08": 11.465958892570965,
+          "IND-09": 10.693822563700888,
+          "IND-10": 28.906690650156563,
+          "IND-11": 33.48172018406576,
+          "IND-12": 16.05385557910299
+        },
+        "by_development_block": {
+          "DEV-1": 20.862895129561796,
+          "DEV-2": 21.56274613487489,
+          "DEV-3": 15.910330719928242
+        },
+        "clipped_prediction_count": 0,
+        "high_stress": {
+          "threshold": 85.0,
+          "observed_events": 21,
+          "predicted_events": 0,
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 21,
+          "precision": null,
+          "recall": 0.0,
+          "f1": null,
+          "pr_auc": 0.25331208052820997,
+          "pr_auc_undefined_reason": null
+        },
+        "severe_counts": {
+          "threshold": 95.0,
+          "observed_events": 12,
+          "predicted_events": 0,
+          "both": 0,
+          "reporting": "descriptive_counts_only",
+          "note": "Too few events for stable rate metrics; not used for selection."
+        }
+      },
+      "vs_operational_persistence": {
+        "model_macro_mae": 17.56162884850166,
+        "comparator_macro_mae": 17.094469420180285,
+        "mae_skill": -0.027328103425654504,
+        "paired_difference_model_minus_comparator": {
+          "point_estimate": 0.4671594283213736,
+          "ci_low": -0.20603183595487307,
+          "ci_high": 1.3735633606280004,
+          "replications": 1000,
+          "block_length_months": 3,
+          "seed": 20260828,
+          "cluster_unit": "forecast_origin_month",
+          "paired": true,
+          "verdict": "inconclusive",
+          "conclusive": false
+        },
+        "paired_sign_convention": "negative means the model is better",
+        "model_better_on_point_estimate": false,
+        "paired_ci_excludes_zero": false
+      },
+      "vs_no_contraction": {
+        "model_macro_mae": 17.56162884850166,
+        "comparator_macro_mae": 19.445323994788307,
+        "mae_skill": 0.09687136849926037,
+        "paired_difference_model_minus_comparator": {
+          "point_estimate": -1.883695146286648,
+          "ci_low": -6.342791855956316,
+          "ci_high": 3.1151296051254094,
+          "replications": 1000,
+          "block_length_months": 3,
+          "seed": 20260828,
+          "cluster_unit": "forecast_origin_month",
+          "paired": true,
+          "verdict": "inconclusive",
+          "conclusive": false
+        },
+        "paired_sign_convention": "negative means the model is better",
+        "model_better_on_point_estimate": true,
+        "paired_ci_excludes_zero": false
+      },
+      "mae_evidence_status": "incremental_signal_not_supported",
+      "event_safety_status": "event_safety_passed",
+      "decision": {
+        "mae_evidence_status": "incremental_signal_not_supported",
+        "event_safety_status": "event_safety_passed",
+        "development_candidate_supported": false,
+        "requires_both_gates": true,
+        "sensitivity_may_rescue_failed_primary": false,
+        "approved_for_locked_test": false,
+        "production_model_approved": false,
+        "confirmatory_result": false
+      },
+      "sensitivities": {
+        "timing_sensitivity_direct_lag1": {
+          "rows": 180,
+          "macro_industry_mae": 17.025276377593553,
+          "pooled_mae": 17.025276377593553,
+          "macro_industry_rmse": 20.980206190818944,
+          "pooled_rmse": 21.667946089606975,
+          "median_absolute_error": 14.583333333333337,
+          "pooled_spearman": 0.6937172817956812,
+          "per_industry_mae": {
+            "IND-01": 21.70392707718453,
+            "IND-02": 14.239266008046895,
+            "IND-03": 13.544061774930942,
+            "IND-04": 17.752085651643764,
+            "IND-05": 22.37482893476836,
+            "IND-06": 24.83607809558951,
+            "IND-07": 16.010194306617073,
+            "IND-08": 16.659928413529563,
+            "IND-09": 9.71723786948246,
+            "IND-10": 14.046078018634315,
+            "IND-11": 14.643736932153011,
+            "IND-12": 18.775893448542195
+          },
+          "by_development_block": {
+            "DEV-1": 16.09397373814386,
+            "DEV-2": 13.844015063874494,
+            "DEV-3": 21.137840330762298
+          },
+          "clipped_prediction_count": 5,
+          "high_stress": {
+            "threshold": 85.0,
+            "observed_events": 21,
+            "predicted_events": 27,
+            "true_positive": 15,
+            "false_positive": 12,
+            "false_negative": 6,
+            "precision": 0.5555555555555556,
+            "recall": 0.7142857142857143,
+            "f1": 0.6250000000000001,
+            "pr_auc": 0.6001488336417959,
+            "pr_auc_undefined_reason": null
+          },
+          "severe_counts": {
+            "threshold": 95.0,
+            "observed_events": 12,
+            "predicted_events": 12,
+            "both": 4,
+            "reporting": "descriptive_counts_only",
+            "note": "Too few events for stable rate metrics; not used for selection."
+          },
+          "reported_separately": true,
+          "may_change_primary_status": false,
+          "origins_covered": [
+            "2024-01-01",
+            "2024-02-01",
+            "2024-03-01",
+            "2024-04-01",
+            "2024-05-01",
+            "2024-06-01",
+            "2024-07-01",
+            "2024-08-01",
+            "2024-09-01",
+            "2024-10-01",
+            "2024-11-01",
+            "2024-12-01",
+            "2025-01-01",
+            "2025-02-01",
+            "2025-03-01"
+          ]
+        },
+        "structural_sensitivity_total_lag2": {
+          "rows": 180,
+          "macro_industry_mae": 18.046033199837783,
+          "pooled_mae": 18.046033199837783,
+          "macro_industry_rmse": 21.958063334325754,
+          "pooled_rmse": 22.59057204912876,
+          "median_absolute_error": 16.078860457892446,
+          "pooled_spearman": 0.6935243189011145,
+          "per_industry_mae": {
+            "IND-01": 24.380754250305806,
+            "IND-02": 17.419023485000352,
+            "IND-03": 12.92331700493339,
+            "IND-04": 17.787527786070562,
+            "IND-05": 23.900519838471105,
+            "IND-06": 24.60647598174097,
+            "IND-07": 16.461640883906504,
+            "IND-08": 17.667644905359268,
+            "IND-09": 11.135827590206977,
+            "IND-10": 15.497795228900626,
+            "IND-11": 15.442481134907702,
+            "IND-12": 19.329390308250154
+          },
+          "by_development_block": {
+            "DEV-1": 16.291062991032266,
+            "DEV-2": 15.532121007850838,
+            "DEV-3": 22.314915600630247
+          },
+          "clipped_prediction_count": 19,
+          "high_stress": {
+            "threshold": 85.0,
+            "observed_events": 21,
+            "predicted_events": 29,
+            "true_positive": 15,
+            "false_positive": 14,
+            "false_negative": 6,
+            "precision": 0.5172413793103449,
+            "recall": 0.7142857142857143,
+            "f1": 0.6000000000000001,
+            "pr_auc": 0.45726482875223423,
+            "pr_auc_undefined_reason": null
+          },
+          "severe_counts": {
+            "threshold": 95.0,
+            "observed_events": 12,
+            "predicted_events": 20,
+            "both": 5,
+            "reporting": "descriptive_counts_only",
+            "note": "Too few events for stable rate metrics; not used for selection."
+          },
+          "reported_separately": true,
+          "may_change_primary_status": false,
+          "origins_covered": [
+            "2024-01-01",
+            "2024-02-01",
+            "2024-03-01",
+            "2024-04-01",
+            "2024-05-01",
+            "2024-06-01",
+            "2024-07-01",
+            "2024-08-01",
+            "2024-09-01",
+            "2024-10-01",
+            "2024-11-01",
+            "2024-12-01",
+            "2025-01-01",
+            "2025-02-01",
+            "2025-03-01"
+          ]
+        }
+      }
+    },
+    "3": {
+      "benchmark_name": "operational_persistence_trailing_3m_max",
+      "model": {
+        "rows": 180,
+        "macro_industry_mae": 17.905083297224962,
+        "pooled_mae": 17.90508329722496,
+        "macro_industry_rmse": 22.78629367131987,
+        "pooled_rmse": 24.20773283163441,
+        "median_absolute_error": 13.909313725490197,
+        "pooled_spearman": 0.655040209750474,
+        "per_industry_mae": {
+          "IND-01": 32.14965390448408,
+          "IND-02": 16.681307637845453,
+          "IND-03": 10.274278375155724,
+          "IND-04": 9.893827408958689,
+          "IND-05": 19.9763118092855,
+          "IND-06": 18.371419722417205,
+          "IND-07": 12.323353791538269,
+          "IND-08": 19.975111554841074,
+          "IND-09": 20.98323006080507,
+          "IND-10": 29.178794905620652,
+          "IND-11": 12.311334593361074,
+          "IND-12": 12.742375802386736
+        },
+        "by_development_block": {
+          "DEV-1": 20.618051360766383,
+          "DEV-2": 14.767338440389443,
+          "DEV-3": 18.329860090519052
+        },
+        "clipped_prediction_count": 1,
+        "high_stress": {
+          "threshold": 85.0,
+          "observed_events": 28,
+          "predicted_events": 45,
+          "true_positive": 27,
+          "false_positive": 18,
+          "false_negative": 1,
+          "precision": 0.6,
+          "recall": 0.9642857142857143,
+          "f1": 0.7397260273972602,
+          "pr_auc": 0.6000099041519414,
+          "pr_auc_undefined_reason": null
+        },
+        "severe_counts": {
+          "threshold": 95.0,
+          "observed_events": 21,
+          "predicted_events": 35,
+          "both": 17,
+          "reporting": "descriptive_counts_only",
+          "note": "Too few events for stable rate metrics; not used for selection."
+        }
+      },
+      "model_macro_mae_ci": {
+        "point_estimate": 17.90508329722496,
+        "ci_low": 14.556386360570984,
+        "ci_high": 20.406495287126212,
+        "replications": 1000,
+        "block_length_months": 3,
+        "seed": 20260828,
+        "cluster_unit": "forecast_origin_month",
+        "n_month_clusters": 15,
+        "keeps_all_industries_together": true
+      },
+      "operational_persistence": {
+        "rows": 180,
+        "macro_industry_mae": 16.63380109495526,
+        "pooled_mae": 16.633801094955256,
+        "macro_industry_rmse": 21.23588402530078,
+        "pooled_rmse": 22.862369887469935,
+        "median_absolute_error": 13.235294117647058,
+        "pooled_spearman": 0.6693138218346627,
+        "per_industry_mae": {
+          "IND-01": 32.14965390448408,
+          "IND-02": 14.792139770799796,
+          "IND-03": 10.274278375155724,
+          "IND-04": 8.0149471005277,
+          "IND-05": 17.308153831009225,
+          "IND-06": 18.371419722417205,
+          "IND-07": 12.323353791538269,
+          "IND-08": 16.70201452721652,
+          "IND-09": 16.096280267253874,
+          "IND-10": 29.178794905620652,
+          "IND-11": 12.311334593361074,
+          "IND-12": 12.083242350078983
+        },
+        "by_development_block": {
+          "DEV-1": 18.666870166870165,
+          "DEV-2": 13.340297440478196,
+          "DEV-3": 17.89423567751741
+        },
+        "clipped_prediction_count": 0,
+        "high_stress": {
+          "threshold": 85.0,
+          "observed_events": 28,
+          "predicted_events": 40,
+          "true_positive": 24,
+          "false_positive": 16,
+          "false_negative": 4,
+          "precision": 0.6,
+          "recall": 0.8571428571428571,
+          "f1": 0.7058823529411764,
+          "pr_auc": 0.6169281689560444,
+          "pr_auc_undefined_reason": null
+        },
+        "severe_counts": {
+          "threshold": 95.0,
+          "observed_events": 21,
+          "predicted_events": 29,
+          "both": 17,
+          "reporting": "descriptive_counts_only",
+          "note": "Too few events for stable rate metrics; not used for selection."
+        }
+      },
+      "operational_no_contraction": {
+        "rows": 180,
+        "macro_industry_mae": 16.97906065726465,
+        "pooled_mae": 16.97906065726465,
+        "macro_industry_rmse": 19.984396325222885,
+        "pooled_rmse": 22.481998917825376,
+        "median_absolute_error": 12.701612903225808,
+        "pooled_spearman": 0.7034312337503562,
+        "per_industry_mae": {
+          "IND-01": 18.593306676972855,
+          "IND-02": 3.667257573604323,
+          "IND-03": 15.314524807802684,
+          "IND-04": 7.947010449706113,
+          "IND-05": 15.294047112134752,
+          "IND-06": 12.011620737578975,
+          "IND-07": 34.9653425519119,
+          "IND-08": 11.826821283076429,
+          "IND-09": 10.960245707245843,
+          "IND-10": 25.117006929280883,
+          "IND-11": 38.32903246097574,
+          "IND-12": 9.722511596885314
+        },
+        "by_development_block": {
+          "DEV-1": 18.42246981413648,
+          "DEV-2": 18.066625304771858,
+          "DEV-3": 14.448086852885616
+        },
+        "clipped_prediction_count": 0,
+        "high_stress": {
+          "threshold": 85.0,
+          "observed_events": 28,
+          "predicted_events": 0,
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 28,
+          "precision": null,
+          "recall": 0.0,
+          "f1": null,
+          "pr_auc": 0.32486415002557817,
+          "pr_auc_undefined_reason": null
+        },
+        "severe_counts": {
+          "threshold": 95.0,
+          "observed_events": 21,
+          "predicted_events": 0,
+          "both": 0,
+          "reporting": "descriptive_counts_only",
+          "note": "Too few events for stable rate metrics; not used for selection."
+        }
+      },
+      "vs_operational_persistence": {
+        "model_macro_mae": 17.905083297224962,
+        "comparator_macro_mae": 16.63380109495526,
+        "mae_skill": -0.07642764242595512,
+        "paired_difference_model_minus_comparator": {
+          "point_estimate": 1.271282202269699,
+          "ci_low": 0.4316900199839361,
+          "ci_high": 2.1098382839349306,
+          "replications": 1000,
+          "block_length_months": 3,
+          "seed": 20260828,
+          "cluster_unit": "forecast_origin_month",
+          "paired": true,
+          "verdict": "excludes_zero",
+          "conclusive": true
+        },
+        "paired_sign_convention": "negative means the model is better",
+        "model_better_on_point_estimate": false,
+        "paired_ci_excludes_zero": true
+      },
+      "vs_no_contraction": {
+        "model_macro_mae": 17.905083297224962,
+        "comparator_macro_mae": 16.97906065726465,
+        "mae_skill": -0.054539097224092004,
+        "paired_difference_model_minus_comparator": {
+          "point_estimate": 0.9260226399603084,
+          "ci_low": -3.728401695642031,
+          "ci_high": 3.5006570663524728,
+          "replications": 1000,
+          "block_length_months": 3,
+          "seed": 20260828,
+          "cluster_unit": "forecast_origin_month",
+          "paired": true,
+          "verdict": "inconclusive",
+          "conclusive": false
+        },
+        "paired_sign_convention": "negative means the model is better",
+        "model_better_on_point_estimate": false,
+        "paired_ci_excludes_zero": false
+      },
+      "mae_evidence_status": "incremental_signal_not_supported",
+      "event_safety_status": "event_safety_passed",
+      "decision": {
+        "mae_evidence_status": "incremental_signal_not_supported",
+        "event_safety_status": "event_safety_passed",
+        "development_candidate_supported": false,
+        "requires_both_gates": true,
+        "sensitivity_may_rescue_failed_primary": false,
+        "approved_for_locked_test": false,
+        "production_model_approved": false,
+        "confirmatory_result": false
+      },
+      "sensitivities": {
+        "timing_sensitivity_direct_lag1": {
+          "rows": 180,
+          "macro_industry_mae": 17.30633185720691,
+          "pooled_mae": 17.30633185720691,
+          "macro_industry_rmse": 22.308302615864676,
+          "pooled_rmse": 23.853002557916646,
+          "median_absolute_error": 11.797258619468522,
+          "pooled_spearman": 0.6634685250491048,
+          "per_industry_mae": {
+            "IND-01": 32.14965390448408,
+            "IND-02": 13.794337322101285,
+            "IND-03": 10.274278375155724,
+            "IND-04": 7.073889153303122,
+            "IND-05": 19.39394544465384,
+            "IND-06": 18.371419722417205,
+            "IND-07": 12.323353791538269,
+            "IND-08": 20.740330608531725,
+            "IND-09": 18.55468116832278,
+            "IND-10": 29.178794905620652,
+            "IND-11": 12.311334593361074,
+            "IND-12": 13.509963296993172
+          },
+          "by_development_block": {
+            "DEV-1": 19.844741135529656,
+            "DEV-2": 14.170070868545496,
+            "DEV-3": 17.90418356754558
+          },
+          "clipped_prediction_count": 3,
+          "high_stress": {
+            "threshold": 85.0,
+            "observed_events": 28,
+            "predicted_events": 44,
+            "true_positive": 27,
+            "false_positive": 17,
+            "false_negative": 1,
+            "precision": 0.6136363636363636,
+            "recall": 0.9642857142857143,
+            "f1": 0.75,
+            "pr_auc": 0.6159109815556258,
+            "pr_auc_undefined_reason": null
+          },
+          "severe_counts": {
+            "threshold": 95.0,
+            "observed_events": 21,
+            "predicted_events": 32,
+            "both": 18,
+            "reporting": "descriptive_counts_only",
+            "note": "Too few events for stable rate metrics; not used for selection."
+          },
+          "reported_separately": true,
+          "may_change_primary_status": false,
+          "origins_covered": [
+            "2024-01-01",
+            "2024-02-01",
+            "2024-03-01",
+            "2024-04-01",
+            "2024-05-01",
+            "2024-06-01",
+            "2024-07-01",
+            "2024-08-01",
+            "2024-09-01",
+            "2024-10-01",
+            "2024-11-01",
+            "2024-12-01",
+            "2025-01-01",
+            "2025-02-01",
+            "2025-03-01"
+          ]
+        },
+        "structural_sensitivity_total_lag2": {
+          "rows": 180,
+          "macro_industry_mae": 18.175057703079254,
+          "pooled_mae": 18.17505770307926,
+          "macro_industry_rmse": 22.941076744329944,
+          "pooled_rmse": 24.985606564819772,
+          "median_absolute_error": 12.237715856957106,
+          "pooled_spearman": 0.663380470240049,
+          "per_industry_mae": {
+            "IND-01": 37.09839897643126,
+            "IND-02": 17.899919826259584,
+            "IND-03": 6.908920016021987,
+            "IND-04": 9.89382740895869,
+            "IND-05": 16.026763996657362,
+            "IND-06": 17.463713884476704,
+            "IND-07": 14.512887106020742,
+            "IND-08": 18.215197010758693,
+            "IND-09": 18.654412814392842,
+            "IND-10": 34.372645642979485,
+            "IND-11": 13.263782292164773,
+            "IND-12": 13.790223461828962
+          },
+          "by_development_block": {
+            "DEV-1": 20.3422360797994,
+            "DEV-2": 15.306811995705422,
+            "DEV-3": 18.876125033732958
+          },
+          "clipped_prediction_count": 28,
+          "high_stress": {
+            "threshold": 85.0,
+            "observed_events": 28,
+            "predicted_events": 49,
+            "true_positive": 27,
+            "false_positive": 22,
+            "false_negative": 1,
+            "precision": 0.5510204081632653,
+            "recall": 0.9642857142857143,
+            "f1": 0.7012987012987012,
+            "pr_auc": 0.6570538137458707,
+            "pr_auc_undefined_reason": null
+          },
+          "severe_counts": {
+            "threshold": 95.0,
+            "observed_events": 21,
+            "predicted_events": 35,
+            "both": 14,
+            "reporting": "descriptive_counts_only",
+            "note": "Too few events for stable rate metrics; not used for selection."
+          },
+          "reported_separately": true,
+          "may_change_primary_status": false,
+          "origins_covered": [
+            "2024-01-01",
+            "2024-02-01",
+            "2024-03-01",
+            "2024-04-01",
+            "2024-05-01",
+            "2024-06-01",
+            "2024-07-01",
+            "2024-08-01",
+            "2024-09-01",
+            "2024-10-01",
+            "2024-11-01",
+            "2024-12-01",
+            "2025-01-01",
+            "2025-02-01",
+            "2025-03-01"
+          ]
+        }
+      }
+    }
+  },
+  "safety": {
+    "approved_for_locked_test": false,
+    "production_model_approved": false,
+    "confirmatory_result": false,
+    "upstream_feature_eligibility_modified": false,
+    "locked_test_accessed": false
+  },
+  "content_checksum": "6d9d32d7164d4d6aa25ad634271b1747d75727d068b94b58b8a1b4f9d2fdf3ae",
+  "outputs": {
+    "predictions_path": "data/model_input/d4_operational_model_predictions.parquet",
+    "predictions_sha256": "fec318b990d48be74ef20ffae25b575c639effea2889c017583d946fc1b1ecda"
+  }
+}

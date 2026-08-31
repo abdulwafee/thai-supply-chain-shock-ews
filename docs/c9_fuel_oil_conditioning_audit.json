@@ -1,0 +1,605 @@
+{
+ "authorization_after_c9": {
+  "feature_semantics_approved": false,
+  "industry_conditioned_features_created": true,
+  "locked_test_evaluation_authorized": false,
+  "model_feature_approved": false,
+  "modeling_authorized": false,
+  "note": "A structurally conditioned feature is not automatically predictive or model-approved.",
+  "ready_for_development_only_assembly": {
+   "fo1500_direct_sector093": true,
+   "fo600_direct_sector093": true
+  },
+  "target_join_authorized": false
+ },
+ "availability": {
+  "availability_basis": "conservative_policy_not_historical_measurement",
+  "backdated_to_reference_year": false,
+  "download_timestamp_used": false,
+  "evidence_type": "official_download_page_publication_date",
+  "evidence_url": "https://www.nesdc.go.th/download/i-o-table-of-thailand-2015/",
+  "fully_real_time_backtest": false,
+  "latest_vintage_used": true,
+  "point_in_time_supported": false,
+  "rows_checked": 7800,
+  "rule": "max(source policy_available_month, structural available month)",
+  "source_available_as_of": null,
+  "source_available_as_of_null_rows": 7800,
+  "source_policy_dominates_rows": 7800,
+  "source_policy_expected_to_dominate": true,
+  "structural_available_by": "2020-03-31",
+  "structural_available_month": "2020-03",
+  "structural_reference_year": 2015,
+  "violations": 0
+ },
+ "conditioned_table": {
+  "by_variant": {
+   "fo1500_direct_sector093": {
+    "available_nonzero": 3289,
+    "not_generated_due_to_direction_ambiguity": 325,
+    "source_current_month_gap": 55,
+    "source_input_window_gap": 22,
+    "source_insufficient_history": 209
+   },
+   "fo600_direct_sector093": {
+    "available_nonzero": 3289,
+    "not_generated_due_to_direction_ambiguity": 325,
+    "source_current_month_gap": 55,
+    "source_input_window_gap": 22,
+    "source_insufficient_history": 209
+   }
+  },
+  "model_feature_approved_rows": 0,
+  "output": "data/features/c9_fuel_oil_conditioned.parquet",
+  "rows": 7800,
+  "status_counts": {
+   "available_nonzero": 6578,
+   "not_generated_due_to_direction_ambiguity": 650,
+   "source_current_month_gap": 110,
+   "source_input_window_gap": 44,
+   "source_insufficient_history": 418
+  },
+  "unique_key": [
+   "variant_id",
+   "industry_id",
+   "reference_month",
+   "transformation_id"
+  ],
+  "units": {
+   "log_change_12m_pct": "percentage_point_log_change_x_io_coefficient",
+   "log_change_1m_pct": "percentage_point_log_change_x_io_coefficient",
+   "log_change_3m_pct": "percentage_point_log_change_x_io_coefficient",
+   "price_level": "baht_per_litre_x_io_coefficient",
+   "realized_volatility_3m_pct": "percentage_point_log_change_volatility_x_io_coefficient"
+  }
+ },
+ "conditioning": {
+  "formula": "z[g,c,m,f] = x[c,m,f] * E093[g] * s[g,c]",
+  "normalisation_across_channels": false,
+  "normalisation_across_industries": false,
+  "normalisation_across_transformations": false,
+  "not_a_currency_cost": true,
+  "not_a_forecast_coefficient": true,
+  "not_an_elasticity": true,
+  "total_requirement_exposure_used": false,
+  "units": {
+   "log_change_12m_pct": "percentage_point_log_change_x_io_coefficient",
+   "log_change_1m_pct": "percentage_point_log_change_x_io_coefficient",
+   "log_change_3m_pct": "percentage_point_log_change_x_io_coefficient",
+   "price_level": "baht_per_litre_x_io_coefficient",
+   "realized_volatility_3m_pct": "percentage_point_log_change_volatility_x_io_coefficient"
+  }
+ },
+ "conditioning_formula_version": "c9_fuel_oil_direct_sector093_v1",
+ "config_version": "fuel_oil_industry_conditioning_v1",
+ "content_checksum": "711461e78ff83048b13ed4852211fccd6008f87dfd4276312a2b26754064527e",
+ "counts": {
+  "counts_reconciled": true,
+  "disagreements": [],
+  "expected": {
+   "full_grid_rows": 7800,
+   "ineligible_rows": 650,
+   "source_gap_rows": 572,
+   "source_numeric_rows": 6578
+  },
+  "expected_counts_edited_after_conditioning": false,
+  "expected_per_channel": {
+   "eppo_fo1500_channel": {
+    "eligible_industries_per_channel": 11,
+    "full_grid_rows": 3900,
+    "ineligible_industries_per_channel": 1,
+    "ineligible_rows": 325,
+    "source_gap_rows": 286,
+    "source_numeric_rows": 3289
+   },
+   "eppo_fo600_channel": {
+    "eligible_industries_per_channel": 11,
+    "full_grid_rows": 3900,
+    "ineligible_industries_per_channel": 1,
+    "ineligible_rows": 325,
+    "source_gap_rows": 286,
+    "source_numeric_rows": 3289
+   }
+  },
+  "observed": {
+   "full_grid_rows": 7800,
+   "ineligible_rows": 650,
+   "source_gap_rows": 572,
+   "source_numeric_rows": 6578
+  },
+  "status_counts": {
+   "available_nonzero": 6578,
+   "not_generated_due_to_direction_ambiguity": 650,
+   "source_current_month_gap": 110,
+   "source_input_window_gap": 44,
+   "source_insufficient_history": 418
+  }
+ },
+ "development_snapshot": {
+  "cells": 1800,
+  "channels_combined_in_one_model_ready_row": false,
+  "industries": 12,
+  "ineligible_cells": "null_plus_mask",
+  "issue_month_end": "2025-03",
+  "issue_month_start": "2024-01",
+  "issue_months": 15,
+  "observed_structural_zero_cells": "numeric_zero",
+  "output": "data/features/c9_fuel_oil_development_snapshot.parquet",
+  "purge_and_locked_reported_from_key_ranges_only": true,
+  "reference_month_rule": "latest_permitted_by_policy_lag_2",
+  "rejected_source_null_cells": [],
+  "source_null_cells": "rejected",
+  "state_counts": {
+   "masked_ineligible": 150,
+   "numeric": 1650
+  },
+  "targets_read": false,
+  "transformations": 5,
+  "variants": 2
+ },
+ "exposure_summary": {
+  "industries": 12,
+  "industries_containing_the_producer_sector": [
+   "IND-04"
+  ],
+  "io_sector_code": "093",
+  "io_sector_label": "Petroleum refineries",
+  "max_reconciliation_residual": 1.3877787807814457e-17,
+  "maximum": 0.06415595327542685,
+  "median": 0.009930964216714508,
+  "minimum": 0.004748292939321325,
+  "normalised_across_industries": false,
+  "note": "Baht of sector-093 output purchased per baht of industry gross output, purchasers' prices, import-inclusive, one 2015 benchmark under fixed proportions. Not an elasticity, not a pass-through rate, not a causal effect. A large exposure is a structural fact, not an error.",
+  "observed_zero_count": 0,
+  "top_exposed_industries": [
+   {
+    "direct_exposure": 0.06415595327542685,
+    "industry_id": "IND-05",
+    "industry_name": "Chemicals and Pharmaceuticals"
+   },
+   {
+    "direct_exposure": 0.03464829695362992,
+    "industry_id": "IND-07",
+    "industry_name": "Non-metallic Mineral Products"
+   },
+   {
+    "direct_exposure": 0.026906393544165897,
+    "industry_id": "IND-08",
+    "industry_name": "Basic and Fabricated Metals"
+   },
+   {
+    "direct_exposure": 0.014320736404304002,
+    "industry_id": "IND-06",
+    "industry_name": "Rubber and Plastics"
+   },
+   {
+    "direct_exposure": 0.011393463166295026,
+    "industry_id": "IND-02",
+    "industry_name": "Textiles, Apparel and Leather"
+   }
+  ],
+  "total_requirement_used": false,
+  "unresolved_count": 0
+ },
+ "generated_at_utc": "2026-08-29T07:55:17.174184+00:00",
+ "inherited_restrictions": {
+  "additive_aggregation_allowed": false,
+  "automatic_composite_index_allowed": false,
+  "outcome_based_channel_selection_allowed": false,
+  "simple_average_allowed": false,
+  "simultaneous_model_entry_approved": false
+ },
+ "inherited_status": {
+  "eppo_fo1500_channel": {
+   "source_transformations_ready_for_structural_conditioning": true
+  },
+  "eppo_fo600_channel": {
+   "source_transformations_ready_for_structural_conditioning": true
+  },
+  "eppo_hsd": {
+   "authorized": false,
+   "reason": "ordinary_h_diesel_absent_for_305_document_days_2023_09_to_2024_12"
+  }
+ },
+ "issue_key_coverage": {
+  "development": {
+   "fo1500_direct_sector093": {
+    "issue_months": 15,
+    "materialised": true,
+    "reference_month_range": [
+     "2023-11",
+     "2025-01"
+    ],
+    "reference_months_with_a_source_gap": []
+   },
+   "fo600_direct_sector093": {
+    "issue_months": 15,
+    "materialised": true,
+    "reference_month_range": [
+     "2023-11",
+     "2025-01"
+    ],
+    "reference_months_with_a_source_gap": []
+   }
+  },
+  "locked_test": {
+   "fo1500_direct_sector093": {
+    "issue_months": 10,
+    "materialised": false,
+    "reference_month_range": [
+     "2025-05",
+     "2026-02"
+    ],
+    "reference_months_with_a_source_gap": []
+   },
+   "fo600_direct_sector093": {
+    "issue_months": 10,
+    "materialised": false,
+    "reference_month_range": [
+     "2025-05",
+     "2026-02"
+    ],
+    "reference_months_with_a_source_gap": []
+   }
+  },
+  "locked_test_outcomes_read": false,
+  "model_predictions_read": false,
+  "purge": {
+   "fo1500_direct_sector093": {
+    "issue_months": 3,
+    "materialised": false,
+    "reference_month_range": [
+     "2025-02",
+     "2025-04"
+    ],
+    "reference_months_with_a_source_gap": []
+   },
+   "fo600_direct_sector093": {
+    "issue_months": 3,
+    "materialised": false,
+    "reference_month_range": [
+     "2025-02",
+     "2025-04"
+    ],
+    "reference_months_with_a_source_gap": []
+   }
+  },
+  "target_values_read": false
+ },
+ "lineage": {
+  "c7_5_semantic_mapping_checksum": "8b36fd6e9ce7798905cb2b903b263908489a5632fdf54f41ba12b0a12b6bd24a",
+  "distinct_checksums": 7800,
+  "lineage_version": "c9_fuel_oil_conditioned_lineage_v1",
+  "null_rows_with_complete_lineage": 1222,
+  "rows_with_a_checksum": 7800,
+  "source_chain_fields": [
+   "channel_id",
+   "transformation_id",
+   "source_feature_value",
+   "source_transformation_status",
+   "source_required_input_months",
+   "source_missing_input_months",
+   "source_policy_available_month",
+   "source_transformation_lineage_checksum",
+   "c7_5_semantic_mapping_checksum"
+  ],
+  "structural_chain_fields": [
+   "io_sector_code",
+   "io_sector_label",
+   "nesdc_workbook_sha256",
+   "industry_id",
+   "crosswalk_version",
+   "component_sector_codes",
+   "gross_output_weights",
+   "direct_exposure",
+   "exposure_weighted_mean_form",
+   "exposure_summed_flow_form",
+   "proxy_fit",
+   "proxy_confidence",
+   "direction_channel",
+   "direction_multiplier",
+   "structural_available_month",
+   "structural_availability_evidence",
+   "phase_a_decision_checksum"
+  ]
+ },
+ "phase": "B",
+ "phase_a_content_checksum": "8cb4209b8c93f9d1f478452791dfda25bfbc9b73ec148aee2d6773de431373e1",
+ "phase_a_decision_checksum": "d528aba4aedcb8b8051ad618d66d49c71239267fb26fd2ead292ee90b12c9703",
+ "phase_a_reasserted_after_conditioning": true,
+ "phase_a_reasserted_before_loading_values": true,
+ "preserved_decisions": {
+  "b3_targets_changed": false,
+  "c3_or_c3r1_matrices_changed": false,
+  "c4_features_changed": false,
+  "c5_path_decomposition_changed": false,
+  "c6_5_latest_vintage_policy_changed": false,
+  "c7_or_c7_5_source_semantics_changed": false,
+  "c8_availability_changed": false,
+  "c8_formulas_values_or_nulls_changed": false,
+  "d3_contract_changed": false,
+  "d4_results_changed": false
+ },
+ "provenance": {
+  "locked_test_accessed": false,
+  "model_feature_approved": false,
+  "model_trained": false,
+  "target_association_computed": false,
+  "target_joined": false
+ },
+ "readiness": {
+  "fo1500_direct_sector093": {
+   "feature_semantics_approved": false,
+   "industry_conditioned_features_created": true,
+   "model_feature_approved": false,
+   "null_rows": 611,
+   "numeric_rows": 3289,
+   "ready_for_development_only_assembly": true,
+   "rows": 3900
+  },
+  "fo600_direct_sector093": {
+   "feature_semantics_approved": false,
+   "industry_conditioned_features_created": true,
+   "model_feature_approved": false,
+   "null_rows": 611,
+   "numeric_rows": 3289,
+   "ready_for_development_only_assembly": true,
+   "rows": 3900
+  }
+ },
+ "status_precedence": [
+  "structural_ineligibility",
+  "source_transformation_null",
+  "structural_exposure_zero",
+  "available_nonzero"
+ ],
+ "task": "C9",
+ "timing_policy": {
+  "availability_basis": "conservative_policy_not_historical_measurement",
+  "fully_real_time_backtest": false,
+  "historical_release_timing_verified": false,
+  "latest_vintage_used": true,
+  "minimum_verified_publication_lag_months": null,
+  "operational_lag_is_measured": false,
+  "operational_policy_lag_months": 2,
+  "point_in_time_supported": false,
+  "source_available_as_of": null
+ },
+ "upstream_invariants": {
+  "all_reproduced": true,
+  "checks": {
+   "c3_coefficient_measure": {
+    "actual": "purchaser",
+    "expected": "purchaser",
+    "reproduced": true
+   },
+   "c3_excluded_zero_output_sector": {
+    "actual": [
+     "179"
+    ],
+    "expected": [
+     "179"
+    ],
+    "reproduced": true
+   },
+   "c3_import_treatment": {
+    "actual": "import_inclusive",
+    "expected": "import_inclusive",
+    "reproduced": true
+   },
+   "c3_no_duplicate_sector_assignment": {
+    "actual": true,
+    "expected": true,
+    "reproduced": true
+   },
+   "c3_production_industries": {
+    "actual": 12,
+    "expected": 12,
+    "reproduced": true
+   },
+   "c3_structural_available_by": {
+    "actual": "2020-03-31",
+    "expected": "2020-03-31",
+    "reproduced": true
+   },
+   "c3_target_outcomes_used_in_crosswalk": {
+    "actual": false,
+    "expected": false,
+    "reproduced": true
+   },
+   "c3_valid_io_sectors": {
+    "actual": 179,
+    "expected": 179,
+    "reproduced": true
+   },
+   "c3_valuation_price_basis": {
+    "actual": "purchasers_prices",
+    "expected": "purchasers_prices",
+    "reproduced": true
+   },
+   "c8_channels": {
+    "actual": [
+     "eppo_fo1500_channel",
+     "eppo_fo600_channel"
+    ],
+    "expected": [
+     "eppo_fo1500_channel",
+     "eppo_fo600_channel"
+    ],
+    "reproduced": true
+   },
+   "c8_finite_per_channel": {
+    "actual": [
+     299
+    ],
+    "expected": [
+     299
+    ],
+    "reproduced": true
+   },
+   "c8_finite_rows": {
+    "actual": 598,
+    "expected": 598,
+    "reproduced": true
+   },
+   "c8_fo1500_ready": {
+    "actual": true,
+    "expected": true,
+    "reproduced": true
+   },
+   "c8_fo600_ready": {
+    "actual": true,
+    "expected": true,
+    "reproduced": true
+   },
+   "c8_hsd_absent": {
+    "actual": true,
+    "expected": true,
+    "reproduced": true
+   },
+   "c8_lag_is_measured": {
+    "actual": false,
+    "expected": false,
+    "reproduced": true
+   },
+   "c8_latest_vintage_used": {
+    "actual": true,
+    "expected": true,
+    "reproduced": true
+   },
+   "c8_null_per_channel": {
+    "actual": [
+     26
+    ],
+    "expected": [
+     26
+    ],
+    "reproduced": true
+   },
+   "c8_null_rows": {
+    "actual": 52,
+    "expected": 52,
+    "reproduced": true
+   },
+   "c8_point_in_time_supported": {
+    "actual": false,
+    "expected": false,
+    "reproduced": true
+   },
+   "c8_policy_lag_months": {
+    "actual": 2,
+    "expected": 2,
+    "reproduced": true
+   },
+   "c8_rows_per_channel": {
+    "actual": [
+     325
+    ],
+    "expected": [
+     325
+    ],
+    "reproduced": true
+   },
+   "c8_shared_price_stage_group": {
+    "actual": "io_sector_093_fuel_oil",
+    "expected": "io_sector_093_fuel_oil",
+    "reproduced": true
+   },
+   "c8_source_available_as_of_null_rows": {
+    "actual": 650,
+    "expected": 650,
+    "reproduced": true
+   },
+   "c8_source_transformation_rows": {
+    "actual": 650,
+    "expected": 650,
+    "reproduced": true
+   },
+   "c8_transformation_definitions": {
+    "actual": 5,
+    "expected": 5,
+    "reproduced": true
+   },
+   "gross_output_positive_for_every_used_sector": {
+    "actual": true,
+    "expected": true,
+    "reproduced": true
+   },
+   "sector_093_official_label": {
+    "actual": "Petroleum refineries",
+    "expected": "Petroleum refineries",
+    "reproduced": true
+   },
+   "sector_093_present_exactly_once": {
+    "actual": 1,
+    "expected": 1,
+    "reproduced": true
+   }
+  },
+  "failed": []
+ },
+ "valuation": {
+  "causal_effect": false,
+  "elasticity": false,
+  "eppo_excluded_components": [
+   "excise_tax",
+   "municipal_tax",
+   "oil_fund",
+   "conservation_fund",
+   "wholesale_components",
+   "vat",
+   "marketing_margin",
+   "retail_margin"
+  ],
+  "eppo_included_components": [
+   "base_ex_refinery_price"
+  ],
+  "eppo_price_stage": "ex_refinery",
+  "io_import_treatment": "import_inclusive",
+  "io_valuation_basis": "purchasers_prices",
+  "monetary_cost_measure": false,
+  "prohibited_claim": "Multiplying the EPPO price by the I/O coefficient does NOT produce baht cost per unit of industrial output. The price stage and the valuation basis differ.",
+  "structural_interaction_only": true,
+  "valuation_basis_alignment": "partial_mismatch_purchasers_price_coefficient_x_ex_refinery_price"
+ },
+ "variants": {
+  "additive_aggregation_allowed": false,
+  "automatic_composite_index_allowed": false,
+  "outcome_based_variant_selection_allowed": false,
+  "prohibited_constructions": [
+   "added_conditioned_features",
+   "averaged_conditioned_features",
+   "combined_fuel_oil_index",
+   "pca",
+   "two_independent_exposure_measurements_claim",
+   "primary_variant_chosen_from_target_performance"
+  ],
+  "shared_structural_exposure_group": "io_sector_093",
+  "simple_average_allowed": false,
+  "simultaneous_model_entry_approved": false,
+  "variant_ids": [
+   "fo1500_direct_sector093",
+   "fo600_direct_sector093"
+  ]
+ }
+}

@@ -1,0 +1,213 @@
+# Schema for the D1 development model predictions.
+# Describes what the code ACTUALLY writes
+# (scripts/run_d1_development_model.py, from the modeling package),
+# verified by tests/test_d1_development_model.py.
+#
+# DEVELOPMENT PERIOD ONLY. No locked-test origin, no locked-test outcome, and no
+# target-association field — their absence is enforced by test.
+
+schema_version: 1
+table: model_input/d1_development_predictions
+grain: [forecast_origin_month, industry_id, horizon_months, variant_key]
+primary_key: [forecast_origin_month, industry_id, horizon_months, variant_key]
+row_count: 1080 # 3 variants x 2 horizons x 15 origins x 12 industries
+rows_per_variant_horizon: 180
+model_version: d1_residual_ridge_v1
+ordering: [variant_key, horizon_months, forecast_origin_month, industry_id]
+
+interpretation: >-
+  A residual correction on top of a B4 persistence benchmark, fitted per outer
+  origin, horizon and industry. Development evidence only: nothing here is a
+  locked-test result, and no feature is model-approved.
+
+columns:
+  - name: forecast_origin_month
+    type: date
+    nullable: false
+    note: "Development origins 2024-01 .. 2025-03 only."
+  - name: industry_id
+    type: string
+    nullable: false
+  - name: horizon_months
+    type: int
+    nullable: false
+    allowed: [1, 3]
+  - name: model_name
+    type: string
+    nullable: false
+    allowed: [industry_specific_ridge_residual_correction]
+  - name: variant_key
+    type: string
+    nullable: false
+    allowed: [primary, timing_sensitivity, structural_sensitivity]
+  - name: feature_variant
+    type: string
+    nullable: false
+    allowed: [primary_direct_lag2, timing_sensitivity_direct_lag1,
+              structural_sensitivity_total_lag2]
+    note: "No combined lag-1 plus total-requirement variant exists."
+
+  - name: benchmark_baseline_name
+    type: string
+    nullable: false
+    allowed: [persistence_current_month, persistence_trailing_3m_max]
+    note: "h=1 uses persistence_current_month; h=3 uses persistence_trailing_3m_max."
+  - name: benchmark_prediction
+    type: double
+    nullable: false
+    note: "Reproduced from B4's own baseline implementation, not copied formulas."
+  - name: predicted_residual
+    type: double
+    nullable: false
+  - name: prediction_before_clipping
+    type: double
+    nullable: false
+  - name: predicted_score
+    type: double
+    nullable: false
+    note: "Clipped to [0, 100]. The bounds are preregistered and never tuned."
+  - name: clipped
+    type: bool
+    nullable: false
+
+  - name: observed_raw_target
+    type: double
+    nullable: false
+    note: "Read ONLY after the prediction was frozen."
+  - name: observed_score
+    type: double
+    nullable: false
+
+  - name: calibration_reference_start
+    type: date
+    nullable: false
+  - name: calibration_reference_end
+    type: date
+    nullable: false
+    note: "Never after the forecast origin."
+  - name: calibration_observations
+    type: int
+    nullable: false
+  - name: calibration_version
+    type: string
+    nullable: false
+  - name: calibration_checksum
+    type: string
+    nullable: false
+
+  - name: max_training_target_window_end
+    type: date
+    nullable: true
+    note: "Never after the forecast origin: the label gate."
+  - name: label_permitted_training_rows
+    type: int
+    nullable: false
+  - name: feature_usable_training_rows
+    type: int
+    nullable: false
+    note: "After the feature-history gate. Never exceeds label-permitted rows."
+  - name: excluded_for_feature_history
+    type: int
+    nullable: false
+  - name: earliest_usable_training_origin
+    type: date
+    nullable: true
+    note: "Never before 2022-03 under the primary lag-2 contract."
+  - name: latest_usable_training_origin
+    type: date
+    nullable: true
+
+  - name: selected_alpha
+    type: double
+    nullable: false
+    allowed: [0.1, 1.0, 10.0, 100.0]
+  - name: selected_non_ferrous_channel
+    type: string
+    nullable: false
+    allowed: [none, aluminum, copper]
+    note: "Global across all 12 industries for one origin and horizon."
+  - name: inner_validation_origin_count
+    type: int
+    nullable: false
+  - name: inner_selection_score
+    type: double
+    nullable: true
+    note: "Null where the conservative fallback was used."
+
+  - name: predictor_count
+    type: int
+    nullable: false
+  - name: predictor_names
+    type: string
+    nullable: true
+    note: >-
+      ';'-joined. Aluminum and Copper predictors may NEVER both appear: they
+      read the same I/O sector 107 coefficient.
+  - name: zero_variance_predictors_omitted
+    type: string
+    nullable: true
+    note: "Detected from X only, never the outcome. Preserved in the audit."
+  - name: ineligible_predictors_omitted
+    type: string
+    nullable: true
+    note: "Omitted under the C3-R1 gate, never converted to zero."
+
+  - name: scaler_checksum
+    type: string
+    nullable: true
+  - name: model_checksum
+    type: string
+    nullable: true
+  - name: c2_lineage_checksums
+    type: string
+    nullable: true
+  - name: c3_exposure_checksums
+    type: string
+    nullable: true
+
+  - name: target_definition_version
+    type: string
+    nullable: true
+  - name: evaluation_harness_version
+    type: string
+    nullable: false
+  - name: model_version
+    type: string
+    nullable: false
+    allowed: [d1_residual_ridge_v1]
+  - name: split
+    type: string
+    nullable: false
+    allowed: [development]
+  - name: block
+    type: string
+    nullable: false
+    allowed: [DEV-1, DEV-2, DEV-3]
+  - name: quality_flag
+    type: string
+    nullable: false
+
+forbidden_columns:
+  - locked_test_target
+  - locked_test_score
+  - locked_test_metric
+  - correlation_with_mpi
+  - feature_importance
+  - mutual_information
+  - granger_causality
+  - selected_feature_subset
+  - tuned_threshold
+
+constraints:
+  - unique: [forecast_origin_month, industry_id, horizon_months, variant_key]
+  - row_count_equals_1080
+  - only_development_origins
+  - no_purge_or_locked_origin
+  - predicted_score_equals_clip_of_benchmark_plus_residual
+  - calibration_reference_end_le_forecast_origin
+  - max_training_target_window_end_le_forecast_origin
+  - feature_usable_rows_le_label_permitted_rows
+  - aluminum_and_copper_never_both_present
+  - non_ferrous_channel_constant_within_origin_and_horizon
+  - sensitivity_variants_reuse_primary_hyperparameters
+  - model_feature_approved_never_set_true

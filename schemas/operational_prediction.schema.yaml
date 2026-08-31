@@ -1,0 +1,193 @@
+# Schema for the D3 operational baseline predictions.
+#
+# Describes what the code ACTUALLY writes
+# (thai_supply_chain_ews.evaluation.operational_walk_forward.
+#  OPERATIONAL_PREDICTION_COLUMNS), verified by
+# tests/test_d3_operational_baselines.py.
+#
+# This is a NEW versioned artifact. It does not replace
+# schemas/evaluation_prediction.schema.yaml (B4), which still describes B4's
+# own predictions.
+
+schema_version: 1
+task: D3
+operational_contract_version: operational_contract_v1
+written_by: scripts/run_d3_operational_baselines.py
+output: data/model_input/d3_operational_predictions.parquet   # git-ignored
+
+framing:
+  evaluation_framing: release_lag_aware_latest_vintage_evaluation
+  # Timing validity and vintage validity are SEPARATE. Release timing is
+  # honoured; the target VALUES remain latest-vintage because D2 established
+  # that no complete 12-industry MPI vintages exist. Collapsing these two into
+  # one boolean is how a timing fix gets mistaken for a point-in-time backtest.
+  release_timing_aware: true
+  latest_vintage_target_values: true
+  point_in_time_target_values: false
+  fully_real_time_backtest: false
+  same_month_stress_used: false
+  locked_test_accessed: false
+
+operational_prediction:
+  grain: [forecast_origin_month, industry_id, horizon_months, baseline_name]
+  expected_rows:
+    horizon_1: 720     # 4 baselines x 15 issue months x 12 industries
+    horizon_3: 900     # 5 baselines x 15 issue months x 12 industries
+    combined: 1620
+  ordering: [horizon_months, baseline_name, industry_id, forecast_origin_month]
+
+  columns:
+    - name: forecast_origin_month
+      type: date
+      nullable: false
+      note: "Forecast ISSUE month t. Not the month being predicted."
+
+    - name: forecast_issue_date
+      type: date
+      nullable: false
+      note: >-
+        Verified OIE release date, during month t, of MPI reference month t-1.
+        Sourced from the D2 release inventory and admitted only when D2 marked
+        it first_publication_is_credible. Never an acquisition timestamp.
+
+    - name: latest_available_stress_month
+      type: date
+      nullable: false
+      note: "Always t-1. Asserted strictly less than forecast_origin_month."
+
+    - name: industry_id
+      type: string
+      nullable: false
+
+    - name: horizon_months
+      type: integer
+      nullable: false
+      enum: [1, 3]
+
+    - name: baseline_name
+      type: string
+      nullable: false
+      enum:
+        - operational_persistence_latest_published
+        - operational_persistence_trailing_3m_max
+        - operational_industry_historical_mean
+        - operational_seasonal_naive
+        - operational_no_contraction
+
+    - name: predicted_raw_value
+      type: float
+      nullable: true
+      note: >-
+        Null for operational_industry_historical_mean, which is defined on
+        calibrated scores and has no raw analogue. Null means "not applicable",
+        not "missing".
+
+    - name: predicted_score
+      type: float
+      nullable: false
+
+    - name: observed_raw_target
+      type: float
+      nullable: false
+      note: "B3 raw target value, reused UNCHANGED. D3 alters no target window or raw value."
+
+    - name: observed_score
+      type: float
+      nullable: false
+      note: >-
+        Recomputed with the origin-t calibrator, whose cutoff is t-1. B3's own
+        calibrated scores are deliberately NOT reused, because they were fitted
+        through month t and would carry an unpublished month into the scale.
+
+    - name: observed_risk_level
+      type: string
+      nullable: false
+      enum: [Normal, Watch, High, Severe]
+
+    - name: target_window_start
+      type: date
+      nullable: false
+      note: "t+1 for both horizons."
+
+    - name: target_window_end
+      type: date
+      nullable: false
+      note: "t+1 for h=1; t+3 for h=3. Identical to B3."
+
+    - name: target_available_month
+      type: date
+      nullable: false
+      note: "target_window_end + 1 month — when the label first becomes knowable."
+
+    - name: calibration_reference_start
+      type: date
+      nullable: false
+    - name: calibration_reference_end
+      type: date
+      nullable: false
+      note: "Always t-1. Asserted strictly less than forecast_origin_month."
+    - name: calibration_observation_count
+      type: integer
+      nullable: false
+      minimum: 24
+    - name: calibration_fingerprint
+      type: string
+      nullable: false
+      note: "Per-industry reference checksum; distinct per origin because the calibrator refits."
+
+    - name: max_training_target_window_end
+      type: date
+      nullable: true
+    - name: max_training_target_available_month
+      type: date
+      nullable: true
+      note: "Asserted <= forecast_origin_month. This is the operational label rule."
+    - name: training_label_count
+      type: integer
+      nullable: false
+
+    - name: release_inventory_checksum
+      type: string
+      nullable: false
+      note: "SHA-256 of the D2 release inventory records this contract depends on."
+    - name: target_definition_version
+      type: string
+      nullable: false
+    - name: operational_contract_version
+      type: string
+      nullable: false
+    - name: evaluation_harness_version
+      type: string
+      nullable: false
+    - name: split_name
+      type: string
+      nullable: false
+      enum: [DEV-1, DEV-2, DEV-3]
+
+    - name: latest_vintage_target_values
+      type: boolean
+      nullable: false
+      const: true
+    - name: point_in_time_target_values_supported
+      type: boolean
+      nullable: false
+      const: false
+    - name: locked_test_accessed
+      type: boolean
+      nullable: false
+      const: false
+
+invariants:
+  - "latest_available_stress_month < forecast_origin_month, on every row."
+  - "calibration_reference_end == latest_available_stress_month == t-1."
+  - "forecast_origin_month <= forecast_issue_date < forecast_origin_month + 1 month."
+  - "max_training_target_available_month <= forecast_origin_month."
+  - "target_available_month > forecast_origin_month for the EVALUATION row —
+     the label being scored is by definition not yet knowable at issue time."
+  - "calibration_observation_count >= 24 on every row."
+  - "No forecast_origin_month falls in the purge window 2025-04..2025-06."
+  - "No forecast_origin_month falls in a locked-test window."
+  - "Keys are unique on the declared grain; 12 industries per
+     (origin, horizon, baseline)."
+  - "operational_industry_historical_mean is computed within one industry only;
+     industries are never pooled and there is no cross-industry fallback."

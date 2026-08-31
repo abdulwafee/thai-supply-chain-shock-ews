@@ -1,0 +1,207 @@
+# Schema definition (documentation-level, not yet enforced by code) for the two
+# committed Task D5 result documents:
+#
+#   docs/d5_development_results.json
+#   docs/d5_assembly_audit.json
+#
+# The governing rule: a development-only exploratory result may report any
+# number it likes and may authorize nothing. Every field below that could be
+# read as an approval is fixed false, and the runner's guards raise rather than
+# letting one drift true.
+
+schema_version: 1
+task: D5
+protocol_version: d5_pooled_fuel_oil_interaction_protocol_v1
+
+# ---------------------------------------------------------------------------
+required_sections:
+  d5_development_results:
+    - frozen_protocol_checksum
+    - estimator
+    - decision_rules
+    - results
+    - eligible_only_diagnostic
+    - counts
+    - authorization
+    - scope
+    - decision
+  d5_assembly_audit:
+    - frozen_protocol_checksum
+    - target_reader
+    - upstream_invariants
+    - counts
+    - training_reconciliation
+    - origin_audit
+    - exposure
+    - lineage
+    - scope
+
+# ---------------------------------------------------------------------------
+sections:
+  target_reader:
+    purpose: >-
+      Evidence for the two-phase boundary. The reader refuses to return a target
+      value until the Phase-A protocol checksum has been read back from disk and
+      matched, and refuses again for any key whose prediction is not registered
+      as frozen.
+    required_fields:
+      protocol_verified_before_any_target_read: true
+      target_reads: 720
+      target_reads_before_prediction_freeze: 0
+      predictions_frozen: 720
+    note: >-
+      target_reads_before_prediction_freeze is the field that matters. A nonzero
+      value means an evaluation label was visible while a prediction was still
+      being formed.
+
+  counts:
+    required_fields:
+      total_predictions: 720
+      distinct_keys: 720
+      pooled_model_predictions: 660
+      ind_04_benchmark_passthrough: 60
+      distinct_lineage_checksums: 720
+      reconciled: true
+    per_variant_horizon_each: 180
+
+  training_reconciliation:
+    per_row_fields:
+      - variant_id
+      - horizon
+      - outer_issue
+      - unique_training_issues
+      - expected_unique_training_issues
+      - eligible_rows
+      - expected_eligible_rows
+      - all_industry_rows
+      - expected_all_industry_rows
+      - reconciled
+    preregistered:
+      h1_at_2024_01: {unique_training_issues: 21, eligible_rows: 231, all_industry_rows: 252}
+      h1_at_2025_03: {unique_training_issues: 35, eligible_rows: 385, all_industry_rows: 420}
+      h3_at_2024_01: {unique_training_issues: 18, eligible_rows: 198, all_industry_rows: 216}
+      h3_at_2025_03: {unique_training_issues: 32, eligible_rows: 352, all_industry_rows: 384}
+    exclusion_reasons_counted_separately:
+      - excluded_no_complete_feature_row
+      - excluded_no_operational_benchmark_history
+    note: >-
+      "Not enough price history" and "not enough stress history" are different
+      facts. A single exclusion total would hide which one is binding, which for
+      h=3 is the operational benchmark history.
+
+  results:
+    grain: "{variant_id}|h{horizon}"
+    entries: 4
+    panel: full_twelve_industry
+    per_entry_required:
+      - primary_benchmark
+      - model
+      - benchmark
+      - mae_skill_relative_to_primary_benchmark
+      - paired_difference_model_minus_benchmark
+      - bootstrap
+      - event_safety
+      - mae_evidence
+      - overall_status
+      - secondary_comparator
+    model_and_benchmark_metrics:
+      - rows
+      - macro_industry_mae          # primary
+      - pooled_mae
+      - macro_industry_rmse
+      - pooled_rmse
+      - median_absolute_error
+      - spearman_correlation
+      - per_industry_mae
+      - clipped_count
+      - clipped_rate
+      - observed_event_count
+      - predicted_event_count
+      - precision
+      - recall
+      - false_negatives
+      - false_positives
+
+  bootstrap:
+    required_fields:
+      cluster_unit: issue_month
+      keep_all_industries_together: true
+      resample_individual_industry_rows: false
+      paired_resamples_identical: true
+      seed: 20260830
+      replications: 1000
+      confidence_level: 0.95
+      issue_month_clusters: 15
+    block_length_by_horizon:
+      "1": 1
+      "3": 3
+    must_state_resolution_limit: true
+    note: >-
+      Fifteen clusters. Intervals are wide by construction and the limit is
+      stated with every one of them rather than left to be inferred.
+
+  event_safety:
+    threshold: 85
+    threshold_tuned: false
+    rule: "event_safety_passed = model_false_negatives <= benchmark_false_negatives"
+    severe_threshold: 95
+    severe_is_descriptive_only: true
+    severe_affects_any_decision: false
+    precision_trade_off_reported: true
+
+  decision_rules:
+    paired_difference: "delta = MAE_model - MAE_benchmark"
+    sign_convention: negative_means_the_model_is_better
+    mae_evidence_values: [supported, adverse, inconclusive]
+    supported: entire_paired_95_interval_below_zero
+    adverse: entire_paired_95_interval_above_zero
+    inconclusive: otherwise
+    overall_status_values:
+      - exploratory_incremental_signal_supported
+      - incremental_signal_not_supported
+      - inconclusive
+    applied_separately_to_every_variant_and_horizon: true
+
+  eligible_only_diagnostic:
+    industries: 11
+    status: secondary_structurally_preregistered
+    may_replace_the_full_panel_result: false
+    note: >-
+      Reported because IND-04's benchmark passthrough is not a model prediction
+      and it is fair to show what the eleven modelled industries did on their
+      own. It is a diagnostic; the twelve-industry panel remains primary.
+
+# ---------------------------------------------------------------------------
+fixed_false_fields:
+  reason: >-
+    Each of these would turn a development-only exploratory result into an
+    approval. They are false regardless of what the metrics show.
+  fields:
+    - confirmatory_evaluation
+    - channel_selected
+    - primary_channel_selected
+    - channels_ranked_by_mae
+    - channels_ranked_by_event_metrics
+    - purge_evaluated
+    - locked_test_accessed
+    - locked_test_evaluation_authorized
+    - model_feature_approved
+    - fully_real_time_backtest
+
+fixed_true_fields:
+  - latest_vintage_evaluation
+  - target_joined_for_authorized_development_evaluation
+  - model_trained_for_authorized_development_evaluation
+
+evaluation_scope: development_only
+
+checksums:
+  frozen_protocol_checksum:
+    scope: the Phase-A protocol as written to and read back from disk
+    pattern: "^[0-9a-f]{64}$"
+  content_checksum:
+    scope: the whole payload, generation timestamps excluded
+    pattern: "^[0-9a-f]{64}$"
+  prediction_lineage_checksum:
+    scope: one prediction and all sixteen references in its chain
+    distinct_required: 720

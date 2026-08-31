@@ -1,0 +1,303 @@
+# Industry-conditioned commodity features — Task C4.
+#
+# C4 creates PREDICTORS. It establishes nothing about predictive usefulness: no
+# target is read, no association computed, no feature selected on an outcome.
+#
+# Approval concepts, still strictly separate:
+#   source_verified               (C1)
+#   timing_approved               (C1.5)
+#   feature_construction_approved (C2)
+#   structural_exposure_approved  (C3 / C3-R1)
+#   conditioned_construction_approved (C4, this file)
+#   feature_semantics_approved    (later)
+#   model_feature_approved        (later)
+# C4 must not set model_feature_approved: true.
+
+schema_version: 1
+transformation_version: c4_industry_conditioning_v1
+task: C4
+
+# --- authoritative inputs, verified not assumed -------------------------------
+inputs:
+  c2:
+    source: rebuilt_from_c1_5_r3_archived_first_releases
+    commodity_series: 4
+    base_feature_definitions: 5
+    observations_per_series: 306
+    rows_per_availability_policy: 1224
+    primary_policy: operational_lag_2m
+    sensitivity_policy: publication_lag_1m
+    point_in_time_first_release_only: true
+  c3:
+    source: docs/c3_commodity_exposure_matrix.json
+    industries: 12
+    commodities: 4
+    pairs: 48
+    eligible_pairs: 43
+    ineligible_pairs: 5
+    primary_exposure: direct_exposure
+    sensitivity_exposure: total_requirement_exposure
+    direction_ambiguous_pairs: 3
+    proxy_ineligible_pairs: 2
+    shared_sector_rows: 24
+  stop_on_discrepancy: true
+
+# --- structural availability (§3) ---------------------------------------------
+# THE REFERENCE YEAR IS NOT THE PUBLICATION DATE. The I/O table describes 2015;
+# it became readable in 2020. Backdating it to 2015 would hand a 2024 forecast
+# origin four years of structure nobody could see — a leak that leaves no trace
+# in the output.
+structural_availability:
+  structural_reference_year: 2015
+  structural_available_by: 2020-03-31
+  status: verified_before_development
+  evidence_type: official_download_page_publication_date
+  evidence_url: https://www.nesdc.go.th/download/i-o-table-of-thailand-2015/
+  document_date: 2020-03-31
+  publication_date: 2020-03-31
+  evidence_raw_value: 31 มี.ค. 2563 # Buddhist era 2563 = CE 2020
+  evidence_checksum_note: >-
+    The evidence page's SHA-256 is recorded in the audit artifact at run time.
+    It is an observation, not a pin: NESDC edits the page, and pinning it would
+    make a routine site edit look like a provenance failure.
+  buddhist_era_conversion_check: >-
+    The same field on the 2021 I/O download page reads "25 ก.พ. 2568" = CE
+    2025-02-25, which matches that table's known release and its 2025/03 upload
+    path. The conversion is therefore verified against a known case rather than
+    assumed.
+  byte_identity_verified_at_that_date: false
+  byte_identity_caveat: >-
+    What is verified is that the 2015 Final TABLE was published by 2020-03-31.
+    The bytes now held were re-hosted during NESDC's 2025 site migration, so
+    byte-level identity as of 2020 is NOT established. The distinction is
+    recorded rather than glossed.
+  download_timestamp_used_as_availability: false
+  first_development_origin: 2024-01-01
+  primary_matrix_permitted: true
+  primary_matrix_permitted_because: >-
+    2020-03-31 precedes the first B4 development origin 2024-01, so the
+    structure was readable at every development origin.
+  real_time_claim: >-
+    Even so, the COMBINED matrix is not fully real-time: the MPI target remains
+    latest-vintage (B1 emits release_date and available_as_of as NULL), and the
+    I/O structure is a single 2015 benchmark applied throughout.
+
+# --- eligible and ineligible pairs (§4) ---------------------------------------
+pair_policy:
+  conditioned_features_created_for: eligible_pairs_only
+  excluded_pairs:
+    - industry_id: IND-12
+      commodity_series_id: aluminum_usd_mt
+      exclusion_reason: commodity_proxy_fitness
+      detail: >-
+        95.7% of IND-12's sector-107 purchases are made by Jewellery, whose
+        official definition names precious metals, silver and gold.
+    - industry_id: IND-12
+      commodity_series_id: copper_usd_mt
+      exclusion_reason: commodity_proxy_fitness
+      detail: Same aggregate and same jewellery domination.
+    - industry_id: IND-06
+      commodity_series_id: rubber_rss3_usd_kg
+      exclusion_reason: mixed_or_ambiguous_direction
+      detail: IND-06 contains I/O sector 095 and both produces and consumes it.
+    - industry_id: IND-08
+      commodity_series_id: aluminum_usd_mt
+      exclusion_reason: mixed_or_ambiguous_direction
+      detail: IND-08 contains I/O sector 107.
+    - industry_id: IND-08
+      commodity_series_id: copper_usd_mt
+      exclusion_reason: mixed_or_ambiguous_direction
+      detail: IND-08 contains I/O sector 107.
+  excluded_pair_treatment:
+    structural_coefficient_deleted: false
+    converted_to_zero: false
+    default_conditioned_feature_generated: false
+    ambiguous_sign_forced: false
+    retained_in_exclusion_audit: true
+
+# --- matrix variants (§5) ------------------------------------------------------
+# Each sensitivity variant changes EXACTLY ONE assumption from the primary.
+# A combined lag-1 + total-requirement variant is deliberately absent: varying
+# two assumptions at once produces a difference nobody can attribute to either.
+matrix_variants:
+  primary_direct_lag2:
+    availability_policy: operational_lag_2m
+    exposure_field: direct_exposure
+    is_primary: true
+    label: primary
+    varies_from_primary: none
+  timing_sensitivity_direct_lag1:
+    availability_policy: publication_lag_1m
+    exposure_field: direct_exposure
+    is_primary: false
+    label: sensitivity_only
+    varies_from_primary: availability_policy
+  structural_sensitivity_total_lag2:
+    availability_policy: operational_lag_2m
+    exposure_field: total_requirement_exposure
+    is_primary: false
+    label: sensitivity_only
+    varies_from_primary: exposure_field
+combined_double_sensitivity_variant_created: false
+variant_selected_using_targets: false
+
+# --- conditioned feature (§6, §7) ---------------------------------------------
+conditioning:
+  formula: conditioned = base_feature_value * exposure * price_increase_to_stress_sign
+  required_conditions:
+    - pair_eligibility_true
+    - proxy_fitness_allowed
+    - direction_not_ambiguous
+    - sign_finite_and_non_null
+    - exposure_finite_and_non_null
+    - base_feature_value_finite
+    - availability_constraints_pass
+  missing_sign_inferred: false
+  units:
+    price_level: "$/unit x exposure coefficient"
+    log_changes: percentage-point log change x exposure coefficient
+    realized_volatility: percentage-point volatility x exposure coefficient
+  interpretation_guard: >-
+    A STRUCTURAL INTERACTION FEATURE. Not a monetary cost amount, not a price
+    elasticity, not a causal effect, not a forecast coefficient. Multiplying a
+    log change by an I/O coefficient does not make it money.
+  normalized_across_commodities: false
+  normalized_across_industries: false
+
+# --- expected counts (§8) ------------------------------------------------------
+expected_counts:
+  observations_per_pair: 306
+  eligible_pairs: 43
+  rows_per_variant: 13158 # 43 x 306
+  variants: 3
+  combined_canonical_rows: 39474 # 13158 x 3
+  fail_if_different: true
+  rows_manufactured_for_ineligible_pairs: 0
+
+# --- zero vs missing vs ineligible (§9) ---------------------------------------
+# Five different facts. Collapsing any two would make an absence of knowledge
+# look like a measurement.
+zero_and_missing_policy:
+  distinct_states:
+    - zero_due_to_exposure # the industry genuinely uses none of it
+    - zero_due_to_base_feature # the commodity price did not move
+    - zero_due_to_both
+    - not_generated_due_to_ineligibility # no feature exists here at all
+    - no_observation_available_at_origin # not published yet
+    - insufficient_feature_history # not enough months to compute
+  observed_zero_exposure_yields_numeric_zero: true
+  ineligible_yields_null_never_zero: true
+  total_requirement_may_be_nonzero_when_direct_is_zero: true
+
+# --- availability (§10) --------------------------------------------------------
+availability:
+  rule: conditioned_available_month = max(base_feature_available_month, structural_available_by)
+  never_earlier_than_either_input: true
+  future_dated_input: raise_explicitly
+  io_matrix_backdated_to_reference_year: false
+  preserved_fields:
+    - reference_month
+    - source_available_month
+    - policy_available_month
+    - base_feature_available_month
+    - structural_available_by
+    - conditioned_available_month
+
+# --- lineage (§11) -------------------------------------------------------------
+lineage:
+  checksum_algorithm: sha256
+  combined_inputs:
+    - c2_input_lineage_checksum
+    - industry_id
+    - commodity_series_id
+    - c3_exposure_row_checksum
+    - exposure_value
+    - direction_sign
+    - proxy_fit_status
+    - eligibility_status
+    - matrix_variant
+    - transformation_version
+    - structural_source_checksum
+  incomplete_lineage: fail_explicitly
+  verified_independently: true
+
+# --- Aluminum/Copper shared sector (§12) --------------------------------------
+shared_sector_policy:
+  shared_exposure_group: io_sector_107
+  affected_commodities: [aluminum_usd_mt, copper_usd_mt]
+  separate_price_signals_permitted: true
+  exposure_weights_summed: false
+  exposure_weights_averaged: false
+  combined_non_ferrous_shock_index_created: false
+  independently_measured_claim: false
+  additive_aggregation_allowed: false
+  pca_or_weighted_average_replacement_created: false
+  validator: assert_no_duplicate_shared_sector_aggregate
+  rule: >-
+    Aluminum and Copper read the SAME I/O sector 107 coefficient. C4 may keep
+    both price signals, but no aggregate may contain that exposure more than
+    once — summing them would count one structure twice while looking like two
+    independent signals.
+
+# --- development snapshot (§14) ------------------------------------------------
+development_snapshot:
+  matrix_variant: primary_direct_lag2
+  first_origin: 2024-01-01
+  last_origin: 2025-03-01
+  expected:
+    origins: 15
+    industries: 12
+    industry_origin_rows: 180
+    commodity_feature_columns: 20
+    eligible_feature_cells: 3225 # 43 x 5 x 15
+    ineligible_feature_cells: 375 # 5 x 5 x 15
+  selection_rule: latest reference month with conditioned_available_month <= origin
+  positional_shift_used: false
+  positional_shift_prohibited_because: >-
+    A fixed shift agrees with the availability rule only when publication is
+    perfectly regular, and disagrees silently when it is not. Real availability
+    metadata exists, so it is used.
+  ineligible_cells_null_with_mask: true
+  ineligible_cells_replaced_with_zero: false
+  target_columns_attached: false
+
+# --- wide output (§15) ---------------------------------------------------------
+wide_output:
+  derived_from_canonical_long_table: true
+  conditioning_logic_duplicated: false
+  distinguishes:
+    - temporal_missingness
+    - insufficient_feature_history
+    - structural_ineligibility
+    - observed_structural_zero
+  eligibility_mask_provided: true
+  parquet_git_ignored: true
+
+# --- scope guards (§16) --------------------------------------------------------
+not_computed_in_c4:
+  - mpi_correlation
+  - feature_importance
+  - mutual_information
+  - granger_causality
+  - predictive_performance
+  - target_distribution
+  - high_stress_event_metrics
+  - feature_selection
+  - model_coefficients
+  - locked_test_target_rows_or_metrics
+
+approval_state:
+  source_verified: unchanged_from_c1
+  timing_approved: unchanged_from_c1_5_r3
+  feature_construction_approved: unchanged_from_c2
+  structural_exposure_approved: unchanged_from_c3_r1
+  conditioned_construction_approved: true
+  feature_semantics_approved: false
+  model_feature_approved: false # C4 must not set this true
+
+outputs:
+  canonical_long: data/features/c4_conditioned_features_long.parquet
+  wide_primary: data/features/c4_conditioned_features_wide_primary.parquet
+  development_snapshot: data/features/c4_development_snapshot.parquet
+  audit_json: docs/c4_industry_conditioned_feature_audit.json
+  parquet_git_ignored: true

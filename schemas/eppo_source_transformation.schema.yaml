@@ -1,0 +1,175 @@
+# Schema for the C8 EPPO fuel-oil source-transformation table.
+# Describes what the code ACTUALLY writes
+# (data/features/c8_eppo_fuel_oil_transformations.parquet, git-ignored),
+# verified by tests/test_c8_eppo_transformations.py.
+#
+# SOURCE-LEVEL TRANSFORMED DATA. Not an industry-conditioned feature, not a
+# model input. No exposure coefficient, no MPI target and no model artifact is
+# read to produce it.
+
+schema_version: 1
+task: C8
+written_by: scripts/run_c8_eppo_transformations.py
+output: data/features/c8_eppo_fuel_oil_transformations.parquet
+transformation_formula_version: c8_eppo_fuel_oil_transformations_v1
+lineage_version: c8_eppo_transformation_lineage_v1
+availability_policy_version: c6_5_conservative_policy_lag_2_v1
+
+input:
+  dataset: data/interim/c7_5_eppo_monthly_semantic.parquet   # read only
+  value_field: monthly_value_strict
+  gate_field: approved_transformation_input
+  unit: "BAHT/LITRE"
+  descriptive_value_read: false
+  h_diesel_read: false
+
+grid:
+  channels: 2
+  reference_months: 65
+  transformations: 5
+  rows: 650
+  finite_rows: 598
+  null_rows: 52
+  null_rows_dropped: false
+  note: >-
+    The grid is complete by construction. A cell is never omitted for being
+    undefined: an omitted row and a null row are indistinguishable downstream
+    only when the null row is missing, which is how a gap becomes invisible.
+
+transformations:
+  price_level:        {input_lags: [0],          unit: baht_per_litre}
+  log_change_1m_pct:  {input_lags: [1, 0],       unit: percentage_point_log_change}
+  log_change_3m_pct:  {input_lags: [3, 0],       unit: percentage_point_log_change}
+  log_change_12m_pct: {input_lags: [12, 0],      unit: percentage_point_log_change}
+  realized_volatility_3m_pct:
+    input_lags: [3, 2, 1, 0]
+    unit: percentage_point_log_change_volatility
+    required_price_levels: 4
+
+observation:
+  grain: [channel_id, reference_month, transformation_id]
+  ordering: [channel_id, reference_month, transformation_id]
+  columns:
+    - {name: channel_id, type: string, nullable: false,
+       enum: [eppo_fo600_channel, eppo_fo1500_channel]}
+    - {name: shared_price_stage_group, type: string, nullable: false,
+       const: io_sector_093_fuel_oil}
+    - {name: series_id, type: string, nullable: false}
+    - name: source_product_label
+      type: string
+      nullable: true
+      note: >-
+        The exact displayed label(s) C7.5 carried for the reference month,
+        verbatim. Both forms appear where both were published.
+    - {name: canonical_product_id, type: string, nullable: false}
+    - {name: reference_month, type: string, nullable: false, format: "YYYY-MM"}
+    - {name: transformation_id, type: string, nullable: false}
+    - {name: transformation_formula_version, type: string, nullable: false}
+    - name: feature_value
+      type: float
+      nullable: true
+      note: >-
+        Null (NaN in Parquet) whenever any declared input month is unavailable.
+        No imputation, interpolation, forward fill, clipping, winsorization or
+        normalization is applied, and no value is borrowed from the other fuel
+        oil.
+    - {name: feature_unit, type: string, nullable: false}
+    - name: transformation_status
+      type: string
+      nullable: false
+      enum:
+        - available_numeric
+        - insufficient_feature_history
+        - current_month_source_gap
+        - input_window_source_gap
+        - nonpositive_source_value
+        - unauthorized_source_series
+        - source_unit_mismatch
+    - {name: required_input_count, type: integer, nullable: false}
+    - {name: required_input_months, type: list_of_string, nullable: false}
+    - {name: available_input_count, type: integer, nullable: false}
+    - {name: missing_input_months, type: list_of_string, nullable: false}
+    - name: policy_available_month
+      type: string
+      nullable: false
+      note: >-
+        max(policy month of every required source input). The equality with
+        reference_month + 2 is verified on every row, not hard-coded.
+    - name: source_available_as_of
+      type: date
+      nullable: true
+      const: null
+      note: >-
+        ALWAYS null. EPPO release timing was never measured; the conservative
+        policy month is not a release date.
+    - {name: availability_basis, type: string, nullable: false,
+       const: conservative_policy_not_historical_measurement}
+    - {name: latest_vintage_used, type: boolean, nullable: false, const: true}
+    - {name: point_in_time_supported, type: boolean, nullable: false, const: false}
+    - {name: operational_lag_is_measured, type: boolean, nullable: false, const: false}
+    - {name: additive_aggregation_allowed, type: boolean, nullable: false, const: false}
+    - {name: simultaneous_model_entry_approved, type: boolean, nullable: false,
+       const: false}
+    - name: source_monthly_lineage_checksums
+      type: list_of_string
+      nullable: false
+      note: "C7.5 monthly lineage digests of the inputs that were available."
+    - name: transformation_lineage_checksum
+      type: string
+      nullable: false
+      note: >-
+        SHA-256 over the transformation specification and its ordered inputs:
+        transformation, formula version, channel, reference month, unit,
+        availability-policy version, input ordering, output value or null
+        status, missingness reason, and the expected, available and missing
+        input months. A null row therefore still has a digest, and two nulls
+        with different causes do not collide.
+    - {name: model_feature_approved, type: boolean, nullable: false, const: false}
+
+channel_restrictions:
+  shared_price_stage_group: io_sector_093_fuel_oil
+  additive_aggregation_allowed: false
+  simple_average_allowed: false
+  automatic_composite_index_allowed: false
+  simultaneous_model_entry_approved: false
+  outcome_based_channel_selection_allowed: false
+  both_channels_in_one_audit_table_allowed: true
+  reason: >-
+    The channel ID is part of the key, so both variants coexisting in one
+    source-level audit table does not combine them. Combining would double-count
+    the single I/O sector 093 coefficient they share.
+
+c2_reconciliation:
+  formula_compatible_with_c2: true
+  source_timing_contract_differs_from_c2: true
+  shared_production_implementation:
+    - thai_supply_chain_ews.features.commodity_features.log_change_pct
+    - thai_supply_chain_ews.features.commodity_features.realized_volatility_pct
+    - thai_supply_chain_ews.features.commodity_features.FEATURE_DEFINITIONS
+  timing_differences:
+    c2_values: archived_first_release
+    c8_values: latest_vintage
+    c2_publication_timing: measured
+    c8_operational_lag: policy_based
+    c2_point_in_time_supported: true
+    c8_point_in_time_supported: false
+
+prohibited_columns:
+  - any industry exposure or industry-conditioned column
+  - any MPI target column
+  - any model prediction or metric column
+  - any combined or averaged fuel-oil column
+industry_conditioned_features_created: false
+target_joined: false
+model_feature_approved: false
+
+invariants:
+  - "Exactly 650 rows, unique on (channel_id, reference_month, transformation_id)."
+  - "598 rows carry a finite value; 52 carry null with an explicit status."
+  - "source_available_as_of is null in every row."
+  - "policy_available_month equals reference_month + 2 months in every row."
+  - "A null value always has at least one missing required input month."
+  - "A finite value always has zero missing required input months."
+  - "realized_volatility_3m_pct declares four required input months everywhere."
+  - "model_feature_approved is false in every row."
+  - "No row combines FO 600 and FO 1500."

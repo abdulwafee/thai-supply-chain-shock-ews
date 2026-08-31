@@ -1,0 +1,137 @@
+# Schema for the C7 canonical MONTHLY EPPO ex-refinery source table.
+# Describes what the code ACTUALLY writes
+# (data/interim/c7_eppo_monthly_source.parquet, git-ignored), verified by
+# tests/test_c7_eppo_full_ingestion.py.
+#
+# SOURCE-LEVEL AGGREGATION, NOT A FEATURE TABLE. A monthly mean of a published
+# price is an ingestion step. It is not authorization to engineer a predictive
+# transformation, and no such column exists here.
+
+schema_version: 1
+task: C7
+written_by: scripts/run_c7_eppo_full_ingestion.py
+output: data/interim/c7_eppo_monthly_source.parquet
+
+aggregation:
+  aggregation_rule: arithmetic_mean_of_validated_observed_official_document_days
+  aggregation_rule_version: c7_v1
+  unit: "BAHT/LITRE"
+  statistic_description: >-
+    Mean ex-refinery price across validated official EPPO document-days observed
+    in the completed reference month.
+  each_valid_document_day_counted_once: true
+  weekend_or_holiday_observation_synthesised: false
+  forward_fill_unchanged_prices: false
+  duration_weighting: false
+  partial_issue_month_observations_used: false
+  must_not_be_described_as:
+    - calendar_day_mean
+    - trading_day_mean
+    - transaction_price
+    - price_paid_by_every_industrial_purchaser
+    - point_in_time_monthly_mean
+
+observation:
+  grain: [series_id, reference_month, aggregation_rule_version]
+  ordering: [series_id, reference_month]
+  null_rows_present: true
+  null_row_note: >-
+    A month whose absence is a known semantic gap keeps an explicit row with a
+    null value. An omitted row would be indistinguishable from a month nobody
+    examined.
+  columns:
+    - {name: series_id, type: string, nullable: false}
+    - {name: source_product_label, type: string, nullable: true}
+    - {name: reference_month, type: string, nullable: false, format: "YYYY-MM"}
+    - name: monthly_value
+      type: float
+      nullable: true
+      note: >-
+        Null for a semantic definition gap, an unresolved conflict, or a month
+        with no valid product observation. Never zero, never interpolated, never
+        a blend price.
+    - {name: unit, type: string, nullable: false, enum: [BAHT/LITRE]}
+    - {name: aggregation_rule, type: string, nullable: false}
+    - {name: aggregation_rule_version, type: string, nullable: false}
+    - name: aggregation_status
+      type: string
+      nullable: false
+      enum:
+        - approved
+        - semantic_definition_gap
+        - no_valid_product_observation
+        - unresolved_document_retrieval
+        - unresolved_document_identity
+        - same_date_conflicting_value
+        - incomplete_inventory_validation
+        - unknown_layout
+        - unit_or_definition_break
+    - {name: valid_document_day_count, type: integer, nullable: false}
+    - {name: discovered_document_day_count, type: integer, nullable: false}
+    - {name: rejected_document_day_count, type: integer, nullable: false}
+    - {name: first_effective_date, type: date, nullable: true}
+    - {name: last_effective_date, type: date, nullable: true}
+    - name: source_available_as_of
+      type: date
+      nullable: true
+      const: null
+      note: >-
+        ALWAYS null. EPPO historical release timing was never measured. Writing
+        the policy month here would present an assumption as provenance.
+    - name: policy_available_month
+      type: string
+      nullable: false
+      format: "YYYY-MM"
+      note: "reference_month + 2 months under the conservative project policy."
+    - name: availability_basis
+      type: string
+      nullable: false
+      const: conservative_policy_not_historical_measurement
+    - {name: latest_vintage_used, type: boolean, nullable: false, const: true}
+    - {name: point_in_time_supported, type: boolean, nullable: false, const: false}
+    - {name: semantic_regime_ids, type: list_of_string, nullable: false}
+    - {name: quality_flag, type: string, nullable: false}
+    - name: monthly_lineage_checksum
+      type: string
+      nullable: false
+      note: >-
+        SHA-256 over the aggregation rule version and the complete ORDERED set of
+        contributing daily rows: series, effective date, exact source label,
+        source value, semantic regime, media ID, document checksum and daily
+        lineage checksum. Acquisition timestamps are excluded by construction, so
+        identical bytes always produce an identical digest.
+
+availability_contract:
+  selector: select_monthly_source_available_at_issue
+  rule: "policy_available_month <= issue_month"
+  equivalent_reference_month_rule: "reference_month <= issue_month - 2 months"
+  same_month_use_permitted: false
+  publication_lag_1m_use_permitted: false
+  operational_policy_lag_months: 2
+  operational_lag_is_measured: false
+  minimum_verified_publication_lag_months: null
+  examples:
+    - {issue_month: "2024-01", latest_permitted_reference_month: "2023-11"}
+    - {issue_month: "2025-03", latest_permitted_reference_month: "2025-01"}
+    - {issue_month: "2026-05", latest_permitted_reference_month: "2026-03"}
+
+prohibited_columns:
+  - any return or log-change column
+  - any percentage-change column
+  - any lagged column
+  - any realized-volatility column
+  - any z-score or shock column
+  - any industry exposure or MPI target column
+transformations_present: false
+target_joined: false
+model_feature_approved: false
+
+invariants:
+  - "Keys are unique on (series_id, reference_month, aggregation_rule_version)."
+  - "Every required month of every series has exactly one row, value or not."
+  - "monthly_value is the mean of the month's distinct valid document-days only."
+  - "A document-day contributes at most once, however many copies carried it."
+  - "source_available_as_of is null in every row."
+  - "policy_available_month is exactly reference_month + 2 months in every row."
+  - "H-DIESEL 2024-01 carries a null value and semantic_definition_gap."
+  - "Monthly lineage re-derives identically from the canonical daily rows."

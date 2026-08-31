@@ -1,0 +1,406 @@
+# Task C11 — outcome-free fuel-oil modeling-architecture decision.
+#
+# PREREGISTERED AND FROZEN. The estimand, the candidate set, the mandatory
+# gates, the preprocessing contract, the rank requirements and the decision
+# ordering below were all written BEFORE any candidate design matrix was
+# constructed. The runner hashes this contract, re-asserts the digest before it
+# builds the first candidate matrix and again after the identification audit; a
+# criterion changed in between raises.
+#
+# C11 DECIDES AN ARCHITECTURE. IT DOES NOT EXECUTE ONE. No target value, no
+# model fit, no predictive performance, no channel selection, no locked test.
+# C8, C9 and C10 artifacts are IMMUTABLE here.
+
+schema_version: 1
+task: C11
+config_version: fuel_oil_modeling_architecture_v1
+criteria_version: c11_architecture_criteria_v1
+candidate_design_formula_version: c11_fuel_oil_candidate_design_v1
+
+# ---------------------------------------------------------------------------
+# Inherited from C10. Restated, NOT re-decided. The runner reproduces every one
+# of these and STOPS rather than repairing an upstream artifact that differs.
+# ---------------------------------------------------------------------------
+inherited_c10:
+  c10_content_checksum:
+    bb520f9e74f49afbf6f50d934dea6630c81ea366c24f78b548d03f4a95c24d1c
+  c10_diagnostic_contract_checksum:
+    1c88cdd7f2017aa94ee1b069be436c469ee08adcf649fe6ad4c981f995eb2041
+  c9_phase_a_checksum:
+    d528aba4aedcb8b8051ad618d66d49c71239267fb26fd2ead292ee90b12c9703
+  variants: [fo600_direct_sector093, fo1500_direct_sector093]
+  variants_strictly_separate: true
+  matrix_rows_per_variant: 180
+  matrix_columns_per_variant: 5
+  numeric_cells_per_variant: 825
+  masked_cells_per_variant: 75
+  unique_issue_months: 15
+  eligible_industries: 11
+  masked_industries: [IND-04]
+  source_time_rank: 5
+  stacked_panel_rank: 5
+  cross_sectional_rank_per_issue_month: 1
+  raw_industry_designs: 11
+  normalized_equivalence_classes: 1
+  standardized_equivalence_classes: 1
+  conditioning_adds_cross_industry_scale: true
+  conditioning_adds_temporal_degrees_of_freedom: false
+  per_industry_standardization_removes_exposure_scale: true
+  c10_target_joined: false
+  c10_model_trained: false
+  c10_channel_selected: false
+  c10_model_feature_approved: false
+  c10_locked_test_accessed: false
+
+# ---------------------------------------------------------------------------
+# C10's fingerprint discrepancy. PRESERVED, not rewritten and not suppressed.
+# ---------------------------------------------------------------------------
+c10_fingerprint_discrepancy:
+  preserved: true
+  rounded_fingerprint_count_fo600: 11
+  rounded_fingerprint_count_fo1500: 1
+  absolute_tolerance_equivalence_classes_fo600: 1
+  absolute_tolerance_equivalence_classes_fo1500: 1
+  max_standardized_design_residual_fo600: 4.385164106834871e-15
+  max_standardized_design_residual_fo1500: 2.6645352591003757e-15
+  standardization_tolerance: 1.0e-9
+  thresholds_changed_after_observation: false
+  # The architecture decision uses the preregistered ABSOLUTE-TOLERANCE rule.
+  # A fingerprint rounds to a fixed number of SIGNIFICANT digits, so it resolves
+  # a standardised value near zero below double precision and can split
+  # matrices that agree to 1e-15. It describes; it does not decide.
+  equivalence_rule_used_for_the_decision: absolute_tolerance_equivalence_class
+  rounded_fingerprint_count_used_for_the_decision: false
+  discrepancy_suppressed: false
+  c10_rewritten: false
+
+# ---------------------------------------------------------------------------
+# THE PREDICTIVE ESTIMAND. Non-causal, and stated as such in every artifact.
+# ---------------------------------------------------------------------------
+estimand:
+  statement: >-
+    The incremental forecast correction associated with a common national
+    ex-refinery fuel-oil signal, allowing the correction amplitude to vary
+    across industries according to frozen direct purchases from NESDC sector
+    093.
+  kind: predictive_interaction
+  causal_effect: false
+  estimated_elasticity: false
+  sector_093_exposure_is_a_structural_proxy: true
+  monetary_cost_per_unit_of_output: false
+  valuation_basis_alignment:
+    partial_mismatch_purchasers_price_coefficient_x_ex_refinery_price
+  io_coefficient_basis: purchasers_price_import_inclusive
+  eppo_price_stage: ex_refinery
+  evaluation_basis_if_later_authorized: release_lag_aware_latest_vintage
+  point_in_time_backtest: false
+  fuel_oil_determines_industrial_stress: false
+  requires_exposure_associated_heterogeneity: true
+
+# ---------------------------------------------------------------------------
+# Candidate architectures. The set is closed before any matrix is built.
+# ---------------------------------------------------------------------------
+candidates:
+  A_exposure_as_eligibility_gate:
+    formula: "r[g,t,h] = alpha[g,h] + sum_f beta[g,h,f] * x[t,f]"
+    exposure_role: eligibility_and_provenance_only
+    exposure_enters_predictor_values: false
+    retains_common_fuel_oil_time_series: true
+    estimates_exposure_proportional_heterogeneity: false
+    separate_industry_slopes: true
+    all_eligible_industries_share_one_predictor_history: true
+    retained_as_documented_alternative: true
+  B_separate_conditioned_industry_models:
+    formula: "r[g,t,h] = alpha[g,h] + sum_f gamma[g,h,f] * E[g] * x[t,f]"
+    exposure_role: per_industry_positive_scalar
+    expected_finding: coefficient_reparameterization_of_candidate_A
+    expected_distinct_architecture: false
+    coefficient_map: "gamma[g,h,f] = beta[g,h,f] / E[g] for E[g] > 0"
+    must_not_be_selected_as_a_distinct_structural_architecture: true
+  C_pooled_common_effect_plus_centered_exposure_interaction:
+    formula: >-
+      r[g,t,h] = alpha[g,h] + sum_f beta[h,f] * xtilde[t,f]
+      + sum_f theta[h,f] * ec[g] * xtilde[t,f]
+    exposure_role: centered_cross_industry_interaction
+    common_main_effect_required: true
+    interaction_required: true
+    industry_fixed_effects_required: true
+    identifies_constrained_cross_industry_slope_pattern: true
+
+# ---------------------------------------------------------------------------
+# Candidate-C preprocessing contract. For the FUTURE architecture only; C11
+# constructs the feature-only design and fits nothing.
+# ---------------------------------------------------------------------------
+preprocessing:
+  source_feature_scaling:
+    rule: standardize_across_permitted_training_issue_months_only
+    permitted_training_issue_months: [2024-01, 2025-03]
+    applied_before_replication_across_industries: true
+    same_scaling_applied_to_every_eligible_industry: true
+    ddof: 0
+    formula: "(x - mean) / std"
+    fitted_on_targets_or_folds: false
+  exposure_centering:
+    rule: subtract_the_mean_of_the_frozen_eligible_industry_exposure_vector
+    universe: eleven_eligible_industries
+    source: c9_phase_a_frozen_decision_table
+    recomputed_from_targets: false
+    recomputed_per_model_fold: false
+    time_invariant: true
+    structurally_available_before_development: true
+    complete_vector_use_is_not_target_leakage: true
+  interaction:
+    constructed_after_source_standardization: true
+    per_industry_standardization_applied_to_the_interaction: false
+    per_industry_standardization_would_collapse_the_heterogeneity: true
+  industry_fixed_effects:
+    kept_separate_from_source_and_interaction_terms: true
+    coding: industry_indicators_no_global_intercept
+    redundant_global_intercept: false
+  horizons:
+    fitted_separately: true
+  validation:
+    issue_month_clustering_preserved: true
+    panel_rows_treated_as_independent_temporal_observations: false
+
+# ---------------------------------------------------------------------------
+# Feature-only identification audit. Expected values, preregistered, VERIFIED
+# numerically rather than asserted.
+# ---------------------------------------------------------------------------
+identification:
+  rank_tolerance: 1.0e-10
+  near_zero_variance_threshold: 1.0e-12
+  duplicate_column_tolerance: 1.0e-12
+  panel_rows: 165
+  unique_issue_months: 15
+  eligible_industries: 11
+  source_columns: 5
+  interaction_columns: 5
+  industry_fixed_effect_columns: 11
+  total_candidate_c_columns: 21
+  expected_source_block_rank: 5
+  expected_interaction_block_rank: 5
+  expected_combined_source_and_interaction_rank: 10
+  expected_full_design_rank: 21
+  expected_exact_duplicate_columns: 0
+  expected_exposure_cross_industry_variance_positive: true
+  expected_constant_exposure_interaction_rank: 0
+  expected_per_industry_standardized_combined_rank: 5
+  invalid_fixed_effect_coding: global_intercept_plus_industry_indicators
+  expected_invalid_coding_rank: 21
+  expected_invalid_coding_columns: 22
+  expected_invalid_coding_is_rank_deficient: true
+  interaction_columns_removed_by_preprocessing: 0
+  on_failure: select_no_architecture_and_report_the_blocker
+
+# ---------------------------------------------------------------------------
+# Parameter and information accounting. Reported, never converted into power.
+# ---------------------------------------------------------------------------
+accounting:
+  panel_rows: 165
+  unique_issue_months: 15
+  eligible_industries: 11
+  source_slopes_per_horizon: 5
+  interaction_slopes_per_horizon: 5
+  industry_fixed_effects: 11
+  redundant_global_intercept: false
+  issue_month_clusters: 15
+  cross_sectional_rows_help_identify_exposure_heterogeneity: true
+  cross_sectional_rows_create_additional_fuel_oil_histories: false
+  overlapping_monthly_transformations_remain: true
+  serial_dependence_remains: true
+  full_rank_is_evidence_of_predictive_usefulness: false
+  parameter_feasibility_equals_statistical_power: false
+  p_values_computed: false
+  coefficient_uncertainty_computed: false
+  outcome_related_effective_sample_size_computed: false
+
+# ---------------------------------------------------------------------------
+# IND-04. Excluded from the correction, never converted into a zero.
+# ---------------------------------------------------------------------------
+ind_04:
+  industry_id: IND-04
+  direction_channel: mixed_or_ambiguous
+  direction_multiplier: null
+  excluded_from_fuel_oil_correction: true
+  exclusion_reason: direction_is_mixed_not_zero_exposure
+  retains_operational_benchmark_prediction: true
+  fuel_oil_residual_correction: structurally_unavailable
+  converted_to_observed_zero: false
+  used_to_estimate_the_cost_pressure_interaction: false
+  visible_in_audit_and_prediction_reconciliation: true
+  silently_dropped_from_evaluation_denominators: false
+  direction_forced_to_plus_one: false
+
+# ---------------------------------------------------------------------------
+# Channel policy. Co-equal, separate, and never chosen here.
+# ---------------------------------------------------------------------------
+channels:
+  variants: [fo600_direct_sector093, fo1500_direct_sector093]
+  co_equal_separate_structural_variants: true
+  shared_structural_exposure_group: io_sector_093
+  primary_channel_selected: false
+  structural_basis_for_channel_preference_available: false
+  parallel_exploratory_variants_permitted_in_future_design: true
+  outcome_based_channel_selection_permitted: false
+  simultaneous_channel_entry_permitted: false
+  described_as_independent_structural_channels: false
+  prohibited:
+    - selection_by_rank
+    - selection_by_condition_number
+    - selection_by_variance
+    - selection_by_correlation
+    - selection_by_any_outcome
+    - combination
+    - averaging
+    - pca_across_the_two_channels
+    - simultaneous_entry_in_one_model
+  later_evaluation_rule: >-
+    A later development task that evaluates both must report them separately
+    and must not promote the better result as a confirmatory channel selection.
+
+# ---------------------------------------------------------------------------
+# Transformation policy. All five retained; C11 selects and removes nothing.
+# ---------------------------------------------------------------------------
+transformations:
+  retained:
+    - price_level
+    - log_change_1m_pct
+    - log_change_3m_pct
+    - log_change_12m_pct
+    - realized_volatility_3m_pct
+  removed: []
+  outcome_based_removal_permitted: false
+  feature_only_collinearity_reported: true
+  parameter_burden_reported: true
+  later_reduction_requires: preregistered_decision_or_authorized_nested_procedure
+  realized_volatility_interpretation: nonnegative_disruption_magnitude
+  realized_volatility_is_a_price_increase_direction: false
+
+# ---------------------------------------------------------------------------
+# Availability and evaluation contract, carried forward unchanged.
+# ---------------------------------------------------------------------------
+availability:
+  operational_source_lag_months: 2
+  lag_basis: conservative_policy_not_historical_measurement
+  operational_lag_is_measured: false
+  source_available_as_of: null
+  latest_vintage_source_values: true
+  point_in_time_source_support: false
+  structural_available_by: 2020-03-31
+  development_issue_months: ["2024-01", "2025-03"]
+  purge_issue_months: ["2025-04", "2025-06"]
+  locked_issue_months_inaccessible: true
+  issue_keys_and_metadata_may_be_inspected: true
+  purge_or_locked_feature_target_rows_materialised: false
+
+# ---------------------------------------------------------------------------
+# The decision rule. Ordering and tie handling fixed in advance.
+# ---------------------------------------------------------------------------
+decision_rule:
+  mandatory_gates:
+    - matches_the_exposure_heterogeneity_estimand
+    - exposure_varies_across_eligible_industries
+    - pooled_interaction_survives_the_specified_preprocessing
+    - combined_feature_only_design_is_identifiable
+    - ind_04_excluded_without_conversion_to_zero
+    - source_channels_remain_separate
+    - no_outcome_or_model_result_used
+    - interpretation_remains_predictive_and_non_causal
+    - availability_and_lineage_intact
+  all_gates_must_pass: true
+  ordering:
+    - reject_candidate_b_as_reparameterization
+    - evaluate_candidate_c_gates
+    - select_candidate_c_if_every_gate_passes
+    - otherwise_select_nothing_and_report_the_blocker
+  tie_handling: >-
+    There is no tie to break. Candidate B is rejected on an algebraic identity
+    rather than a comparison, and Candidate A is retained as a documented
+    alternative rather than ranked against C. If a mandatory gate fails, no
+    architecture is selected; a failed gate is never broken in favour of the
+    expected answer.
+  expected_selection: pooled_common_effect_plus_centered_sector093_interaction
+  expectation_overrides_a_failed_gate: false
+  candidate_a_retained_as_documented_alternative: true
+  candidate_b_rejected_as_reparameterization: true
+
+# ---------------------------------------------------------------------------
+# Prohibited inputs. The prohibition is on the ARTIFACT, so a path, flag or
+# environment variable cannot route around it.
+# ---------------------------------------------------------------------------
+prohibited_inputs:
+  artifacts:
+    - b3_target_values
+    - forecast_target_raw
+    - production_stress_month
+    - industry_month_targets
+    - industry_month_panel_with_target_outcomes
+    - b4_walk_forward_predictions
+    - d1_development_predictions
+    - d1_development_results
+    - d3_operational_baseline_results
+    - d3_operational_predictions
+    - d4_operational_model_predictions
+    - d4_operational_model_results
+    - locked_test_outcomes
+  statistics:
+    - mae
+    - rmse
+    - predictive_performance
+    - high_stress_outcome_rate
+    - correlation_with_a_target
+    - coefficient_estimate
+    - p_value
+    - confidence_interval
+  alternate_path_to_locked_data: false
+  target_derived_field_in_configuration: false
+
+# ---------------------------------------------------------------------------
+# Authorization. Selecting an architecture grants no permission to execute it.
+# ---------------------------------------------------------------------------
+authorization:
+  architecture_selected_from_outcomes: false
+  predictive_estimand_defined: true
+  primary_channel_selected: false
+  target_values_read: false
+  target_joined: false
+  model_fitted: false
+  predictive_performance_computed: false
+  locked_test_accessed: false
+  model_feature_approved: false
+  target_join_authorized: false
+  development_modeling_authorized: false
+  locked_test_evaluation_authorized: false
+
+# ---------------------------------------------------------------------------
+lineage:
+  required_references:
+    - c10_content_checksum
+    - c10_diagnostic_contract_checksum
+    - c9_phase_a_checksum
+    - c9_conditioned_lineage_version
+    - c8_transformation_formula_version
+    - c7_5_semantic_checksum
+    - sector_093_exposure_vector_checksum
+    - nesdc_workbook_sha256
+    - industry_crosswalk_version
+    - structural_available_month
+    - candidate_design_formula_version
+    - exposure_centering_rule
+    - source_scaling_rule
+    - industry_fixed_effect_coding
+    - channel_separation_policy
+  re_derived_independently: true
+
+outputs:
+  protocol_markdown: docs/c11_architecture_decision_protocol.md
+  decision_markdown: docs/c11_architecture_decision.md
+  decision_json: docs/c11_architecture_decision.json
+  candidate_design: data/features/c11_fuel_oil_candidate_c_design.parquet
+  candidate_design_blocks: data/features/c11_fuel_oil_candidate_blocks.parquet
+  generated_parquet_git_ignored: true
+  model_artifact_created: false
+  prediction_artifact_created: false
+  metric_artifact_created: false
+  target_joined_artifact_created: false

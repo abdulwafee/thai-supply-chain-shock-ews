@@ -1,0 +1,246 @@
+# Schema definition (documentation-level, not yet enforced by code) for the two
+# Task C11 candidate-design artifacts:
+#
+#   data/features/c11_fuel_oil_candidate_c_design.parquet   (one row per panel row)
+#   data/features/c11_fuel_oil_candidate_blocks.parquet     (one row per column)
+#
+# Both are generated and git-ignored; docs/c11_architecture_decision.json is the
+# committed record.
+#
+# THESE TABLES ARE FEATURE-ONLY. C11 selects an architecture and executes none,
+# so there is no target, prediction, residual or metric column and there never
+# will be: a target column here would make the outcome-free separation
+# unverifiable.
+#
+# The two fuel-oil variants are separate ROW groups, never separate column
+# groups. They carry the SAME sector-093 exposure vector, so one design holding
+# both would present a single coefficient as two independent structural channels.
+
+schema_version: 1
+task: C11
+candidate_design_formula_version: c11_fuel_oil_candidate_design_v1
+
+tables:
+  # -------------------------------------------------------------------------
+  - table: features/c11_fuel_oil_candidate_c_design
+    grain: [variant_id, issue_month, industry_id]
+    primary_key: [variant_id, issue_month, industry_id]
+    expected_rows: 330          # 2 variants x 15 issue months x 11 eligible industries
+    row_order: industry_major_then_issue_month
+    foreign_keys:
+      - column: industry_id
+        references: mapping/industry_map.csv#industry_id
+      - column: variant_id
+        references: "configs/fuel_oil_modeling_architecture.yaml#channels.variants"
+      - columns: [variant_id, issue_month, industry_id]
+        references: features/c10_fuel_oil_development_wide
+    columns:
+      - name: variant_id
+        type: string
+        nullable: false
+        allowed_values: [fo600_direct_sector093, fo1500_direct_sector093]
+        note: >-
+          Co-equal separate structural variants. Never combined, averaged,
+          jointly decomposed, or entered simultaneously in one model, and never
+          chosen between on rank, condition number, variance, correlation or any
+          outcome.
+      - name: candidate_id
+        type: string
+        nullable: false
+        allowed_values: [C_pooled_common_effect_plus_centered_exposure_interaction]
+      - name: issue_month
+        type: string
+        nullable: false
+        format: "YYYY-MM"
+        range: ["2024-01", "2025-03"]
+      - name: industry_id
+        type: string
+        nullable: false
+        note: >-
+          The ELEVEN eligible industries only. IND-04 is absent by structural
+          exclusion, not by zero-filling: its direction is mixed_or_ambiguous,
+          it keeps the operational benchmark prediction, and it stays visible in
+          audit and prediction reconciliation.
+      - name: reference_month
+        type: string
+        nullable: false
+        format: "YYYY-MM"
+        rule: "reference_month = issue_month - 2 months (recorded, never inferred)"
+      - name: centered_sector093_exposure
+        type: float64
+        nullable: false
+        unit: dimensionless_io_coefficient_deviation
+        rule: "e[g] = E[g] - mean(E over the frozen eleven eligible industries)"
+        note: >-
+          Time-invariant and structurally available before the development
+          window, so centring on the complete frozen vector is not target
+          leakage. Never recomputed from a target, an outcome or a model fold.
+
+      # --- the source block: the common national signal --------------------
+      - name: src__log_change_12m_pct
+        type: float64
+        nullable: false
+        block: source
+        unit: standardized_percentage_point_log_change
+      - name: src__log_change_1m_pct
+        type: float64
+        nullable: false
+        block: source
+        unit: standardized_percentage_point_log_change
+      - name: src__log_change_3m_pct
+        type: float64
+        nullable: false
+        block: source
+        unit: standardized_percentage_point_log_change
+      - name: src__price_level
+        type: float64
+        nullable: false
+        block: source
+        unit: standardized_baht_per_litre
+      - name: src__realized_volatility_3m_pct
+        type: float64
+        nullable: false
+        block: source
+        unit: standardized_percentage_point_log_change_volatility
+        interpretation: nonnegative_disruption_magnitude
+        note: >-
+          Standardisation centres this column, which does not turn it into a
+          price-increase direction. The transformation remains a magnitude.
+
+      # --- the interaction block: exposure-associated amplitude ------------
+      - name: int__e093_x_log_change_12m_pct
+        type: float64
+        nullable: false
+        block: interaction
+      - name: int__e093_x_log_change_1m_pct
+        type: float64
+        nullable: false
+        block: interaction
+      - name: int__e093_x_log_change_3m_pct
+        type: float64
+        nullable: false
+        block: interaction
+      - name: int__e093_x_price_level
+        type: float64
+        nullable: false
+        block: interaction
+      - name: int__e093_x_realized_volatility_3m_pct
+        type: float64
+        nullable: false
+        block: interaction
+
+      # --- industry fixed effects, no redundant global intercept -----------
+      - name: "fe__<IND-xx>"
+        type: float64
+        nullable: false
+        block: fixed_effects
+        cardinality: 11
+        allowed_values: [0.0, 1.0]
+        note: >-
+          Eleven indicators and NO global intercept. Adding an intercept
+          alongside a full indicator set is rank-deficient by exactly one while
+          still reporting twenty-two columns, which looks correct in every
+          shape summary.
+
+  # -------------------------------------------------------------------------
+  - table: features/c11_fuel_oil_candidate_blocks
+    grain: [variant_id, column]
+    primary_key: [variant_id, column]
+    expected_rows: 42           # 2 variants x 21 columns
+    columns:
+      - name: variant_id
+        type: string
+        nullable: false
+      - name: block
+        type: string
+        nullable: false
+        allowed_values: [source, interaction, fixed_effects]
+      - name: column
+        type: string
+        nullable: false
+      - name: column_index
+        type: int64
+        nullable: false
+      - name: block_rank
+        type: int64
+        nullable: true
+        null_meaning: "the block's rank is reported in the audit JSON, not per row"
+
+# ---------------------------------------------------------------------------
+identification:
+  panel_rows_per_variant: 165
+  unique_issue_months: 15
+  eligible_industries: 11
+  source_block_rank: 5
+  interaction_block_rank: 5
+  combined_source_and_interaction_rank: 10
+  full_design_rank: 21
+  full_design_columns: 21
+  exact_duplicate_columns: 0
+  interaction_construction_order: after_source_standardization
+  per_industry_standardization_of_the_interaction: false
+  per_industry_standardization_consequence: >-
+    Within an industry the interaction is e_g * xtilde, so standardising it
+    there returns sign(e_g) * xtilde and that industry's combined block falls
+    from rank 10 to rank 5. The STACKED rank does not fall, because the centred
+    exposures carry both signs; what is destroyed is the magnitude, with eleven
+    exposure-proportional interaction blocks collapsing to two sign groups.
+  constant_exposure_consequence: >-
+    Centred exposure becomes exactly zero, the interaction block is a zero
+    matrix of rank zero, and the design would still fit while identifying
+    nothing.
+
+information_accounting:
+  panel_rows: 165
+  unique_issue_months: 15
+  issue_month_clusters: 15
+  cross_sectional_rows_help_identify_exposure_heterogeneity: true
+  cross_sectional_rows_create_additional_fuel_oil_histories: false
+  panel_rows_are_independent_temporal_observations: false
+  overlapping_monthly_transformations_remain: true
+  serial_dependence_remains: true
+  full_rank_is_evidence_of_predictive_usefulness: false
+  parameter_feasibility_equals_statistical_power: false
+
+prohibited_columns:
+  reason: >-
+    C11 decides an architecture and executes none. None of these may appear in
+    any C11 table, under any name.
+  columns:
+    - stress_score
+    - risk_level
+    - target
+    - y_true
+    - y_pred
+    - prediction
+    - residual
+    - mae
+    - rmse
+    - metric
+    - coefficient
+    - p_value
+    - locked_test_outcome
+
+interpretation:
+  estimand_kind: predictive_interaction
+  causal_effect: false
+  estimated_elasticity: false
+  pass_through: false
+  monetary_cost_per_unit_of_output: false
+  sector_093_exposure_is_a_structural_proxy: true
+  valuation_basis_alignment: partial_mismatch_purchasers_price_coefficient_x_ex_refinery_price
+  valuation_note: >-
+    EPPO measures the ex-refinery stage; the I/O coefficient is stated in
+    purchasers' prices and is import-inclusive. Their product is a structural
+    interaction with no currency reading.
+
+availability:
+  operational_source_lag_months: 2
+  lag_basis: conservative_policy_not_historical_measurement
+  source_available_as_of: null
+  latest_vintage_source_values: true
+  point_in_time_source_support: false
+  structural_available_by: 2020-03-31
+  development_issue_months: ["2024-01", "2025-03"]
+  purge_issue_months: ["2025-04", "2025-06"]
+  purge_or_locked_feature_target_rows_materialised: false

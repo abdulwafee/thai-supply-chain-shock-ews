@@ -1,0 +1,367 @@
+# Task C7.5 — EPPO product semantics and aggregation-contract closure.
+#
+# PREREGISTERED. The evidence hierarchy, the eight-condition equivalence gate,
+# the allowed decisions, the recovery statuses and the separated approval fields
+# were written before any evidence was weighed.
+#
+# SEMANTIC DECISION AND AGGREGATION CONTRACT ONLY. No predictive transformation,
+# no exposure multiplication, no MPI join, no target association, no model, no
+# locked test. C7 raw documents, labels, values and checksums are IMMUTABLE here.
+
+schema_version: 1
+task: C7.5
+config_version: eppo_product_semantics_v1
+
+# ---------------------------------------------------------------------------
+# Inherited timing policy (C6.5, executed by C7). Restated, NOT re-decided.
+# ---------------------------------------------------------------------------
+inherited_policy:
+  latest_vintage_values_used: true
+  historical_release_timing_verified: false
+  point_in_time_values_supported: false
+  fully_real_time_backtest: false
+  minimum_verified_publication_lag_months: null
+  operational_policy_lag_months: 2
+  operational_lag_is_measured: false
+  source_available_as_of: null
+  availability_basis: conservative_policy_not_historical_measurement
+
+provenance:
+  target_joined: false
+  target_association_computed: false
+  predictive_transformations_created: false
+  industry_conditioned_features_created: false
+  model_trained: false
+  locked_test_accessed: false
+  model_feature_approved: false
+
+preserved_decisions:
+  c7_raw_documents_changed: false
+  c7_exact_displayed_labels_changed: false
+  c7_canonical_daily_values_changed: false
+  c7_document_checksums_changed: false
+  c7_rejected_document_findings_changed: false
+  c7_monthly_audit_artifact_overwritten: false
+  c6_or_c6_5_timing_policy_changed: false
+  c5_structural_selection_changed: false
+  c3_or_c3r1_changed: false
+  c4_variants_changed: false
+  d3_contract_changed: false
+  d4_results_changed: false
+  b3_targets_changed: false
+
+# ---------------------------------------------------------------------------
+# The semantic question. String similarity and numeric continuity are NOT
+# evidence and are listed here so they cannot be quietly promoted.
+# ---------------------------------------------------------------------------
+label_pairs_under_question:
+  eppo_ex_refinery_fo600_2s:
+    label_a: "FO 600 (1) 2%S"
+    # Exactly as the workbook displays it: the deleted ordinal left a double
+    # space. C7 stored the whitespace-collapsed form, so the canonical mapping
+    # matches on collapsed whitespace and both spellings are reported.
+    label_b: "FO 600  2%S"
+    label_b_as_stored_by_c7: "FO 600 2%S"
+  eppo_ex_refinery_fo1500_2s:
+    label_a: "FO 1500 (2) 2%S"
+    label_b: "FO 1500 2%S"
+
+inadmissible_on_their_own:
+  - string_similarity
+  - numeric_continuity
+  - assumed_meaning_of_the_ordinal_markers
+
+evidence_hierarchy:
+  direct_semantic:
+    - workbook_note_defines_ordinal
+    - official_formula_document_names_product_without_ordinal
+    - official_classification_equates_forms
+    - source_controlled_schema_or_data_dictionary
+  strong_structural_corroboration:
+    - same_unit
+    - same_price_stage
+    - same_sulphur_grade
+    - same_product_number
+    - same_row_position_and_neighbours
+    - labels_never_co_occur
+    - forms_replace_one_another
+    - identical_downstream_tax_and_fund_treatment
+    - consistent_formula_structure
+  numeric_corroboration_only:
+    - adjacent_values_close
+    - series_continuous_across_boundary
+    - small_price_difference
+  numeric_alone_can_establish_equivalence: false
+
+equivalence_gate:
+  conditions:
+    - at_least_one_direct_semantic_evidence_item
+    - unit_remains_baht_per_litre
+    - price_stage_remains_ex_refinery
+    - product_number_remains_600_or_1500
+    - sulphur_grade_remains_2pct_s
+    - no_contradictory_source_evidence
+    - labels_never_appear_as_separate_products_in_one_valid_document
+    - structural_corroboration_consistent
+  allowed_decisions:
+    - equivalence_established
+    - equivalence_rejected
+    - equivalence_unresolved
+  gate_lowered_to_obtain_a_complete_series: false
+  rule_id: fo_ordinal_index_dropped_v1
+  canonical_identity_version: c7_5_canonical_identity_v1
+
+# ---------------------------------------------------------------------------
+# What was inspected. Recorded whether or not it produced evidence, so a
+# negative result is visible as a limit of the inspection.
+# ---------------------------------------------------------------------------
+inspection_scope:
+  workbook_features:
+    - every_visible_sheet
+    - hidden_sheets
+    - hidden_rows
+    - hidden_columns
+    - cell_comments_and_notes
+    - merged_cells
+    - defined_names
+    - formulas
+    - print_areas
+    - headers_and_footers
+    - footer_and_note_rows
+    - footnote_references
+    - thai_language_notes
+    - document_metadata
+  official_sources:
+    - wordpress_rest_media_records
+    - wordpress_rest_posts_and_pages
+    - eppo_oil_api_oil_structure_prices
+    - eppo_oil_api_route_index
+    - official_today_price_structure_page
+  documents_inspected:
+    variant_window_documents: 66
+    xlsx_documents_swept: 746
+    xls_documents_swept: 585
+    adjacent_boundary_documents:
+      - "2024-07-19"
+      - "2024-07-23"
+      - "2024-10-28"
+      - "2024-10-29"
+
+# ---------------------------------------------------------------------------
+# H-DIESEL. The decision is about fitness for a continuous source series, NOT
+# about the validity of the documents or of the blend products.
+# ---------------------------------------------------------------------------
+h_diesel:
+  series_id: eppo_ex_refinery_hsd
+  ordinary_label_gap_start: "2023-09-18"
+  ordinary_label_gap_end: "2024-12-17"
+  missing_document_days: 305
+  affected_reference_months: "2023-09 through 2024-12"
+  blend_substitution_permitted: false
+  imputation_permitted: false
+  eligible_for_c8_primary_transformation: false
+  eligible_for_c8_sensitivity_transformation: false
+  status: not_ready_long_semantic_definition_gap
+  documents_invalid: false
+  blend_products_invalid: false
+  observations_preserved: true
+  blend_provenance_preserved: true
+  note: >-
+    The EPPO documents and the blend products are valid. Ordinary H-DIESEL simply
+    cannot support a continuous, consistently defined source series across the
+    required window.
+
+# ---------------------------------------------------------------------------
+# Bounded recovery of the five unresolved document-days.
+# ---------------------------------------------------------------------------
+recovery:
+  targets:
+    - listing_date: "2022-12-05"
+      media_id: 21054
+      kind: wrong_date_listing
+    - listing_date: "2025-01-25"
+      media_id: 21759
+      kind: wrong_date_listing
+    - listing_date: "2026-04-17"
+      media_id: 46232
+      kind: failed_retrieval
+    - listing_date: "2026-04-18"
+      media_id: 46231
+      kind: failed_retrieval
+    - listing_date: "2026-04-19"
+      media_id: 46230
+      kind: failed_retrieval
+  permitted_channels:
+    - wordpress_media_record
+    - parent_post
+    - parent_post_attached_media
+    - attachment_page
+    - wordpress_revision_metadata
+    - guid_and_source_url
+    - official_sitemap_entry
+    - exact_date_rest_search
+    - neighbouring_official_archive_entry
+    - legacy_official_link
+    - alternate_attachment_link_in_official_metadata
+  web_archive_is_secondary_evidence_only: true
+  web_archive_presented_as_official_discovery: false
+  prohibited:
+    - broad_guessed_filename_enumeration
+    - silent_reassignment_of_a_wrong_date_document
+    - copying_a_neighbouring_price
+    - interpolating_a_value
+    - treating_an_archive_capture_timestamp_as_first_publication
+    - sending_an_email_or_external_message
+  termination_condition: >-
+    Per target, stop when every permitted official channel has been inspected
+    once, or when official corroboration independent of the filename is reached.
+  reassignment_requires:
+    independent_official_sources: 2
+    sources_accepted:
+      - parent_post_publication_date
+      - parent_post_title_date
+    filename_alone_is_sufficient: false
+  statuses:
+    - recovered_and_validated
+    - wrong_date_attachment_unresolved
+    - official_attachment_unretrievable
+    - document_identity_unresolved
+  unrecovered_wording: official_document_not_recovered_from_inspected_channels
+  statuses_softened_to_approve_aggregation: false
+
+# ---------------------------------------------------------------------------
+# The three approvals C7 was conflating.
+# ---------------------------------------------------------------------------
+separated_approvals:
+  aggregation_method_semantics_approved:
+    meaning: >-
+      Whether the rule arithmetic_mean_of_validated_observed_official_document_days
+      is semantically valid and reproducible.
+    is_not: complete_source_coverage
+  full_requested_window_coverage_complete:
+    meaning: Whether every required product-month contains a valid monthly value.
+  series_ready_for_transformation_with_explicit_gaps:
+    meaning: >-
+      Whether a later task may transform the series ONLY at months whose complete
+      required input window is valid, without imputation.
+
+monthly_aggregation:
+  aggregation_rule: arithmetic_mean_of_validated_observed_official_document_days
+  aggregation_rule_version: c7_v1
+  unit: "BAHT/LITRE"
+  statistic_description: >-
+    Mean ex-refinery price across validated official EPPO document-days observed
+    in the completed reference month.
+  must_not_be_described_as:
+    - calendar_day_mean
+    - officially_documented_trading_day_mean
+    - transaction_price
+    - price_paid_by_every_purchaser
+    - point_in_time_value
+  missing_document_days_filled: false
+  two_value_views:
+    monthly_value_strict: >-
+      Null unless the month's entire discovered inventory validated. The only
+      value a transformation may ever read.
+    monthly_value_descriptive: >-
+      May summarise the validated days that exist. Always labelled incomplete and
+      never a transformation input.
+
+monthly_status_vocabulary:
+  - approved_complete_inventory
+  - approved_with_source_label_variant
+  - known_document_gap
+  - semantic_definition_gap
+  - unit_or_definition_break
+  - document_identity_unresolved
+  - document_retrieval_unresolved
+descriptive_value_requires:
+  - explicitly_labelled_incomplete
+  - valid_observation_count_reported
+  - not_presented_as_complete
+  - downstream_readiness_separately_controlled
+
+# ---------------------------------------------------------------------------
+# Coverage views. The operational view is derived from preregistered issue-month
+# ranges and the policy lag only.
+# ---------------------------------------------------------------------------
+coverage_views:
+  full_source_audit_window:
+    start: "2021-01"
+    end: "2026-05"
+  operational_relevance:
+    derived_from: [preregistered_issue_month_ranges, operational_policy_lag_months]
+    target_outcomes_read: false
+    splits_config: configs/operational_evaluation.yaml
+    prehistory_reach_months: 12
+    prehistory_reach_note: >-
+      A level feature reaches one issue month, m + 2. A twelve-month change
+      issued at t reads reference months t-14 .. t-2, so a single reference month
+      can reach thirteen origins. Both are reported; reporting only the direct
+      one would understate which origins a gap can touch.
+  april_2026_documented_even_if_operationally_unused: true
+
+# ---------------------------------------------------------------------------
+# Shared I/O sector 093. Both fuel oils read one coefficient.
+# ---------------------------------------------------------------------------
+shared_fuel_oil_channel:
+  shared_price_stage_group: io_sector_093_fuel_oil
+  additive_aggregation_allowed: false
+  simple_average_allowed: false
+  automatic_composite_index_allowed: false
+  simultaneous_model_entry_approved: false
+  both_series_preserved: true
+  representation: separate_mutually_exclusive_channel_variants
+  selection_by_target_performance_allowed: false
+  selection_requires: independent_structural_rule
+
+# ---------------------------------------------------------------------------
+# Semantic overlay. A layer ABOVE the immutable C7 tables.
+# ---------------------------------------------------------------------------
+semantic_overlay:
+  version: c7_5_semantic_v1
+  derived_from:
+    - data/interim/c7_eppo_daily_prices.parquet
+    - c7_5_semantic_mapping
+    - aggregation_rule_c7_v1
+  mutates_c7_raw_or_daily_artifacts: false
+  overwrites_c7_monthly_audit_artifact: false
+  output: data/interim/c7_5_eppo_monthly_semantic.parquet
+  git_ignored: true
+  fields:
+    - source_product_label_raw
+    - canonical_product_id
+    - semantic_equivalence_rule_id
+    - canonical_identity_version
+    - label_variant_status
+    - equivalence_status
+    - source_evidence
+    - affected_dates
+    - aggregation_method_semantics_approved
+    - coverage_status
+    - transformation_readiness_status
+    - unresolved_document_status
+    - policy_availability_fields
+    - lineage_checksum
+
+# ---------------------------------------------------------------------------
+# C8 boundary. Filled by the runner from the gate outcome, never by hand.
+# ---------------------------------------------------------------------------
+c8_authorization_template:
+  c8_fo600_transformation_authorized: gate_dependent
+  c8_fo1500_transformation_authorized: gate_dependent
+  c8_hsd_transformation_authorized: false
+  c8_industry_conditioning_authorized: false
+  c8_target_join_authorized: false
+  c8_modeling_authorized: false
+  c8_imputation_authorized: false
+  c8_outcome_based_channel_selection_authorized: false
+  c8_simultaneous_additive_fuel_oil_use_authorized: false
+  c8_locked_test_evaluation_authorized: false
+  c8_explicit_missing_month_propagation_authorized: true
+  c8_policy_lag_2_enforcement_authorized: true
+
+outputs:
+  decision_markdown: docs/c7_5_eppo_semantic_decision.md
+  decision_json: docs/c7_5_eppo_semantic_decision.json
+  semantic_monthly_view: data/interim/c7_5_eppo_monthly_semantic.parquet

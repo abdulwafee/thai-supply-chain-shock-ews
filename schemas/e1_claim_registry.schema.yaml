@@ -1,0 +1,185 @@
+# Schema definition (documentation-level, not yet enforced by code) for the
+# Task E1 evidence ledger:
+#
+#   docs/e1_evidence_ledger.json
+#
+# Every material narrative or numeric claim in the closeout and the portfolio
+# case study is registered here with its status, its pointer into the artifact
+# that supports it, the limitations that artifact requires, and an explicit
+# locked_test_dependency: false.
+#
+# E1 produces NO tabular artifact. It reruns no model and recomputes no metric,
+# so there is no prediction table, score table or design matrix to describe.
+
+schema_version: 1
+task: E1
+document: docs/e1_evidence_ledger.json
+
+# ---------------------------------------------------------------------------
+evidence_status_vocabulary:
+  values:
+    - verified
+    - supported_with_limitations
+    - inconclusive
+    - not_supported
+    - unresolved
+    - not_attempted
+    - superseded
+  exactly_one_per_claim: true
+  prohibited_collapses:
+    - inconclusive_into_no_effect
+    - not_supported_into_disproven
+    - unresolved_into_absent
+    - selected_reference_into_proven_superiority
+    - development_evaluation_into_production_validation
+    - latest_vintage_into_real_time_backtesting
+
+claim:
+  required_fields:
+    - name: claim_id
+      type: string
+      unique: true
+    - name: claim_text
+      type: string
+    - name: status
+      type: string
+      allowed_values_reference: evidence_status_vocabulary.values
+    - name: scope
+      type: string
+      allowed_values: [foundation, world_bank_path, eppo_path, cross_task,
+                       project_status, locked_test, structural, source_timing]
+    - name: audience
+      type: string
+      allowed_values: [technical, portfolio, both]
+    - name: evidence_artifact
+      type: string
+      note: >-
+        Must be an artifact the run actually loaded. A pointer into a file
+        nobody opened is not evidence.
+    - name: evidence_json_pointer
+      type: string
+      note: >-
+        Dotted path, resolved greedily so keys that themselves contain dots or
+        pipes (D5's "fo600_direct_sector093|h1") still match.
+    - name: limitations
+      type: list
+      note: >-
+        Propagated from the source artifact. D1 without its fallback caveat and
+        D4 without its degenerate-design caveat are friendlier claims than the
+        evidence supports, and both are refused.
+    - name: locked_test_dependency
+      type: bool
+      required_value: false
+  conditional_fields:
+    - name: superseded_by
+      required_when: status == superseded
+      note: >-
+        A superseded result stays in the ledger and says so. Deleting a negative
+        result is how a record starts lying.
+
+failure_conditions:
+  - numerical_claim_cannot_be_reconciled_with_its_source_artifact
+  - superseded_result_presented_as_current
+  - claim_depends_on_locked_outcomes
+  - limitation_required_by_its_source_artifact_omitted
+  - two_incompatible_evaluation_contracts_compared_without_qualification
+  - duplicate_claim_id
+  - evidence_artifact_not_loaded
+
+incompatible_evaluation_contracts:
+  pairs:
+    - [D1, D3]
+    - [D1, D4]
+    - [D1, D5]
+  qualification_required_phrase: different evaluation contract
+  reason: >-
+    D1 ran before the issue-month timing contract existed. Its 15.31 and D4's
+    17.56 are not comparable numbers, and putting them side by side without
+    saying so invites a comparison they cannot bear.
+
+numeric_reconciliation:
+  tolerance: 0.001
+  every_frozen_numeric_claim_resolved_against_its_artifact: true
+  derived_pointers:
+    note: >-
+      A pointer of the form __name__ is a count of a structure rather than a
+      stored field, and is computed from the artifact rather than asserted.
+    examples:
+      - __selection_count__
+      - __fallback_selection_count__
+
+supersession:
+  graph_must_be_acyclic: true
+  edges_carry: [superseded, superseded_by, scope, reason]
+  known_edges:
+    - D1 -> D3   (operational interpretation)
+    - D1 -> D4   (operational interpretation)
+    - D3 -> D3R1 (benchmark-selection wording)
+    - C11 -> C11R1 (methodological status)
+
+project_status_required_values:
+  development_program_status: closed_without_supported_incremental_commodity_model
+  registered_operational_reference_available: true
+  registered_operational_reference_source: D3
+  operational_model_selected: false
+  production_deployment_authorized: false
+  commodity_incremental_signal_supported: false
+  model_feature_approved: false
+  confirmatory_claim_authorized: false
+  locked_test_status: sealed_unopened
+  locked_test_outcomes_read: false
+  fully_real_time_backtest: false
+  latest_vintage_target_evaluation: true
+  future_reopening_requires_new_external_evidence: true
+project_failed_language_permitted: false
+
+development_ledger:
+  must_include_negative_and_superseded_results: true
+  tasks: [D1, D3, D4, D5]
+  D1_required_fields:
+    - operationally_release_timing_correct   # false
+    - nested_protocol_fully_executed         # false
+    - fallback_selections                    # 6
+    - total_selections                       # 30
+    - fallback_effect_direction              # unknown
+    - superseded_by                          # D3/D4
+    - presented_as_confirmatory              # false
+  D3_required_fields:
+    - role                                   # registered_operational_reference
+    - is_a_production_model                  # false
+    - paired_comparison_against_no_contraction   # inconclusive
+    - proven_superior_to_no_contraction      # false
+  D4_required_fields:
+    - degenerate_rows                        # 180 of 360
+    - event_safety_overrides_mae_result      # false
+    - remained_exploratory                   # true
+  D5_required_fields:
+    - point_estimates_beating_the_benchmark  # 0
+    - intervals_crossing_zero                # 4
+    - event_safety_failures                  # 4
+    - incremental_signal_demonstrated        # false
+    - absence_of_effect_proven               # false
+
+locked_test:
+  verified_without_opening_outcome_contents: true
+  required_fields:
+    status: sealed_unopened
+    manifest_is_key_only: true
+    locked_test_outcomes_read: false
+    any_candidate_locked_test_evaluation_authorized: false
+    prediction_or_metric_exists_for_locked_origins: false
+    outcomes_opened_hashed_or_summarised: false
+  prohibited_language:
+    - locked test passed
+    - locked test validated
+    - unused data proving generalization
+    - held-out validation confirms
+    - out-of-sample performance confirmed
+
+checksums:
+  synthesis_contract_checksum:
+    scope: the synthesis rules, hashed before any result artifact is read
+    pattern: "^[0-9a-f]{64}$"
+  content_checksum:
+    scope: the whole ledger, generation timestamps excluded
+    pattern: "^[0-9a-f]{64}$"

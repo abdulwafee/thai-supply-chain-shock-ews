@@ -1,0 +1,188 @@
+# Contract for reopening the EPPO fuel-oil modeling channel closed by Task C12.
+#
+# This schema describes a document that does not yet exist and may never exist.
+# It is written now, while nobody wants to reopen anything, because the moment
+# to fix the bar is before someone has a reason to clear it.
+#
+# THE GOVERNING RULE: a new specification is not new evidence. Another alpha,
+# another estimator, a nonlinear term, a favourable subgroup, dropping IND-04
+# from the denominator, picking whichever fuel oil scored better — each of those
+# re-describes the evidence D5 already produced. Reopening requires evidence
+# that is EXTERNAL to D5's performance and that D5 could not have used.
+
+schema_version: 1
+task: C12
+document: docs/<new_evidence_id>_reopening_request.json    # none exists today
+closes: eppo_sector093_fuel_oil
+closure_version: c12_eppo_fuel_oil_channel_closure_v1
+
+# ---------------------------------------------------------------------------
+required_fields:
+  - name: new_evidence_id
+    type: string
+    nullable: false
+    note: >-
+      A stable identifier, so a later reader can tell one reopening attempt
+      from another and see which decision-log entry superseded C12.
+  - name: source
+    type: string
+    nullable: false
+    note: The official origin. A URL, a publication, an archived issue.
+  - name: checksum
+    type: string
+    nullable: false
+    pattern: "^[0-9a-f]{64}$"
+    note: >-
+      SHA-256 of the acquired artifact. Evidence that cannot be pinned cannot
+      be audited, and an unauditable reopening is indistinguishable from a
+      preference.
+  - name: availability_date
+    type: string
+    nullable: false
+    format: "YYYY-MM-DD"
+    note: >-
+      When the evidence became available. This is what makes the next field
+      checkable rather than assertable.
+  - name: why_unavailable_to_d5
+    type: string
+    nullable: false
+    note: >-
+      An explicit account of why D5 could not have used it. "We did not think
+      of it" is not an account; "it was published after the evaluation window"
+      is.
+  - name: affected_assumption
+    type: string
+    nullable: false
+    allowed_examples:
+      - sector_093_is_a_broad_refinery_product_proxy
+      - publication_timing_is_policy_not_measured
+      - ind_04_direction_is_mixed_or_ambiguous
+      - development_target_history_begins_2022_01
+      - purchasers_price_versus_ex_refinery_valuation_mismatch
+    note: Which stated limitation the new evidence changes.
+  - name: expected_artifact_impact
+    type: string
+    nullable: false
+    note: >-
+      Which artifacts would have to be rebuilt, and how far back. Reopening at
+      C9 is a different undertaking from reopening at D5.
+  - name: not_selected_from_d5_outcomes
+    type: bool
+    nullable: false
+    required_value: true
+    note: >-
+      Evidence chosen BECAUSE a model failed is that model's result under
+      another name. This field is an explicit attestation, and the guard also
+      refuses any record carrying a D5 outcome field.
+  - name: superseding_decision_log_entry
+    type: string
+    nullable: false
+    note: >-
+      The append-only decision-log entry that supersedes C12. Closure is
+      lifted by a recorded decision, not by a code change.
+
+optional_fields:
+  - name: reason
+    type: string
+    note: Checked against the prohibited-reason list when present.
+  - name: active
+    type: bool
+    default: false
+    note: >-
+      A drafted reopening does not open the channel. The enforcement guard
+      requires an ACTIVE superseding decision before it will admit a closed
+      feature to a modeling purpose.
+
+# ---------------------------------------------------------------------------
+prohibited_fields:
+  reason: >-
+    Any of these means the "new evidence" is a reading of D5's own result.
+  fields:
+    - d5_macro_mae
+    - d5_paired_ci
+    - d5_mae_evidence
+    - d5_event_safety
+    - observed_mae
+    - model_mae
+    - benchmark_mae
+    - paired_ci_low
+    - paired_ci_high
+    - false_negatives
+    - mae_skill
+    - d5_coefficient
+
+# ---------------------------------------------------------------------------
+qualifying_evidence_categories:
+  product_specific_consumption_crosswalk:
+    description: >-
+      An official product-specific industrial fuel-consumption crosswalk
+      distinguishing FO 600 or FO 1500 use by industry.
+    changes: >-
+      C9's proxy-fitness finding. Sector 093 is a nine-product basket, so a
+      positive coefficient proves purchase from the refinery-products sector,
+      not purchase of a specific fuel oil. A genuine crosswalk would replace a
+      broad proxy with a measurement.
+  newer_compatible_io_table:
+    description: >-
+      A newer compatible I/O table materially changing sector-093 exposure and
+      available before the evaluation period.
+    changes: The exposure vector, and therefore C9 through D5.
+    note: >-
+      "Available before the evaluation period" is load-bearing. A table
+      published afterwards cannot be used to re-run a historical evaluation
+      without breaking its availability contract.
+  point_in_time_release_evidence:
+    description: >-
+      Verified point-in-time EPPO release evidence or historical vintages that
+      change the availability contract.
+    changes: >-
+      The two-month policy lag, which is a conservative assumption rather than
+      a measured publication lag. Real release dates would replace an
+      assumption with evidence.
+  longer_compatible_target_history:
+    description: >-
+      A materially longer compatible development target history obtained
+      without using purge or locked origins.
+    changes: >-
+      The fifteen issue-month clusters that limit every interval in D5. More
+      clusters is the one thing that could turn "inconclusive" into an answer.
+    constraint: purge and locked origins remain unavailable
+  proven_implementation_error:
+    description: >-
+      A proven source, target, alignment or implementation error that
+      materially affected D5.
+    changes: The evaluation itself.
+    note: >-
+      "Proven" and "materially". A stylistic disagreement with the
+      specification is not an error, and an error with no material effect does
+      not reopen a channel.
+  new_external_hypothesis:
+    description: >-
+      A genuinely new external hypothesis registered BEFORE inspecting any
+      corresponding development result.
+    changes: What is being tested.
+    constraint: registration must precede any look at the result
+
+# ---------------------------------------------------------------------------
+prohibited_reopening_reasons:
+  note: Each re-describes the evidence D5 already produced.
+  reasons:
+    - trying_another_alpha
+    - expanding_an_alpha_grid
+    - replacing_ridge_with_another_estimator
+    - adding_nonlinear_terms_after_seeing_d5
+    - feature_selection_based_on_d5
+    - removing_transformations_based_on_d5_coefficients
+    - selecting_fo600_or_fo1500_from_observed_mae
+    - combining_the_two_channels
+    - using_pca_or_a_composite_index
+    - tuning_high_stress_thresholds
+    - evaluating_a_favorable_subgroup
+    - removing_ind_04_from_denominators
+    - switching_direct_exposure_to_total_requirement_because_d5_failed
+    - reducing_publication_lag
+    - opening_purge_or_locked_origins
+    - rephrasing_an_inconclusive_result_as_evidence_for_another_specification
+
+on_missing_or_invalid_fields: raise
+modeling_entry_without_an_active_superseding_decision: refused_with_closure_reason

@@ -1,0 +1,13 @@
+industry_id,name_en,name_th,tsic_divisions,status,source_of_truth
+IND-01,"Food, Beverages and Tobacco",อาหาร เครื่องดื่ม และยาสูบ,10;11;12,active,configs/industry_mapping.yaml
+IND-02,"Textiles, Apparel and Leather",สิ่งทอ เครื่องนุ่งห่ม และเครื่องหนัง,13;14;15,active,configs/industry_mapping.yaml
+IND-03,Wood and Paper,ไม้และกระดาษ,16;17,active,configs/industry_mapping.yaml
+IND-04,Refined Petroleum Products,ผลิตภัณฑ์ปิโตรเลียมกลั่น,19,active,configs/industry_mapping.yaml
+IND-05,Chemicals and Pharmaceuticals,เคมีภัณฑ์และเภสัชภัณฑ์,20;21,active,configs/industry_mapping.yaml
+IND-06,Rubber and Plastics,ยางและพลาสติก,22,active,configs/industry_mapping.yaml
+IND-07,Non-metallic Mineral Products,ผลิตภัณฑ์แร่อโลหะ,23,active,configs/industry_mapping.yaml
+IND-08,Basic and Fabricated Metals,โลหะขั้นมูลฐานและผลิตภัณฑ์โลหะ,24;25,active,configs/industry_mapping.yaml
+IND-09,"Computer, Electronics and Electrical Equipment",คอมพิวเตอร์ อิเล็กทรอนิกส์ และเครื่องใช้ไฟฟ้า,26;27,active,configs/industry_mapping.yaml
+IND-10,Machinery and Equipment,เครื่องจักรและอุปกรณ์,28,active,configs/industry_mapping.yaml
+IND-11,Motor Vehicles and Other Transport Equipment,ยานยนต์และอุปกรณ์ขนส่งอื่น,29;30,active,configs/industry_mapping.yaml
+IND-12,Furniture and Other Manufacturing,เฟอร์นิเจอร์และการผลิตอื่น ๆ,31;32,active,configs/industry_mapping.yaml

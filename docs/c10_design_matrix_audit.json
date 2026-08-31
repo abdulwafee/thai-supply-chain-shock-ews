@@ -1,0 +1,951 @@
+{
+ "channels": {
+  "artifacts_kept_separate": true,
+  "preferred_channel_produced": false,
+  "prohibited": [
+   "addition",
+   "averaging",
+   "pca_across_the_two_channels",
+   "composite_fuel_oil_index",
+   "ten_column_simultaneous_model_matrix",
+   "selection_on_rank_variance_correlation_or_condition_number",
+   "target_based_channel_selection"
+  ],
+  "shared_structural_exposure_group": "io_sector_093",
+  "side_by_side_reporting_permitted": true
+ },
+ "config_version": "fuel_oil_development_matrix_v1",
+ "content_checksum": "bb520f9e74f49afbf6f50d934dea6630c81ea366c24f78b548d03f4a95c24d1c",
+ "contract_frozen_before_values_loaded": true,
+ "contract_reasserted_after_diagnostics": true,
+ "contract_version": "c10_diagnostic_contract_v1",
+ "decisions": {
+  "channel_selected": false,
+  "conditioning_adds_cross_industry_scale": true,
+  "conditioning_adds_temporal_degrees_of_freedom": false,
+  "development_matrix_assembled": true,
+  "locked_test_accessed": false,
+  "model_feature_approved": false,
+  "model_trained": false,
+  "modeling_authorized": false,
+  "note": "A full-rank source-time matrix does not promote either variant to modeling readiness. Rank is a property of the design; approval is a separate decision that has not been taken.",
+  "per_industry_standardization_removes_exposure_scale": true,
+  "predictive_utility_assessed": false,
+  "target_join_authorized": false,
+  "target_joined": false,
+  "variant_promoted_to_modeling_readiness": false
+ },
+ "degeneracy": {
+  "exact_zero_observations_counted_separately": true,
+  "exact_zero_variance_checked": true,
+  "feature_removal_authorized": false,
+  "near_zero_variance_checked": true,
+  "target_inspected_while_determining_variance": false,
+  "transformations_removed": [],
+  "zero_variance_classification_must_match_across_eligible_industries": true
+ },
+ "development_window": {
+  "expected_source_gap_cells": 0,
+  "issue_month_end": "2025-03",
+  "issue_month_start": "2024-01",
+  "issue_months": 15,
+  "locked_rows_materialised": 0,
+  "purge_rows_materialised": 0,
+  "reference_month_end": "2025-01",
+  "reference_month_start": "2023-11"
+ },
+ "diagnostic_contract": {
+  "channel_selection_permitted": false,
+  "contract_version": "c10_diagnostic_contract_v1",
+  "expected_cells_per_variant": 900,
+  "expected_industries": 12,
+  "expected_issue_months": 15,
+  "expected_masked_cells_per_variant": 75,
+  "expected_numeric_cells_per_variant": 825,
+  "expected_rows_per_variant": 180,
+  "expected_transformation_columns": [
+   "log_change_12m_pct",
+   "log_change_1m_pct",
+   "log_change_3m_pct",
+   "price_level",
+   "realized_volatility_3m_pct"
+  ],
+  "expected_variants": [
+   "fo600_direct_sector093",
+   "fo1500_direct_sector093"
+  ],
+  "feature_removal_permitted": false,
+  "matrix_key": [
+   "issue_month",
+   "industry_id"
+  ],
+  "missingness_precedence": [
+   "structural_ineligibility",
+   "source_transformation_null",
+   "observed_zero_exposure",
+   "available_numeric_value"
+  ],
+  "near_zero_variance_threshold": 1e-12,
+  "permitted_statistics": [
+   "singular_values",
+   "numerical_rank",
+   "raw_condition_number",
+   "standardized_condition_number",
+   "pearson_correlation",
+   "spearman_correlation",
+   "exact_duplicate_column_check",
+   "column_variance",
+   "exact_zero_observation_count",
+   "cross_sectional_rank",
+   "exposure_normalization_residual",
+   "standardization_invariance_residual",
+   "design_fingerprint_count"
+  ],
+  "primary_diagnostic_input": "source_time_matrix_15x5",
+  "rank_tolerance": 1e-10,
+  "reconstruction_tolerance": 1e-09,
+  "significance_testing_permitted": false,
+  "standardization_ddof": 0,
+  "standardization_formula": "(x - mean) / std",
+  "standardization_tolerance": 1e-09,
+  "target_or_model_access_permitted": false
+ },
+ "diagnostic_contract_checksum": "1c88cdd7f2017aa94ee1b069be436c469ee08adcf649fe6ad4c981f995eb2041",
+ "expected_identities": {
+  "conditioning_adds_cross_industry_scale": "expected_true",
+  "conditioning_adds_temporal_degrees_of_freedom": "expected_false",
+  "conditioning_formula": "D[v,g] = E[g] * X[v]",
+  "design_result_not_a_predictive_conclusion": true,
+  "expected_distinct_normalized_fingerprints_per_variant": 1,
+  "expected_distinct_raw_fingerprints_per_variant": 11,
+  "expected_distinct_standardized_fingerprints_per_variant": 1,
+  "exposure_normalization": "Xhat[v,g] = D[v,g] / E[g]",
+  "ineligible_industry_normalized": false,
+  "ineligible_industry_reason": "IND-04 is structurally ineligible with a null direction multiplier. Dividing its conditioned values by its exposure would reconstruct a design that does not exist.",
+  "per_industry_standardization_removes_exposure_scale": "expected_true",
+  "standardization_invariance": "standardize(E*X) == standardize(X) for E > 0"
+ },
+ "generated_at_utc": "2026-08-29T08:40:44.617205+00:00",
+ "identifiability": {
+  "correlations_are_descriptive_only": true,
+  "correlations_used_to_remove_a_transformation": false,
+  "correlations_used_to_select_a_channel": false,
+  "cross_sectional_rank_reason": "C[v,t] = E x[v,t]^T is an outer product of the exposure vector and one source-time row, so its rank is one whenever price_level is finite and positive. A rank above one indicates a conditioning, exposure, alignment or pivot error.",
+  "expected_cross_sectional_rank_per_issue": 1,
+  "expected_rank_equality": [
+   "source_time_matrix",
+   "every_industry_specific_matrix",
+   "stacked_eligible_panel"
+  ],
+  "primary_input": "source_time_matrix",
+  "significance_tests_reported": false,
+  "source_time_matrix_shape": [
+   15,
+   5
+  ],
+  "stacked_eligible_panel_shape": [
+   165,
+   5
+  ],
+  "stacked_rows_are_independent_claim_permitted": false,
+  "temporal_independence_claim_permitted": false,
+  "temporal_independence_reason": "Adjacent transformations overlap in time - a 3-month change and a 12-month change share endpoints, and a 3-month volatility reads four consecutive price levels - so consecutive monthly rows may be serially dependent."
+ },
+ "inherited": {
+  "c9_phase_a_checksum": "d528aba4aedcb8b8051ad618d66d49c71239267fb26fd2ead292ee90b12c9703",
+  "eligible_industries_per_variant": 11,
+  "exposure_kind": "direct_only",
+  "fully_real_time_backtest": false,
+  "ineligible_industries": [
+   "IND-04"
+  ],
+  "io_sector_code": "093",
+  "latest_vintage_used": true,
+  "operational_lag_is_measured": false,
+  "operational_policy_lag_months": 2,
+  "point_in_time_supported": false,
+  "sector_031_exposure_used": false,
+  "source_available_as_of": null,
+  "total_requirement_exposure_used": false
+ },
+ "inputs": {
+  "alternate_path_to_locked_data": false,
+  "permitted": [
+   "data/features/c9_fuel_oil_conditioned.parquet",
+   "data/features/c9_fuel_oil_development_snapshot.parquet",
+   "docs/c9_sector093_exposure_decision.json",
+   "docs/c9_fuel_oil_conditioning_audit.json",
+   "docs/c8_eppo_transformation_audit.json",
+   "data/features/c8_eppo_fuel_oil_transformations.parquet",
+   "docs/c7_5_eppo_semantic_decision.json",
+   "docs/c3_commodity_exposure_matrix.json",
+   "docs/c3_io_source_audit.json"
+  ],
+  "prohibited": [
+   "b3_target_values",
+   "industry_month_panel_with_target_outcomes",
+   "d1_development_predictions",
+   "d3_operational_predictions",
+   "d4_operational_model_predictions",
+   "b4_walk_forward_predictions",
+   "forecast_target_raw",
+   "production_stress_month",
+   "locked_test_outcomes",
+   "correlations_with_stress_outcomes"
+  ],
+  "target_derived_field_in_configuration": false
+ },
+ "interpretation": {
+  "causal_effect": false,
+  "currency_cost_per_unit_of_industrial_output": false,
+  "elasticity": false,
+  "forecast_coefficient": false,
+  "pass_through": false,
+  "structural_interaction_only": true,
+  "valuation_basis_alignment": "partial_mismatch_purchasers_price_coefficient_x_ex_refinery_price"
+ },
+ "matrices": {
+  "both_variants": {
+   "cells": 1800,
+   "masked_cells": 150,
+   "numeric_cells": 1650,
+   "wide_rows": 360
+  },
+  "ind_04_masks_converted_to_zero": false,
+  "ind_04_rows_dropped": false,
+  "observed_cells": 1800,
+  "observed_masked_cells": 150,
+  "observed_numeric_cells": 1650,
+  "observed_wide_rows": 360,
+  "per_variant": {
+   "cells": 900,
+   "columns": 5,
+   "fully_masked_rows": 15,
+   "fully_numeric_rows": 165,
+   "masked_cells": 75,
+   "numeric_cells": 825,
+   "rows": 180
+  },
+  "rows_removed_to_make_a_complete_case_table": false,
+  "ten_column_modeling_matrix_created": false,
+  "variants_horizontally_concatenated": false
+ },
+ "outputs": {
+  "diagnostics_table": "data/features/c10_fuel_oil_diagnostics.parquet",
+  "mask_table": "data/features/c10_fuel_oil_development_mask.parquet",
+  "wide_matrix": "data/features/c10_fuel_oil_development_wide.parquet"
+ },
+ "per_variant": {
+  "fo1500_direct_sector093": {
+   "availability": {
+    "backdated_to_reference_year": false,
+    "checked_against_recorded_fields_not_positional_shift": true,
+    "fully_real_time_backtest": false,
+    "lag_two_violations": 0,
+    "latest_vintage_used": true,
+    "point_in_time_supported": false,
+    "policy_availability_violations": 0,
+    "rows_checked": 900,
+    "source_available_as_of": null,
+    "source_policy_dominates_structural": true,
+    "structural_available_by": "2020-03-31",
+    "structural_reference_year": 2015
+   },
+   "channel_selected": false,
+   "cross_sectional_rank_by_issue": {
+    "2024-01": 1,
+    "2024-02": 1,
+    "2024-03": 1,
+    "2024-04": 1,
+    "2024-05": 1,
+    "2024-06": 1,
+    "2024-07": 1,
+    "2024-08": 1,
+    "2024-09": 1,
+    "2024-10": 1,
+    "2024-11": 1,
+    "2024-12": 1,
+    "2025-01": 1,
+    "2025-02": 1,
+    "2025-03": 1
+   },
+   "eligible_industries": [
+    "IND-01",
+    "IND-02",
+    "IND-03",
+    "IND-05",
+    "IND-06",
+    "IND-07",
+    "IND-08",
+    "IND-09",
+    "IND-10",
+    "IND-11",
+    "IND-12"
+   ],
+   "exact_duplicate_columns": [],
+   "exposure_normalization": {
+    "all_designs_are_scalar_multiples": true,
+    "distinct_normalized_fingerprints": 1,
+    "distinct_raw_fingerprints": 11,
+    "distinct_standardized_fingerprints": 0,
+    "eligible_industries": 11,
+    "exposure_survives_standardization": true,
+    "industry_specific_temporal_pattern_present": true,
+    "ineligible_industries_normalized": [],
+    "max_residual": 3.552713678800501e-15,
+    "normalized_equivalence_classes": 1,
+    "per_industry_residual": {
+     "IND-01": 0.0,
+     "IND-02": 3.552713678800501e-15,
+     "IND-03": 3.552713678800501e-15,
+     "IND-05": 1.7763568394002505e-15,
+     "IND-06": 3.552713678800501e-15,
+     "IND-07": 3.552713678800501e-15,
+     "IND-08": 3.552713678800501e-15,
+     "IND-09": 3.552713678800501e-15,
+     "IND-10": 1.7763568394002505e-15,
+     "IND-11": 3.552713678800501e-15,
+     "IND-12": 3.552713678800501e-15
+    },
+    "source_reconciliation_residual": 1.7763568394002505e-15,
+    "tolerance": 1e-09,
+    "variant_id": "fo1500_direct_sector093"
+   },
+   "features_removed": [],
+   "fully_masked_rows": 15,
+   "fully_numeric_rows": 165,
+   "industry_matrix_ranks": {
+    "IND-01": 5,
+    "IND-02": 5,
+    "IND-03": 5,
+    "IND-05": 5,
+    "IND-06": 5,
+    "IND-07": 5,
+    "IND-08": 5,
+    "IND-09": 5,
+    "IND-10": 5,
+    "IND-11": 5,
+    "IND-12": 5
+   },
+   "lineage": {
+    "cells_with_a_checksum": 900,
+    "distinct_checksums": 900
+   },
+   "masked_cells": 75,
+   "masked_industries": [
+    "IND-04"
+   ],
+   "matrix_dimensions": {
+    "cells": 900,
+    "columns": 5,
+    "rows": 180
+   },
+   "numeric_cells": 825,
+   "pearson": {
+    "log_change_12m_pct|log_change_1m_pct": 0.4448094870660016,
+    "log_change_12m_pct|log_change_3m_pct": 0.6193557217977178,
+    "log_change_12m_pct|price_level": 0.688522321432603,
+    "log_change_12m_pct|realized_volatility_3m_pct": -0.7494635551353436,
+    "log_change_1m_pct|log_change_3m_pct": 0.6314367323321258,
+    "log_change_1m_pct|price_level": 0.3563387822964723,
+    "log_change_1m_pct|realized_volatility_3m_pct": -0.19817148560233794,
+    "log_change_3m_pct|price_level": 0.7562267722427825,
+    "log_change_3m_pct|realized_volatility_3m_pct": -0.46675900486968197,
+    "price_level|realized_volatility_3m_pct": -0.4999703667838166
+   },
+   "raw_condition_number": 16.414082387976276,
+   "significance_tested": false,
+   "singular_values": [
+    78.33441613523121,
+    67.98928854421987,
+    33.17483796978899,
+    19.18314732712222,
+    4.772390821713745
+   ],
+   "source_time_rank": 5,
+   "spearman": {
+    "log_change_12m_pct|log_change_1m_pct": 0.29285714285714287,
+    "log_change_12m_pct|log_change_3m_pct": 0.6071428571428571,
+    "log_change_12m_pct|price_level": 0.6428571428571429,
+    "log_change_12m_pct|realized_volatility_3m_pct": -0.5357142857142857,
+    "log_change_1m_pct|log_change_3m_pct": 0.6178571428571429,
+    "log_change_1m_pct|price_level": 0.42142857142857143,
+    "log_change_1m_pct|realized_volatility_3m_pct": -0.2392857142857143,
+    "log_change_3m_pct|price_level": 0.8142857142857143,
+    "log_change_3m_pct|realized_volatility_3m_pct": -0.475,
+    "price_level|realized_volatility_3m_pct": -0.5
+   },
+   "stacked_panel_rank": 5,
+   "stacked_panel_rows": 165,
+   "stacked_rows_are_independent_claim_permitted": false,
+   "standardization_invariance": {
+    "ddof": 0,
+    "distinct_standardized_fingerprints": 1,
+    "exposure_survives_per_industry_standardization": false,
+    "fingerprint_agrees_with_tolerance_classes": true,
+    "fingerprint_note": "The fingerprint rounds to a fixed number of significant digits, so a standardised value near zero is resolved far below double precision and two matrices that agree to 1e-15 can fingerprint differently. Where the two counts disagree the preregistered absolute tolerance governs; the fingerprint count is reported unchanged as observed.",
+    "identity_decided_by": "max_standardized_design_residual <= tolerance",
+    "identity_holds": true,
+    "industry_specific_temporal_pattern_present": false,
+    "max_standardized_design_residual": 2.6645352591003757e-15,
+    "note": "For a positive scalar E, standardize(E X) == standardize(X) because the scalar cancels in both the mean and the standard deviation. Sector-093 exposure therefore affects raw scale and does not survive per-industry standardisation. This is a property of the design matrix, established without reading any target.",
+    "per_industry_residual": {
+     "IND-01": 1.5543122344752192e-15,
+     "IND-02": 1.9984014443252818e-15,
+     "IND-03": 1.3322676295501878e-15,
+     "IND-05": 1.887379141862766e-15,
+     "IND-06": 1.1102230246251565e-15,
+     "IND-07": 2.6645352591003757e-15,
+     "IND-08": 1.5543122344752192e-15,
+     "IND-09": 2.3314683517128287e-15,
+     "IND-10": 1.1102230246251565e-15,
+     "IND-11": 1.2212453270876722e-15,
+     "IND-12": 1.887379141862766e-15
+    },
+    "standardized_equivalence_classes": 1,
+    "tolerance": 1e-09,
+    "variant_id": "fo1500_direct_sector093"
+   },
+   "standardized_condition_number": 4.9971584687856225,
+   "temporal_independence_claim_permitted": false,
+   "unique_temporal_rows": 15,
+   "variance": {
+    "log_change_12m_pct": {
+     "exact_zero_observations": 0,
+     "exact_zero_variance": false,
+     "maximum": 24.69257569772867,
+     "minimum": -28.078091676323158,
+     "near_zero_variance": false,
+     "retained": true,
+     "standard_deviation": 15.313177337680937,
+     "variance": 234.49340017526504
+    },
+    "log_change_1m_pct": {
+     "exact_zero_observations": 0,
+     "exact_zero_variance": false,
+     "maximum": 9.032750780535048,
+     "minimum": -14.695640785672204,
+     "near_zero_variance": false,
+     "retained": true,
+     "standard_deviation": 6.683180815298871,
+     "variance": 44.66490580997888
+    },
+    "log_change_3m_pct": {
+     "exact_zero_observations": 0,
+     "exact_zero_variance": false,
+     "maximum": 18.589148713522306,
+     "minimum": -25.056483067741418,
+     "near_zero_variance": false,
+     "retained": true,
+     "standard_deviation": 13.8705887418395,
+     "variance": 192.39323204524467
+    },
+    "price_level": {
+     "exact_zero_observations": 0,
+     "exact_zero_variance": false,
+     "maximum": 19.029525,
+     "minimum": 14.465085714285713,
+     "near_zero_variance": false,
+     "retained": true,
+     "standard_deviation": 1.4155541394258504,
+     "variance": 2.00379352164566
+    },
+    "realized_volatility_3m_pct": {
+     "exact_zero_observations": 0,
+     "exact_zero_variance": false,
+     "maximum": 8.80507329583996,
+     "minimum": 1.6022032114109022,
+     "near_zero_variance": false,
+     "retained": true,
+     "standard_deviation": 2.049374129694421,
+     "variance": 4.199934323460765
+    }
+   },
+   "variance_classification_agreement": {
+    "all_eligible_industries_agree": true,
+    "distinct_classifications": 1,
+    "exact_zero_variance_columns": [],
+    "industries_checked": 11,
+    "near_zero_variance_columns": []
+   }
+  },
+  "fo600_direct_sector093": {
+   "availability": {
+    "backdated_to_reference_year": false,
+    "checked_against_recorded_fields_not_positional_shift": true,
+    "fully_real_time_backtest": false,
+    "lag_two_violations": 0,
+    "latest_vintage_used": true,
+    "point_in_time_supported": false,
+    "policy_availability_violations": 0,
+    "rows_checked": 900,
+    "source_available_as_of": null,
+    "source_policy_dominates_structural": true,
+    "structural_available_by": "2020-03-31",
+    "structural_reference_year": 2015
+   },
+   "channel_selected": false,
+   "cross_sectional_rank_by_issue": {
+    "2024-01": 1,
+    "2024-02": 1,
+    "2024-03": 1,
+    "2024-04": 1,
+    "2024-05": 1,
+    "2024-06": 1,
+    "2024-07": 1,
+    "2024-08": 1,
+    "2024-09": 1,
+    "2024-10": 1,
+    "2024-11": 1,
+    "2024-12": 1,
+    "2025-01": 1,
+    "2025-02": 1,
+    "2025-03": 1
+   },
+   "eligible_industries": [
+    "IND-01",
+    "IND-02",
+    "IND-03",
+    "IND-05",
+    "IND-06",
+    "IND-07",
+    "IND-08",
+    "IND-09",
+    "IND-10",
+    "IND-11",
+    "IND-12"
+   ],
+   "exact_duplicate_columns": [],
+   "exposure_normalization": {
+    "all_designs_are_scalar_multiples": true,
+    "distinct_normalized_fingerprints": 1,
+    "distinct_raw_fingerprints": 11,
+    "distinct_standardized_fingerprints": 0,
+    "eligible_industries": 11,
+    "exposure_survives_standardization": true,
+    "industry_specific_temporal_pattern_present": true,
+    "ineligible_industries_normalized": [],
+    "max_residual": 7.105427357601002e-15,
+    "normalized_equivalence_classes": 1,
+    "per_industry_residual": {
+     "IND-01": 0.0,
+     "IND-02": 3.552713678800501e-15,
+     "IND-03": 3.552713678800501e-15,
+     "IND-05": 3.552713678800501e-15,
+     "IND-06": 3.552713678800501e-15,
+     "IND-07": 7.105427357601002e-15,
+     "IND-08": 3.552713678800501e-15,
+     "IND-09": 3.552713678800501e-15,
+     "IND-10": 3.552713678800501e-15,
+     "IND-11": 3.552713678800501e-15,
+     "IND-12": 7.105427357601002e-15
+    },
+    "source_reconciliation_residual": 3.552713678800501e-15,
+    "tolerance": 1e-09,
+    "variant_id": "fo600_direct_sector093"
+   },
+   "features_removed": [],
+   "fully_masked_rows": 15,
+   "fully_numeric_rows": 165,
+   "industry_matrix_ranks": {
+    "IND-01": 5,
+    "IND-02": 5,
+    "IND-03": 5,
+    "IND-05": 5,
+    "IND-06": 5,
+    "IND-07": 5,
+    "IND-08": 5,
+    "IND-09": 5,
+    "IND-10": 5,
+    "IND-11": 5,
+    "IND-12": 5
+   },
+   "lineage": {
+    "cells_with_a_checksum": 900,
+    "distinct_checksums": 900
+   },
+   "masked_cells": 75,
+   "masked_industries": [
+    "IND-04"
+   ],
+   "matrix_dimensions": {
+    "cells": 900,
+    "columns": 5,
+    "rows": 180
+   },
+   "numeric_cells": 825,
+   "pearson": {
+    "log_change_12m_pct|log_change_1m_pct": 0.45626344602103824,
+    "log_change_12m_pct|log_change_3m_pct": 0.6633165965224984,
+    "log_change_12m_pct|price_level": 0.8190360348058278,
+    "log_change_12m_pct|realized_volatility_3m_pct": -0.7414801632824946,
+    "log_change_1m_pct|log_change_3m_pct": 0.6098728533191073,
+    "log_change_1m_pct|price_level": 0.32288743008218573,
+    "log_change_1m_pct|realized_volatility_3m_pct": -0.2386730413666259,
+    "log_change_3m_pct|price_level": 0.7006910930661807,
+    "log_change_3m_pct|realized_volatility_3m_pct": -0.5547063390745574,
+    "price_level|realized_volatility_3m_pct": -0.6419449247374605
+   },
+   "raw_condition_number": 14.54420772880852,
+   "significance_tested": false,
+   "singular_values": [
+    73.86701784557366,
+    72.3257548999225,
+    31.20600330849399,
+    19.089520180487945,
+    5.078792824119334
+   ],
+   "source_time_rank": 5,
+   "spearman": {
+    "log_change_12m_pct|log_change_1m_pct": 0.3357142857142857,
+    "log_change_12m_pct|log_change_3m_pct": 0.7107142857142857,
+    "log_change_12m_pct|price_level": 0.8535714285714285,
+    "log_change_12m_pct|realized_volatility_3m_pct": -0.6428571428571429,
+    "log_change_1m_pct|log_change_3m_pct": 0.525,
+    "log_change_1m_pct|price_level": 0.2642857142857143,
+    "log_change_1m_pct|realized_volatility_3m_pct": -0.225,
+    "log_change_3m_pct|price_level": 0.7178571428571429,
+    "log_change_3m_pct|realized_volatility_3m_pct": -0.5964285714285714,
+    "price_level|realized_volatility_3m_pct": -0.6071428571428571
+   },
+   "stacked_panel_rank": 5,
+   "stacked_panel_rows": 165,
+   "stacked_rows_are_independent_claim_permitted": false,
+   "standardization_invariance": {
+    "ddof": 0,
+    "distinct_standardized_fingerprints": 11,
+    "exposure_survives_per_industry_standardization": false,
+    "fingerprint_agrees_with_tolerance_classes": false,
+    "fingerprint_note": "The fingerprint rounds to a fixed number of significant digits, so a standardised value near zero is resolved far below double precision and two matrices that agree to 1e-15 can fingerprint differently. Where the two counts disagree the preregistered absolute tolerance governs; the fingerprint count is reported unchanged as observed.",
+    "identity_decided_by": "max_standardized_design_residual <= tolerance",
+    "identity_holds": true,
+    "industry_specific_temporal_pattern_present": false,
+    "max_standardized_design_residual": 4.385164106834871e-15,
+    "note": "For a positive scalar E, standardize(E X) == standardize(X) because the scalar cancels in both the mean and the standard deviation. Sector-093 exposure therefore affects raw scale and does not survive per-industry standardisation. This is a property of the design matrix, established without reading any target.",
+    "per_industry_residual": {
+     "IND-01": 4.385164106834871e-15,
+     "IND-02": 1.7763568394002505e-15,
+     "IND-03": 2.9976021664879227e-15,
+     "IND-05": 3.1086244689504383e-15,
+     "IND-06": 3.3306690738754696e-15,
+     "IND-07": 1.7763568394002505e-15,
+     "IND-08": 3.1086244689504383e-15,
+     "IND-09": 3.552713678800501e-15,
+     "IND-10": 3.1086244689504383e-15,
+     "IND-11": 3.9968028886505635e-15,
+     "IND-12": 2.4424906541753444e-15
+    },
+    "standardized_equivalence_classes": 1,
+    "tolerance": 1e-09,
+    "variant_id": "fo600_direct_sector093"
+   },
+   "standardized_condition_number": 5.294781080733559,
+   "temporal_independence_claim_permitted": false,
+   "unique_temporal_rows": 15,
+   "variance": {
+    "log_change_12m_pct": {
+     "exact_zero_observations": 0,
+     "exact_zero_variance": false,
+     "maximum": 22.89571267700108,
+     "minimum": -31.57630186308853,
+     "near_zero_variance": false,
+     "retained": true,
+     "standard_deviation": 15.575411333670441,
+     "variance": 242.59343821302966
+    },
+    "log_change_1m_pct": {
+     "exact_zero_observations": 0,
+     "exact_zero_variance": false,
+     "maximum": 7.738342603665416,
+     "minimum": -14.150965238908864,
+     "near_zero_variance": false,
+     "retained": true,
+     "standard_deviation": 6.520400880841513,
+     "variance": 42.515627646878784
+    },
+    "log_change_3m_pct": {
+     "exact_zero_observations": 0,
+     "exact_zero_variance": false,
+     "maximum": 16.08247802696461,
+     "minimum": -24.728492076023656,
+     "near_zero_variance": false,
+     "retained": true,
+     "standard_deviation": 13.0126656090898,
+     "variance": 169.3294662539884
+    },
+    "price_level": {
+     "exact_zero_observations": 0,
+     "exact_zero_variance": false,
+     "maximum": 19.594033333333336,
+     "minimum": 14.99567142857143,
+     "near_zero_variance": false,
+     "retained": true,
+     "standard_deviation": 1.4201313952893215,
+     "variance": 2.0167731798863953
+    },
+    "realized_volatility_3m_pct": {
+     "exact_zero_observations": 0,
+     "exact_zero_variance": false,
+     "maximum": 8.464616595887398,
+     "minimum": 1.0178427602458078,
+     "near_zero_variance": false,
+     "retained": true,
+     "standard_deviation": 2.1129870160411346,
+     "variance": 4.464714129958417
+    }
+   },
+   "variance_classification_agreement": {
+    "all_eligible_industries_agree": true,
+    "distinct_classifications": 1,
+    "exact_zero_variance_columns": [],
+    "industries_checked": 11,
+    "near_zero_variance_columns": []
+   }
+  }
+ },
+ "preregistered_expectation_discrepancies": {
+  "count": 1,
+  "expectations_relaxed_to_obtain_a_pass": false,
+  "items": [
+   {
+    "decision_rule_applied": "the frozen absolute tolerance, not the fingerprint count",
+    "explanation": "The fingerprint rounds to 13 significant digits, so a standardised value near zero is resolved below double precision. The preregistered tolerance test on the same matrices puts every eligible industry in one equivalence class, and that test decides.",
+    "observed_value": 11,
+    "preregistered_field": "expected_distinct_standardized_fingerprints_per_variant",
+    "preregistered_value": 1,
+    "threshold_changed_after_observation": false,
+    "variant_id": "fo600_direct_sector093"
+   }
+  ],
+  "thresholds_changed_after_observation": false
+ },
+ "preserved_decisions": {
+  "b3_targets_changed": false,
+  "c3_or_c3r1_changed": false,
+  "c7_5_semantics_changed": false,
+  "c8_transformations_changed": false,
+  "c9_conditioned_rows_changed": false,
+  "c9_phase_a_decision_changed": false,
+  "c9_snapshot_changed": false
+ },
+ "provenance": {
+  "channel_selected": false,
+  "locked_test_accessed": false,
+  "model_feature_approved": false,
+  "model_trained": false,
+  "modeling_authorized": false,
+  "predictive_utility_assessed": false,
+  "target_association_computed": false,
+  "target_join_authorized": false,
+  "target_joined": false
+ },
+ "structural_findings": {
+  "all_designs_are_scalar_multiples_of_one_source_time_matrix": true,
+  "cross_industry_information_is_exposure_scaling_only": true,
+  "industry_conditioning_adds_temporal_degrees_of_freedom": false,
+  "note": "Each eligible industry's design is one 15x5 source-time matrix multiplied by a positive scalar exposure, so the 165-row stacked panel is eleven scaled copies of fifteen rows. This is a property of the design matrix established without reading any target; it is not a statement about predictive performance.",
+  "per_industry_standardization_removes_exposure_scale": true,
+  "stacked_eligible_rows": 165,
+  "stacked_rows_are_independent_claim_permitted": false,
+  "temporal_independence_claim_permitted": false,
+  "unique_issue_months": 15
+ },
+ "task": "C10",
+ "units": {
+  "log_change_12m_pct": "percentage_point_log_change_x_io_coefficient",
+  "log_change_1m_pct": "percentage_point_log_change_x_io_coefficient",
+  "log_change_3m_pct": "percentage_point_log_change_x_io_coefficient",
+  "price_level": "baht_per_litre_x_io_coefficient",
+  "realized_volatility_3m_pct": "percentage_point_log_change_volatility_x_io_coefficient"
+ },
+ "upstream_invariants": {
+  "all_reproduced": true,
+  "checks": {
+   "c9_available_nonzero": {
+    "actual": 6578,
+    "expected": 6578,
+    "reproduced": true
+   },
+   "c9_conditioned_rows": {
+    "actual": 7800,
+    "expected": 7800,
+    "reproduced": true
+   },
+   "c9_direction_ambiguity_rows": {
+    "actual": 650,
+    "expected": 650,
+    "reproduced": true
+   },
+   "c9_eligible_exposures_strictly_positive": {
+    "actual": true,
+    "expected": true,
+    "reproduced": true
+   },
+   "c9_eligible_industries_per_channel": {
+    "actual": 11,
+    "expected": 11,
+    "reproduced": true
+   },
+   "c9_ind04_direction_ambiguous": {
+    "actual": [
+     "mixed_or_ambiguous"
+    ],
+    "expected": [
+     "mixed_or_ambiguous"
+    ],
+    "reproduced": true
+   },
+   "c9_ind04_multiplier_null": {
+    "actual": true,
+    "expected": true,
+    "reproduced": true
+   },
+   "c9_industries": {
+    "actual": 12,
+    "expected": 12,
+    "reproduced": true
+   },
+   "c9_ineligible_industries": {
+    "actual": [
+     "IND-04"
+    ],
+    "expected": [
+     "IND-04"
+    ],
+    "reproduced": true
+   },
+   "c9_io_sector_code": {
+    "actual": [
+     "093"
+    ],
+    "expected": [
+     "093"
+    ],
+    "reproduced": true
+   },
+   "c9_latest_vintage_used": {
+    "actual": true,
+    "expected": true,
+    "reproduced": true
+   },
+   "c9_operational_lag_is_measured": {
+    "actual": false,
+    "expected": false,
+    "reproduced": true
+   },
+   "c9_phase_a_checksum": {
+    "actual": "d528aba4aedcb8b8051ad618d66d49c71239267fb26fd2ead292ee90b12c9703",
+    "expected": "d528aba4aedcb8b8051ad618d66d49c71239267fb26fd2ead292ee90b12c9703",
+    "reproduced": true
+   },
+   "c9_point_in_time_supported": {
+    "actual": false,
+    "expected": false,
+    "reproduced": true
+   },
+   "c9_reference_months": {
+    "actual": 65,
+    "expected": 65,
+    "reproduced": true
+   },
+   "c9_rows_per_variant": {
+    "actual": [
+     3900
+    ],
+    "expected": [
+     3900
+    ],
+    "reproduced": true
+   },
+   "c9_sector_031_used": {
+    "actual": false,
+    "expected": false,
+    "reproduced": true
+   },
+   "c9_source_available_as_of_null": {
+    "actual": true,
+    "expected": true,
+    "reproduced": true
+   },
+   "c9_source_null_rows": {
+    "actual": 572,
+    "expected": 572,
+    "reproduced": true
+   },
+   "c9_total_requirement_used": {
+    "actual": false,
+    "expected": false,
+    "reproduced": true
+   },
+   "c9_transformations": {
+    "actual": 5,
+    "expected": 5,
+    "reproduced": true
+   },
+   "c9_variants": {
+    "actual": [
+     "fo1500_direct_sector093",
+     "fo600_direct_sector093"
+    ],
+    "expected": [
+     "fo1500_direct_sector093",
+     "fo600_direct_sector093"
+    ],
+    "reproduced": true
+   },
+   "snapshot_cells": {
+    "actual": 1800,
+    "expected": 1800,
+    "reproduced": true
+   },
+   "snapshot_issue_month_range": {
+    "actual": [
+     "2024-01",
+     "2025-03"
+    ],
+    "expected": [
+     "2024-01",
+     "2025-03"
+    ],
+    "reproduced": true
+   },
+   "snapshot_issue_months": {
+    "actual": 15,
+    "expected": 15,
+    "reproduced": true
+   },
+   "snapshot_masked_cells": {
+    "actual": 150,
+    "expected": 150,
+    "reproduced": true
+   },
+   "snapshot_numeric_cells": {
+    "actual": 1650,
+    "expected": 1650,
+    "reproduced": true
+   },
+   "snapshot_purge_or_locked_rows": {
+    "actual": 0,
+    "expected": 0,
+    "reproduced": true
+   },
+   "snapshot_reference_month_range": {
+    "actual": [
+     "2023-11",
+     "2025-01"
+    ],
+    "expected": [
+     "2023-11",
+     "2025-01"
+    ],
+    "reproduced": true
+   },
+   "snapshot_source_gap_cells": {
+    "actual": 0,
+    "expected": 0,
+    "reproduced": true
+   }
+  },
+  "failed": []
+ }
+}

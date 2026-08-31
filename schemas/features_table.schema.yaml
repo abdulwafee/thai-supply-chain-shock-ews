@@ -1,0 +1,41 @@
+# Schema definition (documentation-level, not yet enforced by code) for
+# features/industry_month_features.parquet.
+
+schema_version: 1
+table: features/industry_month_features
+grain: [industry_id, prediction_date]
+primary_key: [industry_id, prediction_date]
+foreign_keys:
+  - column: industry_id
+    references: mapping/industry_map.csv#industry_id
+
+columns:
+  - name: industry_id
+    type: string
+    nullable: false
+  - name: prediction_date
+    type: date
+    nullable: false
+  - name: cutoff_date
+    type: date
+    nullable: false
+    rule: "= feature_cutoff(prediction_date), per data_architecture.md §8"
+  - name: "<feature_name>_value"
+    type: float64
+    nullable: true
+    note: "one pair of columns per onboarded feature; name matches a source_id in configs/data.yaml"
+  - name: "<feature_name>_asof"
+    type: date
+    nullable: true
+    rule: "must satisfy <= cutoff_date; validation rule §10.5"
+  - name: feature_schema_version
+    type: string
+    nullable: false
+  - name: built_at
+    type: timestamp
+    nullable: false
+
+constraints:
+  - "No column sourced from a configs/data.yaml entry with role: target may be
+     populated for a reference_period >= prediction_date."
+  - "Every populated <feature_name>_asof must be <= cutoff_date (validation rule §10.5)."

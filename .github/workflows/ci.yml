@@ -1,0 +1,207 @@
+# Hermetic verification for the Thai Supply Chain Shock Early Warning System.
+#
+# This repository is released as a reproducible SOURCE CHECKOUT, so this
+# workflow installs it the way the project is actually supported: locked
+# dependencies first, then the project itself in editable mode with --no-deps,
+# so nothing re-resolves what the locks already fixed.
+#
+# It runs ONLY the tier a clean checkout can run: lint, schema and config
+# parsing, the hermetic test suite, and a diagnostic package build whose
+# contents are inspected. It downloads no official dataset, touches no purge or
+# locked-test artifact, uses no repository secret, and publishes nothing.
+#
+# The data-backed source audits need third-party workbooks whose redistribution
+# terms are unresolved, so they cannot run here. They are reported as skipped,
+# by name and with a reason, and never folded into the passing total: "did not
+# run" and "passed" are different facts and only one of them is evidence.
+#
+# Python 3.12 is the supported floor and the only tested version, matching the
+# regenerated locks. An earlier floor was expected under Task E2 and found
+# incompatible with the resolved dependency set; that record lives in
+# docs/e2_release_readiness.json, and this file carries no version but the one
+# it actually runs.
+#
+# Every action is pinned to a commit SHA. A movable tag such as @v4 resolves to
+# whatever it points at on the day the job runs, which is a supply-chain hole in
+# a workflow whose whole purpose is reproducibility.
+
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+# Read-only. Nothing here writes to the repository, publishes a package, or
+# creates a release.
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PYTHONIOENCODING: utf-8
+  PIP_DISABLE_PIP_VERSION_CHECK: "1"
+
+jobs:
+  verify:
+    name: Hermetic source-checkout verification
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        timeout-minutes: 5
+        with:
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97  # v7.0.0
+        timeout-minutes: 5
+        with:
+          # The floor the locks were regenerated and verified on, and the only
+          # version this project claims to be tested against.
+          python-version: "3.12"
+
+      - name: Cache pip downloads
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9  # v6.1.0
+        timeout-minutes: 5
+        with:
+          path: ~/.cache/pip
+          # Keyed by the lock contents, so a dependency change invalidates the
+          # cache instead of silently reusing wheels for versions no longer
+          # pinned.
+          key: pip-${{ runner.os }}-py3.12-${{ hashFiles('requirements.lock.txt', 'requirements-dev.lock.txt') }}
+
+      - name: Install locked dependencies
+        timeout-minutes: 10
+        run: |
+          python -m pip install --upgrade pip setuptools wheel
+          python -m pip install -r requirements.lock.txt
+          python -m pip install -r requirements-dev.lock.txt
+
+      - name: Install the source checkout in editable mode
+        timeout-minutes: 5
+        # --no-deps is deliberate: the locks already fixed every version, and a
+        # project install that re-resolves them is not installing from the lock.
+        run: python -m pip install --no-deps -e .
+
+      - name: Confirm the interpreter matches the lock contract
+        timeout-minutes: 5
+        run: |
+          python - <<'PY'
+          import re, pathlib, sys
+          version = ".".join(str(p) for p in sys.version_info[:2])
+          lock = pathlib.Path("requirements.lock.txt").read_text(encoding="utf-8")
+          declared = re.search(r"resolved on: CPython (\d+\.\d+)", lock).group(1)
+          pyproject = pathlib.Path("pyproject.toml").read_text(encoding="utf-8")
+          floor = re.search(r'requires-python\s*=\s*">=(\d+\.\d+)"', pyproject).group(1)
+          print(f"runner={version} lock={declared} requires-python>={floor}")
+          if not (version == declared == floor):
+              sys.exit("the interpreter, the lock and the metadata disagree")
+          PY
+
+      - name: Lint
+        timeout-minutes: 5
+        run: python -m ruff check .
+
+      - name: Parse every config, schema and JSON document
+        timeout-minutes: 5
+        run: |
+          python - <<'PY'
+          import json, pathlib, sys
+          import yaml
+          bad = []
+          for path in sorted(pathlib.Path(".").rglob("*.yaml")):
+              try:
+                  yaml.safe_load(path.read_text(encoding="utf-8"))
+              except Exception as error:
+                  bad.append((path.as_posix(), str(error)[:200]))
+          for path in sorted(pathlib.Path(".").rglob("*.json")):
+              try:
+                  json.loads(path.read_text(encoding="utf-8"))
+              except Exception as error:
+                  bad.append((path.as_posix(), str(error)[:200]))
+          print(f"parsed {'without error' if not bad else bad}")
+          sys.exit(1 if bad else 0)
+          PY
+
+      - name: Hermetic test suite
+        timeout-minutes: 15
+        run: python -m pytest -q --no-header -rs
+
+      - name: Report the data-backed tier separately
+        timeout-minutes: 5
+        run: |
+          python - <<'PY'
+          import importlib.util, pathlib, sys
+          spec = importlib.util.spec_from_file_location(
+              "_release_conftest", "tests/conftest.py")
+          module = importlib.util.module_from_spec(spec)
+          spec.loader.exec_module(module)
+          registry = [
+              line.strip()
+              for line in pathlib.Path("tests/data_backed_tests.txt").read_text(
+                  encoding="utf-8").splitlines()
+              if line.strip() and not line.startswith("#")
+          ]
+          if module.local_inputs_present():
+              sys.exit("local inputs unexpectedly present in a clean checkout")
+          if not registry:
+              sys.exit("the data-backed registry is empty; the tier gate is inert")
+          print(f"data-backed tests NOT RUN here (inputs absent): {len(registry)}")
+          print("These re-audit official third-party downloads whose "
+                "redistribution terms are unresolved. They were skipped, not "
+                "passed. See docs/e2r1_reproducibility_guide.md, tier 2.")
+          PY
+
+      - name: Build diagnostic artifacts and inspect their contents
+        timeout-minutes: 10
+        # DIAGNOSTIC ONLY. This project is released as a source checkout; the
+        # wheel and sdist exist so their contents can be audited, and neither is
+        # a supported runtime or a published deliverable.
+        run: |
+          python -m build --outdir dist .
+          python - <<'PY'
+          import pathlib, sys
+          import yaml
+          from thai_supply_chain_ews.release import package_audit
+          config = yaml.safe_load(
+              pathlib.Path("configs/e2r1_source_release.yaml").read_text(
+                  encoding="utf-8"))
+          fragments = config["locked_test"]["outcome_path_fragments"]
+          rules = {"package": {
+              "prohibited_members": [".parquet", ".pdf", ".xls", ".xlsx",
+                                     ".zip", ".pkl", ".joblib", ".pyc"],
+              "prohibited_member_fragments": ["data/raw/", "data/interim/",
+                                              "data/features/",
+                                              "data/model_input/",
+                                              "locked_test", ".venv/", ".env"],
+          }}
+          failures = []
+          for archive in sorted(pathlib.Path("dist").iterdir()):
+              report = package_audit.audit_members(archive, rules, fragments)
+              print(f"{report['archive']}: {report['member_count']} members, "
+                    f"clean={report['clean']} (diagnostic artifact)")
+              if not report["clean"]:
+                  failures.append(report)
+              metadata = package_audit.read_metadata(archive)
+              print(f"  name={metadata['name']} version={metadata['version']} "
+                    f"requires_python={metadata['requires_python']} "
+                    f"license={metadata['license_expression'] or metadata['license']}")
+          sys.exit(1 if failures else 0)
+          PY
+
+      - name: Confirm the worktree is unchanged
+        timeout-minutes: 5
+        run: |
+          git status --porcelain > /tmp/status.txt
+          if [ -s /tmp/status.txt ]; then
+            echo "The verification modified the worktree:"
+            cat /tmp/status.txt
+            exit 1
+          fi
+          echo "worktree clean"

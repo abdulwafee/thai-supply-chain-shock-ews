@@ -1,0 +1,293 @@
+# Task C10 — development-only fuel-oil design-matrix identifiability audit.
+#
+# PREREGISTERED AND FROZEN. Every tolerance, threshold, expected dimension and
+# permitted statistic below was written BEFORE any C9 numeric feature value was
+# read. The runner hashes this contract, re-asserts the digest before loading
+# values and again after the diagnostics run; a threshold changed after seeing a
+# singular value, a correlation or a condition number raises.
+#
+# OUTCOME-FREE STRUCTURAL AUDIT. No MPI target, no predictive association, no
+# channel selection, no model, no locked test. C9 artifacts are IMMUTABLE here.
+
+schema_version: 1
+task: C10
+config_version: fuel_oil_development_matrix_v1
+contract_version: c10_diagnostic_contract_v1
+
+# ---------------------------------------------------------------------------
+# Inherited from C9. Restated, NOT re-decided.
+# ---------------------------------------------------------------------------
+inherited:
+  c9_phase_a_checksum:
+    d528aba4aedcb8b8051ad618d66d49c71239267fb26fd2ead292ee90b12c9703
+  io_sector_code: "093"
+  exposure_kind: direct_only
+  sector_031_exposure_used: false
+  total_requirement_exposure_used: false
+  ineligible_industries: [IND-04]
+  eligible_industries_per_variant: 11
+  source_available_as_of: null
+  latest_vintage_used: true
+  point_in_time_supported: false
+  fully_real_time_backtest: false
+  operational_policy_lag_months: 2
+  operational_lag_is_measured: false
+
+provenance:
+  target_joined: false
+  target_association_computed: false
+  predictive_utility_assessed: false
+  channel_selected: false
+  model_trained: false
+  model_feature_approved: false
+  locked_test_accessed: false
+  target_join_authorized: false
+  modeling_authorized: false
+
+preserved_decisions:
+  c9_conditioned_rows_changed: false
+  c9_phase_a_decision_changed: false
+  c9_snapshot_changed: false
+  c8_transformations_changed: false
+  c7_5_semantics_changed: false
+  c3_or_c3r1_changed: false
+  b3_targets_changed: false
+
+# ---------------------------------------------------------------------------
+# Permitted and prohibited inputs. The prohibition is on the ARTIFACT, so a
+# path, flag or environment variable cannot route around it.
+# ---------------------------------------------------------------------------
+inputs:
+  permitted:
+    - data/features/c9_fuel_oil_conditioned.parquet
+    - data/features/c9_fuel_oil_development_snapshot.parquet
+    - docs/c9_sector093_exposure_decision.json
+    - docs/c9_fuel_oil_conditioning_audit.json
+    - docs/c8_eppo_transformation_audit.json
+    - data/features/c8_eppo_fuel_oil_transformations.parquet
+    - docs/c7_5_eppo_semantic_decision.json
+    - docs/c3_commodity_exposure_matrix.json
+    - docs/c3_io_source_audit.json
+  prohibited:
+    - b3_target_values
+    - industry_month_panel_with_target_outcomes
+    - d1_development_predictions
+    - d3_operational_predictions
+    - d4_operational_model_predictions
+    - b4_walk_forward_predictions
+    - forecast_target_raw
+    - production_stress_month
+    - locked_test_outcomes
+    - correlations_with_stress_outcomes
+  alternate_path_to_locked_data: false
+  target_derived_field_in_configuration: false
+
+# ---------------------------------------------------------------------------
+# THE FROZEN DIAGNOSTIC CONTRACT.
+# ---------------------------------------------------------------------------
+diagnostic_contract:
+  matrix_key: [issue_month, industry_id]
+  expected_variants: [fo600_direct_sector093, fo1500_direct_sector093]
+  expected_issue_months: 15
+  expected_industries: 12
+  expected_transformation_columns:
+    - log_change_12m_pct
+    - log_change_1m_pct
+    - log_change_3m_pct
+    - price_level
+    - realized_volatility_3m_pct
+  expected_rows_per_variant: 180
+  expected_cells_per_variant: 900
+  expected_numeric_cells_per_variant: 825
+  expected_masked_cells_per_variant: 75
+  rank_tolerance: 1.0e-10
+  near_zero_variance_threshold: 1.0e-12
+  reconstruction_tolerance: 1.0e-9
+  standardization_tolerance: 1.0e-9
+  standardization_ddof: 0
+  standardization_formula: "(x - mean) / std"
+  missingness_precedence:
+    - structural_ineligibility
+    - source_transformation_null
+    - observed_zero_exposure
+    - available_numeric_value
+  permitted_statistics:
+    - singular_values
+    - numerical_rank
+    - raw_condition_number
+    - standardized_condition_number
+    - pearson_correlation
+    - spearman_correlation
+    - exact_duplicate_column_check
+    - column_variance
+    - exact_zero_observation_count
+    - cross_sectional_rank
+    - exposure_normalization_residual
+    - standardization_invariance_residual
+    - design_fingerprint_count
+  primary_diagnostic_input: source_time_matrix_15x5
+  channel_selection_permitted: false
+  feature_removal_permitted: false
+  target_or_model_access_permitted: false
+  significance_testing_permitted: false
+
+# ---------------------------------------------------------------------------
+# Expected matrix shape.
+# ---------------------------------------------------------------------------
+matrices:
+  per_variant:
+    rows: 180
+    columns: 5
+    cells: 900
+    numeric_cells: 825
+    masked_cells: 75
+    fully_numeric_rows: 165
+    fully_masked_rows: 15
+  both_variants:
+    wide_rows: 360
+    cells: 1800
+    numeric_cells: 1650
+    masked_cells: 150
+  variants_horizontally_concatenated: false
+  ten_column_modeling_matrix_created: false
+  ind_04_rows_dropped: false
+  ind_04_masks_converted_to_zero: false
+  rows_removed_to_make_a_complete_case_table: false
+
+development_window:
+  issue_month_start: "2024-01"
+  issue_month_end: "2025-03"
+  issue_months: 15
+  reference_month_start: "2023-11"
+  reference_month_end: "2025-01"
+  purge_rows_materialised: 0
+  locked_rows_materialised: 0
+  expected_source_gap_cells: 0
+
+# ---------------------------------------------------------------------------
+# Identifiability. The primary input is the 15 x 5 source-time matrix, never
+# the 165-row repeated panel.
+# ---------------------------------------------------------------------------
+identifiability:
+  source_time_matrix_shape: [15, 5]
+  stacked_eligible_panel_shape: [165, 5]
+  primary_input: source_time_matrix
+  stacked_rows_are_independent_claim_permitted: false
+  temporal_independence_claim_permitted: false
+  temporal_independence_reason: >-
+    Adjacent transformations overlap in time - a 3-month change and a 12-month
+    change share endpoints, and a 3-month volatility reads four consecutive
+    price levels - so consecutive monthly rows may be serially dependent.
+  expected_cross_sectional_rank_per_issue: 1
+  cross_sectional_rank_reason: >-
+    C[v,t] = E x[v,t]^T is an outer product of the exposure vector and one
+    source-time row, so its rank is one whenever price_level is finite and
+    positive. A rank above one indicates a conditioning, exposure, alignment or
+    pivot error.
+  expected_rank_equality:
+    - source_time_matrix
+    - every_industry_specific_matrix
+    - stacked_eligible_panel
+  correlations_are_descriptive_only: true
+  significance_tests_reported: false
+  correlations_used_to_select_a_channel: false
+  correlations_used_to_remove_a_transformation: false
+
+# ---------------------------------------------------------------------------
+# Expected structural identities. Verified numerically, not asserted.
+# ---------------------------------------------------------------------------
+expected_identities:
+  conditioning_formula: "D[v,g] = E[g] * X[v]"
+  exposure_normalization: "Xhat[v,g] = D[v,g] / E[g]"
+  standardization_invariance: "standardize(E*X) == standardize(X) for E > 0"
+  expected_distinct_raw_fingerprints_per_variant: 11
+  expected_distinct_normalized_fingerprints_per_variant: 1
+  expected_distinct_standardized_fingerprints_per_variant: 1
+  ineligible_industry_normalized: false
+  ineligible_industry_reason: >-
+    IND-04 is structurally ineligible with a null direction multiplier. Dividing
+    its conditioned values by its exposure would reconstruct a design that does
+    not exist.
+  conditioning_adds_cross_industry_scale: expected_true
+  conditioning_adds_temporal_degrees_of_freedom: expected_false
+  per_industry_standardization_removes_exposure_scale: expected_true
+  design_result_not_a_predictive_conclusion: true
+
+# ---------------------------------------------------------------------------
+# Degeneracy. Preserved, never removed.
+# ---------------------------------------------------------------------------
+degeneracy:
+  exact_zero_variance_checked: true
+  near_zero_variance_checked: true
+  exact_zero_observations_counted_separately: true
+  zero_variance_classification_must_match_across_eligible_industries: true
+  transformations_removed: []
+  feature_removal_authorized: false
+  target_inspected_while_determining_variance: false
+
+# ---------------------------------------------------------------------------
+# Availability, checked against the recorded fields.
+# ---------------------------------------------------------------------------
+availability:
+  reference_month_rule: "reference_month = issue_month - 2 months"
+  conditioned_policy_rule: "conditioned_policy_available_month <= issue_month"
+  structural_available_by: 2020-03-31
+  structural_reference_year: 2015
+  backdated_to_reference_year: false
+  source_policy_must_dominate_structural: true
+  source_available_as_of: null
+  latest_vintage_used: true
+  point_in_time_supported: false
+  fully_real_time_backtest: false
+  positional_shifting_used_instead_of_recorded_fields: false
+
+# ---------------------------------------------------------------------------
+# Channel separation.
+# ---------------------------------------------------------------------------
+channels:
+  artifacts_kept_separate: true
+  shared_structural_exposure_group: io_sector_093
+  prohibited:
+    - addition
+    - averaging
+    - pca_across_the_two_channels
+    - composite_fuel_oil_index
+    - ten_column_simultaneous_model_matrix
+    - selection_on_rank_variance_correlation_or_condition_number
+    - target_based_channel_selection
+  side_by_side_reporting_permitted: true
+  preferred_channel_produced: false
+
+# ---------------------------------------------------------------------------
+# Units and interpretation, carried forward from C9 unchanged.
+# ---------------------------------------------------------------------------
+units:
+  price_level: baht_per_litre_x_io_coefficient
+  log_change_1m_pct: percentage_point_log_change_x_io_coefficient
+  log_change_3m_pct: percentage_point_log_change_x_io_coefficient
+  log_change_12m_pct: percentage_point_log_change_x_io_coefficient
+  realized_volatility_3m_pct: percentage_point_log_change_volatility_x_io_coefficient
+interpretation:
+  structural_interaction_only: true
+  currency_cost_per_unit_of_industrial_output: false
+  elasticity: false
+  pass_through: false
+  causal_effect: false
+  forecast_coefficient: false
+  valuation_basis_alignment:
+    partial_mismatch_purchasers_price_coefficient_x_ex_refinery_price
+
+lineage:
+  branches_required: [c8_source_branch, structural_branch]
+  cells_requiring_lineage: 1800
+  masked_cells_require_lineage: true
+  re_derived_independently: true
+
+outputs:
+  protocol_markdown: docs/c10_design_matrix_protocol.md
+  audit_markdown: docs/c10_design_matrix_audit.md
+  audit_json: docs/c10_design_matrix_audit.json
+  wide_matrix: data/features/c10_fuel_oil_development_wide.parquet
+  mask_table: data/features/c10_fuel_oil_development_mask.parquet
+  diagnostics_table: data/features/c10_fuel_oil_diagnostics.parquet
+  generated_parquet_git_ignored: true

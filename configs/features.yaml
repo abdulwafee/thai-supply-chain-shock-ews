@@ -1,0 +1,35 @@
+# Feature configuration — Thai Supply Chain Shock Early Warning System
+#
+# DRAFT. No feature engineering logic is implemented yet
+# (src/thai_supply_chain_ews/features/build_features.py is a stub). This file
+# only records the settings that logic will read once implemented.
+
+schema_version: 1
+
+# --- point-in-time cutoff rule -------------------------------------------
+# A prediction "for month t" is assumed to be run at the end of calendar
+# month t; per-source available_as_of is what actually gates which values
+# may be used. See docs/architecture/data_architecture.md §8.
+cutoff_rule: end_of_month_t
+
+# --- feature sources -------------------------------------------------------
+# Only sources tagged role: feature in configs/data.yaml-adjacent source
+# metadata (see docs/data_source_inventory.md) may appear here. A source
+# tagged role: target must never be listed as a feature input.
+# UNRESOLVED: the actual feature list is not finalized — populated here as
+# named placeholders only, pending Phase 1 Group D (see docs/project_roadmap.md).
+candidate_features:
+  - name: brent_crude_price
+    source_id: FRED_BRENT
+    transform: "UNRESOLVED — likely level + rolling % change; not yet designed"
+  - name: pink_sheet_composite
+    source_id: WB_PINKSHEET
+    transform: "UNRESOLVED — which specific commodities map to which industries is not yet finalized (see data/mapping/commodity_to_industry.csv, currently empty)"
+
+# --- rolling window policy --------------------------------------------------
+# Placeholder only. Any rolling/trailing window must reference
+# reference_period <= the current row's reference_period only — never
+# centered, never forward-looking. See data_architecture.md §10 rule 12.
+rolling_windows:
+  policy: trailing_only
+  window_lengths_months: []   # UNRESOLVED — not yet chosen

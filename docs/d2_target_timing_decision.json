@@ -1,0 +1,80 @@
+{
+  "task": "D2",
+  "generated_at_utc": "2026-08-28T04:36:06.992253+00:00",
+  "timing_contract": {
+    "months_with_credible_evidence": 111,
+    "months_total": 127,
+    "evidence_class_counts": {
+      "attachment_corroborated": 80,
+      "attachment_last_modified_only": 9,
+      "directly_observed_release": 1,
+      "listing_timestamp_only": 1,
+      "migration_batch_contaminated": 15,
+      "rehosted_listing_later_than_attachment": 21
+    },
+    "coverage_start": "2016-01",
+    "coverage_end": "2026-07",
+    "credible_coverage_start": "2017-04",
+    "credible_coverage_end": "2026-07",
+    "publication_lag_days_min": 23,
+    "publication_lag_days_max": 66,
+    "publication_lag_days_median": 29,
+    "publication_lag_days_mean": 29.324324324324323,
+    "publishes_in_month_after_reference": false,
+    "availability_lag_months": 1,
+    "same_month_availability_supported": false,
+    "required_window_start": "2020-04",
+    "required_window_end": "2025-06",
+    "required_window_fully_evidenced": true,
+    "required_window_missing_months": [],
+    "directly_observed_release": {
+      "reference_month": "2026-07",
+      "observed_between_utc": [
+        "2026-08-26T03:13:00Z",
+        "2026-08-28T00:00:00Z"
+      ],
+      "before_last_modified": "2026-07-27T04:37:30Z",
+      "after_last_modified": "2026-08-27T05:12:16Z",
+      "before_sha256": "19cec1fd781b3a9098c393721b56548817d8275df71e235783864477de2b6389",
+      "after_sha256": "b13dac215b5b1fd4ae2c403dbea844f0530ff9c4c269feb87b10359ddb69bb75",
+      "months_added": [
+        "2026-07"
+      ],
+      "months_removed": [],
+      "marker_moved_from": "2026-06",
+      "marker_moved_to": "2026-07",
+      "url": "https://www.oie.go.th/assets/portals/1/fileups/2/files/Industrial%20index/indexes/month/Prodidx1.xlsx",
+      "interpretation": "The live workbook is overwritten in place. A release adds the new reference month and moves the marker glyph forward; the previous vintage is not retained at this URL."
+    },
+    "marker_semantics_documented": false,
+    "marker_note": "The live workbook marks its newest reference month (2026-06) with a trailing glyph, and the marker moves to the next month on the following release while the previous month keeps a value. No legend for the glyph appears in the workbook, so its meaning is recorded as observed behaviour, not asserted as a preliminary flag.",
+    "contract_status": "resolved",
+    "blockers": []
+  },
+  "b4_assumption": {
+    "b4_assumption": "current-month stress is known at forecast origin t",
+    "assumption_status": "violated",
+    "measured_availability_lag_months": 1,
+    "measured_publication_lag_days_median": 29,
+    "explanation": "OIE first publishes reference month t a median of 29 days after the end of t, i.e. during month t+1. At forecast origin t the most recent published reference month is therefore t-1, not t.",
+    "affects_b4_baselines": true,
+    "affects_d1_feature_assembly": true,
+    "b4_split_changed": false,
+    "remedy_deferred": true,
+    "remedy_note": "D2 is an audit. The split, the targets and the D1 models are left untouched; correcting the assumption is a separate, deliberate decision."
+  },
+  "evidence_outcome": "timing_only_supported",
+  "d1_limitation": {
+    "d1_primary_result": "incremental_signal_not_supported",
+    "d1_nested_protocol_fully_executed": false,
+    "d1_fallback_count": 6,
+    "d1_protocol_deviation_reason": "insufficient_pre_origin_calibration_history",
+    "fallback_strongly_shrinks_toward_benchmark": true,
+    "fallback_guaranteed_to_worsen_model": false,
+    "fallback_effect_direction": "unknown",
+    "d1_approved_for_locked_test": false,
+    "correction_note": "D1 reporting (docs/d1_development_results.md section 7 and docs/d1_modeling_protocol.md section 4) stated that the fallback configuration (alpha=100, nonferrous_channel=none) could only make the model look worse and never better. That claim is withdrawn here as unsupported. Ridge with alpha=100 still fits an intercept and can retain Brent and Rubber predictors, so heavy shrinkage biases predictions toward the benchmark without guaranteeing a direction for the resulting error. The effect is recorded as unknown.",
+    "historical_entries_preserved": "AD-R39 through AD-R58 are preserved byte-for-byte. This correction is recorded as a new decision, not by editing the historical record.",
+    "remedy_status": "The fallback was caused by insufficient pre-origin history. D2 finds that history cannot be honestly extended, so the deviation cannot be remedied by extension."
+  }
+}

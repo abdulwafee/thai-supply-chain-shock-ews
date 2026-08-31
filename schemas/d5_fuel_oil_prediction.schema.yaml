@@ -1,0 +1,229 @@
+# Schema definition (documentation-level, not yet enforced by code) for the two
+# Task D5 generated tables:
+#
+#   data/model_input/d5_fuel_oil_predictions.parquet    (one row per prediction)
+#   data/model_input/d5_fuel_oil_coefficients.parquet   (one row per coefficient)
+#
+# Both are generated and git-ignored; docs/d5_development_results.json and
+# docs/d5_assembly_audit.json are the committed record.
+#
+# DEVELOPMENT ONLY. Every row carries a development issue month between 2024-01
+# and 2025-03. A purge or locked origin in this table is a contract violation,
+# not a filtering oversight, and the runner raises rather than dropping it.
+
+schema_version: 1
+task: D5
+protocol_version: d5_pooled_fuel_oil_interaction_protocol_v1
+model_name: fixed_pooled_partial_ridge_v1
+
+tables:
+  # -------------------------------------------------------------------------
+  - table: model_input/d5_fuel_oil_predictions
+    grain: [variant_id, horizon, issue_month, industry_id]
+    primary_key: [variant_id, horizon, issue_month, industry_id]
+    expected_rows: 720          # 2 variants x 2 horizons x 15 issues x 12 industries
+    row_composition:
+      pooled_model_predictions: 660
+      ind_04_benchmark_passthrough: 60
+      per_variant_horizon: 180
+      per_variant_horizon_modeled: 165
+      per_variant_horizon_passthrough: 15
+    foreign_keys:
+      - column: industry_id
+        references: mapping/industry_map.csv#industry_id
+      - column: variant_id
+        references: "configs/d5_fuel_oil_interaction.yaml#channels.variants"
+      - columns: [issue_month, industry_id, horizon]
+        references: targets/industry_month_targets
+    columns:
+      - name: variant_id
+        type: string
+        nullable: false
+        allowed_values: [fo600_direct_sector093, fo1500_direct_sector093]
+        note: >-
+          Co-equal separate variants, fitted independently. They never share a
+          fit, a feature table, a penalty or a model. No row of this table
+          identifies a preferred or primary channel, because none was selected.
+      - name: horizon
+        type: int64
+        nullable: false
+        allowed_values: [1, 3]
+        note: Fitted separately; a coefficient never crosses horizons.
+      - name: issue_month
+        type: string
+        nullable: false
+        format: "YYYY-MM"
+        range: ["2024-01", "2025-03"]
+        forbidden_ranges:
+          purge: ["2025-04", "2025-06"]
+          locked: ["2025-07", "2026-04"]
+      - name: industry_id
+        type: string
+        nullable: false
+        cardinality: 12
+        note: >-
+          All twelve, including IND-04. It is excluded from the FIT, not from
+          the evaluation, and stays in the primary metric denominator.
+      - name: reference_month
+        type: string
+        nullable: false
+        format: "YYYY-MM"
+        rule: "reference_month = issue_month - 2 (recorded, never inferred)"
+      - name: prediction_source
+        type: string
+        nullable: false
+        allowed_values: [pooled_model, benchmark_passthrough_direction_ambiguous]
+      - name: benchmark_name
+        type: string
+        nullable: false
+        allowed_values:
+          - operational_persistence_latest_published    # h=1
+          - operational_persistence_trailing_3m_max     # h=3
+        note: >-
+          Reproduced from the registered formula by running the operational
+          walk-forward, never copied from a D3 result artifact.
+      - name: benchmark_score
+        type: float64
+        nullable: false
+        range: [0, 100]
+      - name: residual_correction
+        type: float64
+        nullable: false
+        note: >-
+          Exactly 0.0 for IND-04, because no correction exists for it. That is a
+          structural exclusion, not a coefficient estimated at zero, and the
+          lineage guard raises on the second description.
+      - name: predicted_score
+        type: float64
+        nullable: false
+        range: [0, 100]
+        rule: "clip(benchmark_score + residual_correction, 0, 100)"
+        clipping_bounds_tuned: false
+      - name: clipped
+        type: bool
+        nullable: false
+      - name: observed_score
+        type: float64
+        nullable: false
+        range: [0, 100]
+        read_only_after_prediction_freeze: true
+        note: >-
+          Supplied by the guarded target reader, which refuses to return a value
+          until the Phase-A protocol checksum is verified AND the prediction for
+          that key has been registered as frozen.
+      - name: latest_available_stress_month
+        type: string
+        nullable: false
+        rule: "issue_month - 1"
+      - name: calibration_reference_end
+        type: string
+        nullable: false
+        rule: "<= issue_month - 1"
+      - name: target_window_start
+        type: string
+        nullable: false
+      - name: target_window_end
+        type: string
+        nullable: false
+      - name: target_available_month
+        type: string
+        nullable: false
+        rule: "target_window_end + 1 month (registered D3 rule)"
+      - name: training_issue_count
+        type: int64
+        nullable: false
+      - name: training_row_count
+        type: int64
+        nullable: false
+        rule: "training_issue_count * 11 eligible industries"
+      - name: fitted_coefficient_checksum
+        type: string
+        nullable: false
+        pattern: "^[0-9a-f]{64}$"
+      - name: prediction_lineage_checksum
+        type: string
+        nullable: false
+        pattern: "^[0-9a-f]{64}$"
+        distinct_required: 720
+
+  # -------------------------------------------------------------------------
+  - table: model_input/d5_fuel_oil_coefficients
+    grain: [variant_id, horizon, outer_issue, coefficient]
+    primary_key: [variant_id, horizon, outer_issue, coefficient]
+    expected_rows: 1260         # 2 variants x 2 horizons x 15 issues x 21 columns
+    columns:
+      - name: variant_id
+        type: string
+        nullable: false
+      - name: horizon
+        type: int64
+        nullable: false
+      - name: outer_issue
+        type: string
+        nullable: false
+      - name: coefficient
+        type: string
+        nullable: false
+        prefixes:
+          src__: 5     # penalized
+          int__: 5     # penalized
+          fe__: 11     # unpenalized industry fixed effects
+      - name: block
+        type: string
+        nullable: false
+        allowed_values: [source, interaction, industry_fixed_effect]
+      - name: value
+        type: float64
+        nullable: false
+      - name: penalized
+        type: bool
+        nullable: false
+        note: >-
+          True for the ten source and interaction coefficients, false for the
+          eleven industry fixed effects. Shrinking an industry intercept toward
+          zero shrinks it toward a stress score of zero, which is a strong claim
+          rather than a neutral prior.
+
+# ---------------------------------------------------------------------------
+estimator:
+  name: fixed_pooled_partial_ridge_v1
+  lambda: 1.0
+  loss_normalised_by_n: true
+  note: >-
+    The 1/n matters. With an unnormalised sum the same lambda is a weaker
+    penalty on every larger training panel, and the panel grows from 231 rows to
+    385 across the walk-forward, so the specification would drift without a
+    number being edited.
+  redundant_global_intercept: false
+  alpha_grid: false
+  inner_cv: false
+  model_averaging: false
+  fallback_estimator: false
+  hyperparameter_search: false
+  outcome_based_feature_removal: false
+
+prohibited_columns:
+  reason: >-
+    D5 is a development-only exploratory evaluation. None of these may appear in
+    any D5 table under any name.
+  columns:
+    - purge_score
+    - locked_test_score
+    - locked_test_outcome
+    - selected_channel
+    - primary_channel
+    - preferred_variant
+    - tuned_alpha
+    - selected_alpha
+    - cv_fold
+    - model_feature_approved
+
+scope:
+  evaluation_scope: development_only
+  confirmatory_evaluation: false
+  latest_vintage_evaluation: true
+  fully_real_time_backtest: false
+  channel_selected: false
+  purge_evaluated: false
+  locked_test_accessed: false
+  model_feature_approved: false

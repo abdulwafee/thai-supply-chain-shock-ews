@@ -1,0 +1,271 @@
+# Task D3 — Operational forecast-origin contract.
+#
+# This is a NEW versioned contract. It does not overwrite B4. B4 and D1 remain
+# reproducible exactly as they were, and are relabelled non-operational because
+# they allowed stress month t at forecast origin t — which D2 proved is not
+# published until month t+1.
+#
+# PREREGISTERED: thresholds and expected counts below were written before the
+# D3 run produced any metric.
+
+schema_version: 1
+task: D3
+operational_contract_version: operational_contract_v1
+
+# ---------------------------------------------------------------------------
+# What this evaluation is, stated precisely.
+#
+# Timing validity and vintage validity are SEPARATE booleans. Release timing is
+# now honoured; the target VALUES are still latest-vintage, because D2 found no
+# complete 12-industry MPI vintages exist. Merging these into one flag would let
+# a timing fix be mistaken for a point-in-time backtest.
+# ---------------------------------------------------------------------------
+evaluation_framing: release_lag_aware_latest_vintage_evaluation
+release_timing_aware: true
+latest_vintage_target_values: true
+point_in_time_target_values: false
+fully_real_time_backtest: false
+same_month_stress_used: false
+
+superseded_framing:
+  b4_and_d1: non_operational_calendar_boundary_experiment
+  reason: >-
+    B4 and D1 used stress month t at forecast origin t. D2 established that OIE
+    first publishes reference month t a median 29 days after t ends, so that
+    value did not exist at origin t. Their artifacts are preserved and remain
+    reproducible; only their operational interpretation is withdrawn.
+
+# ---------------------------------------------------------------------------
+# The forecast-origin contract.
+#
+# Seven distinct concepts, kept distinct on purpose. Collapsing any two of them
+# is how a release-lag error re-enters.
+# ---------------------------------------------------------------------------
+forecast_origin_contract:
+  forecast_issue_month: t
+  forecast_issue_date: verified OIE release date during t for reference month t-1
+  latest_available_stress_month: t-1
+  calibration_reference_end: t-1
+  horizons:
+    1:
+      target_month: t+1
+      target_window_start_offset: 1
+      target_window_end_offset: 1
+    3:
+      target_window_start_offset: 1
+      target_window_end_offset: 3
+  is_nowcast_of_month_t: false
+  note: >-
+    The forecast is issued near the end of month t, after OIE publishes month
+    t-1. It is not a nowcast of month t: month t is unobserved at issue time and
+    is never predicted, only skipped.
+
+distinguished_concepts:
+  - reference_month          # the month the MPI value describes
+  - publication_date         # the date OIE first published it
+  - publication_month        # the calendar month containing that date
+  - forecast_issue_month     # t, the month the forecast is issued in
+  - latest_observable_stress_month  # t-1
+  - target_month_or_window   # t+1, or t+1..t+3
+  - target_availability_month  # target_window_end + 1
+
+# Conditions that MUST raise rather than degrade silently.
+raise_conditions:
+  - unresolved_release_date
+  - reference_month_is_not_t_minus_1
+  - publication_after_registered_issue_date
+  - current_month_stress_requested
+  - later_stress_month_in_calibration
+  - later_stress_month_in_baseline_construction
+  - training_label_available_after_issue_month
+
+# ---------------------------------------------------------------------------
+# Split. Issue months, unchanged from B4.
+# ---------------------------------------------------------------------------
+split:
+  development:
+    start: "2024-01"
+    end: "2025-03"
+    expected_issue_months: 15
+    expected_industries: 12
+    expected_keys_per_horizon: 180
+  purge:
+    start: "2025-04"
+    end: "2025-06"
+    metrics_calculated: false
+  locked_test:
+    evaluated: false
+    outcomes_read: false
+    horizons:
+      1: {start: "2025-07", end: "2026-04"}
+      3: {start: "2025-07", end: "2026-02"}
+    note: >-
+      The D3 runner exposes no option, environment variable, function argument
+      or alternate code path that can evaluate a locked origin. Locked origins
+      are rejected at the contract layer, not filtered at the end.
+
+# ---------------------------------------------------------------------------
+# Calibration. Stricter than B3/B4: cutoff is t-1, not t.
+# ---------------------------------------------------------------------------
+calibration:
+  reference_end_offset_months: -1
+  min_reference_observations: 24
+  refit_every_origin: true
+  reuse_global_calibrator: false
+  freeze_before_prediction: true
+  transform_evaluation_target_after_predictions_frozen: true
+  expected:
+    - {issue_origin: "2024-01", reference_end: "2023-12", observations_per_industry: 24}
+    - {issue_origin: "2025-03", reference_end: "2025-02", observations_per_industry: 38}
+  reuse_b3_calibrated_scores: false
+  reuse_b3_raw_target_values: true
+  note: >-
+    B3 raw target windows and raw values are reused unchanged. B3 CALIBRATED
+    scores are not, because the D3 calibrator has a stricter information cutoff
+    (t-1 rather than t) and would otherwise carry an unpublished month into the
+    scale.
+
+# ---------------------------------------------------------------------------
+# Operational training-label availability.
+#
+# A label is not usable merely because its window closed. The last MPI month it
+# needs is published one month later.
+# ---------------------------------------------------------------------------
+label_availability:
+  rule: target_available_month <= forecast_issue_month
+  target_available_month: target_window_end + 1 month
+  superseded_rule: target_window_end <= t   # B4; admits an unpublished month
+  raise_on_violation: true
+  expected:
+    - {horizon: 1, issue_origin: "2024-01", latest_permitted_label_origin: "2023-11", rows: 276}
+    - {horizon: 1, issue_origin: "2025-03", latest_permitted_label_origin: "2025-01", rows: 444}
+    - {horizon: 3, issue_origin: "2024-01", latest_permitted_label_origin: "2023-09", rows: 252}
+    - {horizon: 3, issue_origin: "2025-03", latest_permitted_label_origin: "2024-11", rows: 420}
+
+# ---------------------------------------------------------------------------
+# Operational baselines. Not tuned, not blended, not weight-averaged.
+# ---------------------------------------------------------------------------
+baselines:
+  - name: operational_persistence_latest_published
+    horizons: [1, 3]
+    formula: "C_t(S_{t-1})"
+    reuses_production_function: false
+    note: "Must not read S_t. h=3 carries it alongside the trailing-3m variant."
+  - name: operational_persistence_trailing_3m_max
+    horizons: [3]
+    formula: "max{C_t(S_{t-3}), C_t(S_{t-2}), C_t(S_{t-1})}"
+    reuses_production_function: false
+  - name: operational_industry_historical_mean
+    horizons: [1, 3]
+    formula: "mean of C_t(y) over labels with target_available_month <= t, same industry only"
+    reuses_production_function: true
+    pools_industries: false
+  - name: operational_seasonal_naive
+    horizons: [1, 3]
+    formula: "h=1: C_t(S_{t-11}); h=3: C_t(max(S_{t-11}, S_{t-10}, S_{t-9}))"
+    reuses_production_function: true
+    note: >-
+      The B4 formula is unchanged and remains applicable: every source month is
+      at or before t-1, so it is published by the issue date. Publication is
+      enforced by construction because the stress map contains only months <= t-1.
+  - name: operational_no_contraction
+    horizons: [1, 3]
+    formula: "C_t(0)"
+    reuses_production_function: true
+
+expected_prediction_counts:
+  horizon_1: {baselines: 4, rows_per_baseline: 180, total: 720}
+  horizon_3: {baselines: 5, rows_per_baseline: 180, total: 900}
+  combined: 1620
+  per_issue_month_horizon_baseline: 12
+  unique_key: [forecast_origin_month, industry_id, horizon_months, baseline_name]
+
+# ---------------------------------------------------------------------------
+# Metrics and uncertainty. Same definitions as B4.
+# ---------------------------------------------------------------------------
+metrics:
+  primary: macro_industry_mae
+  secondary:
+    - pooled_mae
+    - macro_industry_rmse
+    - pooled_rmse
+    - median_absolute_error
+    - pooled_spearman
+    - per_industry_mae
+    - by_development_block
+  high_stress:
+    threshold: 85
+    report: [observed_events, predicted_events, precision, recall, f1, pr_auc, false_negatives]
+    severe_threshold: 95
+    severe_reporting: descriptive_only
+    threshold_tuned: false
+
+bootstrap:
+  method: moving_block
+  cluster_by: issue_month
+  preserve_all_industries: true
+  block_length_months: 3
+  replications: 1000
+  confidence_level: 0.95
+  random_seed: 20260828
+  report_intervals_for:
+    - macro_mae
+    - skill_vs_operational_industry_historical_mean
+    - paired_differences_between_operational_baselines
+
+# ---------------------------------------------------------------------------
+# Operational benchmark selection. Development data only.
+# ---------------------------------------------------------------------------
+benchmark_selection:
+  per_horizon: true
+  rule:
+    - lowest_macro_industry_mae
+    - fewer_false_negatives_at_score_85_if_effectively_tied
+    - simpler_baseline_if_still_tied
+  tie_tolerance: 1.0e-6
+  simplicity_order:
+    - operational_no_contraction
+    - operational_persistence_latest_published
+    - operational_persistence_trailing_3m_max
+    - operational_seasonal_naive
+    - operational_industry_historical_mean
+  may_not_use:
+    - purge_outcomes
+    - locked_outcomes
+    - d1_model_performance
+    - sensitivity_variants
+    - b4_current_month_persistence
+  b4_benchmark_role: historical_non_operational_reference_only
+  operational_penalty: d3_selected_benchmark_mae - b4_selected_benchmark_mae
+  operational_penalty_attribution: >-
+    NOT attributable solely to publication lag. The calibrator cutoff and the
+    training-label availability rule changed at the same time, so the difference
+    is a joint effect of all three changes.
+
+# ---------------------------------------------------------------------------
+# Contract status.
+# ---------------------------------------------------------------------------
+contract_statuses:
+  - operational_month_timing_supported
+  - operational_timing_unverified
+  - operational_timing_violated
+
+status_requirements:
+  operational_month_timing_supported:
+    - all_development_issue_dates_verified
+    - every_input_obeys_release_timing
+    - no_same_month_stress_used
+    - label_availability_enforced
+
+immutability:
+  may_change_b1_source_data: false
+  may_change_b3_raw_targets_or_windows: false
+  may_change_b4_artifacts_or_metrics: false
+  may_change_d1_predictions_or_metrics: false
+  may_change_d2_release_inventory: false
+  may_change_c1_to_c4_data_or_features: false
+  may_change_split_date_ranges: false
+  may_train_model: false
+  may_use_commodity_features: false
+  may_evaluate_locked_test: false
+  may_overwrite_b4_or_d1_outputs: false

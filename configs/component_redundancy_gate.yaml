@@ -1,0 +1,160 @@
+# Component redundancy decision gate — Task B2
+#
+# WRITTEN AND COMMITTED BEFORE ANY B2 RESULT WAS COMPUTED.
+# `src/thai_supply_chain_ews/targets/component_diagnostics.py` loads this file
+# and applies it mechanically. No threshold here was chosen or adjusted after
+# seeing a diagnostic value.
+#
+# This gate answers one narrow question: do MPI and Capacity Utilization carry
+# sufficiently distinct adverse-shock information to justify a two-component
+# MVP index? It does NOT test statistical independence, and `non_redundant`
+# must never be described as independence — two components can be strongly
+# dependent and still both be worth carrying.
+
+schema_version: 1
+gate_version: component_redundancy_gate_v1
+task: B2
+
+# --- diagnostic sample -------------------------------------------------------
+sample:
+  edition_scope: current_2021_based_only
+  exclude_preliminary: true
+  require_model_eligible: true
+  yoy_lag_months: 12
+  first_usable_month: 2022-01-01
+  last_usable_month: 2026-05-01
+  expected_months_per_industry: 53
+  expected_total_observations: 636
+  expected_industries: 12
+  impute_first_twelve_months: false # never
+
+# --- component semantics -----------------------------------------------------
+# Sign convention: POSITIVE = deterioration for both components, so the two are
+# directly comparable in direction after normalization.
+components:
+  mpi:
+    series_type: index_number
+    adverse_transform: "-100 * (mpi_t / mpi_t_minus_12 - 1)"
+    unit: percent
+    fail_on_non_positive_denominator: true
+  capu:
+    series_type: percent_rate
+    adverse_transform: "-(capu_t - capu_t_minus_12)"
+    unit: percentage_points
+    # A percent rate must NOT receive index-number treatment. Task A2.1 found
+    # this exact error in an earlier task and it is guarded here.
+    forbid_relative_percentage_change: true
+    forbid_multiplicative_ratio: true
+
+# --- diagnostic normalization ------------------------------------------------
+# These ranks exist ONLY to make two differently-scaled components comparable
+# inside this diagnostic. They use the full B2 sample and are therefore NOT
+# leakage-safe. They must never be written into the production panel or used as
+# model features. Leakage-safe (training-only / expanding-history) normalization
+# is Task B3's job.
+diagnostic_normalization:
+  method: industry_relative_percentile_rank
+  label: diagnostic_only_full_sample_rank
+  tie_method: average
+  # percentile = average_ascending_rank / n, so the largest value maps to 1.0
+  percentile_definition: "average_ascending_rank / n"
+  leakage_safe: false
+  may_enter_production_panel: false
+
+# --- high-stress episode definition ------------------------------------------
+high_stress:
+  top_quantile: 0.20
+  # A month is high-stress when its within-industry percentile exceeds 0.80.
+  # Ties receive the same average rank, so a tied group straddling the boundary
+  # is included or excluded as a whole — deterministic, never order-dependent.
+  rule: "percentile > (1 - top_quantile)"
+
+# --- bootstrap ---------------------------------------------------------------
+bootstrap:
+  method: moving_block
+  block_length_months: 6
+  replications: 1000
+  confidence_level: 0.95
+  random_seed: 20260827
+  # Blocks resample PAIRS (mpi, capu) together, preserving the contemporaneous
+  # relationship being estimated while retaining short-run autocorrelation.
+  resample_pairs_jointly: true
+  per_industry_seed_rule: "numpy default_rng([random_seed, industry_index])"
+
+# --- lead-lag ----------------------------------------------------------------
+lead_lag:
+  min_lag: -3
+  max_lag: 3
+  # SIGN CONVENTION, stated once and applied everywhere:
+  #   corr(lag = k) = Spearman( mpi_adverse[t], capu_adverse[t + k] )
+  #   k > 0  -> CapU is read at a LATER month than MPI  -> MPI leads CapU
+  #   k < 0  -> CapU is read at an EARLIER month than MPI -> CapU leads MPI
+  #   k = 0  -> contemporaneous
+  # This is a descriptive association only. No causal or shock-transmission
+  # claim may be made from it.
+  sign_convention: "corr(k) = spearman(mpi[t], capu[t + k]); k>0 means MPI leads CapU"
+  causal_interpretation_permitted: false
+
+# --- stability subperiods ----------------------------------------------------
+stability:
+  subperiods:
+    - name: early
+      start: 2022-01-01
+      end: 2023-12-01
+    - name: late
+      start: 2024-01-01
+      end: 2026-05-01
+  # Both windows are small. A wide confidence interval in a subperiod is NOT by
+  # itself grounds to reject a component.
+  reject_on_wide_subperiod_ci: false
+
+# --- data-quality checks -----------------------------------------------------
+quality:
+  min_usable_observations_per_industry: 40
+  max_missingness_pct: 0.0
+  min_unique_values: 10
+  near_constant_std_threshold: 1.0e-6
+  # Suspicious values are FLAGGED, never auto-deleted or winsorized.
+  auto_winsorize: false
+  auto_delete_outliers: false
+
+# --- classification thresholds -----------------------------------------------
+classification:
+  redundant:
+    # ALL must hold.
+    pooled_abs_spearman_min: 0.85
+    industries_with_abs_spearman_at_least: 0.75
+    industries_required: 9
+    median_jaccard_min: 0.60
+  non_redundant:
+    # The full `redundant` rule must be false, AND all of these must hold.
+    require_redundant_rule_false: true
+    require_coverage_checks_pass: true
+    require_non_constant_series: true
+    # Counted separately per component: industries having >=1 MPI-only
+    # high-stress month, and industries having >=1 CapU-only high-stress month.
+    # Both counts must reach this number.
+    min_industries_with_component_specific_stress: 6
+    require_no_unresolved_semantics_failure: true
+  inconclusive_when: >-
+    Neither classification is defensible, diagnostics conflict materially, or a
+    data-quality or unit-semantics problem remains unresolved.
+
+# --- approval rules ----------------------------------------------------------
+# Deliberately four separate fields. One boolean cannot carry four meanings.
+approval:
+  component_semantics_approved_requires:
+    - correct_adverse_transform
+    - correct_direction
+    - correct_unit
+    - coverage_checks_pass
+    - stability_checks_pass
+  equal_weight_composite_allowed_values: [approved, conditional, rejected]
+  equal_weight_composite_approved_requires:
+    - both_components_semantics_approved
+    - redundancy_status_is_non_redundant
+  equal_weight_rationale: >-
+    Equal weighting is an MVP DESIGN CHOICE applied only after industry-relative
+    normalization. It is not an estimated optimal weight, and no optimization
+    was performed to obtain it.
+  composite_index_built_in_b2: false

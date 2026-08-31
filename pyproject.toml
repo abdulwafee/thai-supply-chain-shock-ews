@@ -1,0 +1,77 @@
+[build-system]
+# setuptools 77+ is required for PEP 639: an SPDX `license` expression and
+# `license-files`. Task E2-R1 uses that form rather than the deprecated
+# `License :: OSI Approved :: MIT License` classifier — under the current
+# packaging standard a classifier alongside an SPDX expression is an error, not
+# a belt-and-braces extra.
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "thai-supply-chain-ews"
+version = "0.1.0"
+description = "Thai Supply Chain Shock Early Warning System — monthly industry stress scoring and risk-level classification for 12 Thai manufacturing groups."
+readme = "README.md"
+
+# Task E2-R1, on the owner's decision. The floor is 3.12 because that is what
+# the resolved dependency set actually admits (numpy 2.5.2 requires >=3.12) and
+# what the locks were regenerated and verified on. Task E2 originally expected
+# 3.11; that expectation was found incompatible with the resolved set and the
+# record of it is preserved in docs/e2_release_readiness.json, not rewritten.
+requires-python = ">=3.12"
+
+# The MIT licence covers this project's own code and documentation only. It
+# grants no rights in any third-party dataset or publication — see LICENSE,
+# THIRD_PARTY_NOTICES.md and docs/e2_data_license_review.md.
+license = "MIT"
+license-files = ["LICENSE"]
+
+# Deliberately no personal author metadata. The owner's verified name, email,
+# ORCID and affiliation are not available, and inventing them would put a real
+# person's identity on a claim they never made.
+authors = [{ name = "Thai Supply Chain Shock EWS contributors" }]
+
+# Minimal dependencies only. Heavy ML libraries (tree-model frameworks,
+# dashboard framework) are deliberately NOT added yet — they belong to Phase 1
+# Groups F and H (see docs/project_roadmap.md) and will be added when that
+# work actually begins, not speculatively now.
+#
+# Task E2 reconciled this list against an AST scan of every import in src/,
+# scripts/ and tests/. Two disagreements were found and both are fixed here:
+#   - pypdf was imported but undeclared (nesdc_input_output, world_bank_pink_
+#     sheet_vintages). It worked only because it happened to be installed.
+#   - python-dotenv was declared but never imported. Nothing calls load_dotenv;
+#     the project reads os.environ directly in config.py and .env.example tells
+#     the reader to export the variable. A declaration nothing uses is a claim
+#     about the code that is not true, so it is removed rather than justified.
+dependencies = [
+    "pandas>=2.0",
+    "numpy>=1.24",
+    "pyyaml>=6.0",
+    "openpyxl>=3.1",  # reads OIE's real .xlsx source files — thai_supply_chain_ews.data.oie
+    "xlrd>=2.0",  # reads EPPO's legacy .xls price-structure workbooks (2021-01..2023-01) — thai_supply_chain_ews.data.eppo_price_structure
+    "pypdf>=4.0",  # reads NESDC and World Bank PDF releases — thai_supply_chain_ews.data.nesdc_input_output, .world_bank_pink_sheet_vintages
+    "matplotlib>=3.8",  # lightweight diagnostic plots — scripts/validate_oie_overlap.py
+    "pyarrow>=15",  # typed Parquet outputs, reached through pandas engine="pyarrow" rather than a direct import — thai_supply_chain_ews.data.build_panel (B1)
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "ruff>=0.6",
+    "build>=1.2",  # builds the wheel and sdist that CI inspects — Task E2
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]

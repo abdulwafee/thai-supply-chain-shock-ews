@@ -1,0 +1,339 @@
+# Schema definition (documentation-level, not yet enforced by code) for the
+# Task E2-R1 source-release decision and manifest:
+#
+#   docs/e2r1_source_release_decision.json
+#   docs/e2r1_source_release_decision.md
+#   docs/e2r1_release_manifest.json
+#
+# E2-R1 SUPERSEDES TASK E2's RELEASE DECISION. It does not edit E2's findings.
+# E2 concluded, correctly on the evidence available then, that the candidate was
+# blocked on a licence decision and that its original interpreter expectation
+# was incompatible with the resolved dependency set. Every E2 artifact that
+# records a finding is pinned by sha256 in the E2-R1 contract and re-verified
+# before this task does anything. A superseded finding edited to agree with a
+# later decision stops being a record of what was known when.
+#
+# THE MIT GRANT IS SCOPED. It covers this project's own code and documentation.
+# It grants nothing in World Bank, NESDC, OIE or EPPO material, none of which is
+# redistributed here, and a guard raises on any released document that says
+# otherwise.
+#
+# THE RELEASE IS A SOURCE CHECKOUT. The wheel and sdist are diagnostic artifacts
+# built so their contents can be audited; neither is a supported runtime, and
+# both are excluded from the release manifest.
+
+schema_version: 1
+task: E2-R1
+documents:
+  - docs/e2r1_source_release_decision.json
+  - docs/e2r1_source_release_decision.md
+  - docs/e2r1_release_manifest.json
+contract_version: e2r1_source_release_contract_v1
+
+# ---------------------------------------------------------------------------
+supersession:
+  fields:
+    - name: supersedes_release_decision
+      type: string
+      fixed_value: E2
+    - name: e2_original_readiness_preserved
+      type: bool
+      fixed_value: true
+    - name: owner_decision_received_after_e2
+      type: bool
+      fixed_value: true
+    - name: historical_findings_rewritten
+      type: bool
+      fixed_value: false
+    - name: pinned_artifact_checksums
+      type: map[path, sha256]
+      note: >-
+        Seven E2 artifacts. Re-verified before anything else happens; a mismatch
+        stops the run rather than producing a release built on a record that
+        moved underneath it.
+    - name: verified.artifacts
+      type: map[path, record]
+      per_record_fields: [present, expected_sha256, observed_sha256, unchanged]
+  preserved_e2_findings:
+    - readiness_status
+    - blockers
+    - missing_license_finding
+    - original_python_expectation
+    - post_observation_python_correction
+    - installed_distribution_resource_resolution_limitation
+    - public_release_manifest_checksum
+    - security_result
+    - dependency_result
+    - clean_tree_result
+  not_pinned:
+    - docs/e2_reproducibility_guide.md
+    - docs/e2_data_license_review.md
+  not_pinned_reason: >-
+    Neither carries a readiness verdict or a finding. They are operating
+    instructions and a licence position, and instructions that have become wrong
+    are a hazard rather than a record. Both were revised, each with an explicit
+    note of what E2 said and what changed.
+
+# ---------------------------------------------------------------------------
+license:
+  fields:
+    - name: code_license
+      type: string
+      fixed_value: MIT
+    - name: spdx_identifier
+      type: string
+      fixed_value: MIT
+      note: Read back from packaging metadata, not from the contract.
+    - name: license_file
+      type: string
+      fixed_value: LICENSE
+    - name: license_file_sha256
+      type: string
+      pattern: "^[0-9a-f]{64}$"
+    - name: copyright_line
+      type: string
+      fixed_value: "Copyright (c) 2026 Thai Supply Chain Shock EWS contributors"
+    - name: owner_license_decision_required
+      type: bool
+      fixed_value: false
+    - name: license_blocker_cleared
+      type: bool
+      fixed_value: true
+    - name: unlicensed_placeholder_removed
+      type: bool
+      fixed_value: true
+    - name: osi_classifier_used
+      type: bool
+      fixed_value: false
+      note: >-
+        Under PEP 639 an SPDX expression supersedes the deprecated
+        "License :: OSI Approved" classifier and setuptools 77+ rejects both
+        together. The omission is a decision.
+    - name: author_metadata
+      type: list[string]
+      note: >-
+        A collective attribution. No personal name, email, ORCID or affiliation
+        was invented, and a guard raises on any that appears.
+  integrity_checks:
+    - the file exists
+    - five required MIT passages are present, matched as normalised phrases
+    - the copyright line matches the one the owner supplied
+    - packaging metadata declares the SPDX expression
+    - no "Unlicensed" placeholder survives anywhere in packaging metadata
+    - no deprecated licence classifier sits beside the SPDX expression
+  scope:
+    covers: [src/, scripts/, tests/, configs/, schemas/, docs/, data/mapping/,
+             data/raw/_manifests/]
+    does_not_cover: [World Bank, NESDC, OIE, EPPO, any other third-party source]
+    relicensing_of_third_party_material: false
+
+citation:
+  fields:
+    - {name: citation_file_created, type: bool, fixed_value: false}
+    - {name: citation_file_required_for_source_release, type: bool, fixed_value: false}
+    - {name: author_metadata_invented, type: bool, fixed_value: false}
+    - {name: citation_metadata_deferred_until_owner_identity_provided,
+       type: bool, fixed_value: true}
+  blocking: false
+
+# ---------------------------------------------------------------------------
+python_contract:
+  fields:
+    - {name: minimum_supported_python, type: string, fixed_value: "3.12"}
+    - {name: tested_python_versions, type: "list[string]", fixed_value: ["3.12"]}
+    - {name: python_311_supported, type: bool, fixed_value: false}
+    - {name: python_311_compatibility_claim_withdrawn, type: bool, fixed_value: true}
+    - {name: python_floor_changed_after_e2_observation, type: bool, fixed_value: true}
+    - {name: dependency_lock_python_compatible, type: bool, fixed_value: true}
+    - name: observed
+      type: map[site, string]
+      note: The version read from each of the seven sites that must agree.
+    - name: disagreements
+      type: list[string]
+      rule: "must be empty; a disagreement is a blocker, not a note"
+  consistency_sites:
+    - pyproject_requires_python
+    - ruff_target_version
+    - runtime_lock
+    - development_lock
+    - ci_workflow
+    - readme_setup
+    - reproducibility_guide
+  later_versions:
+    permitted_by_metadata: true
+    tested: false
+    note: Permitted is not tested. 3.13 and later are not claimed.
+
+# ---------------------------------------------------------------------------
+release_scope:
+  fields:
+    - {name: release_distribution_scope, type: string,
+       fixed_value: github_source_checkout}
+    - {name: supported_install_mode, type: string,
+       fixed_value: editable_source_checkout}
+    - {name: wheel_runtime_supported, type: bool, fixed_value: false}
+    - {name: sdist_runtime_supported, type: bool, fixed_value: false}
+    - {name: pypi_publication_supported, type: bool, fixed_value: false}
+    - {name: pypi_publication_authorized, type: bool, fixed_value: false}
+    - {name: standalone_installed_distribution_supported, type: bool,
+       fixed_value: false}
+  diagnostic_package:
+    artifact_class: diagnostic
+    supported_deliverable: false
+    published: false
+    excluded_from_public_release_manifest: true
+    inspected_for:
+      - prohibited file suffixes
+      - raw-data and generated-table path fragments
+      - locked-test members
+      - declared name, version, requires-python and licence
+
+packaging_limitation:
+  fields:
+    - {name: installed_distribution_resource_resolution_complete, type: bool,
+       fixed_value: false}
+    - {name: packaging_limitation_documented, type: bool, fixed_value: true}
+    - {name: packaging_limitation_blocking_for_source_checkout_release,
+       type: bool, fixed_value: false}
+    - {name: packaging_limitation_blocking_for_pypi_release, type: bool,
+       fixed_value: true}
+    - {name: resource_resolution_refactor_authorized, type: bool,
+       fixed_value: false}
+  note: >-
+    Fifteen modules resolve repository resources through paths relative to the
+    source tree. The limitation is why PyPI publication is not supported, and
+    the decision document is checked to still state it: a limitation that stops
+    being written down stops being a limitation and becomes a surprise.
+
+# ---------------------------------------------------------------------------
+verification:
+  interpreter: "3.12"
+  measured_fields:
+    - {name: collected_tests, source: pytest summary line}
+    - {name: passed_tests, source: pytest summary line}
+    - {name: skipped_data_backed_tests, source: pytest summary line}
+    - {name: failed_tests, source: pytest summary line}
+    - {name: install_duration_seconds, source: wall clock around the installs}
+    - {name: test_duration_seconds, source: wall clock around the suite}
+    - {name: tree_checksum_before_tests, type: sha256}
+    - {name: tree_checksum_after_tests, type: sha256}
+  rules:
+    - "tree_checksum_before_tests == tree_checksum_after_tests"
+    - "counts_measured_from_command_output is true"
+    - "counts_copied_from_prior_totals is false"
+    - "the project install uses --no-deps, so nothing re-resolves the lock"
+    - "the project install uses -e, because repository resources live in the tree"
+  steps:
+    - create_fresh_environment
+    - install_runtime_lock
+    - install_development_lock
+    - install_project_from_source
+    - import_all_public_modules
+    - public_cli_smoke_checks
+    - ruff
+    - parse_configs_and_schemas
+    - hermetic_tests
+    - verify_data_backed_registry
+    - confirm_tree_unchanged
+
+# ---------------------------------------------------------------------------
+release_manifest:
+  ordering: lexicographic by path
+  per_record_fields:
+    [path, sha256, size_bytes, category, redistribution_status, generated,
+     tracked, package_included, ci_included, locked_test_dependency,
+     license_status, reproduction_tier]
+  top_level_additions:
+    - {name: release_distribution_scope, fixed_value: github_source_checkout}
+    - {name: minimum_supported_python, fixed_value: "3.12"}
+    - {name: code_license, fixed_value: MIT}
+    - {name: third_party_material_licensed_by_this_project, fixed_value: false}
+    - {name: build_artifacts_included, fixed_value: false}
+  self_referential_exclusions:
+    - docs/e2r1_release_manifest.json
+    - docs/e2r1_source_release_decision.json
+    - docs/e2r1_source_release_decision.md
+  self_referential_reason: >-
+    All three quote the manifest checksum. A manifest covering them could never
+    reach a fixed point, and its checksum would change on every run whether or
+    not anything else did. A checksum-list file omits itself for the same
+    reason.
+  invariants:
+    - "LICENSE is a row"
+    - "no row ends in .whl or .tar.gz, and no row lies under dist/ or build/"
+    - "no row matches a locked-outcome path fragment"
+    - "no raw third-party document, generated table, prediction or model appears"
+    - "every row's redistribution_status is resolved"
+
+# ---------------------------------------------------------------------------
+readiness:
+  statuses:
+    - release_candidate_ready
+    - release_candidate_ready_with_documented_nonblocking_limitations
+    - release_candidate_blocked
+  blockers:
+    - secret_or_credential_exposure
+    - locked_outcome_present_in_intended_release_or_history
+    - e2_historical_record_modified
+    - missing_owner_license_decision
+    - license_inconsistent_with_metadata
+    - mit_attributed_to_third_party_data
+    - python_version_inconsistency
+    - dependency_lock_rejects_supported_python
+    - clean_installation_failure
+    - hermetic_ci_failure
+    - build_artifact_in_public_release_manifest
+    - package_includes_prohibited_files
+    - unresolved_redistribution_of_included_raw_data
+    - dependency_vulnerability_without_accepted_resolution
+    - tests_mutate_the_release_worktree
+  required_nonblocking_limitations:
+    - citation_metadata_deferred
+    - standalone_distribution_not_supported
+    - python_311_not_supported
+    - data_backed_reproduction_requires_external_official_files
+    - unresolved_third_party_redistribution_terms
+  rule: >-
+    A required limitation that is not recorded raises, so the readiness verdict
+    cannot be reached by forgetting to mention one.
+  publication_fields_all_false:
+    [published, committed, tagged, pushed, github_repository_created,
+     released_on_github, uploaded_to_pypi]
+
+language_guards:
+  note: >-
+    Every guard strips backticked and quoted spans and skips negated
+    occurrences, so this schema, the contract and the reports can each name the
+    rules they enforce. The seven pinned E2 artifacts are exempt from the
+    language guards and guarded by checksum instead: they are supposed to say
+    the candidate was blocked and that 3.11 was expected, because that is what
+    was true when they were written.
+  guards:
+    - name: assert_mit_not_applied_to_third_party_data
+      refuses: extending the MIT grant to any publisher's data
+    - name: assert_no_active_python_311_claim
+      refuses: telling a reader that 3.11 is supported
+      permits: recording what E2 expected and that it was found incompatible
+    - name: assert_source_checkout_scope
+      refuses: presenting the wheel, the sdist or PyPI as a supported runtime
+    - name: assert_no_invented_author_identity
+      refuses: any email address or ORCID the owner has not supplied
+    - name: assert_no_citation_file_without_identity
+      refuses: a CITATION.cff written while owner identity is deferred
+    - name: assert_limitation_is_documented
+      refuses: a decision document that has stopped stating the packaging limitation
+    - name: assert_no_build_artifact_in_manifest
+      refuses: a wheel, an sdist or anything under dist/ or build/ in the manifest
+
+next_task:
+  id: E3
+  name: Owner-Approved Public GitHub Repository Release
+  requires_owner_confirmation_of:
+    - github_account_or_organization
+    - repository_name
+    - public_visibility
+    - initial_release_version
+    - commit_and_tag_authorization
+    - author_identity_used_by_git
+    - final_public_release_manifest_checksum
+  may_act_only_after_all_confirmations: true

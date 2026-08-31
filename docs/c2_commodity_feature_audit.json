@@ -1,0 +1,448 @@
+{
+  "task": "C2",
+  "feature_definition_version": "c2_commodity_features_v1",
+  "generated_at": "2026-08-27T10:07:09Z",
+  "input": {
+    "dataset": "docs/c1_5_commodity_timing_audit.json",
+    "dataset_task": "C1.5-R2",
+    "contract": {
+      "point_in_time_supported": "full",
+      "minimum_publication_lag_months": 1,
+      "publication_timing_verified": true,
+      "coverage_fraction": 1.0,
+      "distinct_issues_obtained": 65
+    },
+    "reference_month_start": "2021-01-01",
+    "reference_month_end": "2026-05-01",
+    "reference_months": 65,
+    "monthly_inputs_per_primary_series": {
+      "brent_crude_usd_bbl": 65,
+      "aluminum_usd_mt": 65,
+      "copper_usd_mt": 65,
+      "rubber_rss3_usd_kg": 65
+    },
+    "latest_vintage_substitution_permitted": false
+  },
+  "series": {
+    "primary": [
+      "brent_crude_usd_bbl",
+      "aluminum_usd_mt",
+      "copper_usd_mt",
+      "rubber_rss3_usd_kg"
+    ],
+    "excluded": {
+      "lng_japan_usd_mmbtu": "First-release values were revised in 65 of 65 required months, by up to 34.10% (C1.5-R2). Constructing a point-in-time feature from a number that always moves would encode noise as signal.",
+      "coal_australia_usd_mt": "Definition break at 2022-02: the benchmark switches from spot to futures inside the modelled window (C1, AD-R30). A log change across that boundary compares two different things.",
+      "palm_oil_usd_mt": "Three grade and delivery-basis changes (2021-01, 2024-11, 2025-02) inside the modelled window (C1, AD-R30)."
+    },
+    "substitutes_for_excluded": []
+  },
+  "availability": {
+    "minimum_publication_lag_months": 1,
+    "operational_lag_months": 2,
+    "primary_policy": "operational_lag_2m",
+    "primary_policy_basis": "Measured minimum publication lag of 1 month (C1.5-R2, verified across all 65 reference months) plus one month of POLICY margin for revision settling. The margin is not a measurement.",
+    "sensitivity_policy": "publication_lag_1m",
+    "sensitivity_policy_label": "sensitivity_only",
+    "sensitivity_policy_basis": "The MEASURED publication lag with no revision margin. Permitted for a clearly-labelled sensitivity comparison only; never the primary table, and not compared against any target in C2.",
+    "lag_zero_prohibited": true,
+    "derived_from_download_date": false
+  },
+  "feature_definitions": {
+    "price_level": {
+      "description": "Archived first-release price for the reference month.",
+      "input_lags": [
+        0
+      ],
+      "min_history_months": 0,
+      "unit_kind": "source_unit"
+    },
+    "log_change_1m_pct": {
+      "description": "100 * (ln p_m - ln p_{m-1}).",
+      "input_lags": [
+        1,
+        0
+      ],
+      "min_history_months": 1,
+      "unit_kind": "percent_log"
+    },
+    "log_change_3m_pct": {
+      "description": "100 * (ln p_m - ln p_{m-3}).",
+      "input_lags": [
+        3,
+        0
+      ],
+      "min_history_months": 3,
+      "unit_kind": "percent_log"
+    },
+    "log_change_12m_pct": {
+      "description": "100 * (ln p_m - ln p_{m-12}).",
+      "input_lags": [
+        12,
+        0
+      ],
+      "min_history_months": 12,
+      "unit_kind": "percent_log"
+    },
+    "realized_volatility_3m_pct": {
+      "description": "Population std (ddof=0) of the three one-month log changes ending at m: std(r_{m-2}, r_{m-1}, r_m).",
+      "input_lags": [
+        3,
+        2,
+        1,
+        0
+      ],
+      "min_history_months": 3,
+      "unit_kind": "percent_log"
+    }
+  },
+  "per_feature": {
+    "price_level": {
+      "rows_total": 260,
+      "rows_per_series": 65,
+      "expected_rows_per_series": 65,
+      "earliest_reference_month": "2021-01-01",
+      "latest_reference_month": "2026-05-01",
+      "input_observation_count": 1,
+      "earliest_feature_available_month": "2021-03-01"
+    },
+    "log_change_1m_pct": {
+      "rows_total": 256,
+      "rows_per_series": 64,
+      "expected_rows_per_series": 64,
+      "earliest_reference_month": "2021-02-01",
+      "latest_reference_month": "2026-05-01",
+      "input_observation_count": 2,
+      "earliest_feature_available_month": "2021-04-01"
+    },
+    "log_change_3m_pct": {
+      "rows_total": 248,
+      "rows_per_series": 62,
+      "expected_rows_per_series": 62,
+      "earliest_reference_month": "2021-04-01",
+      "latest_reference_month": "2026-05-01",
+      "input_observation_count": 2,
+      "earliest_feature_available_month": "2021-06-01"
+    },
+    "log_change_12m_pct": {
+      "rows_total": 212,
+      "rows_per_series": 53,
+      "expected_rows_per_series": 53,
+      "earliest_reference_month": "2022-01-01",
+      "latest_reference_month": "2026-05-01",
+      "input_observation_count": 2,
+      "earliest_feature_available_month": "2022-03-01"
+    },
+    "realized_volatility_3m_pct": {
+      "rows_total": 248,
+      "rows_per_series": 62,
+      "expected_rows_per_series": 62,
+      "earliest_reference_month": "2021-04-01",
+      "latest_reference_month": "2026-05-01",
+      "input_observation_count": 4,
+      "earliest_feature_available_month": "2021-06-01"
+    }
+  },
+  "per_series": {
+    "brent_crude_usd_bbl": {
+      "rows": 306,
+      "features": [
+        "log_change_12m_pct",
+        "log_change_1m_pct",
+        "log_change_3m_pct",
+        "price_level",
+        "realized_volatility_3m_pct"
+      ],
+      "reference_month_start": "2021-01-01",
+      "reference_month_end": "2026-05-01",
+      "unit_price_level": "$/bbl",
+      "source_series_label": "Crude oil, Brent",
+      "model_feature_approved": false
+    },
+    "aluminum_usd_mt": {
+      "rows": 306,
+      "features": [
+        "log_change_12m_pct",
+        "log_change_1m_pct",
+        "log_change_3m_pct",
+        "price_level",
+        "realized_volatility_3m_pct"
+      ],
+      "reference_month_start": "2021-01-01",
+      "reference_month_end": "2026-05-01",
+      "unit_price_level": "$/mt",
+      "source_series_label": "Aluminum",
+      "model_feature_approved": false
+    },
+    "copper_usd_mt": {
+      "rows": 306,
+      "features": [
+        "log_change_12m_pct",
+        "log_change_1m_pct",
+        "log_change_3m_pct",
+        "price_level",
+        "realized_volatility_3m_pct"
+      ],
+      "reference_month_start": "2021-01-01",
+      "reference_month_end": "2026-05-01",
+      "unit_price_level": "$/mt",
+      "source_series_label": "Copper",
+      "model_feature_approved": false
+    },
+    "rubber_rss3_usd_kg": {
+      "rows": 306,
+      "features": [
+        "log_change_12m_pct",
+        "log_change_1m_pct",
+        "log_change_3m_pct",
+        "price_level",
+        "realized_volatility_3m_pct"
+      ],
+      "reference_month_start": "2021-01-01",
+      "reference_month_end": "2026-05-01",
+      "unit_price_level": "$/kg",
+      "source_series_label": "Rubber, RSS3",
+      "model_feature_approved": false
+    }
+  },
+  "canonical_row_count": 1224,
+  "expected_canonical_row_count": 1224,
+  "sensitivity_row_count": 1224,
+  "wide_row_count": 260,
+  "integrity": {
+    "unique_canonical_keys": true,
+    "all_values_finite": true,
+    "source_available_never_after_feature_available": true,
+    "policy_available_never_after_feature_available": true,
+    "all_operational_lags_are_two": true,
+    "all_minimum_publication_lags_are_one": true,
+    "no_excluded_series_present": true,
+    "all_values_archived_first_release": true,
+    "sensitivity_labelled_sensitivity_only": true,
+    "distinct_lineage_checksums": 1224
+  },
+  "reconciliation": {
+    "long_rows": 1224,
+    "wide_cells_checked": 1224,
+    "mismatches": 0,
+    "reconciled": true
+  },
+  "b4_development_origin_coverage": {
+    "development_origin_start": "2024-01-01",
+    "development_origin_end": "2025-03-01",
+    "required_origins": 15,
+    "expected_series_feature_pairs": 20,
+    "fully_covered_origins": 15,
+    "fully_covered": true,
+    "per_origin": {
+      "2024-01-01": {
+        "series_feature_pairs_usable": 20,
+        "missing_pairs": []
+      },
+      "2024-02-01": {
+        "series_feature_pairs_usable": 20,
+        "missing_pairs": []
+      },
+      "2024-03-01": {
+        "series_feature_pairs_usable": 20,
+        "missing_pairs": []
+      },
+      "2024-04-01": {
+        "series_feature_pairs_usable": 20,
+        "missing_pairs": []
+      },
+      "2024-05-01": {
+        "series_feature_pairs_usable": 20,
+        "missing_pairs": []
+      },
+      "2024-06-01": {
+        "series_feature_pairs_usable": 20,
+        "missing_pairs": []
+      },
+      "2024-07-01": {
+        "series_feature_pairs_usable": 20,
+        "missing_pairs": []
+      },
+      "2024-08-01": {
+        "series_feature_pairs_usable": 20,
+        "missing_pairs": []
+      },
+      "2024-09-01": {
+        "series_feature_pairs_usable": 20,
+        "missing_pairs": []
+      },
+      "2024-10-01": {
+        "series_feature_pairs_usable": 20,
+        "missing_pairs": []
+      },
+      "2024-11-01": {
+        "series_feature_pairs_usable": 20,
+        "missing_pairs": []
+      },
+      "2024-12-01": {
+        "series_feature_pairs_usable": 20,
+        "missing_pairs": []
+      },
+      "2025-01-01": {
+        "series_feature_pairs_usable": 20,
+        "missing_pairs": []
+      },
+      "2025-02-01": {
+        "series_feature_pairs_usable": 20,
+        "missing_pairs": []
+      },
+      "2025-03-01": {
+        "series_feature_pairs_usable": 20,
+        "missing_pairs": []
+      }
+    },
+    "locked_test_period_read": false,
+    "target_values_read": false
+  },
+  "content_checksums": {
+    "canonical_long": "29e44c520f2e6db1b10f7e170ede6c425e415bfbccc1066459d1b23b03f1a049",
+    "wide": "f881f76f2e6b2ca1851a08432c189c11e045494c5205dcd7336d1dd5fc7dc07c",
+    "sensitivity_long": "48ffa380efd1606941215b1219046f18c2298836710c1e3deee993889db42987"
+  },
+  "outputs": {
+    "canonical_long": {
+      "path": "data/features/commodity_features_long.parquet",
+      "rows": 1224,
+      "columns": [
+        "series_id",
+        "source_series_label",
+        "feature_name",
+        "feature_value",
+        "unit",
+        "reference_month",
+        "input_window_start",
+        "input_window_end",
+        "input_observation_count",
+        "source_available_month",
+        "policy_available_month",
+        "feature_available_month",
+        "minimum_publication_lag_months",
+        "operational_lag_months",
+        "availability_policy",
+        "availability_policy_label",
+        "point_in_time_supported",
+        "source_value_type",
+        "source_issue_name",
+        "source_issue_date",
+        "source_issue_url",
+        "source_issue_sha256",
+        "source_footnote_marker",
+        "source_footnote_meaning",
+        "estimate_status",
+        "input_lineage_checksum",
+        "feature_definition_version",
+        "quality_flag"
+      ],
+      "file_sha256": "95d7b64a14720412fae577f081e0c3d915df8f88bd214e4ff313ea93fe029cf6"
+    },
+    "wide": {
+      "path": "data/features/commodity_features_wide.parquet",
+      "rows": 260,
+      "columns": [
+        "reference_month",
+        "series_id",
+        "availability_policy",
+        "aluminum_usd_mt__price_level",
+        "aluminum_usd_mt__price_level__available_month",
+        "brent_crude_usd_bbl__price_level",
+        "brent_crude_usd_bbl__price_level__available_month",
+        "copper_usd_mt__price_level",
+        "copper_usd_mt__price_level__available_month",
+        "rubber_rss3_usd_kg__price_level",
+        "rubber_rss3_usd_kg__price_level__available_month",
+        "aluminum_usd_mt__log_change_1m_pct",
+        "aluminum_usd_mt__log_change_1m_pct__available_month",
+        "brent_crude_usd_bbl__log_change_1m_pct",
+        "brent_crude_usd_bbl__log_change_1m_pct__available_month",
+        "copper_usd_mt__log_change_1m_pct",
+        "copper_usd_mt__log_change_1m_pct__available_month",
+        "rubber_rss3_usd_kg__log_change_1m_pct",
+        "rubber_rss3_usd_kg__log_change_1m_pct__available_month",
+        "aluminum_usd_mt__log_change_3m_pct",
+        "aluminum_usd_mt__log_change_3m_pct__available_month",
+        "aluminum_usd_mt__realized_volatility_3m_pct",
+        "aluminum_usd_mt__realized_volatility_3m_pct__available_month",
+        "brent_crude_usd_bbl__log_change_3m_pct",
+        "brent_crude_usd_bbl__log_change_3m_pct__available_month",
+        "brent_crude_usd_bbl__realized_volatility_3m_pct",
+        "brent_crude_usd_bbl__realized_volatility_3m_pct__available_month",
+        "copper_usd_mt__log_change_3m_pct",
+        "copper_usd_mt__log_change_3m_pct__available_month",
+        "copper_usd_mt__realized_volatility_3m_pct",
+        "copper_usd_mt__realized_volatility_3m_pct__available_month",
+        "rubber_rss3_usd_kg__log_change_3m_pct",
+        "rubber_rss3_usd_kg__log_change_3m_pct__available_month",
+        "rubber_rss3_usd_kg__realized_volatility_3m_pct",
+        "rubber_rss3_usd_kg__realized_volatility_3m_pct__available_month",
+        "aluminum_usd_mt__log_change_12m_pct",
+        "aluminum_usd_mt__log_change_12m_pct__available_month",
+        "brent_crude_usd_bbl__log_change_12m_pct",
+        "brent_crude_usd_bbl__log_change_12m_pct__available_month",
+        "copper_usd_mt__log_change_12m_pct",
+        "copper_usd_mt__log_change_12m_pct__available_month",
+        "rubber_rss3_usd_kg__log_change_12m_pct",
+        "rubber_rss3_usd_kg__log_change_12m_pct__available_month"
+      ],
+      "file_sha256": "6898876dd72362ebfcfed1e51cb50ef84c5d3da8c5af74bd0e29911efff461ee"
+    },
+    "sensitivity_long": {
+      "path": "data/features/commodity_features_long_sensitivity_lag1.parquet",
+      "rows": 1224,
+      "columns": [
+        "series_id",
+        "source_series_label",
+        "feature_name",
+        "feature_value",
+        "unit",
+        "reference_month",
+        "input_window_start",
+        "input_window_end",
+        "input_observation_count",
+        "source_available_month",
+        "policy_available_month",
+        "feature_available_month",
+        "minimum_publication_lag_months",
+        "operational_lag_months",
+        "availability_policy",
+        "availability_policy_label",
+        "point_in_time_supported",
+        "source_value_type",
+        "source_issue_name",
+        "source_issue_date",
+        "source_issue_url",
+        "source_issue_sha256",
+        "source_footnote_marker",
+        "source_footnote_meaning",
+        "estimate_status",
+        "input_lineage_checksum",
+        "feature_definition_version",
+        "quality_flag"
+      ],
+      "file_sha256": "34e4678d894749dade1336b971debfa0de67563703d18880e9ba13e8fa60ab6d"
+    }
+  },
+  "data_handling": {
+    "imputation": "none",
+    "forward_fill": "none",
+    "interpolation": "none",
+    "clipping": "none",
+    "winsorization": "none",
+    "rounding_of_calculated_features": "none",
+    "manufactured_early_window_values": 0
+  },
+  "industry_dependency_matrix_created": false,
+  "features_joined_to_target": false,
+  "target_association_computed": false,
+  "feature_selection_using_target": false,
+  "model_trained": false,
+  "b4_baselines_compared": false,
+  "locked_test_accessed": false,
+  "model_feature_approved_set": false,
+  "feature_semantics_approved_set": false,
+  "config_expected_rows_match": true
+}

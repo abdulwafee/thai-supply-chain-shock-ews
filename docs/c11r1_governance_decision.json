@@ -1,0 +1,927 @@
+{
+ "all_closure_gates_passed": true,
+ "architecture_scope": {
+  "fo600_and_fo1500_separate_variants": true,
+  "formula": "r[g,t,h] = alpha[g,h] + sum_f beta[h,f] * xtilde[t,f] + sum_f theta[h,f] * ec[g] * xtilde[t,f]",
+  "frozen_centered_sector093_exposure": true,
+  "horizons_fitted_separately": true,
+  "ind_04_benchmark_passthrough": true,
+  "industry_fixed_effects_without_redundant_global_intercept": true,
+  "interaction_constructed_after_source_scaling": true,
+  "interpretation": "non_causal_predictive_interaction",
+  "outcome_based_channel_promotion": false,
+  "per_industry_interaction_standardization": false,
+  "simultaneous_channel_entry": false,
+  "source_transformations_scaled_across_training_issue_months": true
+ },
+ "closure_gates": {
+  "architecture_decision_dependency_clean": true,
+  "architecture_reproduced_without_d_series_access": true,
+  "architecture_scope_preserved": true,
+  "c11_original_record_preserved": true,
+  "correction_not_presented_as_preregistered": true,
+  "decision_status_is_exploratory_not_confirmatory": true,
+  "no_model_prediction_target_or_metric_artifact_created": true,
+  "original_and_corrected_gate_sets_kept_separate": true,
+  "outcome_access_incident_recorded_accurately": true
+ },
+ "config_version": "fuel_oil_architecture_governance_v1",
+ "content_checksum": "a536dbb85444add1051e589e170bcc10756ff335ba1283723ac1644b4d36dbca",
+ "corrected_gate_specification": {
+  "correct_measurements": {
+   "intended_combined_rank": 10,
+   "interaction_blocks_after_prohibited_preprocessing": 2,
+   "interaction_blocks_intended": 11,
+   "prohibited_preprocessing_destroys_continuous_exposure_magnitude": true,
+   "prohibited_preprocessing_destroys_magnitude_even_though_stacked_rank_is_10": true,
+   "selected_preprocessing_interaction_rank": 5,
+   "selected_preprocessing_retains_interaction_rank": true,
+   "sign_equivalence_groups": 2,
+   "sign_identity_residual_approx": 4.440892098500626e-16,
+   "within_industry_combined_rank": 5
+  },
+  "corrected_gate_condition": "Under THE SPECIFIED preprocessing the interaction block is present at its expected rank, the combined rank equals the sum of the two block ranks, the interaction is not standardised inside an industry, and a constant exposure would be detected as a rank-zero interaction.",
+  "corrected_gate_set_passed": true,
+  "correction_checksum": "99ce567841cf79b457572d4db5fff71cd9438622994ad05b5f30f076092545e7",
+  "frozen": {
+   "architecture_decision_cleanly_preregistered": false,
+   "centered_exposures_contain_both_signs": true,
+   "conclusion": "The corrected gate is valid on mathematical grounds, but it remains a post-observation specification correction. Reproducibility does not convert it into preregistration.",
+   "correct_measurements": {
+    "intended_combined_rank": 10,
+    "interaction_blocks_after_prohibited_preprocessing": 2,
+    "interaction_blocks_intended": 11,
+    "prohibited_preprocessing_destroys_continuous_exposure_magnitude": true,
+    "prohibited_preprocessing_destroys_magnitude_even_though_stacked_rank_is_10": true,
+    "selected_preprocessing_interaction_rank": 5,
+    "selected_preprocessing_retains_interaction_rank": true,
+    "sign_equivalence_groups": 2,
+    "sign_identity_residual_approx": 4.440892098500626e-16,
+    "within_industry_combined_rank": 5
+   },
+   "correct_question": "Does per-industry standardization preserve continuous exposure MAGNITUDE within an industry? This is FALSE: standardize(E_g X) equals standardize(X) when E_g > 0 and -standardize(X) when E_g < 0, so only the sign survives and the magnitude does not.",
+   "corrected_gate_condition": "Under THE SPECIFIED preprocessing the interaction block is present at its expected rank, the combined rank equals the sum of the two block ranks, the interaction is not standardised inside an industry, and a constant exposure would be detected as a rank-zero interaction.",
+   "corrected_gate_set_passed": true,
+   "correction_version": "c11r1_corrected_gate_specification_v1",
+   "expectations_rewritten_as_preregistered": false,
+   "gate": "pooled_interaction_survives_the_specified_preprocessing",
+   "gate_implementation_corrected_after_observation": true,
+   "incorrect_question": "Does the prohibited preprocessing force the entire STACKED matrix rank to five? This is FALSE, because the exposure signs preserve two stacked directions.",
+   "numerical_tolerance_changed": false,
+   "observed_stacked_rank_under_prohibited_preprocessing": 10,
+   "original_gate_condition": "The gate required the per-industry-standardisation COUNTERFACTUAL to show a stacked rank drop, which made a gate about the specified preprocessing depend on a construction the preprocessing contract forbids.",
+   "original_gate_implementation_valid": false,
+   "original_preregistered_expectation": "Per-industry standardization would reduce the STACKED combined rank from 10 to 5.",
+   "original_preregistered_gate_set_passed": false,
+   "original_preregistered_stacked_rank_expectation": 5,
+   "thresholds_changed_after_observation": false
+  },
+  "gate": "pooled_interaction_survives_the_specified_preprocessing",
+  "narrative": "The original gate asked whether the prohibited preprocessing forces the entire stacked matrix to rank five. It does not, because the centred exposures carry both signs and +Xtilde and -Xtilde span two directions. The question the gate should have asked is whether per-industry standardisation preserves continuous exposure magnitude within an industry. It does not: standardize(E_g X) equals standardize(X) when E_g is positive and -standardize(X) when it is negative, so only the sign survives. No tolerance and no threshold moved; the gate was measuring the wrong quantity, and the quantity was corrected after the result was visible.",
+  "observed": {
+   "centered_exposures_contain_both_signs": true,
+   "negative_sign_industries": 8,
+   "observed_stacked_rank_under_prohibited_preprocessing": 10,
+   "per_industry_standardization_maps_interaction_to": "+Xtilde or -Xtilde",
+   "positive_sign_industries": 3,
+   "stacking_both_sign_groups_preserves_two_directions": true,
+   "therefore_stacked_rank_remains": 10
+  },
+  "original": {
+   "gate_condition_as_originally_implemented": "The gate required the per-industry-standardisation COUNTERFACTUAL to show a stacked rank drop, which made a gate about the specified preprocessing depend on a construction the preprocessing contract forbids.",
+   "original_gate_implementation_valid": false,
+   "original_preregistered_gate_set_passed": false,
+   "original_preregistered_stacked_rank_expectation": 5,
+   "preregistered_expectation": "Per-industry standardization would reduce the STACKED combined rank from 10 to 5."
+  },
+  "status": {
+   "architecture_decision_cleanly_preregistered": false,
+   "expectations_rewritten_as_preregistered": false,
+   "gate_implementation_corrected_after_observation": true,
+   "numerical_tolerance_changed": false,
+   "original_nine_gates_passed_without_qualification": false,
+   "thresholds_changed_after_observation": false
+  },
+  "why_the_correction_is_justified": {
+   "conclusion": "The corrected gate is valid on mathematical grounds, but it remains a post-observation specification correction. Reproducibility does not convert it into preregistration.",
+   "correct_question": "Does per-industry standardization preserve continuous exposure MAGNITUDE within an industry? This is FALSE: standardize(E_g X) equals standardize(X) when E_g > 0 and -standardize(X) when E_g < 0, so only the sign survives and the magnitude does not.",
+   "incorrect_question": "Does the prohibited preprocessing force the entire STACKED matrix rank to five? This is FALSE, because the exposure signs preserve two stacked directions."
+  }
+ },
+ "correction_version": "c11r1_corrected_gate_specification_v1",
+ "d5_authorization": {
+  "authorization_void_if_dependency_reconstruction_fails": true,
+  "fields": {
+   "d5_channel_selection_authorized": false,
+   "d5_confirmatory_claims_authorized": false,
+   "d5_development_target_join_authorized": true,
+   "d5_exploratory_modeling_authorized": true,
+   "d5_locked_test_evaluation_authorized": false,
+   "d5_protocol_preregistration_authorized": true,
+   "d5_purge_evaluation_authorized": false
+  },
+  "granted": {
+   "all_closure_gates_passed": true,
+   "blocker": null,
+   "d5_channel_selection_authorized": false,
+   "d5_confirmatory_claims_authorized": false,
+   "d5_development_target_join_authorized": true,
+   "d5_exploratory_modeling_authorized": true,
+   "d5_locked_test_evaluation_authorized": false,
+   "d5_protocol_preregistration_authorized": true,
+   "d5_purge_evaluation_authorized": false,
+   "failed_closure_gates": [],
+   "reason": "All nine closure gates passed. D5 is authorized as a development-only exploratory evaluation of the Candidate-C pooled architecture, with both fuel-oil variants kept as separate parallel variants. Channel selection, purge metrics, confirmatory claims and the locked test remain unauthorized."
+  },
+  "scope": {
+   "architecture": "C_pooled_common_effect_plus_centered_exposure_interaction",
+   "combined_or_selected_fuel_oil_channel": false,
+   "confirmatory_claims": false,
+   "development_issue_months": [
+    "2024-01",
+    "2025-03"
+   ],
+   "ind_04_benchmark_passthrough": true,
+   "ind_04_in_evaluation_denominators": true,
+   "locked_test_access": false,
+   "model_feature_approval_from_development_evidence_alone": false,
+   "operational_benchmarks_reproduced_from_registered_formulas": true,
+   "operational_release_timing_contract": "operational_contract_v1",
+   "other_architectures_authorized": false,
+   "purge_metrics": false,
+   "validation_and_uncertainty_clustered_by": "issue_month",
+   "variants_are_separate_parallel_exploratory": true,
+   "variants_evaluated": [
+    "fo600_direct_sector093",
+    "fo1500_direct_sector093"
+   ]
+  }
+ },
+ "decision_status": {
+  "architecture_confirmatorily_selected": false,
+  "architecture_decision_status": "exploratory_supported_after_documented_specification_correction",
+  "architecture_invalidated_by_process_imperfection": false,
+  "architecture_mathematically_supported": true,
+  "architecture_selection_outcome_independence_proven_by_dependency": true,
+  "architecture_upgraded_because_the_correction_is_convincing": false,
+  "eligible_for_confirmatory_claims": false,
+  "eligible_for_locked_test": false,
+  "original_process_outcome_blind": false
+ },
+ "gate_status": {
+  "architecture_decision_cleanly_preregistered": false,
+  "corrected_gate_set_passed": true,
+  "expectations_rewritten_as_preregistered": false,
+  "gate_implementation_corrected_after_observation": true,
+  "numerical_tolerance_changed": false,
+  "observed_stacked_rank_under_prohibited_preprocessing": 10,
+  "original_gate_implementation_valid": false,
+  "original_nine_gates_passed_without_qualification": false,
+  "original_preregistered_gate_set_passed": false,
+  "original_preregistered_stacked_rank_expectation": 5,
+  "thresholds_changed_after_observation": false
+ },
+ "generated_at_utc": "2026-08-30T01:52:51.925379+00:00",
+ "governance_checksum": "81f18e8ad449283105ca6e0e8e6324280a4aaa4c6684e0f69635945c1c3a1851",
+ "information_flow": {
+  "architecture_decision_dependency_clean": true,
+  "d_series_paths_opened": 0,
+  "does_not_prove": "That the original C11 execution was outcome-blind. A development metric artifact was opened during it, and no dependency argument changes that.",
+  "flow_checksum": "97a3edd74ab196d0e6e2a21f197fa5cbf863dff251a1eb2157db16dc534394ee",
+  "forbidden_dependency_classes": [
+   "d1_d3_d4_mae_or_rmse",
+   "high_stress_metrics",
+   "predictions_or_residuals",
+   "target_values",
+   "channel_performance",
+   "locked_test_results"
+  ],
+  "import_graph": {
+   "D:/Desktop/CLAUDE/Are Three Matrices All You Need To Beat the Market/thai-supply-chain-ews/scripts/run_c11_architecture_decision.py": [
+    "__future__",
+    "argparse",
+    "datetime",
+    "hashlib",
+    "json",
+    "math",
+    "pandas",
+    "pathlib",
+    "sys",
+    "thai_supply_chain_ews.features",
+    "thai_supply_chain_ews.structure",
+    "types",
+    "yaml"
+   ],
+   "D:/Desktop/CLAUDE/Are Three Matrices All You Need To Beat the Market/thai-supply-chain-ews/scripts/run_c11r1_governance_closure.py": [
+    "__future__",
+    "argparse",
+    "datetime",
+    "hashlib",
+    "json",
+    "pandas",
+    "pathlib",
+    "sys",
+    "thai_supply_chain_ews.features",
+    "thai_supply_chain_ews.structure",
+    "yaml"
+   ],
+   "D:/Desktop/CLAUDE/Are Three Matrices All You Need To Beat the Market/thai-supply-chain-ews/src/thai_supply_chain_ews/structure/fuel_oil_architecture_decision.py": [
+    "__future__",
+    "dataclasses",
+    "hashlib",
+    "json"
+   ],
+   "D:/Desktop/CLAUDE/Are Three Matrices All You Need To Beat the Market/thai-supply-chain-ews/src/thai_supply_chain_ews/structure/fuel_oil_architecture_governance.py": [
+    "__future__",
+    "dataclasses",
+    "hashlib",
+    "json"
+   ],
+   "D:/Desktop/CLAUDE/Are Three Matrices All You Need To Beat the Market/thai-supply-chain-ews/src/thai_supply_chain_ews/structure/fuel_oil_candidate_designs.py": [
+    "__future__",
+    "dataclasses",
+    "hashlib",
+    "json",
+    "math",
+    "numpy"
+   ],
+   "D:/Desktop/CLAUDE/Are Three Matrices All You Need To Beat the Market/thai-supply-chain-ews/src/thai_supply_chain_ews/structure/fuel_oil_information_flow.py": [
+    "__future__",
+    "ast",
+    "hashlib",
+    "json",
+    "pathlib"
+   ]
+  },
+  "inputs_opened": [
+   "D:/Desktop/CLAUDE/Are Three Matrices All You Need To Beat the Market/thai-supply-chain-ews/configs/fuel_oil_architecture_governance.yaml",
+   "D:/Desktop/CLAUDE/Are Three Matrices All You Need To Beat the Market/thai-supply-chain-ews/docs/c9_sector093_exposure_decision.json",
+   "D:/Desktop/CLAUDE/Are Three Matrices All You Need To Beat the Market/thai-supply-chain-ews/docs/c10_design_matrix_audit.json",
+   "D:/Desktop/CLAUDE/Are Three Matrices All You Need To Beat the Market/thai-supply-chain-ews/docs/c11_architecture_decision.json",
+   "D:/Desktop/CLAUDE/Are Three Matrices All You Need To Beat the Market/thai-supply-chain-ews/data/features/c8_eppo_fuel_oil_transformations.parquet"
+  ],
+  "inputs_opened_count": 5,
+  "metric_substitution_invariance": {
+   "architecture_with_fabricated_metrics": "pooled_common_effect_plus_centered_sector093_interaction",
+   "baseline_architecture": "pooled_common_effect_plus_centered_sector093_interaction",
+   "fabricated_metric_keys": [
+    "channel_performance_fo1500",
+    "channel_performance_fo600",
+    "high_stress_outcome_rate",
+    "macro_industry_mae",
+    "rmse"
+   ],
+   "fabricated_values_read_from_an_artifact": false,
+   "fabricated_values_written_to_disk": false,
+   "invariant": true,
+   "note": "An isolated fixture, not an artifact. If the selected architecture moved when arbitrary metric values were injected, the decision would depend on an outcome."
+  },
+  "offending_imports": [],
+  "original_execution_outcome_blind": false,
+  "permitted_dependency_classes": [
+   "c9_c10_feature_and_structural_artifacts",
+   "sector_093_exposures",
+   "candidate_design_formulas",
+   "frozen_preprocessing_rules",
+   "rank_and_column_space_identities",
+   "industry_eligibility",
+   "source_availability_and_lineage"
+  ],
+  "permitted_inputs": [
+   "configs/fuel_oil_architecture_governance.yaml",
+   "configs/fuel_oil_modeling_architecture.yaml",
+   "configs/fuel_oil_industry_conditioning.yaml",
+   "docs/c11_architecture_decision.json",
+   "docs/c10_design_matrix_audit.json",
+   "docs/c9_sector093_exposure_decision.json",
+   "docs/c9_fuel_oil_conditioning_audit.json",
+   "docs/c8_eppo_transformation_audit.json",
+   "docs/c7_5_eppo_semantic_decision.json",
+   "docs/c3_commodity_exposure_matrix.json",
+   "docs/c3_io_source_audit.json",
+   "data/features/c8_eppo_fuel_oil_transformations.parquet"
+  ],
+  "proves": "The architecture reproduces exactly from C9/C10 structural artifacts, the sector-093 exposure vector, the candidate-design formulas and the frozen preprocessing rules, with no D-series path opened and no metric value reachable.",
+  "reproduction_all_reproduced": true,
+  "static_inspection": {
+   "files_inspected": 6,
+   "no_forbidden_read_call": true,
+   "offending_read_calls": [],
+   "read_call_sites": 24,
+   "read_calls": [
+    {
+     "file": "D:/Desktop/CLAUDE/Are Three Matrices All You Need To Beat the Market/thai-supply-chain-ews/scripts/run_c11_architecture_decision.py",
+     "forbidden_fragments": [],
+     "function": "load_json",
+     "opens": "DOCS / 'c10_design_matrix_audit.json'",
+     "path_resolved": true
+    },
+    {
+     "file": "D:/Desktop/CLAUDE/Are Three Matrices All You Need To Beat the Market/thai-supply-chain-ews/scripts/run_c11_architecture_decision.py",
+     "forbidden_fragments": [],
+     "function": "load_json",
+     "opens": "DOCS / 'c9_sector093_exposure_decision.json'",
+     "path_resolved": true
+    },
+    {
+     "file": "D:/Desktop/CLAUDE/Are Three Matrices All You Need To Beat the Market/thai-supply-chain-ews/scripts/run_c11_architecture_decision.py",
+     "forbidden_fragments": [],
+     "function": "load_yaml",
+     "opens": "ROOT / 'configs' / 'fuel_oil_modeling_architecture.yaml'",
+     "path_resolved": true
+    },
+    {
+     "file": "D:/Desktop/CLAUDE/Are Three Matrices All You Need To Beat the Market/thai-supply-chain-ews/scripts/run_c11_architecture_decision.py",
+     "forbidden_fragments": [],
+     "function": "load_json",
+     "opens": "DOCS / 'c9_sector093_exposure_decision.json'",
+     "path_resolved": true
+    },
+    {
+     "file": "D:/Desktop/CLAUDE/Are Three Matrices All You Need To Beat the Market/thai-supply-chain-ews/scripts/run_c11_architecture_decision.py",
+     "forbidden_fragments": [],
+     "function": "open",
+     "opens": "path",
+     "path_resolved": false
+    },
+    {
+     "file": "D:/Desktop/CLAUDE/Are Three Matrices All You Need To Beat the Market/thai-supply-chain-ews/scripts/run_c11_architecture_decision.py",
+     "forbidden_fragments": [],
+     "function": "open",
+     "opens": "path",
+     "path_resolved": false
+    },
+    {
+     "file": "D:/Desktop/CLAUDE/Are Three Matrices All You Need To Beat the Market/thai-supply-chain-ews/scripts/run_c11_architecture_decision.py",
+     "forbidden_fragments": [],
+     "function": "open",
+     "opens": "DOCS / 'c11_architecture_decision.json'",
+     "path_resolved": true
+    },
+    {
+     "file": "D:/Desktop/CLAUDE/Are Three Matrices All You Need To Beat the Market/thai-supply-chain-ews/scripts/run_c11_architecture_decision.py",
+     "forbidden_fragments": [],
+     "function": "read_parquet",
+     "opens": "ROOT / 'data' / 'features' / 'c8_eppo_fuel_oil_transformations.parquet'",
+     "path_resolved": true
+    },
+    {
+     "file": "D:/Desktop/CLAUDE/Are Three Matrices All You Need To Beat the Market/thai-supply-chain-ews/scripts/run_c11_architecture_decision.py",
+     "forbidden_fragments": [],
+     "function": "load_json",
+     "opens": "DOCS / 'c10_design_matrix_audit.json'",
+     "path_resolved": true
+    },
+    {
+     "file": "D:/Desktop/CLAUDE/Are Three Matrices All You Need To Beat the Market/thai-supply-chain-ews/scripts/run_c11_architecture_decision.py",
+     "forbidden_fragments": [],
+     "function": "load_json",
+     "opens": "DOCS / 'c10_design_matrix_audit.json'",
+     "path_resolved": true
+    },
+    {
+     "file": "D:/Desktop/CLAUDE/Are Three Matrices All You Need To Beat the Market/thai-supply-chain-ews/scripts/run_c11_architecture_decision.py",
+     "forbidden_fragments": [],
+     "function": "load_json",
+     "opens": "DOCS / 'c9_fuel_oil_conditioning_audit.json'",
+     "path_resolved": true
+    },
+    {
+     "file": "D:/Desktop/CLAUDE/Are Three Matrices All You Need To Beat the Market/thai-supply-chain-ews/scripts/run_c11_architecture_decision.py",
+     "forbidden_fragments": [],
+     "function": "load_json",
+     "opens": "DOCS / 'c8_eppo_transformation_audit.json'",
+     "path_resolved": true
+    },
+    {
+     "file": "D:/Desktop/CLAUDE/Are Three Matrices All You Need To Beat the Market/thai-supply-chain-ews/scripts/run_c11_architecture_decision.py",
+     "forbidden_fragments": [],
+     "function": "load_json",
+     "opens": "DOCS / 'c7_5_eppo_semantic_decision.json'",
+     "path_resolved": true
+    },
+    {
+     "file": "D:/Desktop/CLAUDE/Are Three Matrices All You Need To Beat the Market/thai-supply-chain-ews/scripts/run_c11_architecture_decision.py",
+     "forbidden_fragments": [],
+     "function": "load_json",
+     "opens": "DOCS / 'c3_commodity_exposure_matrix.json'",
+     "path_resolved": true
+    },
+    {
+     "file": "D:/Desktop/CLAUDE/Are Three Matrices All You Need To Beat the Market/thai-supply-chain-ews/scripts/run_c11_architecture_decision.py",
+     "forbidden_fragments": [],
+     "function": "load_json",
+     "opens": "DOCS / 'c3_io_source_audit.json'",
+     "path_resolved": true
+    },
+    {
+     "file": "D:/Desktop/CLAUDE/Are Three Matrices All You Need To Beat the Market/thai-supply-chain-ews/scripts/run_c11r1_governance_closure.py",
+     "forbidden_fragments": [],
+     "function": "load_json",
+     "opens": "DOCS / 'c9_sector093_exposure_decision.json'",
+     "path_resolved": true
+    },
+    {
+     "file": "D:/Desktop/CLAUDE/Are Three Matrices All You Need To Beat the Market/thai-supply-chain-ews/scripts/run_c11r1_governance_closure.py",
+     "forbidden_fragments": [],
+     "function": "load_json",
+     "opens": "DOCS / 'c10_design_matrix_audit.json'",
+     "path_resolved": true
+    },
+    {
+     "file": "D:/Desktop/CLAUDE/Are Three Matrices All You Need To Beat the Market/thai-supply-chain-ews/scripts/run_c11r1_governance_closure.py",
+     "forbidden_fragments": [],
+     "function": "load_json",
+     "opens": "DOCS / 'c11_architecture_decision.json'",
+     "path_resolved": true
+    },
+    {
+     "file": "D:/Desktop/CLAUDE/Are Three Matrices All You Need To Beat the Market/thai-supply-chain-ews/scripts/run_c11r1_governance_closure.py",
+     "forbidden_fragments": [],
+     "function": "load_yaml",
+     "opens": "ROOT / 'configs' / 'fuel_oil_architecture_governance.yaml'",
+     "path_resolved": true
+    },
+    {
+     "file": "D:/Desktop/CLAUDE/Are Three Matrices All You Need To Beat the Market/thai-supply-chain-ews/scripts/run_c11r1_governance_closure.py",
+     "forbidden_fragments": [],
+     "function": "load_json",
+     "opens": "DOCS / 'c11_architecture_decision.json'",
+     "path_resolved": true
+    },
+    {
+     "file": "D:/Desktop/CLAUDE/Are Three Matrices All You Need To Beat the Market/thai-supply-chain-ews/scripts/run_c11r1_governance_closure.py",
+     "forbidden_fragments": [],
+     "function": "open",
+     "opens": "path",
+     "path_resolved": false
+    },
+    {
+     "file": "D:/Desktop/CLAUDE/Are Three Matrices All You Need To Beat the Market/thai-supply-chain-ews/scripts/run_c11r1_governance_closure.py",
+     "forbidden_fragments": [],
+     "function": "open",
+     "opens": "path",
+     "path_resolved": false
+    },
+    {
+     "file": "D:/Desktop/CLAUDE/Are Three Matrices All You Need To Beat the Market/thai-supply-chain-ews/scripts/run_c11r1_governance_closure.py",
+     "forbidden_fragments": [],
+     "function": "open",
+     "opens": "DOCS / 'c11r1_governance_decision.json'",
+     "path_resolved": true
+    },
+    {
+     "file": "D:/Desktop/CLAUDE/Are Three Matrices All You Need To Beat the Market/thai-supply-chain-ews/scripts/run_c11r1_governance_closure.py",
+     "forbidden_fragments": [],
+     "function": "read_parquet",
+     "opens": "ROOT / 'data' / 'features' / 'c8_eppo_fuel_oil_transformations.parquet'",
+     "path_resolved": true
+    }
+   ],
+   "unresolved_note": "An unresolved argument is a bare parameter inside a helper such as load_json(path); the helper's own call sites are resolved and checked, so the path is covered there rather than here.",
+   "unresolved_read_call_count": 4,
+   "unresolved_read_calls": [
+    {
+     "file": "D:/Desktop/CLAUDE/Are Three Matrices All You Need To Beat the Market/thai-supply-chain-ews/scripts/run_c11_architecture_decision.py",
+     "forbidden_fragments": [],
+     "function": "open",
+     "opens": "path",
+     "path_resolved": false
+    },
+    {
+     "file": "D:/Desktop/CLAUDE/Are Three Matrices All You Need To Beat the Market/thai-supply-chain-ews/scripts/run_c11_architecture_decision.py",
+     "forbidden_fragments": [],
+     "function": "open",
+     "opens": "path",
+     "path_resolved": false
+    },
+    {
+     "file": "D:/Desktop/CLAUDE/Are Three Matrices All You Need To Beat the Market/thai-supply-chain-ews/scripts/run_c11r1_governance_closure.py",
+     "forbidden_fragments": [],
+     "function": "open",
+     "opens": "path",
+     "path_resolved": false
+    },
+    {
+     "file": "D:/Desktop/CLAUDE/Are Three Matrices All You Need To Beat the Market/thai-supply-chain-ews/scripts/run_c11r1_governance_closure.py",
+     "forbidden_fragments": [],
+     "function": "open",
+     "opens": "path",
+     "path_resolved": false
+    }
+   ]
+  },
+  "version": "c11r1_information_flow_v1"
+ },
+ "outcome_access_incident": {
+  "files_opened": [
+   {
+    "contains_development_metric_values": true,
+    "displayed": [
+     "macro_industry_mae",
+     "b4_reference_macro_industry_mae",
+     "operational_penalty",
+     "content_checksum",
+     "operational_contract_version"
+    ],
+    "metric_values_displayed": true,
+    "path": "docs/d3_operational_baseline_results.json",
+    "purpose_attempted": "identify_the_operational_benchmark_contract_name",
+    "required_for_that_purpose": false,
+    "why_not_required": "The benchmark name operational_persistence_latest_published was already present in docs/architecture/decision_log.md, docs/methodology.md and README.md, which are non-result documentation."
+   },
+   {
+    "contains_development_metric_values": true,
+    "displayed": [
+     "model_name",
+     "model_version",
+     "content_checksum"
+    ],
+    "metric_values_displayed": false,
+    "path": "docs/d4_operational_model_results.json",
+    "purpose_attempted": "identify_the_operational_model_contract_name",
+    "required_for_that_purpose": false
+   },
+   {
+    "contains_development_metric_values": false,
+    "contains_locked_test_outcomes": false,
+    "displayed": [
+     "key_names_only"
+    ],
+    "metric_values_displayed": false,
+    "note": "A manifest asserting the locked test was NOT evaluated. No locked outcome exists in it and none was read.",
+    "path": "docs/d3_locked_test_manifest.json"
+   },
+   {
+    "contains_development_metric_values": false,
+    "displayed": [
+     "key_names_only"
+    ],
+    "metric_values_displayed": false,
+    "path": "docs/d3_restored_d1_checksums.json"
+   },
+   {
+    "contains_development_metric_values": false,
+    "displayed": [
+     "key_names_only"
+    ],
+    "metric_values_displayed": false,
+    "path": "docs/d3r1_artifact_inventory.json"
+   },
+   {
+    "contains_development_metric_values": false,
+    "displayed": [
+     "key_names_only"
+    ],
+    "metric_values_displayed": false,
+    "path": "docs/d3r1_benchmark_interpretation.json"
+   }
+  ],
+  "files_opened_count": 6,
+  "files_with_metric_values_displayed": 1,
+  "narrative": "During C11 a development metric artifact was opened. The benchmark contract name it was opened for was already available in non-result documentation, so the file was not required. No metric value entered the C11 configuration, the candidate matrices, any checksum, the gate arithmetic or the architecture selection, and the decision reproduces exactly without it. A guard added afterwards prevents recurrence. It does not alter what happened, and a clean rerun does not restore an outcome-blind execution history.",
+  "occurred_during": "C11",
+  "remediation": {
+   "c11_runner_blocks_d_series_paths": true,
+   "c11_test_asserts_no_d_series_read_call": true,
+   "c11r1_uses_an_allowlist_not_a_denylist": true,
+   "remediation_is_forward_only": true,
+   "remediation_note": "A guard added afterwards prevents recurrence. It does not, and is not claimed to, alter what happened."
+  },
+  "status": {
+   "clean_rerun_restores_original_outcome_blindness": false,
+   "decision_reproducible_without_metric_artifact": true,
+   "development_metric_artifact_accessed": true,
+   "development_target_values_accessed": false,
+   "development_target_values_accessed_basis": "No target table, target column or target observation was opened. The D-series files above are audit documents; the target tables (targets/industry_month_targets, production_stress_month, forecast_target_raw) were never opened during C11, which is independently supported by the static read-call inspection of the C11 runner and by the absence of any target path in this session's C11 commands.",
+   "later_guard_retroactively_erases_access": false,
+   "locked_test_accessed": false,
+   "locked_test_manifest_opened": true,
+   "locked_test_outcomes_accessed": false,
+   "metric_artifact_required_for_decision": false,
+   "metric_values_used_in_architecture_decision": false,
+   "outcome_free_execution": false,
+   "umbrella_outcome_free_claim_made": false
+  }
+ },
+ "outputs": {
+  "erratum_markdown": "docs/c11_architecture_decision.errata.md",
+  "governance_json": "docs/c11r1_governance_decision.json",
+  "governance_markdown": "docs/c11r1_governance_decision.md",
+  "metric_artifact_created": false,
+  "model_artifact_created": false,
+  "prediction_artifact_created": false,
+  "target_joined_artifact_created": false
+ },
+ "preserved_c11_record": {
+  "artifacts": {
+   "decision_json": {
+    "byte_sha256": "d482d80fa74f5a488d3b02f4a2fd0a38d0155b9393f43c779c63cb6345cd3d73",
+    "carries_generation_timestamp": true,
+    "path": "docs/c11_architecture_decision.json"
+   },
+   "decision_markdown": {
+    "byte_sha256": "9a5467c89243f0c3b6aa79075814abd13ceb6b4e77fbf4b0f9c4cbb68124046e",
+    "carries_generation_timestamp": true,
+    "path": "docs/c11_architecture_decision.md"
+   },
+   "frozen_criteria": {
+    "byte_sha256": "b90229da37d9393b646746d7bd2a5889df5903f9f81d961aa765a9cdbfde348d",
+    "carries_generation_timestamp": false,
+    "path": "configs/fuel_oil_modeling_architecture.yaml"
+   },
+   "protocol_markdown": {
+    "byte_sha256": "e823f9dcc1e7ce6dd7cd242e7e8f957d868b7a0d7c44ba4398eca96def31cd3d",
+    "carries_generation_timestamp": false,
+    "path": "docs/c11_architecture_decision_protocol.md"
+   }
+  },
+  "artifacts_edited": [],
+  "byte_identical": true,
+  "c11_disclosures_removed": false,
+  "c11_gate_correction_disclosure_present": true,
+  "c11_rewritten": false,
+  "decision_log_entries_modified": false,
+  "disclosures_present": [
+   "d3_result_file_access_disclosure",
+   "gate_correction_disclosure",
+   "original_gate_expectation",
+   "original_observed_gate_result"
+  ],
+  "durable_checksums": {
+   "c11_content_checksum": "6d525648f0e7e30860dc065c17a896426a0cf008f7ef62096974d4954c9f6d77",
+   "c11_decision_checksum": "001b1d901311c1da0de1e707ca10a97f91e54584b21e52ee8c943421fc068403",
+   "c11_decision_criteria_checksum": "0f81513566f98d1d5047dcb298935607f5abdb35510cf0e3c53c1bc6998d8397",
+   "c11_lineage_checksum": "73a3b1e6f680e2ea2be1f9f50d5fbcb7b21e53d0064dcfee222c725b49e33a4b"
+  },
+  "durable_checksums_unchanged": true,
+  "observed": {
+   "artifacts": {
+    "decision_json": {
+     "byte_sha256": "d482d80fa74f5a488d3b02f4a2fd0a38d0155b9393f43c779c63cb6345cd3d73"
+    },
+    "decision_markdown": {
+     "byte_sha256": "9a5467c89243f0c3b6aa79075814abd13ceb6b4e77fbf4b0f9c4cbb68124046e"
+    },
+    "frozen_criteria": {
+     "byte_sha256": "b90229da37d9393b646746d7bd2a5889df5903f9f81d961aa765a9cdbfde348d"
+    },
+    "protocol_markdown": {
+     "byte_sha256": "e823f9dcc1e7ce6dd7cd242e7e8f957d868b7a0d7c44ba4398eca96def31cd3d"
+    }
+   },
+   "durable_checksums": {
+    "c11_content_checksum": "6d525648f0e7e30860dc065c17a896426a0cf008f7ef62096974d4954c9f6d77",
+    "c11_decision_checksum": "001b1d901311c1da0de1e707ca10a97f91e54584b21e52ee8c943421fc068403",
+    "c11_decision_criteria_checksum": "0f81513566f98d1d5047dcb298935607f5abdb35510cf0e3c53c1bc6998d8397",
+    "c11_lineage_checksum": "73a3b1e6f680e2ea2be1f9f50d5fbcb7b21e53d0064dcfee222c725b49e33a4b"
+   }
+  },
+  "preserved_disclosures": [
+   "original_gate_expectation",
+   "original_observed_gate_result",
+   "gate_correction_disclosure",
+   "d3_result_file_access_disclosure"
+  ],
+  "regenerated_with_a_new_timestamp": []
+ },
+ "prohibited_in_c11r1": [
+  "model_fit",
+  "target_join",
+  "predictive_performance_calculation",
+  "channel_selection",
+  "locked_test_access",
+  "reopening_the_d3_result_artifact",
+  "editing_c11_artifacts",
+  "modifying_existing_decision_log_entries"
+ ],
+ "reproduction": {
+  "all_reproduced": true,
+  "architecture": "pooled_common_effect_plus_centered_sector093_interaction",
+  "c11_selection_agrees": true,
+  "checks": {
+   "c10_content_checksum": {
+    "actual": "bb520f9e74f49afbf6f50d934dea6630c81ea366c24f78b548d03f4a95c24d1c",
+    "expected": "bb520f9e74f49afbf6f50d934dea6630c81ea366c24f78b548d03f4a95c24d1c",
+    "reproduced": true
+   },
+   "c10_diagnostic_contract_checksum": {
+    "actual": "1c88cdd7f2017aa94ee1b069be436c469ee08adcf649fe6ad4c981f995eb2041",
+    "expected": "1c88cdd7f2017aa94ee1b069be436c469ee08adcf649fe6ad4c981f995eb2041",
+    "reproduced": true
+   },
+   "c11_content_checksum": {
+    "actual": "6d525648f0e7e30860dc065c17a896426a0cf008f7ef62096974d4954c9f6d77",
+    "expected": "6d525648f0e7e30860dc065c17a896426a0cf008f7ef62096974d4954c9f6d77",
+    "reproduced": true
+   },
+   "c9_phase_a_checksum": {
+    "actual": "d528aba4aedcb8b8051ad618d66d49c71239267fb26fd2ead292ee90b12c9703",
+    "expected": "d528aba4aedcb8b8051ad618d66d49c71239267fb26fd2ead292ee90b12c9703",
+    "reproduced": true
+   },
+   "channels_kept_separate": {
+    "actual": true,
+    "expected": true,
+    "reproduced": true
+   },
+   "eligible_industries": {
+    "actual": 11,
+    "expected": 11,
+    "reproduced": true
+   },
+   "exposure_cross_industry_spread_positive": {
+    "actual": true,
+    "expected": true,
+    "reproduced": true
+   },
+   "fo1500_direct_sector093.candidate_b_projector_residual": {
+    "actual": true,
+    "expected": true,
+    "reproduced": true
+   },
+   "fo1500_direct_sector093.combined_source_and_interaction_rank": {
+    "actual": 10,
+    "expected": 10,
+    "reproduced": true
+   },
+   "fo1500_direct_sector093.constant_exposure_interaction_rank": {
+    "actual": 0,
+    "expected": 0,
+    "reproduced": true
+   },
+   "fo1500_direct_sector093.design_checksum_matches_c11": {
+    "actual": "6807f4ca258b43bde4e4fced4cfddf1f53dccc350ccdeecb690f50fa4f4688a9",
+    "expected": "6807f4ca258b43bde4e4fced4cfddf1f53dccc350ccdeecb690f50fa4f4688a9",
+    "reproduced": true
+   },
+   "fo1500_direct_sector093.full_design_columns": {
+    "actual": 21,
+    "expected": 21,
+    "reproduced": true
+   },
+   "fo1500_direct_sector093.full_design_rank": {
+    "actual": 21,
+    "expected": 21,
+    "reproduced": true
+   },
+   "fo1500_direct_sector093.interaction_block_rank": {
+    "actual": 5,
+    "expected": 5,
+    "reproduced": true
+   },
+   "fo1500_direct_sector093.invalid_coding_columns": {
+    "actual": 22,
+    "expected": 22,
+    "reproduced": true
+   },
+   "fo1500_direct_sector093.invalid_coding_rank": {
+    "actual": 21,
+    "expected": 21,
+    "reproduced": true
+   },
+   "fo1500_direct_sector093.panel_rows": {
+    "actual": 165,
+    "expected": 165,
+    "reproduced": true
+   },
+   "fo1500_direct_sector093.source_block_rank": {
+    "actual": 5,
+    "expected": 5,
+    "reproduced": true
+   },
+   "fo600_direct_sector093.candidate_b_projector_residual": {
+    "actual": true,
+    "expected": true,
+    "reproduced": true
+   },
+   "fo600_direct_sector093.combined_source_and_interaction_rank": {
+    "actual": 10,
+    "expected": 10,
+    "reproduced": true
+   },
+   "fo600_direct_sector093.constant_exposure_interaction_rank": {
+    "actual": 0,
+    "expected": 0,
+    "reproduced": true
+   },
+   "fo600_direct_sector093.design_checksum_matches_c11": {
+    "actual": "cd28fc267f197a6ee240f9eece2c8049535b8c4224f46e957a756c69aeb972ed",
+    "expected": "cd28fc267f197a6ee240f9eece2c8049535b8c4224f46e957a756c69aeb972ed",
+    "reproduced": true
+   },
+   "fo600_direct_sector093.full_design_columns": {
+    "actual": 21,
+    "expected": 21,
+    "reproduced": true
+   },
+   "fo600_direct_sector093.full_design_rank": {
+    "actual": 21,
+    "expected": 21,
+    "reproduced": true
+   },
+   "fo600_direct_sector093.interaction_block_rank": {
+    "actual": 5,
+    "expected": 5,
+    "reproduced": true
+   },
+   "fo600_direct_sector093.invalid_coding_columns": {
+    "actual": 22,
+    "expected": 22,
+    "reproduced": true
+   },
+   "fo600_direct_sector093.invalid_coding_rank": {
+    "actual": 21,
+    "expected": 21,
+    "reproduced": true
+   },
+   "fo600_direct_sector093.panel_rows": {
+    "actual": 165,
+    "expected": 165,
+    "reproduced": true
+   },
+   "fo600_direct_sector093.source_block_rank": {
+    "actual": 5,
+    "expected": 5,
+    "reproduced": true
+   },
+   "ind_04_absent_from_the_panel": {
+    "actual": false,
+    "expected": false,
+    "reproduced": true
+   },
+   "ind_04_direction_channel": {
+    "actual": "mixed_or_ambiguous",
+    "expected": "mixed_or_ambiguous",
+    "reproduced": true
+   },
+   "ind_04_eligible": {
+    "actual": false,
+    "expected": false,
+    "reproduced": true
+   },
+   "unique_issue_months": {
+    "actual": 15,
+    "expected": 15,
+    "reproduced": true
+   }
+  },
+  "column_space_projector_method": {
+   "affects_the_c11_conclusion": false,
+   "both_satisfy_the_preregistered_bound": true,
+   "c11_used": "unpivoted_qr_truncated_to_rank",
+   "c11_was_not_rerun": true,
+   "c11r1_uses": "svd_left_singular_vectors",
+   "changed_after_c11": true,
+   "consequence_for_the_preservation_pin": "The C11 artifacts pinned here were produced by the QR version and are byte-identical to their pins. A FUTURE rerun of C11 would move its projector residual in the last digits and therefore its content checksum. That would be a regeneration under a corrected projector, not tampering, and this field is the record that says so.",
+   "residuals_differ_in_last_digits": true,
+   "why": "Unpivoted QR does not order its basis by importance, so truncating it to `rank` columns is only correct for a matrix of full column rank. Every real C11 design IS full column rank, so the C11 conclusion is unaffected; the SVD basis is rank-revealing and correct for a rank-deficient matrix too."
+  },
+  "d_series_paths_opened": 0,
+  "expected_architecture": "pooled_common_effect_plus_centered_sector093_interaction",
+  "failed": [],
+  "per_variant": {
+   "fo1500_direct_sector093": {
+    "candidate_b_column_space_equivalent_to_candidate_a": true,
+    "candidate_b_projector_residual_max": 1.1102230246251565e-15,
+    "combined_source_and_interaction_rank": 10,
+    "constant_exposure_interaction_rank": 0,
+    "design_checksum": "6807f4ca258b43bde4e4fced4cfddf1f53dccc350ccdeecb690f50fa4f4688a9",
+    "full_design_columns": 21,
+    "full_design_rank": 21,
+    "interaction_block_rank": 5,
+    "interaction_blocks_after_prohibited_preprocessing": 2,
+    "interaction_blocks_intended": 11,
+    "invalid_coding_columns": 22,
+    "invalid_coding_rank": 21,
+    "panel_rows": 165,
+    "sign_identity_residual": 4.440892098500626e-16,
+    "source_block_rank": 5,
+    "stacked_rank_under_prohibited_preprocessing": 10,
+    "within_industry_combined_rank": 5
+   },
+   "fo600_direct_sector093": {
+    "candidate_b_column_space_equivalent_to_candidate_a": true,
+    "candidate_b_projector_residual_max": 8.881784197001252e-16,
+    "combined_source_and_interaction_rank": 10,
+    "constant_exposure_interaction_rank": 0,
+    "design_checksum": "cd28fc267f197a6ee240f9eece2c8049535b8c4224f46e957a756c69aeb972ed",
+    "full_design_columns": 21,
+    "full_design_rank": 21,
+    "interaction_block_rank": 5,
+    "interaction_blocks_after_prohibited_preprocessing": 2,
+    "interaction_blocks_intended": 11,
+    "invalid_coding_columns": 22,
+    "invalid_coding_rank": 21,
+    "panel_rows": 165,
+    "sign_identity_residual": 4.440892098500626e-16,
+    "source_block_rank": 5,
+    "stacked_rank_under_prohibited_preprocessing": 10,
+    "within_industry_combined_rank": 5
+   }
+  }
+ },
+ "supersedes_findings_of": "none",
+ "supersedes_status_of": "C11",
+ "task": "C11-R1"
+}

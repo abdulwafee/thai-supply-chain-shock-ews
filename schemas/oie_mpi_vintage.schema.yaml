@@ -1,0 +1,124 @@
+# Schema for the D2 edition profiles, base-year compatibility test and the
+# revision taxonomy.
+#
+# Describes what the code ACTUALLY writes
+# (thai_supply_chain_ews.data.oie_mpi_history.EditionProfile /
+#  DivisionRatioResult, and oie_mpi_vintages.classify_revision),
+# verified by tests/test_d2_oie_mpi_timing.py.
+#
+# EVIDENCE ONLY. No feature, no target join, no model input.
+
+schema_version: 1
+task: D2
+written_by: scripts/audit_d2_oie_mpi_timing.py
+output: docs/d2_oie_mpi_source_audit.json  # editions[], base_year_compatibility
+
+numerical_guard:
+  cutoff_field: numerical_audit_cutoff_month
+  cutoff_value: "2025-06"
+  enforced_by: thai_supply_chain_ews.data.oie_mpi_vintages.GuardedMonthlyReader
+  raises: NumericalCutoffError
+  readable_beyond_cutoff:
+    - month column labels and their order
+    - marker glyphs attached to a month label
+    - declared base year and classification scheme
+    - division codes present
+    - file checksum, size and HTTP headers
+  refused_beyond_cutoff:
+    - any index value for any division or product row
+  rationale: >-
+    Downloading a current official file for provenance is not permission to
+    parse every numerical month inside it. Structural metadata is what a
+    publication-timing audit needs; index values are what the locked evaluation
+    protects. Months beyond the cutoff are OMITTED from series output rather
+    than returned as null — omission records "not read", null would assert
+    "read and empty".
+
+edition_profile:
+  grain: [edition_id]
+  columns:
+    - name: edition_id
+      type: string
+      nullable: false
+    - name: path
+      type: string
+      nullable: false
+    - name: base_year
+      type: integer
+      nullable: true
+      note: "Gregorian, converted from the Buddhist-Era year stated in the sheet header."
+    - name: classification_scheme
+      type: string
+      nullable: true
+      enum: [TSIC, ISIC]
+      note: >-
+        Read from the division row labels themselves. The 2011-based edition
+        uses ISIC; the 2016- and 2021-based editions use TSIC. A scheme change
+        is a classification change, NOT a revision.
+    - name: coverage_start
+      type: string
+      format: "YYYY-MM"
+    - name: coverage_end
+      type: string
+      format: "YYYY-MM"
+      note: "Structural extent, which may exceed readable_end."
+    - name: readable_end
+      type: string
+      format: "YYYY-MM"
+      note: "Last month whose VALUES may be read under the cutoff."
+    - name: divisions
+      type: list[integer]
+    - name: marked_months
+      type: list[string]
+      note: "Months whose header label carries a marker glyph."
+
+division_ratio_result:
+  grain: [division]
+  columns:
+    - name: division
+      type: integer
+    - name: overlap_months
+      type: integer
+    - name: ratio_mean
+      type: float
+      nullable: true
+    - name: ratio_cv_percent
+      type: float
+      nullable: true
+      note: "Coefficient of variation of newer/older across shared months, in percent."
+    - name: ratio_min
+      type: float
+      nullable: true
+    - name: ratio_max
+      type: float
+      nullable: true
+    - name: verdict
+      type: string
+      enum: [pure_rescaling, re_estimated, insufficient_overlap, not_evaluated]
+
+revision_classification:
+  function: thai_supply_chain_ews.data.oie_mpi_vintages.classify_revision
+  classes:
+    - rounding_only
+    - ordinary_revision
+    - preliminary_to_later
+    - annual_revision
+    - base_year_rebasing
+    - classification_change
+    - industry_definition_change
+    - not_comparable
+  precedence_note: >-
+    Comparability is decided BEFORE magnitude. A classification change outranks
+    a base-year change, which outranks a division-set change, which outranks any
+    numerical comparison. Two numbers on different bases are different
+    quantities, so the size of their difference is not evidence of a revision
+    and must never be reported as one.
+
+invariants:
+  - "readable_end <= numerical_guard.cutoff_value for every edition profile."
+  - "A splice is admissible only when every evaluated division is a pure
+     rescaling AND the two editions carry identical division sets."
+  - "silent_splicing_permitted is false; a splice that fails the gate is
+     reported as a blocker, never applied."
+  - "classify_revision returns classification_change whenever the two schemes
+     differ, regardless of the numerical difference."

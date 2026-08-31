@@ -1,0 +1,257 @@
+# Task C6 — EPPO ex-refinery archive discovery and point-in-time source audit.
+#
+# PREREGISTERED. Windows, statuses and gate fields were written before the
+# archive was walked. C5 selected EPPO for AUDITING ONLY; nothing here treats
+# that as feature approval.
+#
+# SOURCE AUDIT ONLY. No feature, no target join, no model, no locked test.
+
+schema_version: 1
+task: C6
+config_version: eppo_ex_refinery_archive_v1
+
+# ---------------------------------------------------------------------------
+# What C5 did and did not grant.
+# ---------------------------------------------------------------------------
+c5_designation:
+  source_selected_for_c6_audit: true
+  historical_archive_verified: false      # C6 must establish independently
+  point_in_time_supported: false          # C6 must establish independently
+  feature_semantics_approved: false
+  model_feature_approved: false
+
+provenance:
+  selection_used_target_outcomes: false
+  d4_metrics_used_for_source_ranking: false
+  target_joined: false
+  model_trained: false
+  locked_test_accessed: false
+  model_feature_approved: false
+
+preserved_decisions:
+  b3_targets_changed: false
+  d3_contract_or_benchmarks_changed: false
+  d4_results_changed: false
+  c2_commodity_features_changed: false
+  c3_or_c3r1_changed: false
+  c4_variants_changed: false
+  c5_decomposition_or_ranking_changed: false
+
+# ---------------------------------------------------------------------------
+# Two DISTINCT coverage requirements. Reporting only the operational window
+# would hide that a 12-month change needs a year of prehistory.
+# ---------------------------------------------------------------------------
+required_windows:
+  operational_level_price:
+    start: "2022-01-01"
+    end: "2026-05-31"
+    purpose: overlap with the operational stress history
+  transformation_parity:
+    start: "2021-01-01"
+    end: "2026-05-31"
+    purpose: >-
+      Prehistory required before a 12-month change can be computed for
+      reference months starting in 2022. Coverage from 2022-01 is NOT
+      sufficient for all C2-style transformations.
+
+# Prehistory each future transformation would need. C6 creates none of them.
+transformation_prehistory_months:
+  price_level: 0
+  log_change_1m_pct: 1
+  log_change_3m_pct: 3
+  realized_volatility_3m_pct: 3
+  log_change_12m_pct: 12
+transformations_created_in_c6: false
+
+# ---------------------------------------------------------------------------
+# Discovery. Only official mechanisms count as provenance.
+# ---------------------------------------------------------------------------
+discovery:
+  entry_points:
+    current_landing: "https://www.eppo.go.th/index.php/th/energy-information/static-energy/static-petroleum"
+    category_archive: "https://www.eppo.go.th/data-energy-statistic/energy-price-th/"
+    wordpress_rest_media: "https://www.eppo.go.th/wp-json/wp/v2/media"
+    wordpress_rest_posts: "https://www.eppo.go.th/wp-json/wp/v2/posts"
+    sitemap_index: "https://www.eppo.go.th/wp-sitemap.xml"
+    rss_feed: "https://www.eppo.go.th/feed/"
+    robots: "https://www.eppo.go.th/robots.txt"
+    legacy_joomla: "http://www.eppo.go.th/epposite/index.php/th/petroleum/price/structure-oil-price"
+  methods:
+    - official_current_archive_href
+    - official_current_detail_href
+    - official_wordpress_rest
+    - official_wordpress_sitemap
+    - official_rss_feed
+    - official_legacy_archive_href
+    - official_legacy_item_href
+    - official_attachment_href
+    - search_engine_seed_only
+    - pattern_probe
+  # Neither of these is official provenance.
+  non_official_methods: [search_engine_seed_only, pattern_probe]
+  guessed_path_counts_as_discovery: false
+  first_spreadsheet_link_selected_blindly: false
+  rank_attachments_by_verified_relationship: true
+  preserve_all_candidate_links: true
+  pagination_termination_must_be_observed: true
+  allowed_terminal_conditions:
+    - empty_page
+    - repeated_content
+    - explicit_last_page_marker
+    - documented_api_termination
+
+# ---------------------------------------------------------------------------
+# Products. Only the sector-093 candidates C5 justified.
+# ---------------------------------------------------------------------------
+audited_products:
+  eppo_ex_refinery_hsd:
+    normalized_label: "H-DIESEL"
+    io_sector: "093"
+  eppo_ex_refinery_fo600_2s:
+    normalized_label: "FO 600 (1) 2%S"
+    io_sector: "093"
+  eppo_ex_refinery_fo1500_2s:
+    normalized_label: "FO 1500 (2) 2%S"
+    io_sector: "093"
+
+# Substitutions that must never happen silently.
+forbidden_substitutions:
+  - diesel_blend_for_another_diesel_definition   # B7 / B10 / B20 / premium
+  - fuel_oil_sulphur_grade_for_another
+  - wholesale_or_retail_for_ex_refinery
+  - lpg_baht_per_kg_for_petroleum_baht_per_litre
+
+price_stage: ex_refinery
+stage_columns_kept_distinct:
+  [ex_refinery, excise_tax, municipal_tax, oil_fund, conservation_fund,
+   wholesale, vat, wholesale_with_vat]
+
+# ---------------------------------------------------------------------------
+# Revisions vs ordinary price movement.
+# ---------------------------------------------------------------------------
+revision:
+  comparison_key: [series_id, effective_date, semantic_regime_id]
+  price_change_between_different_effective_dates_is_a_revision: false
+  classes:
+    - single_vintage_only
+    - same_date_same_value
+    - same_date_revised_value
+    - duplicate_document
+    - incomparable_definition
+    - unresolved
+
+# ---------------------------------------------------------------------------
+# Schedule and gaps.
+# ---------------------------------------------------------------------------
+schedule:
+  official_schedule_documented: false
+  inferred_from_weekday_profile: working_day_publication
+  gap_statuses:
+    - weekend
+    - verified_public_holiday
+    - no_new_issue_expected
+    - possible_missing_issue
+    - schedule_unresolved
+    - document_retrieval_failure
+  every_calendar_day_requires_a_file: false
+  interpolation_permitted: false
+  forward_fill_permitted: false
+
+# ---------------------------------------------------------------------------
+# Monthly aggregation. Audited and preregistered only; NOT built in C6.
+# ---------------------------------------------------------------------------
+monthly_aggregation:
+  production_table_created_in_c6: false
+  candidate_rules:
+    - rule_id: arithmetic_mean_of_verified_daily
+      description: arithmetic mean of all verified daily effective observations
+      requires_daily_completeness: high
+    - rule_id: last_verified_effective_in_month
+      description: last verified effective observation in the reference month
+      requires_daily_completeness: low
+    - rule_id: duration_weighted_effective
+      description: duration-weighted price, valid only if a price is proven effective until superseded
+      requires_source_semantics_proof: true
+  selected_from:
+    - source_publication_semantics
+    - archive_completeness
+    - operational_availability
+    - deterministic_reproducibility
+  selected_from_predictive_performance: false
+  default_reference_month: completed_t_minus_1
+  same_month_partial_aggregation_permitted: false
+  observations_after_issue_date_permitted: false
+
+# ---------------------------------------------------------------------------
+# Eligibility. Reported per transformation, never as one verdict.
+# ---------------------------------------------------------------------------
+eligibility_fields:
+  - current_document_semantics_verified
+  - historical_archive_verified
+  - historical_values_retrievable
+  - historical_release_timing_verified
+  - point_in_time_values_supported
+  - level_price_history_eligible
+  - one_month_change_history_eligible
+  - three_month_change_history_eligible
+  - three_month_volatility_history_eligible
+  - twelve_month_change_history_eligible
+  - monthly_aggregation_contract_approved
+  - feature_semantics_approved
+  - model_feature_approved
+
+outcomes:
+  - archive_verified_point_in_time_supported
+  - archive_verified_timing_partial
+  - values_retrievable_timing_unresolved
+  - archive_insufficient_for_model_window
+  - source_unreachable
+  - semantic_break_unresolved
+force_positive_result: false
+
+# ---------------------------------------------------------------------------
+# Superseded by Task C6.5 (configs/eppo_latest_vintage_policy.yaml).
+# The C6 numerical findings stand unchanged; only the wording boundaries and
+# the use policy are added.
+# ---------------------------------------------------------------------------
+superseded_by:
+  task: C6.5
+  config: configs/eppo_latest_vintage_policy.yaml
+  decision: proceed_exploratory_release_lag_aware_latest_vintage
+  evidence_boundary_corrections:
+    legacy_archive_status: tested_legacy_urls_no_longer_expose_original_archive
+    historical_timing_status: not_reconstructable_from_sources_inspected_in_c6
+    monthly_presence_coverage: complete
+    complete_daily_document_validation: false
+  c6_numerical_artifacts_changed: false
+
+# ---------------------------------------------------------------------------
+# Extended by Task C7 (configs/eppo_monthly_source.yaml). The C6 numerical
+# findings stand unchanged; C7 retrieved the rest of the required window and
+# reports what the sample could not show.
+# ---------------------------------------------------------------------------
+extended_by:
+  task: C7
+  config: configs/eppo_monthly_source.yaml
+  c6_numerical_artifacts_changed: false
+  sample_findings_extended:
+    ordinary_h_diesel_absence:
+      c6_observed: "22 audited document-days in 2024-01"
+      c7_full_archive: "305 document-days, 2023-09-18 to 2024-12-17"
+      c6_contradicted: false
+      note: >-
+        Every C6-sampled day that fell inside the absence was in January 2024,
+        so the C6 statement was true of what it observed and understated the
+        extent. No blend price was substituted in either task.
+    fuel_oil_label_stability:
+      c6_observed: "FO 600 (1) 2%S and FO 1500 (2) 2%S stable in the audited sample"
+      c7_full_archive: >-
+        The ordinal index is dropped for 66 document-days, 2024-07-23 to
+        2024-10-28, giving FO 600 2%S and FO 1500 2%S. C6 sampled no day inside
+        that interval.
+      equivalence_established: false
+    layout_regimes:
+      c6_observed: "two regimes, xls_2021 and xlsx_2023"
+      c7_full_archive: >-
+        Both confirmed, plus one document (2024-03-07) in a third signature:
+        xlsx container with the Thai sheet name and the EXCISE TAX column.

@@ -1,0 +1,35 @@
+{
+  "task": "B4",
+  "evaluated_in_b4": false,
+  "manifest_only": true,
+  "statement": "This period is RESERVED. B4 computed no target distribution, metric, risk-level frequency, plot, or model comparison on it. The runner exposes no flag to evaluate it.",
+  "prohibited_outputs": [
+    "target_distributions",
+    "baseline_metrics",
+    "risk_level_frequencies",
+    "plots",
+    "model_comparisons"
+  ],
+  "horizons": {
+    "1": {
+      "first_origin": "2025-07-01",
+      "last_origin": "2026-04-01",
+      "origin_count": 10,
+      "expected_rows": 120,
+      "actual_rows": 120,
+      "rows_match_expected": true,
+      "key_sha256": "b349eb96d82a984faf5e03c985498cf7f536fdb89898c9d45b582dc118a99e50"
+    },
+    "3": {
+      "first_origin": "2025-07-01",
+      "last_origin": "2026-02-01",
+      "origin_count": 8,
+      "expected_rows": 96,
+      "actual_rows": 96,
+      "rows_match_expected": true,
+      "key_sha256": "4141d653dcd35e5e2e1ab9fff845eeb3e4158be3a7417b70d505bbb1e4314b28"
+    }
+  },
+  "target_definition_version": "production_stress_target_v1",
+  "evaluation_harness_version": "walk_forward_harness_v1"
+}

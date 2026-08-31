@@ -1,0 +1,1543 @@
+{
+ "alternative_metrics_generated": false,
+ "claim_registry_summary": {
+  "all_valid": true,
+  "by_audience": {
+   "both": 10,
+   "portfolio": 0,
+   "technical": 16
+  },
+  "by_status": {
+   "inconclusive": 4,
+   "not_supported": 4,
+   "superseded": 2,
+   "supported_with_limitations": 4,
+   "verified": 12
+  },
+  "claims": 26,
+  "distinct_claim_ids": 26,
+  "locked_test_dependencies": 0
+ },
+ "claims": [
+  {
+   "audience": "both",
+   "claim_id": "E1-STATUS-01",
+   "claim_text": "The development programme closed without a supported incremental commodity model.",
+   "evidence_artifact": "docs/d5_development_results.json",
+   "evidence_json_pointer": "scope.evaluation_scope",
+   "limitations": [
+    "development-only evaluation"
+   ],
+   "locked_test_dependency": false,
+   "scope": "project_status",
+   "status": "verified"
+  },
+  {
+   "audience": "both",
+   "claim_id": "E1-FOUND-01",
+   "claim_text": "A leakage-aware, release-aware research pipeline was built and is reproducible from official sources.",
+   "evidence_artifact": "docs/d3_operational_baseline_results.json",
+   "evidence_json_pointer": "operational_contract_version",
+   "limitations": [
+    "targets remain latest vintage"
+   ],
+   "locked_test_dependency": false,
+   "scope": "foundation",
+   "status": "verified"
+  },
+  {
+   "audience": "technical",
+   "claim_id": "E1-D1-01",
+   "claim_text": "The original commodity residual model did not beat its development benchmark at either horizon.",
+   "evidence_artifact": "docs/d1_development_results.json",
+   "evidence_json_pointer": "results.h1.model.macro_industry_mae",
+   "limitations": [
+    "nested protocol not fully executed",
+    "six of thirty origin-horizon selections used the fallback",
+    "fallback effect direction unknown"
+   ],
+   "locked_test_dependency": false,
+   "scope": "world_bank_path",
+   "status": "not_supported"
+  },
+  {
+   "audience": "technical",
+   "claim_id": "E1-D1-02",
+   "claim_text": "That original evaluation is superseded for operational interpretation: it predates the issue-month timing contract.",
+   "evidence_artifact": "docs/d1_development_results.errata.md",
+   "evidence_json_pointer": "errata.fallback_effect_direction",
+   "limitations": [
+    "nested protocol not fully executed",
+    "six of thirty origin-horizon selections used the fallback",
+    "fallback effect direction unknown"
+   ],
+   "locked_test_dependency": false,
+   "scope": "world_bank_path",
+   "status": "superseded",
+   "superseded_by": "D3/D4"
+  },
+  {
+   "audience": "both",
+   "claim_id": "E1-D3-01",
+   "claim_text": "Persistence forecasts are the registered operational reference at both horizons.",
+   "evidence_artifact": "docs/d3_operational_baseline_results.json",
+   "evidence_json_pointer": "benchmark_selection.1.selected_benchmark",
+   "limitations": [
+    "paired comparison against no-contraction was inconclusive",
+    "registered reference, not a proven superior"
+   ],
+   "locked_test_dependency": false,
+   "scope": "foundation",
+   "status": "verified"
+  },
+  {
+   "audience": "technical",
+   "claim_id": "E1-D3-02",
+   "claim_text": "The paired comparison of the registered reference against the no-contraction comparator was inconclusive.",
+   "evidence_artifact": "docs/d3r1_benchmark_interpretation.json",
+   "evidence_json_pointer": "conclusion",
+   "limitations": [
+    "paired comparison against no-contraction was inconclusive",
+    "registered reference, not a proven superior"
+   ],
+   "locked_test_dependency": false,
+   "scope": "foundation",
+   "status": "inconclusive"
+  },
+  {
+   "audience": "both",
+   "claim_id": "E1-D4-01",
+   "claim_text": "The fixed-specification commodity model did not demonstrate incremental signal at either horizon.",
+   "evidence_artifact": "docs/d4_operational_model_results.json",
+   "evidence_json_pointer": "evaluation.1.mae_evidence_status",
+   "limitations": [
+    "half the primary panel was benchmark passthrough",
+    "all direct predictors constant for six industries"
+   ],
+   "locked_test_dependency": false,
+   "scope": "world_bank_path",
+   "status": "not_supported"
+  },
+  {
+   "audience": "technical",
+   "claim_id": "E1-D4-02",
+   "claim_text": "Its event-safety gate passed, which does not override the primary error result.",
+   "evidence_artifact": "docs/d4_operational_model_results.json",
+   "evidence_json_pointer": "evaluation.1.event_safety_status",
+   "limitations": [
+    "half the primary panel was benchmark passthrough",
+    "all direct predictors constant for six industries",
+    "both gates were required"
+   ],
+   "locked_test_dependency": false,
+   "scope": "world_bank_path",
+   "status": "supported_with_limitations"
+  },
+  {
+   "audience": "both",
+   "claim_id": "E1-D5-01",
+   "claim_text": "The pooled fuel-oil interaction did not demonstrate incremental signal for either variant at either horizon.",
+   "evidence_artifact": "docs/d5_development_results.json",
+   "evidence_json_pointer": "results.fo600_direct_sector093|h1.mae_evidence",
+   "limitations": [
+    "fifteen issue-month clusters limit uncertainty resolution",
+    "event safety failed"
+   ],
+   "locked_test_dependency": false,
+   "scope": "eppo_path",
+   "status": "inconclusive"
+  },
+  {
+   "audience": "both",
+   "claim_id": "E1-D5-02",
+   "claim_text": "Absence of a fuel-oil effect was not established; the evidence is inconclusive.",
+   "evidence_artifact": "docs/c12_channel_closure.json",
+   "evidence_json_pointer": "conclusion.explicit_record.absence_of_effect_proven",
+   "limitations": [
+    "fifteen issue-month clusters limit uncertainty resolution",
+    "event safety failed"
+   ],
+   "locked_test_dependency": false,
+   "scope": "eppo_path",
+   "status": "inconclusive"
+  },
+  {
+   "audience": "technical",
+   "claim_id": "E1-C10-01",
+   "claim_text": "Per-industry structural conditioning adds cross-industry scale and no temporal degrees of freedom.",
+   "evidence_artifact": "docs/c10_design_matrix_audit.json",
+   "evidence_json_pointer": "decisions.conditioning_adds_temporal_degrees_of_freedom",
+   "limitations": [
+    "a design property, not a predictive conclusion"
+   ],
+   "locked_test_dependency": false,
+   "scope": "structural",
+   "status": "verified"
+  },
+  {
+   "audience": "technical",
+   "claim_id": "E1-C11-01",
+   "claim_text": "The pooled interaction architecture is mathematically identifiable and was selected exploratorily.",
+   "evidence_artifact": "docs/c11r1_governance_decision.json",
+   "evidence_json_pointer": "decision_status.architecture_decision_status",
+   "limitations": [
+    "selection followed a documented post-observation specification correction"
+   ],
+   "locked_test_dependency": false,
+   "scope": "eppo_path",
+   "status": "supported_with_limitations"
+  },
+  {
+   "audience": "technical",
+   "claim_id": "E1-C11-02",
+   "claim_text": "The original architecture selection is superseded in status by its governance correction.",
+   "evidence_artifact": "docs/c11_architecture_decision.json",
+   "evidence_json_pointer": "selection.selected_architecture",
+   "limitations": [
+    "one of nine gates did not pass as preregistered"
+   ],
+   "locked_test_dependency": false,
+   "scope": "eppo_path",
+   "status": "superseded",
+   "superseded_by": "C11-R1"
+  },
+  {
+   "audience": "both",
+   "claim_id": "E1-C12-01",
+   "claim_text": "The refinery-price channel is closed to further modeling while its source pipeline remains valid.",
+   "evidence_artifact": "docs/c12_channel_closure.json",
+   "evidence_json_pointer": "closure.fields.channel_status",
+   "limitations": [
+    "closure applies to modeling use only"
+   ],
+   "locked_test_dependency": false,
+   "scope": "eppo_path",
+   "status": "verified"
+  },
+  {
+   "audience": "technical",
+   "claim_id": "E1-STRUCT-01",
+   "claim_text": "Aluminium and copper share one input-output sector and are not independent exposure measurements.",
+   "evidence_artifact": "docs/c3_commodity_exposure_matrix.json",
+   "evidence_json_pointer": "crosswalk_version",
+   "limitations": [
+    "commodity mappings are broad proxies"
+   ],
+   "locked_test_dependency": false,
+   "scope": "structural",
+   "status": "verified"
+  },
+  {
+   "audience": "both",
+   "claim_id": "E1-STRUCT-02",
+   "claim_text": "Every industry purchases refinery products directly, while crude exposure is direct-zero for most.",
+   "evidence_artifact": "docs/c9_sector093_exposure_decision.json",
+   "evidence_json_pointer": "eligible_industries_per_channel",
+   "limitations": [
+    "sector 093 is a nine-product basket, a broad proxy"
+   ],
+   "locked_test_dependency": false,
+   "scope": "structural",
+   "status": "verified"
+  },
+  {
+   "audience": "both",
+   "claim_id": "E1-TIMING-01",
+   "claim_text": "Commodity features use archived first-release values with verified publication timing; targets remain latest vintage.",
+   "evidence_artifact": "docs/c1_commodity_source_audit.json",
+   "evidence_json_pointer": "task",
+   "limitations": [
+    "target side is not point-in-time",
+    "not a real-time backtest"
+   ],
+   "locked_test_dependency": false,
+   "scope": "source_timing",
+   "status": "supported_with_limitations"
+  },
+  {
+   "audience": "technical",
+   "claim_id": "E1-TIMING-02",
+   "claim_text": "Refinery-price documents are latest-vintage with unverified first-release timing, carried under a conservative policy lag.",
+   "evidence_artifact": "docs/c7_5_eppo_semantic_decision.json",
+   "evidence_json_pointer": "task",
+   "limitations": [
+    "publication timing is a policy assumption, not a measurement"
+   ],
+   "locked_test_dependency": false,
+   "scope": "source_timing",
+   "status": "supported_with_limitations"
+  },
+  {
+   "audience": "both",
+   "claim_id": "E1-LOCK-01",
+   "claim_text": "The locked final test was left unopened because no independently preregistered candidate earned access.",
+   "evidence_artifact": "docs/d3_locked_test_manifest.json",
+   "evidence_json_pointer": "locked_test_outcomes_read",
+   "limitations": [
+    "the reservation is key-only; no outcome was read"
+   ],
+   "locked_test_dependency": false,
+   "scope": "locked_test",
+   "status": "verified"
+  },
+  {
+   "audience": "technical",
+   "claim_id": "E1-X1",
+   "claim_text": "D1 did not support the original commodity residual model and carried a protocol limitation: the nested selection was not fully executed and six of thirty origin-horizon cases used the conservative fallback.",
+   "evidence_artifact": "docs/d5_development_results.json",
+   "evidence_json_pointer": "scope.evaluation_scope",
+   "limitations": [
+    "development-only evidence"
+   ],
+   "locked_test_dependency": false,
+   "scope": "cross_task",
+   "status": "not_supported"
+  },
+  {
+   "audience": "technical",
+   "claim_id": "E1-X2",
+   "claim_text": "D3 corrected the issue-month timing contract and established the registered operational reference baselines.",
+   "evidence_artifact": "docs/d5_development_results.json",
+   "evidence_json_pointer": "scope.evaluation_scope",
+   "limitations": [
+    "development-only evidence"
+   ],
+   "locked_test_dependency": false,
+   "scope": "cross_task",
+   "status": "verified"
+  },
+  {
+   "audience": "technical",
+   "claim_id": "E1-X3",
+   "claim_text": "D4 did not demonstrate incremental World Bank commodity signal under the fixed operational specification.",
+   "evidence_artifact": "docs/d5_development_results.json",
+   "evidence_json_pointer": "scope.evaluation_scope",
+   "limitations": [
+    "development-only evidence"
+   ],
+   "locked_test_dependency": false,
+   "scope": "cross_task",
+   "status": "not_supported"
+  },
+  {
+   "audience": "technical",
+   "claim_id": "E1-X4",
+   "claim_text": "D5 did not demonstrate incremental EPPO fuel-oil signal under the only structurally supported pooled interaction architecture.",
+   "evidence_artifact": "docs/d5_development_results.json",
+   "evidence_json_pointer": "scope.evaluation_scope",
+   "limitations": [
+    "development-only evidence"
+   ],
+   "locked_test_dependency": false,
+   "scope": "cross_task",
+   "status": "inconclusive"
+  },
+  {
+   "audience": "technical",
+   "claim_id": "E1-X5",
+   "claim_text": "No candidate satisfied the conditions required to open the locked test.",
+   "evidence_artifact": "docs/d5_development_results.json",
+   "evidence_json_pointer": "scope.evaluation_scope",
+   "limitations": [
+    "development-only evidence"
+   ],
+   "locked_test_dependency": false,
+   "scope": "cross_task",
+   "status": "verified"
+  },
+  {
+   "audience": "technical",
+   "claim_id": "E1-X6",
+   "claim_text": "The appropriate final system reference is therefore baseline-only.",
+   "evidence_artifact": "docs/d5_development_results.json",
+   "evidence_json_pointer": "scope.evaluation_scope",
+   "limitations": [
+    "development-only evidence"
+   ],
+   "locked_test_dependency": false,
+   "scope": "cross_task",
+   "status": "verified"
+  },
+  {
+   "audience": "technical",
+   "claim_id": "E1-X7",
+   "claim_text": "Baseline-only means a registered evaluation reference - not a production deployment, and not proof of superiority over every trivial forecast.",
+   "evidence_artifact": "docs/d5_development_results.json",
+   "evidence_json_pointer": "scope.evaluation_scope",
+   "limitations": [
+    "development-only evidence"
+   ],
+   "locked_test_dependency": false,
+   "scope": "cross_task",
+   "status": "verified"
+  }
+ ],
+ "config_version": "e1_evidence_synthesis_v1",
+ "content_checksum": "09d3a0b59734c131361ebe899fec0e8431d624c3658e4ac4ed6251714e436eef",
+ "contract_frozen_before_result_artifacts_read": true,
+ "cross_task_conclusions": [
+  {
+   "id": "X1",
+   "status": "not_supported",
+   "text": "D1 did not support the original commodity residual model and carried a protocol limitation: the nested selection was not fully executed and six of thirty origin-horizon cases used the conservative fallback."
+  },
+  {
+   "id": "X2",
+   "status": "verified",
+   "text": "D3 corrected the issue-month timing contract and established the registered operational reference baselines."
+  },
+  {
+   "id": "X3",
+   "status": "not_supported",
+   "text": "D4 did not demonstrate incremental World Bank commodity signal under the fixed operational specification."
+  },
+  {
+   "id": "X4",
+   "status": "inconclusive",
+   "text": "D5 did not demonstrate incremental EPPO fuel-oil signal under the only structurally supported pooled interaction architecture."
+  },
+  {
+   "id": "X5",
+   "status": "verified",
+   "text": "No candidate satisfied the conditions required to open the locked test."
+  },
+  {
+   "id": "X6",
+   "status": "verified",
+   "text": "The appropriate final system reference is therefore baseline-only."
+  },
+  {
+   "id": "X7",
+   "status": "verified",
+   "text": "Baseline-only means a registered evaluation reference - not a production deployment, and not proof of superiority over every trivial forecast."
+  }
+ ],
+ "development_ledger": {
+  "D1": {
+   "approved_for_locked_test": false,
+   "evaluation_contract": "pre_operational_development_split",
+   "fallback_effect_direction": "unknown",
+   "fallback_keys": [
+    "h1|2024-01-01",
+    "h1|2024-02-01",
+    "h3|2024-01-01",
+    "h3|2024-02-01",
+    "h3|2024-03-01",
+    "h3|2024-04-01"
+   ],
+   "fallback_selections": 6,
+   "horizons": {
+    "1": {
+     "benchmark_macro_mae": 14.528671173147524,
+     "benchmark_name": "persistence_current_month",
+     "model_macro_mae": 15.307285929078239
+    },
+    "3": {
+     "benchmark_macro_mae": 14.698493624422762,
+     "benchmark_name": "persistence_trailing_3m_max",
+     "model_macro_mae": 16.107219840958955
+    }
+   },
+   "nested_protocol_fully_executed": false,
+   "operationally_release_timing_correct": false,
+   "presented_as_confirmatory": false,
+   "status": "not_supported",
+   "superseded_by": "D3/D4",
+   "superseded_scope": "operational_interpretation",
+   "total_selections": 30
+  },
+  "D3": {
+   "evaluation_contract": "operational_contract_v1",
+   "horizons": {
+    "1": {
+     "macro_industry_mae": 17.094469420180285,
+     "no_contraction_macro_mae": 19.445323994788307,
+     "selected_benchmark": "operational_persistence_latest_published"
+    },
+    "3": {
+     "macro_industry_mae": 16.63380109495526,
+     "no_contraction_macro_mae": 16.97906065726465,
+     "selected_benchmark": "operational_persistence_trailing_3m_max"
+    }
+   },
+   "is_a_production_model": false,
+   "paired_comparison_against_no_contraction": "inconclusive",
+   "proven_superior_to_no_contraction": false,
+   "role": "registered_operational_reference",
+   "selection_rule": "preregistered_false_negative_tie_break",
+   "status": "verified"
+  },
+  "D4": {
+   "degenerate_industries": [
+    "IND-01",
+    "IND-03",
+    "IND-06",
+    "IND-07",
+    "IND-10",
+    "IND-11"
+   ],
+   "degenerate_rows": 180,
+   "evaluation_contract": "operational_contract_v1",
+   "event_safety_overrides_mae_result": false,
+   "horizons": {
+    "1": {
+     "approved_for_locked_test": false,
+     "event_safety_status": "event_safety_passed",
+     "mae_evidence_status": "incremental_signal_not_supported",
+     "model_macro_mae": 17.56162884850166,
+     "paired_ci_high": 1.3735633606280004,
+     "paired_ci_low": -0.20603183595487307,
+     "reference_macro_mae": 17.094469420180285
+    },
+    "3": {
+     "approved_for_locked_test": false,
+     "event_safety_status": "event_safety_passed",
+     "mae_evidence_status": "incremental_signal_not_supported",
+     "model_macro_mae": 17.905083297224962,
+     "paired_ci_high": 2.1098382839349306,
+     "paired_ci_low": 0.4316900199839361,
+     "reference_macro_mae": 16.63380109495526
+    }
+   },
+   "remained_exploratory": true,
+   "status": "not_supported",
+   "total_rows": 360
+  },
+  "D5": {
+   "absence_of_effect_proven": false,
+   "channel_closed_by": "C12",
+   "evaluation_contract": "operational_contract_v1",
+   "event_safety_failures": 4,
+   "incremental_signal_demonstrated": false,
+   "intervals_crossing_zero": 4,
+   "point_estimates_beating_the_benchmark": 0,
+   "status": "inconclusive",
+   "variant_horizons": {
+    "fo1500_direct_sector093|h1": {
+     "event_safety_passed": false,
+     "horizon": 1,
+     "mae_evidence": "inconclusive",
+     "model_macro_mae": 17.111366681133678,
+     "overall_status": "inconclusive",
+     "paired_ci_high": 0.8473833595603321,
+     "paired_ci_low": -0.8220711763509774,
+     "reference_macro_mae": 17.094469420180285,
+     "variant_id": "fo1500_direct_sector093"
+    },
+    "fo1500_direct_sector093|h3": {
+     "event_safety_passed": false,
+     "horizon": 3,
+     "mae_evidence": "inconclusive",
+     "model_macro_mae": 18.210334751652116,
+     "overall_status": "inconclusive",
+     "paired_ci_high": 3.5889469085083716,
+     "paired_ci_low": -0.09612187202358172,
+     "reference_macro_mae": 16.63380109495526,
+     "variant_id": "fo1500_direct_sector093"
+    },
+    "fo600_direct_sector093|h1": {
+     "event_safety_passed": false,
+     "horizon": 1,
+     "mae_evidence": "inconclusive",
+     "model_macro_mae": 17.167471407256464,
+     "overall_status": "inconclusive",
+     "paired_ci_high": 0.9070858358614486,
+     "paired_ci_low": -0.7610100281741401,
+     "reference_macro_mae": 17.094469420180285,
+     "variant_id": "fo600_direct_sector093"
+    },
+    "fo600_direct_sector093|h3": {
+     "event_safety_passed": false,
+     "horizon": 3,
+     "mae_evidence": "inconclusive",
+     "model_macro_mae": 18.207297070717235,
+     "overall_status": "inconclusive",
+     "paired_ci_high": 3.524518307959796,
+     "paired_ci_low": -0.016408728547358406,
+     "reference_macro_mae": 16.63380109495526,
+     "variant_id": "fo600_direct_sector093"
+    }
+   }
+  }
+ },
+ "equivalent_evidence_quality_implied_across_sources": false,
+ "evidence_status_vocabulary": [
+  "verified",
+  "supported_with_limitations",
+  "inconclusive",
+  "not_supported",
+  "unresolved",
+  "not_attempted",
+  "superseded"
+ ],
+ "final_declaration": [
+  "development_program_is_complete",
+  "data_timing_lineage_and_evaluation_infrastructure_is_reproducible",
+  "d3_persistence_forecasts_remain_the_registered_operational_reference",
+  "no_commodity_model_demonstrated_sufficient_incremental_development_evidence",
+  "no_model_or_feature_was_approved_for_operational_deployment",
+  "locked_final_test_remains_sealed",
+  "future_reopening_requires_new_external_evidence_and_a_new_independent_preregistration"
+ ],
+ "generated_at_utc": "2026-08-30T08:45:05.449684+00:00",
+ "locked_test": {
+  "any_candidate_locked_test_evaluation_authorized": false,
+  "candidate_authorizations": {
+   "C12": false,
+   "D1": false,
+   "D4": false,
+   "D5": false
+  },
+  "horizon_1_range": [
+   "2025-07",
+   "2026-04"
+  ],
+  "horizon_1_range_matches": true,
+  "horizon_3_range": [
+   "2025-07",
+   "2026-02"
+  ],
+  "horizon_3_range_matches": true,
+  "locked_test_evaluated": false,
+  "locked_test_outcomes_read": false,
+  "manifest_is_key_only": true,
+  "outcomes_opened_hashed_or_summarised": false,
+  "prediction_or_metric_exists_for_locked_origins": false,
+  "purge_months": [
+   "2025-04",
+   "2025-05",
+   "2025-06"
+  ],
+  "required_language": "The locked final test was intentionally left unopened because no independently preregistered candidate earned access through development evidence.",
+  "reserved_months": 10,
+  "reserved_months_match": true,
+  "runner_can_reach_locked_origins": false,
+  "status": "sealed_unopened"
+ },
+ "metrics_verified_against_registered_artifacts": true,
+ "numeric_reconciliation": {
+  "all_reconciled": true,
+  "claims_checked": 26,
+  "failures": [],
+  "rows": [
+   {
+    "actual": 15.307285929078239,
+    "artifact": "docs/d1_development_results.json",
+    "expected": 15.3073,
+    "id": "D1_H1_MODEL",
+    "pointer": "results.h1.model.macro_industry_mae",
+    "reconciled": true
+   },
+   {
+    "actual": 14.528671173147524,
+    "artifact": "docs/d1_development_results.json",
+    "expected": 14.5287,
+    "id": "D1_H1_BENCH",
+    "pointer": "results.h1.benchmark.macro_industry_mae",
+    "reconciled": true
+   },
+   {
+    "actual": 16.107219840958955,
+    "artifact": "docs/d1_development_results.json",
+    "expected": 16.1072,
+    "id": "D1_H3_MODEL",
+    "pointer": "results.h3.model.macro_industry_mae",
+    "reconciled": true
+   },
+   {
+    "actual": 14.698493624422762,
+    "artifact": "docs/d1_development_results.json",
+    "expected": 14.6985,
+    "id": "D1_H3_BENCH",
+    "pointer": "results.h3.benchmark.macro_industry_mae",
+    "reconciled": true
+   },
+   {
+    "actual": 17.094469420180285,
+    "artifact": "docs/d3_operational_baseline_results.json",
+    "expected": 17.0945,
+    "id": "D3_H1_PERSISTENCE",
+    "pointer": "metrics.1.baselines.operational_persistence_latest_published.macro_industry_mae",
+    "reconciled": true
+   },
+   {
+    "actual": 16.63380109495526,
+    "artifact": "docs/d3_operational_baseline_results.json",
+    "expected": 16.6338,
+    "id": "D3_H3_TRAILING_MAX",
+    "pointer": "metrics.3.baselines.operational_persistence_trailing_3m_max.macro_industry_mae",
+    "reconciled": true
+   },
+   {
+    "actual": 19.445323994788307,
+    "artifact": "docs/d3_operational_baseline_results.json",
+    "expected": 19.4453,
+    "id": "D3_H1_NO_CONTRACTION",
+    "pointer": "metrics.1.baselines.operational_no_contraction.macro_industry_mae",
+    "reconciled": true
+   },
+   {
+    "actual": 16.97906065726465,
+    "artifact": "docs/d3_operational_baseline_results.json",
+    "expected": 16.9791,
+    "id": "D3_H3_NO_CONTRACTION",
+    "pointer": "metrics.3.baselines.operational_no_contraction.macro_industry_mae",
+    "reconciled": true
+   },
+   {
+    "actual": 17.56162884850166,
+    "artifact": "docs/d4_operational_model_results.json",
+    "expected": 17.5616,
+    "id": "D4_H1_MODEL",
+    "pointer": "evaluation.1.model.macro_industry_mae",
+    "reconciled": true
+   },
+   {
+    "actual": 17.094469420180285,
+    "artifact": "docs/d4_operational_model_results.json",
+    "expected": 17.0945,
+    "id": "D4_H1_REFERENCE",
+    "pointer": "evaluation.1.operational_persistence.macro_industry_mae",
+    "reconciled": true
+   },
+   {
+    "actual": -0.20603183595487307,
+    "artifact": "docs/d4_operational_model_results.json",
+    "expected": -0.206,
+    "id": "D4_H1_CI_LOW",
+    "pointer": "evaluation.1.vs_operational_persistence.paired_difference_model_minus_comparator.ci_low",
+    "reconciled": true
+   },
+   {
+    "actual": 1.3735633606280004,
+    "artifact": "docs/d4_operational_model_results.json",
+    "expected": 1.3736,
+    "id": "D4_H1_CI_HIGH",
+    "pointer": "evaluation.1.vs_operational_persistence.paired_difference_model_minus_comparator.ci_high",
+    "reconciled": true
+   },
+   {
+    "actual": 17.905083297224962,
+    "artifact": "docs/d4_operational_model_results.json",
+    "expected": 17.9051,
+    "id": "D4_H3_MODEL",
+    "pointer": "evaluation.3.model.macro_industry_mae",
+    "reconciled": true
+   },
+   {
+    "actual": 16.63380109495526,
+    "artifact": "docs/d4_operational_model_results.json",
+    "expected": 16.6338,
+    "id": "D4_H3_REFERENCE",
+    "pointer": "evaluation.3.operational_persistence.macro_industry_mae",
+    "reconciled": true
+   },
+   {
+    "actual": 0.4316900199839361,
+    "artifact": "docs/d4_operational_model_results.json",
+    "expected": 0.4317,
+    "id": "D4_H3_CI_LOW",
+    "pointer": "evaluation.3.vs_operational_persistence.paired_difference_model_minus_comparator.ci_low",
+    "reconciled": true
+   },
+   {
+    "actual": 2.1098382839349306,
+    "artifact": "docs/d4_operational_model_results.json",
+    "expected": 2.1098,
+    "id": "D4_H3_CI_HIGH",
+    "pointer": "evaluation.3.vs_operational_persistence.paired_difference_model_minus_comparator.ci_high",
+    "reconciled": true
+   },
+   {
+    "actual": 17.111366681133678,
+    "artifact": "docs/d5_development_results.json",
+    "expected": 17.111,
+    "id": "D5_FO1500_H1_MODEL",
+    "pointer": "results.fo1500_direct_sector093|h1.model.macro_industry_mae",
+    "reconciled": true
+   },
+   {
+    "actual": 17.167471407256464,
+    "artifact": "docs/d5_development_results.json",
+    "expected": 17.167,
+    "id": "D5_FO600_H1_MODEL",
+    "pointer": "results.fo600_direct_sector093|h1.model.macro_industry_mae",
+    "reconciled": true
+   },
+   {
+    "actual": 18.210334751652116,
+    "artifact": "docs/d5_development_results.json",
+    "expected": 18.21,
+    "id": "D5_FO1500_H3_MODEL",
+    "pointer": "results.fo1500_direct_sector093|h3.model.macro_industry_mae",
+    "reconciled": true
+   },
+   {
+    "actual": 18.207297070717235,
+    "artifact": "docs/d5_development_results.json",
+    "expected": 18.207,
+    "id": "D5_FO600_H3_MODEL",
+    "pointer": "results.fo600_direct_sector093|h3.model.macro_industry_mae",
+    "reconciled": true
+   },
+   {
+    "actual": 17.094469420180285,
+    "artifact": "docs/d5_development_results.json",
+    "expected": 17.094,
+    "id": "D5_H1_REFERENCE",
+    "pointer": "results.fo600_direct_sector093|h1.benchmark.macro_industry_mae",
+    "reconciled": true
+   },
+   {
+    "actual": 16.63380109495526,
+    "artifact": "docs/d5_development_results.json",
+    "expected": 16.634,
+    "id": "D5_H3_REFERENCE",
+    "pointer": "results.fo600_direct_sector093|h3.benchmark.macro_industry_mae",
+    "reconciled": true
+   },
+   {
+    "actual": 6.0,
+    "artifact": "docs/d1_development_results.json",
+    "expected": 6.0,
+    "id": "D1_FALLBACK_COUNT",
+    "pointer": "__fallback_selection_count__",
+    "reconciled": true
+   },
+   {
+    "actual": 30.0,
+    "artifact": "docs/d1_development_results.json",
+    "expected": 30.0,
+    "id": "D1_SELECTION_COUNT",
+    "pointer": "__selection_count__",
+    "reconciled": true
+   },
+   {
+    "actual": 180.0,
+    "artifact": "docs/d4_operational_model_results.json",
+    "expected": 180.0,
+    "id": "D4_DEGENERATE_ROWS",
+    "pointer": "degenerate_design_summary.primary_direct_lag2.rows_degenerate",
+    "reconciled": true
+   },
+   {
+    "actual": 360.0,
+    "artifact": "docs/d4_operational_model_results.json",
+    "expected": 360.0,
+    "id": "D4_TOTAL_ROWS",
+    "pointer": "degenerate_design_summary.primary_direct_lag2.rows_total",
+    "reconciled": true
+   }
+  ],
+  "tolerance": 0.001
+ },
+ "outputs": {
+  "evidence_ledger": "docs/e1_evidence_ledger.json",
+  "executive_summary": "docs/e1_executive_summary.md",
+  "metric_artifact_created": false,
+  "model_artifact_created": false,
+  "portfolio_case_study": "docs/e1_portfolio_case_study.md",
+  "prediction_artifact_created": false,
+  "reproducibility_manifest": "docs/e1_reproducibility_manifest.json",
+  "technical_closeout": "docs/e1_technical_closeout.md"
+ },
+ "prohibited_actions": [
+  "rerun_d1_d3_d4_or_d5_models",
+  "recompute_development_metrics_from_raw_predictions",
+  "fit_a_new_model",
+  "compare_another_estimator",
+  "select_a_commodity_or_channel",
+  "subgroup_mining",
+  "change_a_published_decision_status",
+  "access_purge_outcomes",
+  "open_hash_summarise_or_infer_locked_outcomes",
+  "delete_negative_result_artifacts",
+  "rewrite_prior_decision_log_entries",
+  "describe_an_inconclusive_result_as_no_effect",
+  "describe_d3_as_a_production_model"
+ ],
+ "prohibited_collapses": {
+  "development_evaluation_into_production_validation": "A development walk-forward is not a production validation, and no model was deployed.",
+  "inconclusive_into_no_effect": "An interval that crosses zero is a failure to demonstrate, not a demonstration of failure.",
+  "latest_vintage_into_real_time_backtesting": "Latest-vintage targets cannot reproduce what was knowable at the time. The project is release-aware, not point-in-time on the target side.",
+  "not_supported_into_disproven": "A model that did not beat its benchmark has not disproved the hypothesis it encoded.",
+  "selected_reference_into_proven_superiority": "D3's persistence benchmarks are the REGISTERED reference. The paired comparison against no-contraction was inconclusive at both horizons.",
+  "unresolved_into_absent": "A quantity nobody measured is unresolved. Recording it as zero asserts a measurement that was never made."
+ },
+ "project_status": {
+  "commodity_incremental_signal_supported": false,
+  "confirmatory_claim_authorized": false,
+  "development_program_status": "closed_without_supported_incremental_commodity_model",
+  "fully_real_time_backtest": false,
+  "future_reopening_requires_new_external_evidence": true,
+  "latest_vintage_target_evaluation": true,
+  "locked_test_outcomes_read": false,
+  "locked_test_status": "sealed_unopened",
+  "model_feature_approved": false,
+  "operational_model_selected": false,
+  "production_deployment_authorized": false,
+  "registered_operational_reference_available": true,
+  "registered_operational_reference_source": "D3"
+ },
+ "source_timing_table": [
+  {
+   "historical_timing": "month t+1 timing supported for the audited period",
+   "main_limitation": "not a real-time target panel",
+   "point_in_time_status": "target vintages unavailable",
+   "source_family": "OIE MPI target",
+   "values": "latest vintage"
+  },
+  {
+   "historical_timing": "verified monthly publication timing",
+   "main_limitation": "target side remains latest vintage",
+   "point_in_time_status": "feature side supported",
+   "source_family": "World Bank Pink Sheet",
+   "values": "archived first release"
+  },
+  {
+   "historical_timing": "structurally available by 2020-03-31",
+   "main_limitation": "old benchmark and broad sectors",
+   "point_in_time_status": "time-invariant structural input",
+   "source_family": "NESDC I/O",
+   "values": "official 2015 Final structure"
+  },
+  {
+   "historical_timing": "historical first-release timing unverified",
+   "main_limitation": "policy lag 2 and broad proxy",
+   "point_in_time_status": "not point-in-time",
+   "source_family": "EPPO refinery prices",
+   "values": "historical latest-vintage documents"
+  }
+ ],
+ "structural_synthesis": {
+  "aluminum_and_copper_are_independent_exposure_measurements": false,
+  "aluminum_and_copper_share_sector_107": true,
+  "c10_conditioning_adds_scale_not_temporal_degrees_of_freedom": true,
+  "c11_pooled_interaction_identifiable": true,
+  "c11_selection_status": "exploratory_supported_after_documented_specification_correction",
+  "eppo_ex_refinery_versus_purchasers_price_partial_mismatch": true,
+  "fo600_and_fo1500_are_distinct_channels_sharing_one_exposure": true,
+  "ind_04_producer_consumer_direction_ambiguous": true,
+  "nesdc_2015_final_is_import_inclusive": true,
+  "nesdc_2015_final_uses_purchasers_prices": true,
+  "sector_031_crude_exposure_often_direct_zero": true,
+  "sector_093_refinery_product_exposure_positive_for_all_12_industries": true,
+  "structural_attribution_described_as_causal_transmission": false,
+  "structural_coefficients_treated_as_time_invariant": true,
+  "world_bank_commodity_mappings_are_broad_proxies": true
+ },
+ "supersession": {
+  "edges": [
+   {
+    "reason": "D1's evaluation was not operationally release-timing correct",
+    "scope": "operational_interpretation",
+    "superseded": "D1",
+    "superseded_by": "D3"
+   },
+   {
+    "reason": "D4 re-evaluated the commodity model under the D3 contract",
+    "scope": "operational_interpretation",
+    "superseded": "D1",
+    "superseded_by": "D4"
+   },
+   {
+    "reason": "D3-R1 corrected the benchmark-selection and verification claims",
+    "scope": "benchmark_selection_wording",
+    "superseded": "D3",
+    "superseded_by": "D3R1"
+   },
+   {
+    "reason": "C11-R1 corrected the status without changing the findings",
+    "scope": "methodological_status",
+    "superseded": "C11",
+    "superseded_by": "C11R1"
+   }
+  ],
+  "graph": {
+   "acyclic": true,
+   "edges": 4,
+   "nodes": [
+    "C11",
+    "C11R1",
+    "D1",
+    "D3",
+    "D3R1",
+    "D4"
+   ],
+   "superseded_tasks": [
+    "C11",
+    "D1",
+    "D3"
+   ]
+  },
+  "rules": {
+   "graph_must_be_acyclic": true,
+   "superseded_results_presented_as_current": false,
+   "superseded_results_remain_in_the_ledger": true,
+   "supersession_marker_required": "superseded_by"
+  }
+ },
+ "synthesis_contract": {
+  "claim_registry": {
+   "audiences": [
+    "technical",
+    "portfolio",
+    "both"
+   ],
+   "conditional_fields": {
+    "superseded_by": "required_when_status_is_superseded"
+   },
+   "failure_conditions": [
+    "numerical_claim_cannot_be_reconciled_with_its_source_artifact",
+    "superseded_result_presented_as_current",
+    "claim_depends_on_locked_outcomes",
+    "limitation_required_by_its_source_artifact_omitted",
+    "two_incompatible_evaluation_contracts_compared_without_qualification"
+   ],
+   "incompatible_contract_pairs": [
+    [
+     "D1",
+     "D3"
+    ],
+    [
+     "D1",
+     "D4"
+    ],
+    [
+     "D1",
+     "D5"
+    ]
+   ],
+   "locked_test_dependency_required_value": false,
+   "qualification_required_phrase": "different evaluation contract",
+   "required_fields": [
+    "claim_id",
+    "claim_text",
+    "status",
+    "scope",
+    "audience",
+    "evidence_artifact",
+    "evidence_json_pointer",
+    "limitations",
+    "locked_test_dependency"
+   ],
+   "scopes": [
+    "foundation",
+    "world_bank_path",
+    "eppo_path",
+    "cross_task",
+    "project_status",
+    "locked_test",
+    "structural",
+    "source_timing"
+   ]
+  },
+  "cross_task_conclusions": [
+   {
+    "id": "X1",
+    "status": "not_supported",
+    "text": "D1 did not support the original commodity residual model and carried a protocol limitation: the nested selection was not fully executed and six of thirty origin-horizon cases used the conservative fallback."
+   },
+   {
+    "id": "X2",
+    "status": "verified",
+    "text": "D3 corrected the issue-month timing contract and established the registered operational reference baselines."
+   },
+   {
+    "id": "X3",
+    "status": "not_supported",
+    "text": "D4 did not demonstrate incremental World Bank commodity signal under the fixed operational specification."
+   },
+   {
+    "id": "X4",
+    "status": "inconclusive",
+    "text": "D5 did not demonstrate incremental EPPO fuel-oil signal under the only structurally supported pooled interaction architecture."
+   },
+   {
+    "id": "X5",
+    "status": "verified",
+    "text": "No candidate satisfied the conditions required to open the locked test."
+   },
+   {
+    "id": "X6",
+    "status": "verified",
+    "text": "The appropriate final system reference is therefore baseline-only."
+   },
+   {
+    "id": "X7",
+    "status": "verified",
+    "text": "Baseline-only means a registered evaluation reference - not a production deployment, and not proof of superiority over every trivial forecast."
+   }
+  ],
+  "evidence_status_vocabulary": [
+   "verified",
+   "supported_with_limitations",
+   "inconclusive",
+   "not_supported",
+   "unresolved",
+   "not_attempted",
+   "superseded"
+  ],
+  "final_declaration": [
+   "development_program_is_complete",
+   "data_timing_lineage_and_evaluation_infrastructure_is_reproducible",
+   "d3_persistence_forecasts_remain_the_registered_operational_reference",
+   "no_commodity_model_demonstrated_sufficient_incremental_development_evidence",
+   "no_model_or_feature_was_approved_for_operational_deployment",
+   "locked_final_test_remains_sealed",
+   "future_reopening_requires_new_external_evidence_and_a_new_independent_preregistration"
+  ],
+  "included_tasks": {
+   "eppo_path": {
+    "C10": {
+     "artifact": "docs/c10_design_matrix_audit.json",
+     "role": "identifiability audit"
+    },
+    "C11": {
+     "artifact": "docs/c11_architecture_decision.json",
+     "role": "architecture decision"
+    },
+    "C11R1": {
+     "artifact": "docs/c11r1_governance_decision.json",
+     "role": "governance correction"
+    },
+    "C12": {
+     "artifact": "docs/c12_channel_closure.json",
+     "role": "channel closure"
+    },
+    "C5": {
+     "artifact": "docs/c5_price_stage_source_audit.json",
+     "role": "stage alignment"
+    },
+    "C7": {
+     "artifact": "docs/c7_eppo_full_archive_audit.json",
+     "role": "full ingestion"
+    },
+    "C7_5": {
+     "artifact": "docs/c7_5_eppo_semantic_decision.json",
+     "role": "semantic closure"
+    },
+    "C8": {
+     "artifact": "docs/c8_eppo_transformation_audit.json",
+     "role": "source transformations"
+    },
+    "C9": {
+     "artifact": "docs/c9_fuel_oil_conditioning_audit.json",
+     "role": "structural conditioning"
+    },
+    "C9_EXPOSURE": {
+     "artifact": "docs/c9_sector093_exposure_decision.json",
+     "role": "sector-093 structural decision"
+    },
+    "D5": {
+     "artifact": "docs/d5_development_results.json",
+     "role": "authorized development evaluation"
+    }
+   },
+   "foundation": {
+    "B1": {
+     "artifact": "docs/b1_ingestion_metadata.json",
+     "role": "source ingestion"
+    },
+    "B3": {
+     "artifact": "docs/b3_target_build_metadata.json",
+     "role": "target definition"
+    },
+    "B4": {
+     "artifact": "docs/b4_baseline_results.json",
+     "role": "split and baselines"
+    },
+    "D2": {
+     "artifact": "docs/d2_target_timing_decision.json",
+     "role": "release timing"
+    },
+    "D3": {
+     "artifact": "docs/d3_operational_baseline_results.json",
+     "role": "operational contract and reference baselines"
+    },
+    "D3R1": {
+     "artifact": "docs/d3r1_benchmark_interpretation.json",
+     "role": "benchmark-selection correction"
+    },
+    "D3_LOCKED": {
+     "artifact": "docs/d3_locked_test_manifest.json",
+     "role": "key-only locked-test reservation"
+    }
+   },
+   "world_bank_path": {
+    "C1": {
+     "artifact": "docs/c1_commodity_source_audit.json",
+     "role": "source timing"
+    },
+    "C2": {
+     "artifact": "docs/c2_commodity_feature_audit.json",
+     "role": "transformations"
+    },
+    "C3": {
+     "artifact": "docs/c3_commodity_exposure_matrix.json",
+     "role": "I/O exposure"
+    },
+    "C4": {
+     "artifact": "docs/c4_industry_conditioned_feature_audit.json",
+     "role": "conditioned matrix"
+    },
+    "D1": {
+     "artifact": "docs/d1_development_results.json",
+     "role": "original development evaluation"
+    },
+    "D4": {
+     "artifact": "docs/d4_operational_model_results.json",
+     "role": "operational fixed-specification evaluation"
+    }
+   }
+  },
+  "locked_test": {
+   "any_candidate_locked_test_evaluation_authorized": false,
+   "c12_reopening_rules_active": true,
+   "horizon_1_range": [
+    "2025-07",
+    "2026-04"
+   ],
+   "horizon_3_range": [
+    "2025-07",
+    "2026-02"
+   ],
+   "manifest": "docs/d3_locked_test_manifest.json",
+   "manifest_is_key_only": true,
+   "outcomes_read_by_any_task": false,
+   "prediction_or_metric_exists_for_locked_origins": false,
+   "prohibited_language": [
+    "locked test passed",
+    "locked test validated",
+    "unused data proving generalization",
+    "held-out validation confirms",
+    "out-of-sample performance confirmed"
+   ],
+   "purge_months": [
+    "2025-04",
+    "2025-06"
+   ],
+   "required_language": "The locked final test was intentionally left unopened because no independently preregistered candidate earned access through development evidence.",
+   "reserved_months": 10
+  },
+  "numeric_reconciliation": {
+   "claims": [
+    {
+     "artifact": "docs/d1_development_results.json",
+     "id": "D1_H1_MODEL",
+     "pointer": "results.h1.model.macro_industry_mae",
+     "value": 15.3073
+    },
+    {
+     "artifact": "docs/d1_development_results.json",
+     "id": "D1_H1_BENCH",
+     "pointer": "results.h1.benchmark.macro_industry_mae",
+     "value": 14.5287
+    },
+    {
+     "artifact": "docs/d1_development_results.json",
+     "id": "D1_H3_MODEL",
+     "pointer": "results.h3.model.macro_industry_mae",
+     "value": 16.1072
+    },
+    {
+     "artifact": "docs/d1_development_results.json",
+     "id": "D1_H3_BENCH",
+     "pointer": "results.h3.benchmark.macro_industry_mae",
+     "value": 14.6985
+    },
+    {
+     "artifact": "docs/d3_operational_baseline_results.json",
+     "id": "D3_H1_PERSISTENCE",
+     "pointer": "metrics.1.baselines.operational_persistence_latest_published.macro_industry_mae",
+     "value": 17.0945
+    },
+    {
+     "artifact": "docs/d3_operational_baseline_results.json",
+     "id": "D3_H3_TRAILING_MAX",
+     "pointer": "metrics.3.baselines.operational_persistence_trailing_3m_max.macro_industry_mae",
+     "value": 16.6338
+    },
+    {
+     "artifact": "docs/d3_operational_baseline_results.json",
+     "id": "D3_H1_NO_CONTRACTION",
+     "pointer": "metrics.1.baselines.operational_no_contraction.macro_industry_mae",
+     "value": 19.4453
+    },
+    {
+     "artifact": "docs/d3_operational_baseline_results.json",
+     "id": "D3_H3_NO_CONTRACTION",
+     "pointer": "metrics.3.baselines.operational_no_contraction.macro_industry_mae",
+     "value": 16.9791
+    },
+    {
+     "artifact": "docs/d4_operational_model_results.json",
+     "id": "D4_H1_MODEL",
+     "pointer": "evaluation.1.model.macro_industry_mae",
+     "value": 17.5616
+    },
+    {
+     "artifact": "docs/d4_operational_model_results.json",
+     "id": "D4_H1_REFERENCE",
+     "pointer": "evaluation.1.operational_persistence.macro_industry_mae",
+     "value": 17.0945
+    },
+    {
+     "artifact": "docs/d4_operational_model_results.json",
+     "id": "D4_H1_CI_LOW",
+     "pointer": "evaluation.1.vs_operational_persistence.paired_difference_model_minus_comparator.ci_low",
+     "value": -0.206
+    },
+    {
+     "artifact": "docs/d4_operational_model_results.json",
+     "id": "D4_H1_CI_HIGH",
+     "pointer": "evaluation.1.vs_operational_persistence.paired_difference_model_minus_comparator.ci_high",
+     "value": 1.3736
+    },
+    {
+     "artifact": "docs/d4_operational_model_results.json",
+     "id": "D4_H3_MODEL",
+     "pointer": "evaluation.3.model.macro_industry_mae",
+     "value": 17.9051
+    },
+    {
+     "artifact": "docs/d4_operational_model_results.json",
+     "id": "D4_H3_REFERENCE",
+     "pointer": "evaluation.3.operational_persistence.macro_industry_mae",
+     "value": 16.6338
+    },
+    {
+     "artifact": "docs/d4_operational_model_results.json",
+     "id": "D4_H3_CI_LOW",
+     "pointer": "evaluation.3.vs_operational_persistence.paired_difference_model_minus_comparator.ci_low",
+     "value": 0.4317
+    },
+    {
+     "artifact": "docs/d4_operational_model_results.json",
+     "id": "D4_H3_CI_HIGH",
+     "pointer": "evaluation.3.vs_operational_persistence.paired_difference_model_minus_comparator.ci_high",
+     "value": 2.1098
+    },
+    {
+     "artifact": "docs/d5_development_results.json",
+     "id": "D5_FO1500_H1_MODEL",
+     "pointer": "results.fo1500_direct_sector093|h1.model.macro_industry_mae",
+     "value": 17.111
+    },
+    {
+     "artifact": "docs/d5_development_results.json",
+     "id": "D5_FO600_H1_MODEL",
+     "pointer": "results.fo600_direct_sector093|h1.model.macro_industry_mae",
+     "value": 17.167
+    },
+    {
+     "artifact": "docs/d5_development_results.json",
+     "id": "D5_FO1500_H3_MODEL",
+     "pointer": "results.fo1500_direct_sector093|h3.model.macro_industry_mae",
+     "value": 18.21
+    },
+    {
+     "artifact": "docs/d5_development_results.json",
+     "id": "D5_FO600_H3_MODEL",
+     "pointer": "results.fo600_direct_sector093|h3.model.macro_industry_mae",
+     "value": 18.207
+    },
+    {
+     "artifact": "docs/d5_development_results.json",
+     "id": "D5_H1_REFERENCE",
+     "pointer": "results.fo600_direct_sector093|h1.benchmark.macro_industry_mae",
+     "value": 17.094
+    },
+    {
+     "artifact": "docs/d5_development_results.json",
+     "id": "D5_H3_REFERENCE",
+     "pointer": "results.fo600_direct_sector093|h3.benchmark.macro_industry_mae",
+     "value": 16.634
+    },
+    {
+     "artifact": "docs/d1_development_results.json",
+     "id": "D1_FALLBACK_COUNT",
+     "pointer": "__fallback_selection_count__",
+     "value": 6
+    },
+    {
+     "artifact": "docs/d1_development_results.json",
+     "id": "D1_SELECTION_COUNT",
+     "pointer": "__selection_count__",
+     "value": 30
+    },
+    {
+     "artifact": "docs/d4_operational_model_results.json",
+     "id": "D4_DEGENERATE_ROWS",
+     "pointer": "degenerate_design_summary.primary_direct_lag2.rows_degenerate",
+     "value": 180
+    },
+    {
+     "artifact": "docs/d4_operational_model_results.json",
+     "id": "D4_TOTAL_ROWS",
+     "pointer": "degenerate_design_summary.primary_direct_lag2.rows_total",
+     "value": 360
+    }
+   ],
+   "tolerance": 0.001
+  },
+  "portfolio": {
+   "audience": "computer_science_ml_internship",
+   "cv_bullets": 3,
+   "cv_bullets_may_imply_positive_predictive_performance": false,
+   "internal_task_codes_in_main_narrative": false,
+   "must_explain": [
+    "business_problem_motivation",
+    "why_random_splitting_would_leak",
+    "publication_timing_and_vintage_handling",
+    "how_official_io_data_connected_prices_to_industries",
+    "why_reasonable_features_became_degenerate",
+    "how_operational_baselines_were_rebuilt",
+    "what_the_development_experiments_found",
+    "why_not_opening_the_locked_test_is_a_positive_result",
+    "technical_skills_demonstrated",
+    "what_would_be_required_to_reopen"
+   ],
+   "prohibited_claims": [
+    "beat the baseline",
+    "beats the baseline",
+    "outperformed the benchmark",
+    "deployable early-warning model",
+    "production ready",
+    "fully real-time",
+    "real-time backtest",
+    "commodities have no predictive value",
+    "proved commodities do not predict",
+    "validated on unseen final-test outcomes",
+    "locked test confirms"
+   ],
+   "task_codes_permitted_in": [
+    "technical_appendix",
+    "evidence_links"
+   ]
+  },
+  "prohibited_actions": [
+   "rerun_d1_d3_d4_or_d5_models",
+   "recompute_development_metrics_from_raw_predictions",
+   "fit_a_new_model",
+   "compare_another_estimator",
+   "select_a_commodity_or_channel",
+   "subgroup_mining",
+   "change_a_published_decision_status",
+   "access_purge_outcomes",
+   "open_hash_summarise_or_infer_locked_outcomes",
+   "delete_negative_result_artifacts",
+   "rewrite_prior_decision_log_entries",
+   "describe_an_inconclusive_result_as_no_effect",
+   "describe_d3_as_a_production_model"
+  ],
+  "prohibited_collapses": {
+   "development_evaluation_into_production_validation": "A development walk-forward is not a production validation, and no model was deployed.",
+   "inconclusive_into_no_effect": "An interval that crosses zero is a failure to demonstrate, not a demonstration of failure.",
+   "latest_vintage_into_real_time_backtesting": "Latest-vintage targets cannot reproduce what was knowable at the time. The project is release-aware, not point-in-time on the target side.",
+   "not_supported_into_disproven": "A model that did not beat its benchmark has not disproved the hypothesis it encoded.",
+   "selected_reference_into_proven_superiority": "D3's persistence benchmarks are the REGISTERED reference. The paired comparison against no-contraction was inconclusive at both horizons.",
+   "unresolved_into_absent": "A quantity nobody measured is unresolved. Recording it as zero asserts a measurement that was never made."
+  },
+  "project_status": {
+   "commodity_incremental_signal_supported": false,
+   "confirmatory_claim_authorized": false,
+   "development_program_status": "closed_without_supported_incremental_commodity_model",
+   "fully_real_time_backtest": false,
+   "future_reopening_requires_new_external_evidence": true,
+   "latest_vintage_target_evaluation": true,
+   "locked_test_outcomes_read": false,
+   "locked_test_status": "sealed_unopened",
+   "model_feature_approved": false,
+   "operational_model_selected": false,
+   "production_deployment_authorized": false,
+   "registered_operational_reference_available": true,
+   "registered_operational_reference_source": "D3"
+  },
+  "source_timing_table": [
+   {
+    "historical_timing": "month t+1 timing supported for the audited period",
+    "main_limitation": "not a real-time target panel",
+    "point_in_time_status": "target vintages unavailable",
+    "source_family": "OIE MPI target",
+    "values": "latest vintage"
+   },
+   {
+    "historical_timing": "verified monthly publication timing",
+    "main_limitation": "target side remains latest vintage",
+    "point_in_time_status": "feature side supported",
+    "source_family": "World Bank Pink Sheet",
+    "values": "archived first release"
+   },
+   {
+    "historical_timing": "structurally available by 2020-03-31",
+    "main_limitation": "old benchmark and broad sectors",
+    "point_in_time_status": "time-invariant structural input",
+    "source_family": "NESDC I/O",
+    "values": "official 2015 Final structure"
+   },
+   {
+    "historical_timing": "historical first-release timing unverified",
+    "main_limitation": "policy lag 2 and broad proxy",
+    "point_in_time_status": "not point-in-time",
+    "source_family": "EPPO refinery prices",
+    "values": "historical latest-vintage documents"
+   }
+  ],
+  "structural_synthesis": {
+   "aluminum_and_copper_are_independent_exposure_measurements": false,
+   "aluminum_and_copper_share_sector_107": true,
+   "c10_conditioning_adds_scale_not_temporal_degrees_of_freedom": true,
+   "c11_pooled_interaction_identifiable": true,
+   "c11_selection_status": "exploratory_supported_after_documented_specification_correction",
+   "eppo_ex_refinery_versus_purchasers_price_partial_mismatch": true,
+   "fo600_and_fo1500_are_distinct_channels_sharing_one_exposure": true,
+   "ind_04_producer_consumer_direction_ambiguous": true,
+   "nesdc_2015_final_is_import_inclusive": true,
+   "nesdc_2015_final_uses_purchasers_prices": true,
+   "sector_031_crude_exposure_often_direct_zero": true,
+   "sector_093_refinery_product_exposure_positive_for_all_12_industries": true,
+   "structural_attribution_described_as_causal_transmission": false,
+   "structural_coefficients_treated_as_time_invariant": true,
+   "world_bank_commodity_mappings_are_broad_proxies": true
+  },
+  "supersession": {
+   "edges": [
+    {
+     "reason": "D1's evaluation was not operationally release-timing correct",
+     "scope": "operational_interpretation",
+     "superseded": "D1",
+     "superseded_by": "D3"
+    },
+    {
+     "reason": "D4 re-evaluated the commodity model under the D3 contract",
+     "scope": "operational_interpretation",
+     "superseded": "D1",
+     "superseded_by": "D4"
+    },
+    {
+     "reason": "D3-R1 corrected the benchmark-selection and verification claims",
+     "scope": "benchmark_selection_wording",
+     "superseded": "D3",
+     "superseded_by": "D3R1"
+    },
+    {
+     "reason": "C11-R1 corrected the status without changing the findings",
+     "scope": "methodological_status",
+     "superseded": "C11",
+     "superseded_by": "C11R1"
+    }
+   ],
+   "rules": {
+    "graph_must_be_acyclic": true,
+    "superseded_results_presented_as_current": false,
+    "superseded_results_remain_in_the_ledger": true,
+    "supersession_marker_required": "superseded_by"
+   }
+  },
+  "synthesis_contract_version": "e1_synthesis_contract_v1"
+ },
+ "synthesis_contract_checksum": "f23396b36b0cb7e8c362bbea1e65d11a98d588830d548c83a816a0c44ef11c1e",
+ "synthesis_contract_version": "e1_synthesis_contract_v1",
+ "task": "E1"
+}

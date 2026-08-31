@@ -1,0 +1,1384 @@
+{
+  "task": "B2",
+  "gate_version": "component_redundancy_gate_v1",
+  "data_framing": "latest_vintage_historical_data",
+  "edition_scope": "current_2021_based_only",
+  "b1_invariants": {
+    "industry_count": 12,
+    "month_count": 66,
+    "first_month": "2021-01-01",
+    "last_month": "2026-06-01",
+    "panel_rows": 792,
+    "model_eligible_rows": 780,
+    "preliminary_rows": 12,
+    "preliminary_months": [
+      "2026-06-01"
+    ],
+    "non_preliminary_months": 65,
+    "editions": [
+      "2021_based"
+    ],
+    "duplicate_keys": 0,
+    "mpi_nulls": 0,
+    "capu_nulls": 0,
+    "non_positive_mpi": 0,
+    "all_invariants_reproduced": true,
+    "failures": []
+  },
+  "sample": {
+    "observations": 636,
+    "industries": 12,
+    "months": 53,
+    "months_per_industry": 53,
+    "first_month": "2022-01-01",
+    "last_month": "2026-05-01",
+    "first_twelve_months_imputed": false
+  },
+  "component_semantics": {
+    "mpi": {
+      "adverse_transform": "-100 * (mpi_t / mpi_t_minus_12 - 1)",
+      "unit": "percent",
+      "transform_verified": true,
+      "direction_verified": true,
+      "unit_verified": true,
+      "examples": {
+        "deterioration": 9.999999999999998,
+        "improvement": -10.000000000000009,
+        "flat": -0.0
+      }
+    },
+    "capu": {
+      "adverse_transform": "-(capu_t - capu_t_minus_12)",
+      "unit": "percentage_points",
+      "transform_verified": true,
+      "direction_verified": true,
+      "unit_verified": true,
+      "examples": {
+        "deterioration_pp": 5.0,
+        "improvement_pp": -5.0,
+        "flat_pp": -0.0,
+        "relative_change_would_have_been": 8.333333333333337
+      }
+    }
+  },
+  "quality_checks": [
+    {
+      "industry_id": "IND-01",
+      "component": "mpi",
+      "n_usable": 53,
+      "missingness_pct": 0.0,
+      "unique_values": 53,
+      "std": 4.278750630442581,
+      "median": -1.5487640181427231,
+      "mad": 2.6381398533729006,
+      "min": -15.955825396936763,
+      "max": 7.1173156236404855,
+      "largest_abs": 15.955825396936763,
+      "is_constant_or_near_constant": false,
+      "flags": []
+    },
+    {
+      "industry_id": "IND-01",
+      "component": "capu",
+      "n_usable": 53,
+      "missingness_pct": 0.0,
+      "unique_values": 53,
+      "std": 2.0698828739922335,
+      "median": 0.5077923951964465,
+      "mad": 1.351928521469958,
+      "min": -4.047675097438955,
+      "max": 4.451395474046286,
+      "largest_abs": 4.451395474046286,
+      "is_constant_or_near_constant": false,
+      "flags": []
+    },
+    {
+      "industry_id": "IND-02",
+      "component": "mpi",
+      "n_usable": 53,
+      "missingness_pct": 0.0,
+      "unique_values": 53,
+      "std": 11.789560188288812,
+      "median": 3.1859986325751044,
+      "mad": 7.649742885487399,
+      "min": -20.64727003821536,
+      "max": 26.802859794552546,
+      "largest_abs": 26.802859794552546,
+      "is_constant_or_near_constant": false,
+      "flags": []
+    },
+    {
+      "industry_id": "IND-02",
+      "component": "capu",
+      "n_usable": 53,
+      "missingness_pct": 0.0,
+      "unique_values": 53,
+      "std": 6.011137874862651,
+      "median": 0.6168166616393478,
+      "mad": 4.066563928952135,
+      "min": -11.584761227254482,
+      "max": 14.800533218072935,
+      "largest_abs": 14.800533218072935,
+      "is_constant_or_near_constant": false,
+      "flags": []
+    },
+    {
+      "industry_id": "IND-03",
+      "component": "mpi",
+      "n_usable": 53,
+      "missingness_pct": 0.0,
+      "unique_values": 53,
+      "std": 5.722931232533764,
+      "median": 2.172592160478226,
+      "mad": 4.585580555570656,
+      "min": -10.332391222458037,
+      "max": 13.137205839597687,
+      "largest_abs": 13.137205839597687,
+      "is_constant_or_near_constant": false,
+      "flags": []
+    },
+    {
+      "industry_id": "IND-03",
+      "component": "capu",
+      "n_usable": 53,
+      "missingness_pct": 0.0,
+      "unique_values": 53,
+      "std": 4.286149706033839,
+      "median": 1.58716641221109,
+      "mad": 2.761247719375149,
+      "min": -8.254317496721427,
+      "max": 9.378648740676638,
+      "largest_abs": 9.378648740676638,
+      "is_constant_or_near_constant": false,
+      "flags": []
+    },
+    {
+      "industry_id": "IND-04",
+      "component": "mpi",
+      "n_usable": 53,
+      "missingness_pct": 0.0,
+      "unique_values": 53,
+      "std": 11.055512971061866,
+      "median": -3.4695023596572616,
+      "mad": 5.9248602972686415,
+      "min": -33.981873356548455,
+      "max": 20.036973827903825,
+      "largest_abs": 33.981873356548455,
+      "is_constant_or_near_constant": false,
+      "flags": []
+    },
+    {
+      "industry_id": "IND-04",
+      "component": "capu",
+      "n_usable": 53,
+      "missingness_pct": 0.0,
+      "unique_values": 53,
+      "std": 7.240060037921453,
+      "median": -1.9672976238421995,
+      "mad": 2.7289667647410027,
+      "min": -21.37774206481241,
+      "max": 21.4400069906617,
+      "largest_abs": 21.4400069906617,
+      "is_constant_or_near_constant": false,
+      "flags": []
+    },
+    {
+      "industry_id": "IND-05",
+      "component": "mpi",
+      "n_usable": 53,
+      "missingness_pct": 0.0,
+      "unique_values": 53,
+      "std": 4.962796482451494,
+      "median": 0.08380310665466739,
+      "mad": 3.1769459890504392,
+      "min": -7.354673970029735,
+      "max": 15.495853405489967,
+      "largest_abs": 15.495853405489967,
+      "is_constant_or_near_constant": false,
+      "flags": []
+    },
+    {
+      "industry_id": "IND-05",
+      "component": "capu",
+      "n_usable": 53,
+      "missingness_pct": 0.0,
+      "unique_values": 53,
+      "std": 3.7046036653670087,
+      "median": 2.2816949801180186,
+      "mad": 2.3860931129532474,
+      "min": -4.892259731043765,
+      "max": 13.181386434644551,
+      "largest_abs": 13.181386434644551,
+      "is_constant_or_near_constant": false,
+      "flags": []
+    },
+    {
+      "industry_id": "IND-06",
+      "component": "mpi",
+      "n_usable": 53,
+      "missingness_pct": 0.0,
+      "unique_values": 53,
+      "std": 3.7215234661464502,
+      "median": 0.13794612289782515,
+      "mad": 2.4523365881631176,
+      "min": -9.765609144963182,
+      "max": 8.005838248244979,
+      "largest_abs": 9.765609144963182,
+      "is_constant_or_near_constant": false,
+      "flags": []
+    },
+    {
+      "industry_id": "IND-06",
+      "component": "capu",
+      "n_usable": 53,
+      "missingness_pct": 0.0,
+      "unique_values": 53,
+      "std": 2.4291151323491094,
+      "median": 1.6877466018597929,
+      "mad": 1.2361238892243094,
+      "min": -4.100080326933302,
+      "max": 7.703749262880201,
+      "largest_abs": 7.703749262880201,
+      "is_constant_or_near_constant": false,
+      "flags": []
+    },
+    {
+      "industry_id": "IND-07",
+      "component": "mpi",
+      "n_usable": 53,
+      "missingness_pct": 0.0,
+      "unique_values": 53,
+      "std": 6.0561677294865275,
+      "median": 3.3919131943643377,
+      "mad": 3.27621385152177,
+      "min": -17.511470288481657,
+      "max": 8.577867514019822,
+      "largest_abs": 17.511470288481657,
+      "is_constant_or_near_constant": false,
+      "flags": []
+    },
+    {
+      "industry_id": "IND-07",
+      "component": "capu",
+      "n_usable": 53,
+      "missingness_pct": 0.0,
+      "unique_values": 53,
+      "std": 2.5498309720183374,
+      "median": 1.101403375630703,
+      "mad": 1.4275556586405003,
+      "min": -9.08241644157249,
+      "max": 6.198279843859197,
+      "largest_abs": 9.08241644157249,
+      "is_constant_or_near_constant": false,
+      "flags": []
+    },
+    {
+      "industry_id": "IND-08",
+      "component": "mpi",
+      "n_usable": 53,
+      "missingness_pct": 0.0,
+      "unique_values": 53,
+      "std": 7.015991974129506,
+      "median": 1.4540409418501987,
+      "mad": 5.8823407054493515,
+      "min": -14.32763699884414,
+      "max": 16.202760134614635,
+      "largest_abs": 16.202760134614635,
+      "is_constant_or_near_constant": false,
+      "flags": []
+    },
+    {
+      "industry_id": "IND-08",
+      "component": "capu",
+      "n_usable": 53,
+      "missingness_pct": 0.0,
+      "unique_values": 53,
+      "std": 3.6657017038404804,
+      "median": 1.1017648142014664,
+      "mad": 3.2286386333023387,
+      "min": -6.642937405108341,
+      "max": 9.028443766979407,
+      "largest_abs": 9.028443766979407,
+      "is_constant_or_near_constant": false,
+      "flags": []
+    },
+    {
+      "industry_id": "IND-09",
+      "component": "mpi",
+      "n_usable": 53,
+      "missingness_pct": 0.0,
+      "unique_values": 53,
+      "std": 9.340450832122016,
+      "median": 3.5692487979672283,
+      "mad": 6.831928523621089,
+      "min": -12.4461752715737,
+      "max": 23.903037495780012,
+      "largest_abs": 23.903037495780012,
+      "is_constant_or_near_constant": false,
+      "flags": []
+    },
+    {
+      "industry_id": "IND-09",
+      "component": "capu",
+      "n_usable": 53,
+      "missingness_pct": 0.0,
+      "unique_values": 53,
+      "std": 6.405928273986758,
+      "median": 1.020546246185809,
+      "mad": 4.627399603319738,
+      "min": -4.445661232646891,
+      "max": 15.992077242633222,
+      "largest_abs": 15.992077242633222,
+      "is_constant_or_near_constant": false,
+      "flags": []
+    },
+    {
+      "industry_id": "IND-10",
+      "component": "mpi",
+      "n_usable": 53,
+      "missingness_pct": 0.0,
+      "unique_values": 53,
+      "std": 18.128680488858233,
+      "median": 1.1810671224664504,
+      "mad": 12.08567994773866,
+      "min": -50.903151868755984,
+      "max": 23.353786165592506,
+      "largest_abs": 50.903151868755984,
+      "is_constant_or_near_constant": false,
+      "flags": []
+    },
+    {
+      "industry_id": "IND-10",
+      "component": "capu",
+      "n_usable": 53,
+      "missingness_pct": 0.0,
+      "unique_values": 53,
+      "std": 7.6507035184902366,
+      "median": 2.5318203357764943,
+      "mad": 4.799660141253703,
+      "min": -15.785006889654902,
+      "max": 13.605416394210295,
+      "largest_abs": 15.785006889654902,
+      "is_constant_or_near_constant": false,
+      "flags": []
+    },
+    {
+      "industry_id": "IND-11",
+      "component": "mpi",
+      "n_usable": 53,
+      "missingness_pct": 0.0,
+      "unique_values": 53,
+      "std": 15.694439561684723,
+      "median": 0.910637759373012,
+      "mad": 8.548559023047464,
+      "min": -69.60763267955524,
+      "max": 22.878674911316168,
+      "largest_abs": 69.60763267955524,
+      "is_constant_or_near_constant": false,
+      "flags": []
+    },
+    {
+      "industry_id": "IND-11",
+      "component": "capu",
+      "n_usable": 53,
+      "missingness_pct": 0.0,
+      "unique_values": 53,
+      "std": 10.100128687063169,
+      "median": 0.88622653249206,
+      "mad": 5.192642701853927,
+      "min": -32.12802168960336,
+      "max": 20.451874145629127,
+      "largest_abs": 32.12802168960336,
+      "is_constant_or_near_constant": false,
+      "flags": []
+    },
+    {
+      "industry_id": "IND-12",
+      "component": "mpi",
+      "n_usable": 53,
+      "missingness_pct": 0.0,
+      "unique_values": 53,
+      "std": 9.883155689755744,
+      "median": -0.2748883206141528,
+      "mad": 6.124589234634714,
+      "min": -14.406485350335752,
+      "max": 29.20930641616273,
+      "largest_abs": 29.20930641616273,
+      "is_constant_or_near_constant": false,
+      "flags": []
+    },
+    {
+      "industry_id": "IND-12",
+      "component": "capu",
+      "n_usable": 53,
+      "missingness_pct": 0.0,
+      "unique_values": 53,
+      "std": 6.078760498167774,
+      "median": 1.480339131242765,
+      "mad": 4.114858250865517,
+      "min": -8.928148828967174,
+      "max": 14.273448475662121,
+      "largest_abs": 14.273448475662121,
+      "is_constant_or_near_constant": false,
+      "flags": []
+    }
+  ],
+  "industry_correlations": [
+    {
+      "industry_id": "IND-01",
+      "n": 53,
+      "pearson": 0.8842446251947593,
+      "spearman": 0.8521206257055314,
+      "spearman_ci_low": 0.6528614534396968,
+      "spearman_ci_high": 0.9698100985516656,
+      "bootstrap_replications": 1000,
+      "bootstrap_block_length": 6,
+      "bootstrap_seed": 20260827
+    },
+    {
+      "industry_id": "IND-02",
+      "n": 53,
+      "pearson": 0.9857756548904587,
+      "spearman": 0.9855668440574101,
+      "spearman_ci_low": 0.958634897894476,
+      "spearman_ci_high": 0.9945941483150345,
+      "bootstrap_replications": 1000,
+      "bootstrap_block_length": 6,
+      "bootstrap_seed": 20260827
+    },
+    {
+      "industry_id": "IND-03",
+      "n": 53,
+      "pearson": 0.9881676420955783,
+      "spearman": 0.9868569585550717,
+      "spearman_ci_low": 0.9628334252986145,
+      "spearman_ci_high": 0.992736399913067,
+      "bootstrap_replications": 1000,
+      "bootstrap_block_length": 6,
+      "bootstrap_seed": 20260827
+    },
+    {
+      "industry_id": "IND-04",
+      "n": 53,
+      "pearson": 0.8191599101537721,
+      "spearman": 0.7152072246411869,
+      "spearman_ci_low": 0.4703824425510852,
+      "spearman_ci_high": 0.8892861046390598,
+      "bootstrap_replications": 1000,
+      "bootstrap_block_length": 6,
+      "bootstrap_seed": 20260827
+    },
+    {
+      "industry_id": "IND-05",
+      "n": 53,
+      "pearson": 0.9402278758759746,
+      "spearman": 0.903160780519271,
+      "spearman_ci_low": 0.8222222627468243,
+      "spearman_ci_high": 0.968306647857924,
+      "bootstrap_replications": 1000,
+      "bootstrap_block_length": 6,
+      "bootstrap_seed": 20260827
+    },
+    {
+      "industry_id": "IND-06",
+      "n": 53,
+      "pearson": 0.9166219538416639,
+      "spearman": 0.8928398645379777,
+      "spearman_ci_low": 0.7626659165023648,
+      "spearman_ci_high": 0.9597261330712791,
+      "bootstrap_replications": 1000,
+      "bootstrap_block_length": 6,
+      "bootstrap_seed": 20260827
+    },
+    {
+      "industry_id": "IND-07",
+      "n": 53,
+      "pearson": 0.8288700716371924,
+      "spearman": 0.7705208837284309,
+      "spearman_ci_low": 0.5387388846549769,
+      "spearman_ci_high": 0.8716991406505533,
+      "bootstrap_replications": 1000,
+      "bootstrap_block_length": 6,
+      "bootstrap_seed": 20260827
+    },
+    {
+      "industry_id": "IND-08",
+      "n": 53,
+      "pearson": 0.985265829247539,
+      "spearman": 0.9820190291888404,
+      "spearman_ci_low": 0.9630330538664758,
+      "spearman_ci_high": 0.9954730326018496,
+      "bootstrap_replications": 1000,
+      "bootstrap_block_length": 6,
+      "bootstrap_seed": 20260827
+    },
+    {
+      "industry_id": "IND-09",
+      "n": 53,
+      "pearson": 0.9593292589688157,
+      "spearman": 0.9587163360748265,
+      "spearman_ci_low": 0.8741667388412259,
+      "spearman_ci_high": 0.9711620890418772,
+      "bootstrap_replications": 1000,
+      "bootstrap_block_length": 6,
+      "bootstrap_seed": 20260827
+    },
+    {
+      "industry_id": "IND-10",
+      "n": 53,
+      "pearson": 0.9286928515986204,
+      "spearman": 0.9303338171262698,
+      "spearman_ci_low": 0.8341989941802797,
+      "spearman_ci_high": 0.967866354909136,
+      "bootstrap_replications": 1000,
+      "bootstrap_block_length": 6,
+      "bootstrap_seed": 20260827
+    },
+    {
+      "industry_id": "IND-11",
+      "n": 53,
+      "pearson": 0.9503249753813623,
+      "spearman": 0.9479116271569101,
+      "spearman_ci_low": 0.8651407637237807,
+      "spearman_ci_high": 0.981323296380967,
+      "bootstrap_replications": 1000,
+      "bootstrap_block_length": 6,
+      "bootstrap_seed": 20260827
+    },
+    {
+      "industry_id": "IND-12",
+      "n": 53,
+      "pearson": 0.5225047668563194,
+      "spearman": 0.3961457829382358,
+      "spearman_ci_low": -0.06457528825312846,
+      "spearman_ci_high": 0.7724783941685989,
+      "bootstrap_replications": 1000,
+      "bootstrap_block_length": 6,
+      "bootstrap_seed": 20260827
+    }
+  ],
+  "industry_spearman_summary": {
+    "median": 0.9167472988227704,
+    "min": 0.3961457829382358,
+    "max": 0.9868569585550717
+  },
+  "pooled_correlations": {
+    "primary_basis": "industry_relative_diagnostic_ranks",
+    "n": 636,
+    "pearson_on_ranks": 0.860116647852497,
+    "spearman_on_ranks": 0.860116647852497,
+    "secondary_naive_pooled_pearson_raw": 0.8626401963471495,
+    "secondary_naive_pooled_spearman_raw": 0.8446315193391619,
+    "secondary_note": "Naive pooled figures are reported for contrast only. They confound industry-level scale differences with the dependence being measured and are not the primary result."
+  },
+  "lead_lag": {
+    "sign_convention": "corr(k) = spearman(mpi[t], capu[t + k]); k>0 means MPI leads CapU",
+    "causal_interpretation_permitted": false,
+    "lags": [
+      -3,
+      -2,
+      -1,
+      0,
+      1,
+      2,
+      3
+    ],
+    "per_industry": [
+      {
+        "industry_id": "IND-01",
+        "by_lag": {
+          "-3": 0.15399759903961585,
+          "-2": 0.27076923076923076,
+          "-1": 0.4995304362673952,
+          "0": 0.8521206257055314,
+          "1": 0.5006403141808247,
+          "2": 0.2782805429864253,
+          "3": 0.11769507803121249
+        },
+        "contemporaneous": 0.8521206257055314,
+        "strongest_abs_lag": 0,
+        "strongest_abs_value": 0.8521206257055314
+      },
+      {
+        "industry_id": "IND-02",
+        "by_lag": {
+          "-3": 0.6503241296518607,
+          "-2": 0.7209954751131221,
+          "-1": 0.823102535644156,
+          "0": 0.9855668440574101,
+          "1": 0.820797404593187,
+          "2": 0.7047058823529412,
+          "3": 0.654453781512605
+        },
+        "contemporaneous": 0.9855668440574101,
+        "strongest_abs_lag": 0,
+        "strongest_abs_value": 0.9855668440574101
+      },
+      {
+        "industry_id": "IND-03",
+        "by_lag": {
+          "-3": 0.6341896758703481,
+          "-2": 0.7204524886877828,
+          "-1": 0.7971484675147271,
+          "0": 0.9868569585550717,
+          "1": 0.7910014513788098,
+          "2": 0.7123076923076923,
+          "3": 0.6468667466986794
+        },
+        "contemporaneous": 0.9868569585550717,
+        "strongest_abs_lag": 0,
+        "strongest_abs_value": 0.9868569585550717
+      },
+      {
+        "industry_id": "IND-04",
+        "by_lag": {
+          "-3": -0.09531812725090036,
+          "-2": -0.16579185520361991,
+          "-1": 0.15469990608725348,
+          "0": 0.7152072246411869,
+          "1": 0.23964825407666696,
+          "2": -0.006877828054298643,
+          "3": -0.049603841536614644
+        },
+        "contemporaneous": 0.7152072246411869,
+        "strongest_abs_lag": 0,
+        "strongest_abs_value": 0.7152072246411869
+      },
+      {
+        "industry_id": "IND-05",
+        "by_lag": {
+          "-3": 0.4890756302521008,
+          "-2": 0.48343891402714934,
+          "-1": 0.4666609749850593,
+          "0": 0.903160780519271,
+          "1": 0.4424997865619397,
+          "2": 0.471945701357466,
+          "3": 0.3912124849939976
+        },
+        "contemporaneous": 0.903160780519271,
+        "strongest_abs_lag": 0,
+        "strongest_abs_value": 0.903160780519271
+      },
+      {
+        "industry_id": "IND-06",
+        "by_lag": {
+          "-3": 0.31418967587034813,
+          "-2": 0.38742081447963805,
+          "-1": 0.6506445829420302,
+          "0": 0.8928398645379777,
+          "1": 0.525740630069154,
+          "2": 0.3066063348416289,
+          "3": 0.21296518607442977
+        },
+        "contemporaneous": 0.8928398645379777,
+        "strongest_abs_lag": 0,
+        "strongest_abs_value": 0.8928398645379777
+      },
+      {
+        "industry_id": "IND-07",
+        "by_lag": {
+          "-3": 0.49647058823529405,
+          "-2": 0.5430769230769231,
+          "-1": 0.5546828310424315,
+          "0": 0.7705208837284309,
+          "1": 0.653376590113549,
+          "2": 0.5099547511312217,
+          "3": 0.47611044417767107
+        },
+        "contemporaneous": 0.7705208837284309,
+        "strongest_abs_lag": 0,
+        "strongest_abs_value": 0.7705208837284309
+      },
+      {
+        "industry_id": "IND-08",
+        "by_lag": {
+          "-3": 0.6239135654261704,
+          "-2": 0.5990950226244344,
+          "-1": 0.7407154443780415,
+          "0": 0.9820190291888404,
+          "1": 0.7542047297874157,
+          "2": 0.5988235294117648,
+          "3": 0.6180552220888355
+        },
+        "contemporaneous": 0.9820190291888404,
+        "strongest_abs_lag": 0,
+        "strongest_abs_value": 0.9820190291888404
+      },
+      {
+        "industry_id": "IND-09",
+        "by_lag": {
+          "-3": 0.8117647058823529,
+          "-2": 0.8397285067873304,
+          "-1": 0.8534107402031931,
+          "0": 0.9587163360748265,
+          "1": 0.855545120805942,
+          "2": 0.8431674208144796,
+          "3": 0.7818007202881153
+        },
+        "contemporaneous": 0.9587163360748265,
+        "strongest_abs_lag": 0,
+        "strongest_abs_value": 0.9587163360748265
+      },
+      {
+        "industry_id": "IND-10",
+        "by_lag": {
+          "-3": 0.22429771908763504,
+          "-2": 0.42280542986425335,
+          "-1": 0.6050542132673099,
+          "0": 0.9303338171262698,
+          "1": 0.6894049346879536,
+          "2": 0.6072398190045247,
+          "3": 0.5523649459783914
+        },
+        "contemporaneous": 0.9303338171262698,
+        "strongest_abs_lag": 0,
+        "strongest_abs_value": 0.9303338171262698
+      },
+      {
+        "industry_id": "IND-11",
+        "by_lag": {
+          "-3": 0.6570468187274909,
+          "-2": 0.6459728506787329,
+          "-1": 0.7259455306070178,
+          "0": 0.9479116271569101,
+          "1": 0.6993938359088192,
+          "2": 0.6230769230769231,
+          "3": 0.5280672268907564
+        },
+        "contemporaneous": 0.9479116271569101,
+        "strongest_abs_lag": 0,
+        "strongest_abs_value": 0.9479116271569101
+      },
+      {
+        "industry_id": "IND-12",
+        "by_lag": {
+          "-3": -0.037310924369747894,
+          "-2": 0.0760180995475113,
+          "-1": 0.13651498335183126,
+          "0": 0.3961457829382358,
+          "1": 0.2018270297959532,
+          "2": 0.17819004524886878,
+          "3": 0.18857142857142856
+        },
+        "contemporaneous": 0.3961457829382358,
+        "strongest_abs_lag": 0,
+        "strongest_abs_value": 0.3961457829382358
+      }
+    ],
+    "pooled_by_lag": {
+      "-3": 0.41520889219521695,
+      "-2": 0.46429477570681815,
+      "-1": 0.5851852731102536,
+      "0": 0.860116647852497,
+      "1": 0.5994072572267553,
+      "2": 0.4862533074304092,
+      "3": 0.4286074773660732
+    },
+    "pooled_strongest_lag": 0,
+    "pooled_strongest_value": 0.860116647852497,
+    "pooled_contemporaneous": 0.860116647852497,
+    "contemporaneous_conclusion_materially_changes": false,
+    "industries_peaking_at_lag_zero": 12
+  },
+  "high_stress_overlap": [
+    {
+      "industry_id": "IND-01",
+      "mpi_high_stress_count": 11,
+      "capu_high_stress_count": 11,
+      "intersection_count": 8,
+      "union_count": 14,
+      "jaccard": 0.5714285714285714,
+      "mpi_only_count": 3,
+      "capu_only_count": 3,
+      "mpi_only_months": [
+        "2025-02-01",
+        "2025-07-01",
+        "2025-09-01"
+      ],
+      "capu_only_months": [
+        "2022-05-01",
+        "2023-08-01",
+        "2023-09-01"
+      ],
+      "shared_months": [
+        "2022-04-01",
+        "2023-03-01",
+        "2023-04-01",
+        "2023-06-01",
+        "2023-10-01",
+        "2023-11-01",
+        "2023-12-01",
+        "2025-08-01"
+      ]
+    },
+    {
+      "industry_id": "IND-02",
+      "mpi_high_stress_count": 11,
+      "capu_high_stress_count": 11,
+      "intersection_count": 11,
+      "union_count": 11,
+      "jaccard": 1.0,
+      "mpi_only_count": 0,
+      "capu_only_count": 0,
+      "mpi_only_months": [],
+      "capu_only_months": [],
+      "shared_months": [
+        "2022-12-01",
+        "2023-03-01",
+        "2023-04-01",
+        "2023-05-01",
+        "2023-06-01",
+        "2023-07-01",
+        "2023-08-01",
+        "2023-09-01",
+        "2023-10-01",
+        "2023-11-01",
+        "2023-12-01"
+      ]
+    },
+    {
+      "industry_id": "IND-03",
+      "mpi_high_stress_count": 11,
+      "capu_high_stress_count": 11,
+      "intersection_count": 11,
+      "union_count": 11,
+      "jaccard": 1.0,
+      "mpi_only_count": 0,
+      "capu_only_count": 0,
+      "mpi_only_months": [],
+      "capu_only_months": [],
+      "shared_months": [
+        "2022-06-01",
+        "2022-07-01",
+        "2022-08-01",
+        "2022-09-01",
+        "2022-10-01",
+        "2022-11-01",
+        "2022-12-01",
+        "2023-01-01",
+        "2023-02-01",
+        "2023-03-01",
+        "2023-05-01"
+      ]
+    },
+    {
+      "industry_id": "IND-04",
+      "mpi_high_stress_count": 11,
+      "capu_high_stress_count": 11,
+      "intersection_count": 8,
+      "union_count": 14,
+      "jaccard": 0.5714285714285714,
+      "mpi_only_count": 3,
+      "capu_only_count": 3,
+      "mpi_only_months": [
+        "2025-02-01",
+        "2025-03-01",
+        "2025-04-01"
+      ],
+      "capu_only_months": [
+        "2023-05-01",
+        "2025-10-01",
+        "2026-04-01"
+      ],
+      "shared_months": [
+        "2022-10-01",
+        "2022-11-01",
+        "2023-09-01",
+        "2024-01-01",
+        "2025-07-01",
+        "2025-08-01",
+        "2025-11-01",
+        "2026-02-01"
+      ]
+    },
+    {
+      "industry_id": "IND-05",
+      "mpi_high_stress_count": 11,
+      "capu_high_stress_count": 11,
+      "intersection_count": 9,
+      "union_count": 13,
+      "jaccard": 0.6923076923076923,
+      "mpi_only_count": 2,
+      "capu_only_count": 2,
+      "mpi_only_months": [
+        "2023-05-01",
+        "2025-02-01"
+      ],
+      "capu_only_months": [
+        "2025-10-01",
+        "2026-03-01"
+      ],
+      "shared_months": [
+        "2022-06-01",
+        "2022-09-01",
+        "2022-10-01",
+        "2022-11-01",
+        "2022-12-01",
+        "2023-01-01",
+        "2023-03-01",
+        "2023-04-01",
+        "2026-05-01"
+      ]
+    },
+    {
+      "industry_id": "IND-06",
+      "mpi_high_stress_count": 11,
+      "capu_high_stress_count": 11,
+      "intersection_count": 10,
+      "union_count": 12,
+      "jaccard": 0.8333333333333334,
+      "mpi_only_count": 1,
+      "capu_only_count": 1,
+      "mpi_only_months": [
+        "2025-10-01"
+      ],
+      "capu_only_months": [
+        "2022-11-01"
+      ],
+      "shared_months": [
+        "2022-10-01",
+        "2022-12-01",
+        "2023-01-01",
+        "2023-04-01",
+        "2023-05-01",
+        "2023-06-01",
+        "2023-07-01",
+        "2023-08-01",
+        "2023-09-01",
+        "2025-11-01"
+      ]
+    },
+    {
+      "industry_id": "IND-07",
+      "mpi_high_stress_count": 11,
+      "capu_high_stress_count": 11,
+      "intersection_count": 4,
+      "union_count": 18,
+      "jaccard": 0.2222222222222222,
+      "mpi_only_count": 7,
+      "capu_only_count": 7,
+      "mpi_only_months": [
+        "2024-04-01",
+        "2024-05-01",
+        "2024-06-01",
+        "2024-07-01",
+        "2024-09-01",
+        "2024-11-01",
+        "2025-08-01"
+      ],
+      "capu_only_months": [
+        "2023-07-01",
+        "2023-12-01",
+        "2025-09-01",
+        "2025-10-01",
+        "2026-01-01",
+        "2026-04-01",
+        "2026-05-01"
+      ],
+      "shared_months": [
+        "2024-03-01",
+        "2024-08-01",
+        "2024-12-01",
+        "2025-11-01"
+      ]
+    },
+    {
+      "industry_id": "IND-08",
+      "mpi_high_stress_count": 11,
+      "capu_high_stress_count": 11,
+      "intersection_count": 10,
+      "union_count": 12,
+      "jaccard": 0.8333333333333334,
+      "mpi_only_count": 1,
+      "capu_only_count": 1,
+      "mpi_only_months": [
+        "2023-02-01"
+      ],
+      "capu_only_months": [
+        "2022-05-01"
+      ],
+      "shared_months": [
+        "2022-06-01",
+        "2022-10-01",
+        "2022-11-01",
+        "2022-12-01",
+        "2023-01-01",
+        "2023-03-01",
+        "2023-04-01",
+        "2023-05-01",
+        "2023-06-01",
+        "2023-11-01"
+      ]
+    },
+    {
+      "industry_id": "IND-09",
+      "mpi_high_stress_count": 11,
+      "capu_high_stress_count": 11,
+      "intersection_count": 8,
+      "union_count": 14,
+      "jaccard": 0.5714285714285714,
+      "mpi_only_count": 3,
+      "capu_only_count": 3,
+      "mpi_only_months": [
+        "2022-10-01",
+        "2022-11-01",
+        "2023-07-01"
+      ],
+      "capu_only_months": [
+        "2022-06-01",
+        "2023-05-01",
+        "2023-06-01"
+      ],
+      "shared_months": [
+        "2022-12-01",
+        "2023-01-01",
+        "2023-02-01",
+        "2023-03-01",
+        "2023-04-01",
+        "2023-08-01",
+        "2023-09-01",
+        "2023-10-01"
+      ]
+    },
+    {
+      "industry_id": "IND-10",
+      "mpi_high_stress_count": 11,
+      "capu_high_stress_count": 11,
+      "intersection_count": 10,
+      "union_count": 12,
+      "jaccard": 0.8333333333333334,
+      "mpi_only_count": 1,
+      "capu_only_count": 1,
+      "mpi_only_months": [
+        "2025-08-01"
+      ],
+      "capu_only_months": [
+        "2026-03-01"
+      ],
+      "shared_months": [
+        "2023-04-01",
+        "2023-07-01",
+        "2023-08-01",
+        "2023-09-01",
+        "2023-10-01",
+        "2023-11-01",
+        "2025-06-01",
+        "2025-09-01",
+        "2026-02-01",
+        "2026-04-01"
+      ]
+    },
+    {
+      "industry_id": "IND-11",
+      "mpi_high_stress_count": 11,
+      "capu_high_stress_count": 11,
+      "intersection_count": 8,
+      "union_count": 14,
+      "jaccard": 0.5714285714285714,
+      "mpi_only_count": 3,
+      "capu_only_count": 3,
+      "mpi_only_months": [
+        "2024-05-01",
+        "2024-12-01",
+        "2025-01-01"
+      ],
+      "capu_only_months": [
+        "2023-08-01",
+        "2023-11-01",
+        "2024-01-01"
+      ],
+      "shared_months": [
+        "2023-12-01",
+        "2024-02-01",
+        "2024-03-01",
+        "2024-06-01",
+        "2024-08-01",
+        "2024-09-01",
+        "2024-10-01",
+        "2024-11-01"
+      ]
+    },
+    {
+      "industry_id": "IND-12",
+      "mpi_high_stress_count": 11,
+      "capu_high_stress_count": 11,
+      "intersection_count": 6,
+      "union_count": 16,
+      "jaccard": 0.375,
+      "mpi_only_count": 5,
+      "capu_only_count": 5,
+      "mpi_only_months": [
+        "2023-02-01",
+        "2023-03-01",
+        "2023-06-01",
+        "2026-04-01",
+        "2026-05-01"
+      ],
+      "capu_only_months": [
+        "2023-08-01",
+        "2023-09-01",
+        "2024-03-01",
+        "2024-05-01",
+        "2024-06-01"
+      ],
+      "shared_months": [
+        "2022-10-01",
+        "2022-11-01",
+        "2022-12-01",
+        "2023-01-01",
+        "2023-04-01",
+        "2023-07-01"
+      ]
+    }
+  ],
+  "stability": [
+    {
+      "name": "early",
+      "start": "2022-01-01",
+      "end": "2023-12-01",
+      "months": 24,
+      "observations": 288,
+      "pooled_spearman_on_ranks": 0.9029280646345396,
+      "median_industry_spearman": 0.9413043478260869,
+      "min_industry_spearman": 0.6591304347826087,
+      "max_industry_spearman": 0.988695652173913,
+      "per_industry": [
+        {
+          "industry_id": "IND-01",
+          "n": 24,
+          "spearman": 0.9043478260869565
+        },
+        {
+          "industry_id": "IND-02",
+          "n": 24,
+          "spearman": 0.988695652173913
+        },
+        {
+          "industry_id": "IND-03",
+          "n": 24,
+          "spearman": 0.9756521739130434
+        },
+        {
+          "industry_id": "IND-04",
+          "n": 24,
+          "spearman": 0.9530434782608694
+        },
+        {
+          "industry_id": "IND-05",
+          "n": 24,
+          "spearman": 0.9739130434782608
+        },
+        {
+          "industry_id": "IND-06",
+          "n": 24,
+          "spearman": 0.9426086956521739
+        },
+        {
+          "industry_id": "IND-07",
+          "n": 24,
+          "spearman": 0.7165217391304347
+        },
+        {
+          "industry_id": "IND-08",
+          "n": 24,
+          "spearman": 0.9399999999999998
+        },
+        {
+          "industry_id": "IND-09",
+          "n": 24,
+          "spearman": 0.8930434782608694
+        },
+        {
+          "industry_id": "IND-10",
+          "n": 24,
+          "spearman": 0.9304347826086956
+        },
+        {
+          "industry_id": "IND-11",
+          "n": 24,
+          "spearman": 0.9530434782608694
+        },
+        {
+          "industry_id": "IND-12",
+          "n": 24,
+          "spearman": 0.6591304347826087
+        }
+      ],
+      "caveat": "Small subsample — a wide interval here is not grounds to reject a component."
+    },
+    {
+      "name": "late",
+      "start": "2024-01-01",
+      "end": "2026-05-01",
+      "months": 29,
+      "observations": 348,
+      "pooled_spearman_on_ranks": 0.8230177977649366,
+      "median_industry_spearman": 0.9243842364532018,
+      "min_industry_spearman": 0.0817733990147783,
+      "max_industry_spearman": 0.9783251231527093,
+      "per_industry": [
+        {
+          "industry_id": "IND-01",
+          "n": 29,
+          "spearman": 0.9586206896551722
+        },
+        {
+          "industry_id": "IND-02",
+          "n": 29,
+          "spearman": 0.9709359605911327
+        },
+        {
+          "industry_id": "IND-03",
+          "n": 29,
+          "spearman": 0.9778325123152708
+        },
+        {
+          "industry_id": "IND-04",
+          "n": 29,
+          "spearman": 0.6704433497536945
+        },
+        {
+          "industry_id": "IND-05",
+          "n": 29,
+          "spearman": 0.8443349753694579
+        },
+        {
+          "industry_id": "IND-06",
+          "n": 29,
+          "spearman": 0.947783251231527
+        },
+        {
+          "industry_id": "IND-07",
+          "n": 29,
+          "spearman": 0.51871921182266
+        },
+        {
+          "industry_id": "IND-08",
+          "n": 29,
+          "spearman": 0.9783251231527093
+        },
+        {
+          "industry_id": "IND-09",
+          "n": 29,
+          "spearman": 0.8660098522167486
+        },
+        {
+          "industry_id": "IND-10",
+          "n": 29,
+          "spearman": 0.9009852216748767
+        },
+        {
+          "industry_id": "IND-11",
+          "n": 29,
+          "spearman": 0.9507389162561575
+        },
+        {
+          "industry_id": "IND-12",
+          "n": 29,
+          "spearman": 0.0817733990147783
+        }
+      ],
+      "caveat": "Small subsample — a wide interval here is not grounds to reject a component."
+    }
+  ],
+  "classification": {
+    "gate_version": "component_redundancy_gate_v1",
+    "redundancy_status": "redundant",
+    "pooled_abs_spearman_on_ranks": 0.860116647852497,
+    "industries_above_abs_spearman_threshold": 10,
+    "median_jaccard": 0.6318681318681318,
+    "industries_with_mpi_only_stress": 10,
+    "industries_with_capu_only_stress": 10,
+    "redundant_conditions": {
+      "pooled_abs_spearman_at_least": {
+        "passed": true,
+        "observed": 0.860116647852497,
+        "threshold": 0.85
+      },
+      "industries_with_high_abs_spearman": {
+        "passed": true,
+        "observed": 10,
+        "threshold": 9
+      },
+      "median_jaccard_at_least": {
+        "passed": true,
+        "observed": 0.6318681318681318,
+        "threshold": 0.6
+      }
+    },
+    "non_redundant_conditions": {
+      "redundant_rule_is_false": {
+        "passed": false,
+        "observed": true,
+        "threshold": false
+      },
+      "coverage_checks_pass": {
+        "passed": true,
+        "observed": true,
+        "threshold": true
+      },
+      "non_constant_series": {
+        "passed": true,
+        "observed": true,
+        "threshold": true
+      },
+      "industries_with_mpi_only_stress": {
+        "passed": true,
+        "observed": 10,
+        "threshold": 6
+      },
+      "industries_with_capu_only_stress": {
+        "passed": true,
+        "observed": 10,
+        "threshold": 6
+      },
+      "no_unresolved_semantics_failure": {
+        "passed": true,
+        "observed": true,
+        "threshold": true
+      }
+    },
+    "interpretation_note": "`non_redundant` means the pair is not empirically duplicative under this pre-registered gate. It does NOT mean the components are statistically independent — they are strongly dependent by construction, since capacity utilization is bounded by production."
+  },
+  "approvals": {
+    "components": {
+      "mpi": {
+        "checks": {
+          "correct_adverse_transform": true,
+          "correct_direction": true,
+          "correct_unit": true,
+          "coverage_checks_pass": true,
+          "stability_checks_pass": true
+        },
+        "component_semantics_approved": true,
+        "unit": "percent",
+        "adverse_transform": "-100 * (mpi_t / mpi_t_minus_12 - 1)"
+      },
+      "capu": {
+        "checks": {
+          "correct_adverse_transform": true,
+          "correct_direction": true,
+          "correct_unit": true,
+          "coverage_checks_pass": true,
+          "stability_checks_pass": true
+        },
+        "component_semantics_approved": true,
+        "unit": "percentage_points",
+        "adverse_transform": "-(capu_t - capu_t_minus_12)"
+      }
+    },
+    "redundancy_status": "redundant",
+    "equal_weight_composite_status": "rejected",
+    "equal_weight_rationale": "Equal weighting is an MVP DESIGN CHOICE applied only after industry-relative normalization. It is not an estimated optimal weight, and no optimization was performed to obtain it.",
+    "composite_index_built_in_b2": false
+  },
+  "diagnostic_normalization_label": "diagnostic_only_full_sample_rank",
+  "diagnostic_normalization_leakage_safe": false,
+  "plots": [
+    "docs/b2_plots/pooled_rank_scatter.png",
+    "docs/b2_plots/industry_correlations.png",
+    "docs/b2_plots/high_stress_overlap.png",
+    "docs/b2_plots/lead_lag.png"
+  ],
+  "b1_panel_unmodified": true
+}

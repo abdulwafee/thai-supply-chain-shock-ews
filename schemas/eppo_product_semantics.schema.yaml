@@ -1,0 +1,166 @@
+# Schema for the C7.5 EPPO semantic overlay.
+# Describes what the code ACTUALLY writes
+# (data/interim/c7_5_eppo_monthly_semantic.parquet, git-ignored), verified by
+# tests/test_c7_5_eppo_semantics.py.
+#
+# A SEMANTIC LAYER ABOVE THE IMMUTABLE C7 TABLES. It does not modify the C7 raw
+# workbooks, the C7 canonical daily table or the C7 monthly audit artifact, and
+# it contains no predictive transformation.
+
+schema_version: 1
+task: C7.5
+written_by: scripts/decide_c7_5_eppo_semantics.py
+output: data/interim/c7_5_eppo_monthly_semantic.parquet
+semantic_overlay_version: c7_5_semantic_v1
+canonical_identity_version: c7_5_canonical_identity_v1
+
+derived_from:
+  - data/interim/c7_eppo_daily_prices.parquet   # immutable, read only
+  - c7_5_semantic_mapping
+  - aggregation_rule_c7_v1
+  - c7_5_recovered_document_days
+mutates_c7_raw_or_daily_artifacts: false
+overwrites_c7_monthly_audit_artifact: false
+
+equivalence:
+  rule_id: fo_ordinal_index_dropped_v1
+  established_pairs:
+    eppo_ex_refinery_fo600_2s: ["FO 600 (1) 2%S", "FO 600  2%S"]
+    eppo_ex_refinery_fo1500_2s: ["FO 1500 (2) 2%S", "FO 1500 2%S"]
+  direct_semantic_evidence_required: true
+  numeric_corroboration_can_establish_equivalence: false
+  raw_label_overwritten: false
+  ordinal_marker_meaning: not_established_from_inspected_sources
+
+observation:
+  grain: [series_id, reference_month]
+  ordering: [series_id, reference_month]
+  null_rows_present: true
+  null_row_note: >-
+    Every required product-month has exactly one row. A month whose definition is
+    absent or whose inventory is incomplete carries a null STRICT value and keeps
+    a status that names why.
+  columns:
+    - {name: series_id, type: string, nullable: false}
+    - name: canonical_product_id
+      type: string
+      nullable: false
+      note: >-
+        The identity the semantic layer assigns. Never written back into the raw
+        label, which stays in source_product_labels_raw.
+    - {name: reference_month, type: string, nullable: false, format: "YYYY-MM"}
+    - {name: aggregation_rule, type: string, nullable: false}
+    - {name: aggregation_rule_version, type: string, nullable: false, const: c7_v1}
+    - name: aggregation_status
+      type: string
+      nullable: false
+      enum:
+        - approved_complete_inventory
+        - approved_with_source_label_variant
+        - known_document_gap
+        - semantic_definition_gap
+        - unit_or_definition_break
+        - document_identity_unresolved
+        - document_retrieval_unresolved
+    - name: monthly_value_strict
+      type: float
+      nullable: true
+      note: >-
+        Null unless the month's entire discovered inventory validated. The ONLY
+        value a later transformation may read.
+    - name: monthly_value_descriptive
+      type: float
+      nullable: true
+      note: >-
+        May summarise the validated days that exist for a known_document_gap
+        month. Always incomplete, never a transformation input, and never
+        presented as the month's value.
+    - {name: coverage_complete, type: boolean, nullable: false}
+    - {name: valid_document_day_count, type: integer, nullable: false}
+    - {name: discovered_document_day_count, type: integer, nullable: false}
+    - {name: unresolved_document_day_count, type: integer, nullable: false}
+    - name: unresolved_day_status
+      type: string
+      nullable: true
+      enum:
+        - recovered_and_validated
+        - wrong_date_attachment_unresolved
+        - official_attachment_unretrievable
+        - document_identity_unresolved
+    - name: source_product_labels_raw
+      type: list_of_string
+      nullable: false
+      note: "Exact displayed labels, verbatim. Both forms appear where both were published."
+    - {name: label_variant_days, type: integer, nullable: false}
+    - name: approved_transformation_input
+      type: boolean
+      nullable: false
+      note: >-
+        True only for a complete month with a strict value. A later task may
+        compute a transformation only where every required input month is true.
+    - {name: quality_flag, type: string, nullable: false}
+    - name: source_available_as_of
+      type: date
+      nullable: true
+      const: null
+      note: "ALWAYS null. EPPO historical release timing was never measured."
+    - name: policy_available_month
+      type: string
+      nullable: false
+      note: "reference_month + 2 months under the conservative project policy."
+    - name: availability_basis
+      type: string
+      nullable: false
+      const: conservative_policy_not_historical_measurement
+    - {name: latest_vintage_used, type: boolean, nullable: false, const: true}
+    - {name: point_in_time_supported, type: boolean, nullable: false, const: false}
+    - {name: semantic_overlay_version, type: string, nullable: false}
+    - {name: canonical_identity_version, type: string, nullable: false}
+    - name: semantic_equivalence_rule_id
+      type: string
+      nullable: true
+      note: "Set only on a month whose observations include a source label variant."
+    - name: lineage_checksum
+      type: string
+      nullable: false
+      note: >-
+        SHA-256 over the overlay rule version and the ordered contributing
+        observations. Acquisition timestamps are excluded by construction.
+
+separated_approvals:
+  aggregation_method_semantics_approved: >-
+    Whether the rule is semantically valid and reproducible. NOT a coverage claim.
+  full_requested_window_coverage_complete: >-
+    Whether every required product-month holds a valid monthly value.
+  series_ready_for_transformation_with_explicit_gaps: >-
+    Whether a later task may transform the series only at months whose complete
+    required input window is valid, with no imputation.
+
+shared_fuel_oil_channel:
+  shared_price_stage_group: io_sector_093_fuel_oil
+  additive_aggregation_allowed: false
+  simple_average_allowed: false
+  automatic_composite_index_allowed: false
+  simultaneous_model_entry_approved: false
+
+prohibited_columns:
+  - any return or log-change column
+  - any percentage-change column
+  - any lagged column
+  - any realized-volatility column
+  - any z-score or shock column
+  - any industry exposure or MPI target column
+transformations_present: false
+target_joined: false
+model_feature_approved: false
+
+invariants:
+  - "Keys are unique on (series_id, reference_month)."
+  - "Every required month of every series has exactly one row."
+  - "source_available_as_of is null in every row."
+  - "policy_available_month is exactly reference_month + 2 months in every row."
+  - "monthly_value_strict is null wherever coverage_complete is false."
+  - "approved_transformation_input implies a non-null strict value."
+  - "H-DIESEL 2023-09..2024-12 carry semantic_definition_gap and no value."
+  - "2026-04 carries known_document_gap, a null strict value and a labelled descriptive one."
+  - "Raw displayed labels are preserved verbatim; no label is rewritten."

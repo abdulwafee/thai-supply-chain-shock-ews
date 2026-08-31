@@ -1,0 +1,364 @@
+# D1 — leakage-safe development model and benchmark comparison.
+#
+# Preregistered BEFORE any model was fitted and before any development metric
+# was seen. The evidence rule in `interpretation` is mechanical: it exists so a
+# disappointing result cannot be talked up and a lucky one cannot be talked into
+# significance.
+#
+# D1 may conclude that commodity features do NOT beat persistence. A negative or
+# inconclusive result is a valid outcome and must never be repaired by widening
+# the grid, adding transformations, or re-searching features.
+
+schema_version: 1
+model_version: d1_residual_ridge_v1
+task: D1
+
+# --- upstream contracts, reproduced not assumed -------------------------------
+upstream_invariants:
+  b3:
+    monthly_stress_rows: 636
+    h1_labels: 624
+    h3_labels: 600
+    combined_labels: 1224
+    duplicate_keys: 0
+    primary_component_count: 1
+    primary_component: mpi_adverse_yoy
+    month_2026_06_used: false
+  b4:
+    development_first_origin: 2024-01-01
+    development_last_origin: 2025-03-01
+    development_origins: 15
+    rows_per_horizon: 180
+    purge_origins: [2025-04-01, 2025-05-01, 2025-06-01]
+    locked_test_opened: false
+    benchmark_h1: persistence_current_month
+    benchmark_h3: persistence_trailing_3m_max
+  c4:
+    primary_variant: primary_direct_lag2
+    timing_sensitivity_variant: timing_sensitivity_direct_lag1
+    structural_sensitivity_variant: structural_sensitivity_total_lag2
+    rows_per_variant: 13158
+    combined_rows: 39474
+    eligible_pairs: 43
+    ineligible_pairs: 5
+    development_origins: 15
+    snapshot_rows: 180
+    eligible_cells: 3225
+    ineligible_cells: 375
+    structural_available_by: 2020-03-31
+    structural_available_before_first_origin: true
+    archived_first_release_values_only: true
+    combined_lag1_plus_total_variant_exists: false
+  stop_on_mismatch: true
+  silently_regenerate_upstream: false
+
+# --- evaluation window ---------------------------------------------------------
+evaluation:
+  split: development
+  first_origin: 2024-01-01
+  last_origin: 2025-03-01
+  origins: 15
+  industries: 12
+  predictions_per_horizon: 180
+  horizons: [1, 3]
+  purge_and_locked_excluded_from:
+    - training
+    - preprocessing
+    - hyperparameter_selection
+    - model_fitting
+    - feature_selection
+    - threshold_selection
+    - reporting
+    - plots
+    - metrics
+  default_runner_can_evaluate_locked_test: false
+  locked_test_manifest_read: keys_only_for_non_overlap_assertion
+  locked_test_outcomes_read: false
+
+# --- temporal cutoffs -----------------------------------------------------------
+# Two rules, enforced separately so they cannot drift into each other.
+cutoffs:
+  label_rule: target_window_end <= outer_origin
+  label_rule_enforced_per_horizon: true
+  label_rule_rejected_alternative: training_forecast_origin < outer_origin
+  label_rule_rejected_because: >-
+    Selecting on the origin alone admits a 3-month window still OPEN at the
+    outer origin, handing the model an outcome it could not yet know.
+  historical_feature_rule: conditioned_available_month <= historical_origin_u
+  historical_feature_rule_rejected_alternative: conditioned_available_month <= outer_origin_t
+  historical_feature_rule_rejected_because: >-
+    Refreshing a historical training row with everything known at t would make
+    it carry information published after the moment it claims to represent. The
+    model would learn from a version of history that never existed.
+  evaluation_row_rule: conditioned_available_month <= outer_origin
+  target_read_only_after:
+    - features_frozen
+    - calibrator_frozen
+    - hyperparameters_selected
+    - scaler_fitted
+    - model_fitted
+    - prediction_frozen
+
+# --- incomplete early feature history -------------------------------------------
+feature_history_gate:
+  impute_missing_12m_transformations: false
+  first_complete_primary_origin: 2022-03-01
+  first_complete_primary_origin_reason: >-
+    Under the lag-2 contract the 12-month log change first exists for reference
+    month 2022-01, available 2022-03. Before that the registered set is
+    incomplete, and inventing values would fabricate the very signal the model
+    is asked to find.
+  excluded_reason_code: insufficient_registered_feature_history
+  rows_silently_dropped: false
+  expected_usable_outer_training_rows:
+    h1_at_2024_01: 264 # 22 origins x 12 industries
+    h1_at_2025_03: 432 # 36 x 12
+    h3_at_2024_01: 240 # 20 x 12
+    h3_at_2025_03: 408 # 34 x 12
+
+# --- calibrator ------------------------------------------------------------------
+calibration:
+  refit_at_every_outer_origin: true
+  refit_at_every_inner_origin: true
+  outer_rule: stress_month <= outer_origin
+  inner_rule: stress_month <= inner_validation_origin
+  reuse_outer_calibrator_inside_inner_validation: false
+  reuse_prohibited_because: >-
+    It would leak the outer origin's distribution into every inner score, so
+    the selection would be made with information the inner fold was meant not
+    to have.
+  min_reference_observations: 24
+  frozen_before_prediction: true
+  historical_targets_and_benchmarks_on_same_frozen_scale: true
+
+# --- primary model ---------------------------------------------------------------
+model:
+  family: industry_specific_ridge_residual_correction
+  per_outer_origin: true
+  per_horizon: true
+  per_industry: true
+  pool_coefficients_across_industries: false
+  residual_formula: r = y_transformed_at_t - b_transformed_at_t
+  prediction_formula: y_hat = b + r_hat
+  benchmark_offsets:
+    1: persistence_current_month
+    3: persistence_trailing_3m_max
+  benchmark_source: b4_production_implementation_reused_not_copied
+  assert_benchmark_matches_b4_production: true
+  clipping:
+    floor: 0
+    ceiling: 100
+    tuned: false
+    rationale: >-
+      The calibrated score is a percentile by construction, so anything outside
+      [0, 100] is out of range by definition. The bounds are not hyperparameters.
+
+# --- non-ferrous channel ----------------------------------------------------------
+non_ferrous:
+  shared_sector: io_sector_107
+  shared_commodities: [aluminum_usd_mt, copper_usd_mt]
+  channels: [none, aluminum, copper]
+  choice_is_global_per_outer_origin_and_horizon: true
+  choice_varies_by_industry: false
+  ineligible_industry_handling: omit_channel_for_that_industry
+  ineligible_industry_replacement: none # never zero, never the other metal
+  both_metals_in_one_model: raise_explicit_error
+  prohibited:
+    - sum_the_two_conditioned_features
+    - average_them
+    - construct_a_non_ferrous_index
+    - combine_with_pca
+    - claim_independent_exposure_measurements
+
+# --- predictors and preprocessing ---------------------------------------------
+predictors:
+  registered_transformations:
+    - price_level
+    - log_change_1m_pct
+    - log_change_3m_pct
+    - log_change_12m_pct
+    - realized_volatility_3m_pct
+  select_individual_transformations_using_targets: false
+  count_varies_because:
+    - c3_r1_eligibility_gate
+    - selected_non_ferrous_channel
+    - observed_zero_structural_exposure
+preprocessing:
+  omit_ineligible_predictors: true
+  convert_ineligible_to_zero: false
+  require_complete_registered_history: true
+  zero_variance_detection_uses: X_only
+  zero_variance_predictors: omit_from_fitting_preserve_in_audit
+  scaler_fitted_on: training_rows_only
+  scaler_applied_to_evaluation_row: frozen
+  fit_intercept: true
+  prohibited:
+    - mean_or_median_imputation
+    - forward_fill
+    - target_encoding
+    - pca
+    - outcome_based_univariate_filtering
+    - whole_development_scaling
+    - preprocessing_fitted_once_for_all_outer_origins
+
+# --- nested selection -----------------------------------------------------------
+selection:
+  occurs_entirely_inside_outer_training_window: true
+  ridge_alpha_grid: [0.1, 1.0, 10.0, 100.0]
+  non_ferrous_channels: [none, aluminum, copper]
+  registered_configurations: 12
+  inner_validation: expanding_walk_forward
+  inner_rules:
+    inner_training_label_rule: target_window_end <= inner_origin
+    inner_historical_feature_rule: conditioned_available_month <= historical_origin_u
+    inner_validation_feature_rule: conditioned_available_month <= inner_origin
+    separate_calibrator_per_inner_origin: true
+    predict_before_reading_inner_target: true
+    industries_kept_together_by_origin: true
+  min_usable_historical_origins_per_industry: 12
+  # --- CONFLICT between the brief's expectation and the data -----------------
+  # The brief expects the earliest inner validation origins to be 2023-03 (h=1)
+  # and 2023-05 (h=3), giving >=10 and >=6 inner months at the first outer
+  # origin. Those dates follow from the FEATURE gate alone (2022-03 + 12
+  # origins). They ignore the CALIBRATOR's own requirement.
+  #
+  # B3's monthly stress series begins 2022-01, so a calibrator meeting the
+  # 24-observation minimum cannot be fitted before 2023-12. Since D1 must
+  # "preserve the 24-observation minimum per industry" (a validity guard), the
+  # earliest feasible inner validation origin is 2023-12 for BOTH horizons.
+  #
+  # The guard is kept and the expectation is reported as unmet, rather than the
+  # guard being weakened to reach a date.
+  brief_expected_earliest_inner_validation_origin:
+    1: 2023-03-01
+    3: 2023-05-01
+  brief_expected_min_inner_months_at_earliest_outer_origin:
+    1: 10
+    3: 6
+  expectation_status: NOT_MET_calibrator_minimum_binds
+  actual_earliest_feasible_inner_validation_origin: 2023-12-01
+  actual_earliest_feasible_reason: >-
+    Monthly stress starts 2022-01; the 24th observation falls at 2023-12, which
+    is the first month a calibrator can be fitted at all.
+  actual_inner_months_at_earliest_outer_origin:
+    1: 1
+    3: 0
+
+  # Preregistered fallback, fixed BEFORE any development metric was computed.
+  min_inner_validation_origins_for_selection: 3
+  fallback_configuration:
+    alpha: 100.0 # the most regularized value in the grid
+    non_ferrous_channel: none # the fewest predictors
+  fallback_rationale: >-
+    With too little inner evidence to select on, D1 uses the most regularized
+    and smallest configuration. That shrinks the predicted residual toward zero
+    and therefore pulls the model toward the benchmark: the fallback can only
+    make the model look WORSE, never better, so it cannot manufacture apparent
+    skill at the origins where evidence is thinnest.
+  fallback_recorded_per_origin: true
+  raise_if_minimum_inner_history_unavailable: false_fallback_used_and_recorded
+  metric: inner_macro_industry_mae
+  tie_rule:
+    tolerance: 1.0e-6
+    order:
+      - fewer_predictors
+      - larger_alpha
+      - deterministic_configuration_id_order
+  must_not_use:
+    - current_outer_target
+    - later_development_origins
+    - purge_buffer_targets
+    - locked_test_information
+    - high_stress_event_results
+  outcome_based_selection_scope: >-
+    Permitted ONLY inside this nested procedure, on inner folds. It never alters
+    C2 source eligibility, C3 exposure eligibility, or C4 feature generation.
+
+# --- sensitivity analyses --------------------------------------------------------
+sensitivity:
+  run_after_primary_status_frozen: true
+  variants:
+    - timing_sensitivity_direct_lag1
+    - structural_sensitivity_total_lag2
+  reuse_primary_alpha: true
+  reuse_primary_non_ferrous_channel: true
+  reselect_hyperparameters: false
+  refit_coefficients_and_preprocessing: true
+  same_target_and_benchmark_rules: true
+  expected_predictions:
+    primary: { 1: 180, 3: 180 }
+    timing_sensitivity: { 1: 180, 3: 180 }
+    structural_sensitivity: { 1: 180, 3: 180 }
+    total_across_both_horizons: 1080
+  reporting:
+    pooled_with_primary: false
+    may_change_primary_selection: false
+    may_rescue_failed_primary: false
+    may_choose_lag_or_exposure_definition: false
+  lag1_plus_total_combination: not_created_and_not_evaluated
+
+# --- uncertainty ------------------------------------------------------------------
+uncertainty:
+  implementation: b4_moving_block_bootstrap_reused
+  cluster_unit: forecast_origin_month
+  keep_all_industries_together: true
+  block_length_months: 3
+  replications: 1000
+  confidence_level: 0.95
+  random_seed: 20260827
+  intervals_reported_for:
+    - primary_model_macro_mae
+    - macro_mae_skill_versus_benchmark
+    - paired_macro_mae_difference
+  treats_180_rows_as_independent: false
+  significance_or_causal_claims: false
+
+# --- preregistered interpretation --------------------------------------------------
+interpretation:
+  incremental_signal_supported:
+    requires_both:
+      - model_macro_mae_lower_than_benchmark
+      - paired_95_ci_entirely_below_zero
+  inconclusive:
+    requires:
+      - model_macro_mae_lower_than_benchmark
+      - paired_95_ci_includes_zero
+  incremental_signal_not_supported:
+    requires:
+      - model_macro_mae_equal_to_or_worse_than_benchmark
+  high_stress_or_sensitivity_may_override: false
+  regardless_of_result:
+    approved_for_locked_test: false
+    any_c2_c3_c4_feature_finally_model_approved: false
+    locked_test_opened: false
+
+# --- metrics ------------------------------------------------------------------------
+metrics:
+  implementation: b4_production_metric_functions_reused
+  report:
+    - macro_industry_mae
+    - pooled_mae
+    - macro_industry_rmse
+    - pooled_rmse
+    - median_absolute_error
+    - pooled_spearman
+    - per_industry_mae
+    - by_block_dev1_dev2_dev3
+    - clipped_prediction_count
+  high_stress_threshold: 85
+  high_stress_threshold_tuned: false
+  severe_threshold: 95
+  severe_reporting: descriptive_counts_only
+  overwrite_b4_result_artifacts: false
+
+approval_state:
+  conditioned_construction_approved: unchanged_from_c4
+  development_model_evaluated: true
+  approved_for_locked_test: false
+  model_feature_approved: false
+
+outputs:
+  predictions: data/model_input/d1_development_predictions.parquet
+  assembly_audit_json: docs/d1_feature_target_assembly_audit.json
+  results_json: docs/d1_development_results.json
+  artifacts_git_ignored: true

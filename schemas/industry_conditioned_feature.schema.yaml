@@ -1,0 +1,230 @@
+# Schema for the C4 industry-conditioned commodity feature matrix.
+# Describes what the code ACTUALLY writes
+# (thai_supply_chain_ews.features.industry_conditioning.CANONICAL_COLUMNS),
+# verified by tests/test_c4_industry_conditioned_features.py.
+#
+# PREDICTORS ONLY. No target column, no score, no risk level, no prediction, no
+# locked-test field — their absence is enforced by test, not by convention.
+
+schema_version: 1
+table: features/c4_conditioned_features_long
+grain: [industry_id, commodity_series_id, base_feature_name, reference_month, matrix_variant]
+primary_key: [industry_id, commodity_series_id, base_feature_name, reference_month, matrix_variant]
+row_count: 39474 # 43 eligible pairs x 306 observations x 3 variants
+rows_per_variant: 13158
+written_by: thai_supply_chain_ews.features.industry_conditioning.build_conditioned_matrix
+transformation_version: c4_industry_conditioning_v1
+ordering: [matrix_variant, industry_id, commodity_series_id, base_feature_name, reference_month]
+
+interpretation: >-
+  A STRUCTURAL INTERACTION FEATURE: a point-in-time commodity feature multiplied
+  by a 2015 I/O exposure coefficient and a domain direction sign. NOT a monetary
+  cost amount, NOT a price elasticity, NOT a causal effect, NOT a forecast
+  coefficient, and NOT evidence of predictive value.
+
+columns:
+  - name: industry_id
+    type: string
+    nullable: false
+    allowed: [IND-01, IND-02, IND-03, IND-04, IND-05, IND-06,
+              IND-07, IND-08, IND-09, IND-10, IND-11, IND-12]
+
+  - name: industry_name
+    type: string
+    nullable: false
+
+  - name: commodity_series_id
+    type: string
+    nullable: false
+    allowed: [aluminum_usd_mt, brent_crude_usd_bbl, copper_usd_mt, rubber_rss3_usd_kg]
+
+  - name: base_feature_name
+    type: string
+    nullable: false
+    allowed: [price_level, log_change_1m_pct, log_change_3m_pct,
+              log_change_12m_pct, realized_volatility_3m_pct]
+
+  - name: conditioned_feature_name
+    type: string
+    nullable: false
+    note: "{industry_id}__{commodity_series_id}__{base_feature_name}"
+
+  - name: reference_month
+    type: date
+    nullable: false
+    note: "The month the feature describes. NOT a release timestamp."
+
+  - name: base_feature_value
+    type: double
+    nullable: false
+    finite: true
+    note: "The C2 value, unchanged."
+
+  - name: exposure_value
+    type: double
+    nullable: false
+    finite: true
+    note: "The C3-R1 coefficient for this variant's exposure field, unchanged."
+
+  - name: exposure_variant
+    type: string
+    nullable: false
+    allowed: [direct_exposure, total_requirement_exposure]
+    note: "One field per variant. A variant may never mix the two."
+
+  - name: direction_channel
+    type: string
+    nullable: false
+    allowed: [cost_pressure]
+    note: >-
+      Only cost_pressure produces conditioned features. mixed_or_ambiguous pairs
+      carry a null sign and are excluded rather than forced.
+
+  - name: price_increase_to_stress_sign
+    type: int
+    nullable: false
+    allowed: [1]
+    note: "A DOMAIN direction, never an estimated target sign. Never inferred."
+
+  - name: conditioned_feature_value
+    type: double
+    nullable: false
+    finite: true
+    note: "base_feature_value * exposure_value * sign."
+
+  - name: base_unit
+    type: string
+    nullable: false
+
+  - name: conditioned_unit
+    type: string
+    nullable: false
+    note: >-
+      e.g. percentage_point_log_change_x_exposure_coefficient. Names the product
+      honestly; never a monetary amount.
+
+  - name: availability_policy
+    type: string
+    nullable: false
+    allowed: [operational_lag_2m, publication_lag_1m]
+
+  - name: matrix_variant
+    type: string
+    nullable: false
+    allowed: [primary_direct_lag2, timing_sensitivity_direct_lag1,
+              structural_sensitivity_total_lag2]
+    note: >-
+      Exactly three. Each sensitivity variant changes exactly ONE assumption
+      from the primary; no combined lag-1 + total-requirement variant exists.
+
+  - name: is_primary
+    type: bool
+    nullable: false
+    note: "True only for primary_direct_lag2."
+
+  - name: source_available_month
+    type: date
+    nullable: false
+  - name: policy_available_month
+    type: date
+    nullable: false
+  - name: base_feature_available_month
+    type: date
+    nullable: false
+
+  - name: structural_available_by
+    type: date
+    nullable: false
+    note: >-
+      When the I/O table became READABLE (2020-03-31), never its 2015 reference
+      year and never the download timestamp.
+
+  - name: conditioned_available_month
+    type: date
+    nullable: false
+    note: >-
+      max(base_feature_available_month, structural_available_by). Never earlier
+      than either input.
+
+  - name: proxy_fit_status
+    type: string
+    nullable: false
+    allowed: [fit_for_structural_use, broad_proxy_use_with_caution]
+    note: "not_fit_for_commodity_specific_use pairs generate no features."
+
+  - name: shared_io_source_sector
+    type: bool
+    nullable: false
+  - name: shared_exposure_group
+    type: string
+    nullable: true
+    allowed: [io_sector_107, null]
+  - name: additive_aggregation_allowed
+    type: bool
+    nullable: false
+    note: >-
+      False wherever the exposure is shared. Aluminum and Copper read the SAME
+      sector-107 coefficient; an aggregate may include it at most once.
+
+  - name: zero_reason
+    type: string
+    nullable: false
+    allowed: [not_zero, zero_due_to_exposure, zero_due_to_base_feature,
+              zero_due_to_both, not_generated_due_to_ineligibility]
+    note: >-
+      A structural zero, a flat price and a non-existent feature are three
+      different facts and are never merged.
+
+  - name: c2_lineage_checksum
+    type: string
+    nullable: false
+  - name: c3_exposure_checksum
+    type: string
+    nullable: false
+  - name: conditioned_lineage_checksum
+    type: string
+    nullable: false
+    note: >-
+      SHA-256 over the ordered combined lineage. An incomplete lineage fails
+      rather than emitting an untraceable feature.
+
+  - name: structural_reference_year
+    type: string
+    nullable: false
+    allowed: ["2015"]
+  - name: time_invariant_assumption
+    type: bool
+    nullable: false
+  - name: quality_flag
+    type: string
+    nullable: false
+  - name: model_feature_approved
+    type: bool
+    nullable: false
+    allowed: [false]
+
+forbidden_columns:
+  - target
+  - target_value
+  - mpi_adverse_yoy
+  - production_stress_score
+  - risk_level
+  - prediction
+  - forecast
+  - locked_test
+  - correlation
+  - feature_importance
+  - mutual_information
+
+constraints:
+  - unique: [industry_id, commodity_series_id, base_feature_name, reference_month, matrix_variant]
+  - row_count_equals_39474
+  - rows_per_variant_equals_13158
+  - conditioned_equals_base_times_exposure_times_sign
+  - conditioned_available_month_ge_base_feature_available_month
+  - conditioned_available_month_ge_structural_available_by
+  - no_rows_for_the_five_ineligible_pairs
+  - null_sign_never_produces_a_feature
+  - shared_sector_rows_forbid_additive_aggregation
+  - not_normalized_across_commodities_or_industries
+  - model_feature_approved_is_false

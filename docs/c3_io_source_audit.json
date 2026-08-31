@@ -1,0 +1,395 @@
+{
+  "task": "C3-R1",
+  "supersedes": "C3's statement that no official 2015 58-sector workbook exists",
+  "source_discovery_defect": {
+    "claim_made_by_c3": "No official 58-sector workbook exists; NESDC publishes 180 sectors for 2015.",
+    "claim_status": "FALSE",
+    "root_cause_primary": "Discovery was scoped to a SINGLE mechanism — sitemap -> /download/ pages -> each page's ?p=&ddl= redirect. The aggregated workbooks (x58, x26, x16) live in the WordPress MEDIA LIBRARY and are not linked from any /download/ page. The 2015 download page carries exactly ONE ddl link, the 180-sector file, so no amount of retrying that path could ever have found the 58-sector table.",
+    "contributing_causes": [
+      "`_DOWNLOAD_SLUG` matched only sitemap <loc> entries under /download/ whose slug contained \"i-o-table\" or \"input-output\". Media-library uploads never appear in the downloads sitemap at all.",
+      "`resolve_download_url` returned every ddl link but the caller took `matching[0]` — the FIRST Excel link per page. A latent defect: not the operative cause here (only one link exists) but it would have hidden a second workbook on any page listing two.",
+      "No filename-pattern search was performed for the published aggregation suffixes (x58 / x26 / x16), and the WordPress media REST API was never queried.",
+      "The report then converted \"not found by my one mechanism\" into \"does not exist officially\" — an unwarranted negative claim."
+    ],
+    "causes_ruled_out": {
+      "waf_cookie_handling": "NOT a cause. The bounded cookie-aware retry worked correctly; the 58-sector file downloads on the first attempt (waf_attempts = 1).",
+      "same_url_redirect_handling": "NOT a cause; handled correctly.",
+      "http_404_with_content_handling": "NOT a cause. HTML pages answering 404-with-body were parsed correctly, and restricting that leniency to HTML (never to file downloads) was and remains correct.",
+      "download_candidate_ranking": "Not the operative cause — there was only one candidate to rank — but the first-match selection is fixed regardless."
+    },
+    "fix": [
+      "query_the_official_wordpress_media_rest_api",
+      "search_published_aggregation_filename_patterns",
+      "retain_all_ddl_candidates_not_only_the_first",
+      "validate_workbook_identity_before_accepting_a_file"
+    ]
+  },
+  "aggregation_reconciliation": {
+    "tolerance": 0.5,
+    "tolerance_basis": "Source precision: values are published as whole numbers in thousand Baht (Book_IO2015_EN.pdf, 'Table of Input Structure (180 Sectors) (in Thousand Baht)'). 0.5 is half of the last published digit, so any correct aggregation must agree within it. Preregistered before comparison.",
+    "tolerance_preregistered": true,
+    "partition_invariant": {
+      "comparisons": [
+        {
+          "quantity": "gross_output_total",
+          "value_180": 32964782794.0,
+          "value_58": 32964782794.0,
+          "absolute_difference": 0.0,
+          "relative_difference": 0.0,
+          "within_tolerance": true,
+          "exact": true
+        },
+        {
+          "quantity": "intermediate_import_absolute_total",
+          "value_180": 5793796164.0,
+          "value_58": 5793796164.0,
+          "absolute_difference": 0.0,
+          "relative_difference": 0.0,
+          "within_tolerance": true,
+          "exact": true
+        },
+        {
+          "quantity": "intermediate_import_signed_total",
+          "value_180": 5793796164.0,
+          "value_58": 5793796164.0,
+          "absolute_difference": 0.0,
+          "relative_difference": 0.0,
+          "within_tolerance": true,
+          "exact": true
+        },
+        {
+          "quantity": "intermediate_purchaser_absolute_total",
+          "value_180": 19044013284.0,
+          "value_58": 19044013284.0,
+          "absolute_difference": 0.0,
+          "relative_difference": 0.0,
+          "within_tolerance": true,
+          "exact": true
+        },
+        {
+          "quantity": "intermediate_purchaser_signed_total",
+          "value_180": 19044013284.0,
+          "value_58": 19044013284.0,
+          "absolute_difference": 0.0,
+          "relative_difference": 0.0,
+          "within_tolerance": true,
+          "exact": true
+        },
+        {
+          "quantity": "intermediate_retail_absolute_total",
+          "value_180": 1628762124.0,
+          "value_58": 1628762124.0,
+          "absolute_difference": 0.0,
+          "relative_difference": 0.0,
+          "within_tolerance": true,
+          "exact": true
+        },
+        {
+          "quantity": "intermediate_retail_signed_total",
+          "value_180": 0.0,
+          "value_58": 0.0,
+          "absolute_difference": 0.0,
+          "relative_difference": 0.0,
+          "within_tolerance": true,
+          "exact": true
+        },
+        {
+          "quantity": "intermediate_transport_absolute_total",
+          "value_180": 353595034.0,
+          "value_58": 353595034.0,
+          "absolute_difference": 0.0,
+          "relative_difference": 0.0,
+          "within_tolerance": true,
+          "exact": true
+        },
+        {
+          "quantity": "intermediate_transport_signed_total",
+          "value_180": 0.0,
+          "value_58": 0.0,
+          "absolute_difference": 0.0,
+          "relative_difference": 0.0,
+          "within_tolerance": true,
+          "exact": true
+        },
+        {
+          "quantity": "intermediate_wholesale_absolute_total",
+          "value_180": 1814652418.0,
+          "value_58": 1814652418.0,
+          "absolute_difference": 0.0,
+          "relative_difference": 0.0,
+          "within_tolerance": true,
+          "exact": true
+        },
+        {
+          "quantity": "intermediate_wholesale_signed_total",
+          "value_180": 0.0,
+          "value_58": 0.0,
+          "absolute_difference": 0.0,
+          "relative_difference": 0.0,
+          "within_tolerance": true,
+          "exact": true
+        },
+        {
+          "quantity": "value_added_total",
+          "value_180": 13920769510.0,
+          "value_58": 13920769510.0,
+          "absolute_difference": 0.0,
+          "relative_difference": 0.0,
+          "within_tolerance": true,
+          "exact": true
+        }
+      ],
+      "checks": 12,
+      "exact_matches": 12,
+      "within_tolerance": 12,
+      "failed": [],
+      "max_absolute_difference": 0.0,
+      "max_relative_difference": 0.0,
+      "all_passed": true
+    },
+    "sector_level": {
+      "status": "not_executed_official_crosswalk_unavailable",
+      "reason": "No official NESDC 180-to-58 concordance is available. The Input-Output Description document contains no 58-sector material, the official 2015 publication has no classification or concordance section, and the media library publishes only the aggregated DATA files (x58/x26/x16) without a mapping. C3-R1 refuses to infer the mapping from row order, label similarity, numeric proximity or subset-sum fitting: none of those is evidence, and the result would not be unique.",
+      "crosswalk_coverage": 0,
+      "sectors_mapped": 0,
+      "unexplained_discrepancies": null,
+      "note": "NOT EXECUTED is a third state, distinct from passed and from failed. No sector-level discrepancy was found because no sector-level comparison was run."
+    }
+  },
+  "newer_table_status_audit": {
+    "table": "I/O TABLE OF THAILAND 2021 (180 Sectors)",
+    "internal_title": "INPUT - OUTPUT TABLE OF THAILAND 2021",
+    "sheet_name": "DataIO2021",
+    "status": "unresolved",
+    "status_evidence": "The 2015 workbook marks its status twice — internal title 'INPUT - OUTPUT TABLE OF THAILAND 2015 (Final)' and sheet name 'Data IO2015 Final'. The 2021 workbook carries NO status marker in either place, and no official NESDC metadata located here states whether it is final, preliminary, revised or experimental.",
+    "finality_inferred_from_structural_compatibility": false,
+    "retained_as": "audit_only",
+    "replaces_2015_production_source": false
+  },
+  "crosswalk_version": "c3_industry_exposure_v1",
+  "generated_at": "2026-08-27T16:03:10Z",
+  "discovery": {
+    "sitemap_index": "https://www.nesdc.go.th/sitemap.xml",
+    "sitemap_sections_scanned": 41,
+    "io_download_pages_discovered": [
+      "https://www.nesdc.go.th/download/i-o-table-of-thailand-1975/",
+      "https://www.nesdc.go.th/download/i-o-table-of-thailand-1980/",
+      "https://www.nesdc.go.th/download/i-o-table-of-thailand-1985/",
+      "https://www.nesdc.go.th/download/i-o-table-of-thailand-1990/",
+      "https://www.nesdc.go.th/download/i-o-table-of-thailand-1995/",
+      "https://www.nesdc.go.th/download/i-o-table-of-thailand-1998/",
+      "https://www.nesdc.go.th/download/i-o-table-of-thailand-2000/",
+      "https://www.nesdc.go.th/download/i-o-table-of-thailand-2005/",
+      "https://www.nesdc.go.th/download/i-o-table-of-thailand-2010/",
+      "https://www.nesdc.go.th/download/i-o-table-of-thailand-2015/",
+      "https://www.nesdc.go.th/download/i-o-table-of-thailand-2021-180-sectors/",
+      "https://www.nesdc.go.th/download/input-output-classification/",
+      "https://www.nesdc.go.th/en/download/i-o-table-of-thailand-2015/",
+      "https://www.nesdc.go.th/en/download/input-output-table-2005/",
+      "https://www.nesdc.go.th/en/download/input-output-table-2010/",
+      "https://www.nesdc.go.th/en/download/input-output-table-of-thailand-1975/",
+      "https://www.nesdc.go.th/en/download/input-output-table-of-thailand-1980/",
+      "https://www.nesdc.go.th/en/download/input-output-table-of-thailand-1985/",
+      "https://www.nesdc.go.th/en/download/input-output-table-of-thailand-1995/",
+      "https://www.nesdc.go.th/en/download/input-output-table-of-thailand-1998/",
+      "https://www.nesdc.go.th/en/download/input-output-table-of-thailand-2000/"
+    ],
+    "method": "official_sitemap_then_download_page_then_ddl_redirect",
+    "hard_coded_file_url_used": false,
+    "legacy_io_page": "https://www.nesdc.go.th/main.php?filename=io_page",
+    "legacy_io_page_http_status": 404,
+    "legacy_io_page_still_lists_io_files": false,
+    "legacy_io_page_note": "The historical NESDC I/O page returns a WordPress page with no I/O download links, which is why discovery starts from the sitemap."
+  },
+  "acquired": [
+    {
+      "role": "primary_io_table",
+      "table_year": "2015",
+      "landing_page": "https://www.nesdc.go.th/download/i-o-table-of-thailand-2015/",
+      "ddl_url": "https://www.nesdc.go.th/?p=1558&ddl=1559",
+      "final_url": "https://www.nesdc.go.th/wordpress/wp-content/uploads/2025/03/INPUT-OUTPUT_TABLE_2015.xlsx",
+      "original_filename": "INPUT-OUTPUT_TABLE_2015.xlsx",
+      "local_path": "data/raw/NESDC_IO/i-o-table-of-thailand-2015.xlsx",
+      "http_status": 200,
+      "http_content_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      "http_last_modified": "Tue, 04 Mar 2025 03:05:29 GMT",
+      "content_length": 665344,
+      "sha256": "7da4b4dca118af760844abd6c78ae01a83f313c8898321ac69e72be730e93c81",
+      "retrieved_at": "2026-08-27T16:03:10Z"
+    },
+    {
+      "role": "sector_classification_and_definitions",
+      "table_year": null,
+      "landing_page": "https://www.nesdc.go.th/download/input-output-classification/",
+      "ddl_url": "https://www.nesdc.go.th/?p=1537&ddl=76769",
+      "final_url": "https://www.nesdc.go.th/wordpress/wp-content/uploads/2010/03/06.3-Input-Output-Description.pdf",
+      "original_filename": "06.3-Input-Output-Description.pdf",
+      "local_path": "data/raw/NESDC_IO/input-output-classification.pdf",
+      "http_status": 200,
+      "http_content_type": "application/pdf",
+      "http_last_modified": "Tue, 09 Sep 2025 07:21:47 GMT",
+      "content_length": 167647,
+      "sha256": "87a65982fa12b64307a6750f291ed976b4c17daa6e59cfd44f8e041a1e8297f3",
+      "retrieved_at": "2026-08-27T16:03:10Z"
+    },
+    {
+      "role": "newer_table_audited_not_used",
+      "table_year": "2021",
+      "landing_page": "https://www.nesdc.go.th/download/i-o-table-of-thailand-2021-180-sectors/",
+      "ddl_url": "https://www.nesdc.go.th/?p=1549&ddl=1550",
+      "final_url": "https://www.nesdc.go.th/wordpress/wp-content/uploads/2025/03/article_file_20250225150332.xlsx",
+      "original_filename": "article_file_20250225150332.xlsx",
+      "local_path": "data/raw/NESDC_IO/i-o-table-of-thailand-2021-180-sectors.xlsx",
+      "http_status": 200,
+      "http_content_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      "http_last_modified": "Tue, 04 Mar 2025 02:46:40 GMT",
+      "content_length": 626886,
+      "sha256": "451340133b02afc7c9f010287318209ce20e352bb6c84f9da13667b0958ed464",
+      "retrieved_at": "2026-08-27T16:03:10Z"
+    },
+    {
+      "role": "aggregation_validation_source_58",
+      "table_year": "2015",
+      "landing_page": "https://www.nesdc.go.th/wp-json/wp/v2/media",
+      "ddl_url": "https://www.nesdc.go.th/wordpress/wp-content/uploads/2025/06/DataIO2015x58.xlsx",
+      "final_url": "https://www.nesdc.go.th/wordpress/wp-content/uploads/2025/06/DataIO2015x58.xlsx",
+      "requested_url": "https://www.nesdc.go.th/wordpress/wp-content/uploads/2025/06/DataIO2015x58.xlsx",
+      "original_filename": "DataIO2015x58.xlsx",
+      "local_path": "data/raw/NESDC_IO/DataIO2015x58.xlsx",
+      "http_status": 200,
+      "http_content_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      "http_last_modified": "Tue, 17 Jun 2025 06:31:08 GMT",
+      "content_length": 239507,
+      "sha256": "67c921a83fae15edb52d02e36dc05a83f8f26bbf15826a4b201d0b3a947b5190",
+      "retrieved_at": "2026-08-27T16:03:10Z",
+      "waf_retry_count": 1,
+      "redirect_followed": false,
+      "media_id": 44064,
+      "media_date": "2025-06-17T13:31:08",
+      "sheets": [
+        "DataIO2015x58"
+      ],
+      "internal_title": "INPUT - OUTPUT TABLE OF THAILAND 2015 (58 Sectors)",
+      "sector_count": 58,
+      "discovery_method": "official_wordpress_media_rest_api"
+    },
+    {
+      "role": "official_publication_2015",
+      "table_year": "2015",
+      "landing_page": "https://www.nesdc.go.th/wp-json/wp/v2/media",
+      "ddl_url": "https://www.nesdc.go.th/wordpress/wp-content/uploads/2025/06/Book_IO2015_EN.pdf",
+      "final_url": "https://www.nesdc.go.th/wordpress/wp-content/uploads/2025/06/Book_IO2015_EN.pdf",
+      "requested_url": "https://www.nesdc.go.th/wordpress/wp-content/uploads/2025/06/Book_IO2015_EN.pdf",
+      "original_filename": "Book_IO2015_EN.pdf",
+      "local_path": "data/raw/NESDC_IO/Book_IO2015_EN.pdf",
+      "http_status": 200,
+      "http_content_type": "application/pdf",
+      "http_last_modified": "Tue, 17 Jun 2025 06:30:05 GMT",
+      "content_length": 4924243,
+      "sha256": "d5bc805c487341d92ab34a1344391704b37533987f5610a96234b4bebb11e41c",
+      "retrieved_at": "2026-08-27T16:03:10Z",
+      "waf_retry_count": 1,
+      "redirect_followed": false,
+      "media_id": 44055,
+      "media_date": "2025-06-17T13:30:05",
+      "sheets": null,
+      "internal_title": null,
+      "sector_count": null,
+      "discovery_method": "official_wordpress_media_rest_api"
+    }
+  ],
+  "primary_table": {
+    "table_year": "2015",
+    "sha256": "7da4b4dca118af760844abd6c78ae01a83f313c8898321ac69e72be730e93c81",
+    "diagnostics": {
+      "sheet_name": "Data IO2015 Final",
+      "header_row_index": 2,
+      "header": [
+        "ROW",
+        "COLUMN",
+        "PURCHASER",
+        "WHOLESALE",
+        "RETAIL",
+        "TRANSPORT",
+        "IMPORT"
+      ],
+      "data_cells": 13786,
+      "sector_codes_expected": 180,
+      "sector_codes_present_as_row": 179,
+      "sector_codes_present_as_column": 179,
+      "sector_codes_absent_entirely": [
+        "179"
+      ],
+      "duplicate_cell_keys": 0,
+      "gross_output_total": 32964782794.0,
+      "value_added_total": 13920769510.0,
+      "intermediate_total": 19044013284.0,
+      "import_content_total": 5793796164.0,
+      "gross_output_equals_total_input_row": true,
+      "gross_output_mismatch_sectors": [],
+      "max_column_identity_residual": 0.0,
+      "column_identity_worst_sector": "001",
+      "zero_or_negative_gross_output_sectors": [
+        "179"
+      ],
+      "valuation": {
+        "price_basis": "purchasers_prices",
+        "import_treatment": "import_inclusive",
+        "import_specific_coefficients_available": true,
+        "import_column_sign": "negative_in_demand_columns_positive_in_cell_import_field",
+        "margins_itemised": [
+          "wholesale",
+          "retail",
+          "transport"
+        ],
+        "producers_price_derivable": true,
+        "producers_price_formula": "PURCHASER - WHOLESALE - RETAIL - TRANSPORT",
+        "domestic_only_derivable": true,
+        "domestic_only_formula": "PURCHASER - IMPORT",
+        "unit": "THB_million_or_thousand_as_published",
+        "unit_note": "The published file states no unit in the data sheet. Technical coefficients are RATIOS and are therefore unit-free, so C3 does not depend on resolving the level unit; absolute levels are not reported as monetary amounts anywhere in C3."
+      }
+    }
+  },
+  "sector_definitions_parsed": 180,
+  "newer_table_audit": {
+    "table": "I/O TABLE OF THAILAND 2021 (180 Sectors)",
+    "used_as_primary_source": false,
+    "sheet_name": "DataIO2021",
+    "data_cells": 12711,
+    "sector_count": 180,
+    "structurally_compatible_with_2015": true,
+    "compatibility_basis": "Identical column header and identical 001-180 sector code universe.",
+    "gross_output_equals_total_input_row": true,
+    "max_column_identity_residual": 0.0,
+    "zero_output_sectors": [
+      "032",
+      "034",
+      "179"
+    ],
+    "completeness": "complete",
+    "final_or_preliminary": "The 2015 file is titled '(Final)' in its own header; the 2021 file carries no such marker in the sheet, so its final/preliminary status is NOT established from the file itself and is left unresolved.",
+    "decision": "Audited and NOT substituted. Changing the structural reference year is an explicit decision, not a silent default."
+  },
+  "classification_vintage_caveat": {
+    "document_header_states": "Input - Output Table of Thailand 2021",
+    "applied_to_table_year": "2015",
+    "compatibility_evidence": "Both the 2015 and 2021 workbooks use the same 001-180 code universe and the same column header, and every code used by C3's crosswalks resolves to a label in this document.",
+    "status": "assumed_stable_across_2015_and_2021_not_independently_verified",
+    "note": "NESDC publishes ONE 'I/O Classification and Definition' document, whose current edition is headed 2021. Whether any sector definition changed between the 2015 and 2021 vintages is NOT established by the evidence in hand, and is recorded as a limitation rather than asserted away."
+  },
+  "expected_vs_actual": {
+    "expected_by_brief": "58_sector_workbook",
+    "c3_claim": "58_sector_workbook_not_published_officially",
+    "c3_claim_status": "FALSE_superseded_by_c3_r1",
+    "actually_published": [
+      "180_sector_long_format_workbook",
+      "58_sector_long_format_workbook",
+      "26_sector_and_16_sector_workbooks"
+    ],
+    "resolution": "The 180-sector table REMAINS primary because its finer resolution is what makes the 12-industry crosswalk possible. The 58-sector table is acquired and used as an independent aggregation check, not as a replacement."
+  },
+  "target_association_computed": false,
+  "locked_test_accessed": false,
+  "model_feature_approved_set": false
+}

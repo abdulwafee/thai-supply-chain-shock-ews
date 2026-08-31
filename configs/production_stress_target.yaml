@@ -1,0 +1,138 @@
+# Industry Production Stress Score — target definition (Task B3)
+#
+# Replaces the K=2 MPI+CapU equal-weight target that Task B2 rejected. B2's
+# conclusions are preserved unchanged in configs/targets.yaml and
+# docs/b2_component_validation.md; nothing here reopens or re-runs that gate.
+#
+# NAMING — used consistently across code and docs:
+#   system            : Thai Supply Chain Shock Early Warning System
+#   predicted outcome : Industry Production Stress Score
+#                       (คะแนนความเครียดด้านการผลิตของอุตสาหกรรม)
+#   raw stress measure: mpi_adverse_yoy
+#
+# The system predicts PRODUCTION CONSEQUENCES associated with supply-chain
+# shocks. Its future input features will represent the shocks themselves
+# (raw materials, energy, imports, trading partners, logistics). MPI alone does
+# not measure every dimension of supply-chain disruption, so this outcome is
+# deliberately NOT called a comprehensive "Supply Chain Stress Index".
+
+schema_version: 1
+target_definition_version: production_stress_target_v1
+task: B3
+
+target_name: industry_production_stress_score
+target_name_th: คะแนนความเครียดด้านการผลิตของอุตสาหกรรม
+primary_component_count: 1
+primary_component: mpi_adverse_yoy
+definition_status: approved
+
+# --- raw stress measure ------------------------------------------------------
+raw_stress:
+  formula: "-100 * (mpi_t / mpi_t_minus_12 - 1)"
+  unit: percent_adverse_direction_positive
+  interpretation:
+    positive: MPI declined versus the same month one year earlier
+    zero: unchanged
+    negative: production improved
+  yoy_lag_months: 12
+  fail_on_non_positive_denominator: true
+  exclude_preliminary: true
+  require_model_eligible: true
+  impute_first_twelve_months: false
+  winsorize: false
+  clip: false
+  remove_extremes: false
+  retain_audit_columns: [mpi_level, mpi_level_lagged, lag_source_month]
+  expected:
+    first_month: 2022-01-01
+    last_month: 2026-05-01
+    months_per_industry: 53
+    rows: 636
+
+# --- forecast horizons -------------------------------------------------------
+# A row represents information available at forecast-origin month t. The origin
+# month itself must carry a valid observed mpi_adverse_yoy, so the earliest
+# permissible origin is 2022-01.
+horizons_months: [1, 3]
+three_month_aggregation: maximum
+tie_rule: earliest_peak_month
+
+horizons:
+  1:
+    formula: "target_raw_1m(i,t) = mpi_adverse_yoy(i, t+1)"
+    window_offsets: [1]
+    expected:
+      first_origin: 2022-01-01
+      last_origin: 2026-04-01
+      origins_per_industry: 52
+      rows: 624
+  3:
+    formula: "target_raw_3m(i,t) = max(mpi_adverse_yoy(i, t+1..t+3))"
+    window_offsets: [1, 2, 3]
+    meaning: the worst observed production stress during the next three months
+    expected:
+      first_origin: 2022-01-01
+      last_origin: 2026-02-01
+      origins_per_industry: 50
+      rows: 600
+
+expected_combined_label_rows: 1224
+
+# 2026-06 is preliminary and is never used as a target month. A forecast window
+# is dropped entirely rather than truncated if it would reach into it.
+excluded_target_months: [2026-06-01]
+
+# --- calibration -------------------------------------------------------------
+normalization: industry_relative_training_only_ecdf
+calibration:
+  calibrator_version: industry_stress_calibrator_v1
+  formula: "score = 100 * (count(reference < x) + 0.5 * count(reference == x)) / n"
+  output_range: [0, 100]
+  min_reference_observations: 24
+  # Industries failing the minimum are RECORDED as excluded with a reason, not
+  # silently dropped; transforming them raises.
+  silently_drop_failing_industries: false
+  unseen_industry_policy: reject
+  refit_during_transform: false
+  # B2's diagnostic_only_full_sample_rank must NOT be reused here — it was
+  # explicitly not leakage-safe.
+  reuse_b2_diagnostic_rank: false
+
+# --- risk levels -------------------------------------------------------------
+# PREREGISTERED MVP POLICY THRESHOLDS. These are presentation bands, not
+# naturally observed ground-truth classes.
+risk_threshold_scope: global
+risk_levels:
+  - name: Normal
+    min_score: 0
+    max_score_exclusive: 70
+  - name: Watch
+    min_score: 70
+    max_score_exclusive: 85
+  - name: High
+    min_score: 85
+    max_score_exclusive: 95
+  - name: Severe
+    min_score: 95
+    max_score_inclusive: 100
+
+risk_level_policy:
+  primary_ml_task: continuous_prediction
+  risk_levels_are_derived_presentation_outputs: true
+  tune_thresholds_on_final_test_period: false
+  class_frequencies_may_be_imbalanced_by_design: true
+
+# --- vintage limitation ------------------------------------------------------
+latest_vintage_only: true
+point_in_time_backtest_supported: false
+vintage_note: >-
+  release_date and available_as_of are null throughout the B1 panel, so every
+  evaluation built on this target is a latest-vintage historical evaluation, not
+  a real-time vintage backtest.
+
+# --- what B3 does NOT do -----------------------------------------------------
+not_in_scope:
+  - upstream_feature_collection
+  - dependency_matrices
+  - model_training
+  - persisting_full_sample_calibrated_scores_as_production_outputs

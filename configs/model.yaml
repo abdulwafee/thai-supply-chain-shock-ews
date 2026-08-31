@@ -1,0 +1,98 @@
+# Model configuration — Thai Supply Chain Shock Early Warning System
+#
+# DRAFT. No model training logic is implemented yet
+# (src/thai_supply_chain_ews/models/{baselines,train,predict}.py are stubs).
+# This file only records settings that logic will read once implemented.
+#
+# ARCHITECTURE: two independent, horizon-specific global models
+# (global_model_1m, global_model_3m) — NEVER a shared multi-output estimator.
+# See docs/modeling_strategy.md §4 for why, §7 for the purge/embargo logic
+# that requires this, and §12 for the artifact-isolation layout.
+
+schema_version: 2   # bumped: horizons changed from a list to a keyed mapping, and
+                     # gained purge/embargo/artifact fields — see decision_log.md
+
+# --- forecast horizons -------------------------------------------------------
+# Target formulas resolved by the target-design phase; purge/embargo/artifact
+# fields are this revision's addition (docs/modeling_strategy.md §8).
+horizons:
+  "1m":
+    target_column: target_stress_1m
+    forecast_months: 1
+    aggregation: point
+    require_complete_window: true
+    embargo_months: 1        # placeholder default, not tuned — see docs/modeling_strategy.md §16
+    model_artifact_name: global_model_1m
+    definition: "target_stress_1m(i,t) = stress(i, t+1)"
+
+  "3m":
+    target_column: target_stress_3m
+    forecast_months: 3
+    aggregation: maximum
+    require_complete_window: true
+    embargo_months: 1        # placeholder default, not tuned — see docs/modeling_strategy.md §16
+    model_artifact_name: global_model_3m
+    definition: "target_stress_3m(i,t) = max(stress(i,t+1), stress(i,t+2), stress(i,t+3))"
+
+# Never compute a horizon's aggregation (e.g. the 3-month max) over fewer than
+# forecast_months realized values — exclude the row instead. See
+# docs/modeling_strategy.md §7 for why this is the default, not a shortcut.
+incomplete_window_policy: exclude
+
+risk_levels: [Normal, Watch, High, Severe]
+# Thresholds mapping stress_score -> risk_level are NOT stored here — they
+# are fit on the training partition only, PER HORIZON, per run, and persisted
+# in each model_version's calibration.joblib (docs/modeling_strategy.md §12).
+# A static global threshold in this config file would itself be a leakage
+# risk if ever fit on non-training data, and a threshold shared across
+# horizons would violate the "never reuse a fitted object across horizons"
+# rule (docs/modeling_strategy.md §4).
+
+# --- random seed -------------------------------------------------------------
+random_seed: 42   # placeholder default for reproducibility; not yet justified by any experiment
+
+# --- time split dates ---------------------------------------------------------
+# UNRESOLVED: depends on configs/data.yaml's date_range, which is itself
+# unresolved. Do not fill these in until the earliest common start date is
+# verified (docs/data_source_inventory.md §5) and a roadmap Group E decision
+# is made (docs/project_roadmap.md).
+#
+# validation_start/test_start/test_end are SHARED across both horizons (both
+# models are judged on the same calendar test period). Each horizon's
+# effective training cutoff is DERIVED, not configured directly:
+#   train_end(horizon) = validation_start - (forecast_months + embargo_months + 1) months
+# See docs/modeling_strategy.md §7 for the derivation and a worked example.
+split:
+  validation_start: null   # UNRESOLVED
+  test_start: null          # UNRESOLVED
+  test_end: null              # UNRESOLVED
+  method: time_based_with_horizon_purge   # never random row-level splitting, never shuffled K-fold
+
+# --- model parameters ----------------------------------------------------------
+# UNRESOLVED: no model has been selected or tuned yet (Phase 1 Group F).
+# This section is an empty placeholder, not a default configuration.
+baseline_models:
+  - historical_mean
+  - persistence
+  - seasonal_naive   # applicability per industry not yet evaluated
+  - ridge_regression
+  - shallow_tree
+
+mvp_model:
+  # One fitted estimator PER HORIZON — never a shared multi-output model.
+  # docs/modeling_strategy.md §9 candidate list applies to each independently;
+  # the two horizons are not required to end up using the same model family.
+  "1m":
+    family: null           # UNRESOLVED — candidates in docs/modeling_strategy.md §9
+    hyperparameters: {}    # UNRESOLVED — small hand-justified grid, validation partition only
+  "3m":
+    family: null           # UNRESOLVED
+    hyperparameters: {}    # UNRESOLVED
+
+# --- artifact layout -------------------------------------------------------
+# See docs/modeling_strategy.md §12 for the full directory layout and the
+# Git-tracking policy (binaries ignored, metadata/reports committed).
+artifacts:
+  root: models
+  layout: "models/<model_artifact_name>/<model_version>/{preprocessor,estimator,calibration}.joblib"
+  tracked_files: [metadata.yaml, feature_list.yaml, evaluation_report.md]

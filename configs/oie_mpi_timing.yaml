@@ -1,0 +1,160 @@
+# Task D2 — OIE MPI publication timing, vintage audit, and historical-extension
+# feasibility.
+#
+# PREREGISTERED. Every threshold and required window in this file was written
+# BEFORE the corresponding decision was computed. Nothing here may be relaxed to
+# make an earlier task rerunnable — see the `immutability` block.
+#
+# EVIDENCE ONLY. This task builds no feature, joins no target, trains no model
+# and does not open the locked test.
+
+schema_version: 1
+task: D2
+
+# ---------------------------------------------------------------------------
+# Hard numerical guard.
+#
+# Numerical MPI values must NOT be materialized, parsed, compared, summarized or
+# stored for any reference month AFTER this cutoff. Downloading a current file
+# for provenance is not permission to read every month inside it. The guard is
+# enforced in code by oie_mpi_vintages.GuardedMonthlyReader, which raises
+# NumericalCutoffError rather than returning a value.
+#
+# Structural metadata (which month columns exist, their labels, marker glyphs,
+# file checksums, HTTP headers) is NOT a numerical value and remains readable
+# beyond the cutoff. That distinction is deliberate and is what allows a
+# publication-timing audit of recent months without reading their numbers.
+# ---------------------------------------------------------------------------
+numerical_audit_cutoff_month: "2025-06"
+
+# ---------------------------------------------------------------------------
+# Source entry points. Reachability is recorded per mechanism.
+#
+# A mechanism that fails yields a specific failure state (dns_failure,
+# tls_hostname_mismatch, http_error, ...). It NEVER yields "the source does not
+# exist" — that conflation is the C1.5-R1 / C3-R1 defect and is prohibited.
+# ---------------------------------------------------------------------------
+entry_points:
+  - id: iindex_archive
+    kind: monthly_release_archive
+    url: "https://i.index.oie.go.th/List_industrial.aspx"
+    role: publication_timing_evidence
+  - id: iindex_detail
+    kind: monthly_release_detail
+    url: "https://i.index.oie.go.th/Read_industrial.aspx"
+    role: publication_timing_evidence
+  - id: oie_live_workbook
+    kind: live_overwritten_workbook
+    url: "https://www.oie.go.th/assets/portals/1/fileups/2/files/Industrial%20index/indexes/month/Prodidx1.xlsx"
+    role: latest_vintage_values
+  - id: ckan_oie_value_added
+    kind: catalogue_record
+    url: "https://data.go.th/api/3/action/package_show?id=gdpublish-43_011"
+    role: catalogue_metadata
+  - id: ckan_oie_production_value
+    kind: catalogue_record
+    url: "https://data.go.th/api/3/action/package_show?id=gdpublish-43_02"
+    role: catalogue_metadata
+  - id: indexes_oie_home
+    kind: portal
+    url: "https://indexes.oie.go.th/"
+    role: portal_documentation
+
+# Archive pagination. Termination must be an OBSERVED empty page or an observed
+# repeat, never an assumed page count.
+archive_pagination:
+  page_parameter: "Page"
+  max_pages: 60
+  stop_on_empty_page: true
+  stop_on_repeated_page_digest: true
+
+# ---------------------------------------------------------------------------
+# Publication-timing evidence classes. Mutually exclusive; assigned in order.
+# ---------------------------------------------------------------------------
+timing_evidence_classes:
+  - directly_observed_release          # release observed live during this audit
+  - attachment_corroborated            # attachment Last-Modified AND filename stamp agree
+  - attachment_last_modified_only      # attachment Last-Modified present, no agreeing filename stamp
+  - rehosted_listing_later_than_attachment  # listing edited later; attachment date preferred
+  - listing_timestamp_only             # no attachment; listing timestamp is the only evidence
+  - migration_batch_contaminated       # listing shared across a bulk batch and lag implausible
+  - no_timing_evidence
+
+# A first-publication date is credible only inside this lag window. Outside it
+# the month is treated as migration-contaminated, NOT as a genuine long delay.
+plausible_first_publication_lag_days:
+  min: 20
+  max: 70
+
+# A listing timestamp shared by at least this many entries is a migration batch.
+migration_batch_min_entries: 3
+
+# Agreement tolerance between an attachment filename stamp (Bangkok local,
+# UTC+7) and its HTTP Last-Modified (UTC).
+attachment_timestamp_agreement_seconds: 120
+attachment_filename_timezone_offset_hours: 7
+
+# ---------------------------------------------------------------------------
+# Vintage / revision taxonomy. A difference must be classified, never merged
+# into an undifferentiated "revision" bucket.
+# ---------------------------------------------------------------------------
+revision_classes:
+  - rounding_only
+  - ordinary_revision
+  - preliminary_to_later
+  - annual_revision
+  - base_year_rebasing
+  - classification_change
+  - industry_definition_change
+  - not_comparable
+
+# ---------------------------------------------------------------------------
+# Historical-extension feasibility requirements (preregistered).
+#
+# D1 fell back on 6 origins because too little pre-origin calibration history
+# existed. Extending history is the candidate remedy. For that remedy to be
+# admissible the RAW MPI series must start at or before raw_start_required, and
+# the derived stress series at or before stress_start_required.
+# ---------------------------------------------------------------------------
+history_extension_requirements:
+  raw_start_required: "2020-04"
+  stress_start_required: "2021-04"
+  calibrator_warmup_months: 12
+  required_divisions: [10, 11, 12, 13, 14, 15, 16, 17, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32]
+  required_industry_count: 12
+
+# Base-year compatibility gate. Two editions may be spliced ONLY if, over their
+# common months, the edition ratio is effectively constant per division — i.e. a
+# pure rebasing. A varying ratio means the index was re-estimated, and splicing
+# would fabricate history.
+base_year_compatibility_gate:
+  min_overlap_months: 12
+  # Per-division coefficient of variation of the (new / old) ratio, in percent.
+  max_ratio_cv_percent: 0.5
+  # Every required division must be present in BOTH editions.
+  require_identical_division_sets: true
+  # Fraction of divisions that must pass for the splice to be admissible.
+  min_fraction_divisions_passing: 1.0
+  silent_splicing_permitted: false
+
+# ---------------------------------------------------------------------------
+# D2 evidence outcome. Exactly one is assigned.
+# ---------------------------------------------------------------------------
+evidence_outcomes:
+  - point_in_time_extension_supported
+  - latest_vintage_extension_only
+  - timing_only_supported
+  - extension_not_supported
+
+# ---------------------------------------------------------------------------
+# Immutability. D2 is an audit. It may not reopen earlier decisions.
+# ---------------------------------------------------------------------------
+immutability:
+  may_rebuild_b3_targets: false
+  may_rerun_d1_models: false
+  may_change_b4_split: false
+  may_compute_target_feature_association: false
+  may_tune_models: false
+  may_read_locked_test_outcomes: false
+  may_weaken_gate_to_make_d1_rerunnable: false
+  may_rewrite_prior_decision_log_entries: false

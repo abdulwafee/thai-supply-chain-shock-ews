@@ -1,0 +1,130 @@
+# Schema definition (documentation-level, not yet enforced by code) for the
+# Task E1 reproducibility manifest:
+#
+#   docs/e1_reproducibility_manifest.json
+#
+# What a stranger needs to rebuild the evidence: artifact paths and checksums,
+# task status and supersession, generated versus version-controlled status, the
+# environment and commands, and the current test and lint results.
+#
+# THE TEST COUNT IS MEASURED, NOT QUOTED. A number typed into a reproducibility
+# manifest drifts from the suite the moment a test is added, and a stale count
+# is worse than none because it looks like evidence.
+
+schema_version: 1
+task: E1
+document: docs/e1_reproducibility_manifest.json
+manifest_version: e1_reproducibility_manifest_v1
+
+# ---------------------------------------------------------------------------
+artifacts:
+  per_record_fields:
+    - name: path
+      type: string
+    - name: task
+      type: string
+    - name: exists
+      type: bool
+    - name: generated
+      type: bool
+      note: >-
+        Generated artifacts are git-ignored and rebuilt by their runner.
+        Version-controlled artifacts are the committed record.
+    - name: version_controlled
+      type: bool
+      rule: "version_controlled == not generated"
+    - name: status
+      type: string
+      allowed_values: [current, superseded]
+    - name: checksum
+      type: string
+      nullable: true
+      pattern: "^[0-9a-f]{64}$"
+    - name: checksum_kind
+      type: string
+      allowed_values:
+        - content_checksum_timestamps_excluded
+        - byte_sha256
+      note: >-
+        A CONTENT checksum excludes generation timestamps and is the durable
+        identity, used wherever the document carries one. A BYTE digest is
+        recorded otherwise and labelled as such, so a timestamped file's digest
+        is never mistaken for a stable one.
+  conditional_fields:
+    - name: superseded_by
+      required_when: status == superseded
+
+verification:
+  tests:
+    required_fields:
+      measured: true
+      command: "python -m pytest -q"
+      tests_passed: int
+      tests_failed: int
+      exit_code: int
+      all_passing: bool
+    source: measured_from_an_actual_pytest_run
+    copied: false
+    note: >-
+      The count is parsed from the suite's own summary line. A guard raises if a
+      caller supplies a literal instead of a measurement.
+  ruff:
+    required_fields:
+      measured: true
+      command: "python -m ruff check ."
+      exit_code: int
+      passing: bool
+  config_and_schema_parse:
+    required_fields:
+      configs_parsed: int
+      schemas_parsed: int
+      documents_parsed: int
+      all_parsed: true
+
+referenced_raw_manifests:
+  duplicated_here: false
+  note: >-
+    The raw retrieval manifests record every acquired file and are REFERENCED,
+    not copied. Duplicating them would create a second copy to drift out of
+    step with the first.
+  entries:
+    - data/raw/_manifests/EPPO_PRICE_STRUCTURE_manifest.jsonl
+    - data/raw/_manifests/OIE_MPI_manifest.jsonl
+
+environment:
+  required_fields: [python, dependency_file, virtualenv]
+
+commands:
+  required_keys: [tests, lint, synthesis]
+
+supersession_graph:
+  acyclic: true
+  mirrors: docs/e1_evidence_ledger.json#supersession.graph
+
+locked_test:
+  required_fields:
+    status: sealed_unopened
+    outcomes_read: false
+    manifest_is_key_only: true
+    locked_path_recorded: false
+  note: >-
+    The manifest records that the reservation is sealed by reading the key-only
+    reservation document. It stores no locked path, digest or summary: hashing
+    an outcome would still be reading it.
+
+prohibited_fields:
+  reason: >-
+    Each would either quote an unmeasured number or record something the
+    manifest must not touch.
+  fields:
+    - test_count_literal
+    - assumed_test_count
+    - locked_test_score
+    - locked_test_outcome
+    - locked_prediction_path
+    - purge_outcome
+
+checksums:
+  manifest_checksum:
+    scope: the manifest, excluding the timestamps of its own measurements
+    pattern: "^[0-9a-f]{64}$"

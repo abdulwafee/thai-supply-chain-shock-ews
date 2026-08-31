@@ -1,0 +1,422 @@
+# Pink Sheet publication-timing and vintage-safe availability contract — C1.5
+#
+# Records what the ARCHIVED EVIDENCE actually establishes about when each
+# reference month became public, and what follows for feature timing. Values
+# below marked "決" are decisions; everything else is measured evidence written
+# by scripts/audit_c1_5_commodity_timing.py.
+#
+# Four approval concepts are kept strictly separate throughout this project:
+#   source_verified            (C1) — the data exists, parses, is documented
+#   timing_approved            (C1.5, this file) — availability is established
+#   feature_semantics_approved (C2) — transformation semantics reviewed
+#   model_feature_approved     (later) — cleared as a model input
+# C1.5 must not set model_feature_approved: true.
+
+schema_version: 1
+audit_version: c1_5_commodity_timing_v2
+task: C1.5-R2
+
+# --- discovery (CORRECTED in C1.5-R1, identity hardened in C1.5-R2) ----------
+# R1 fixed WHICH pages are searched. R2 fixes WHICH FILE an anchor resolves to.
+# See AD-R39 (discovery) and AD-R40 (identity).
+discovery:
+  landing_page: https://www.worldbank.org/en/research/commodity-markets
+  report_archive_page: https://www.worldbank.org/en/research/commodity-markets/report-archive
+  seed_pages:
+    - https://thedocs.worldbank.org/en/doc/804991612306143358-0050022021/CMO-Pink-Sheet-February-2021
+    - https://thedocs.worldbank.org/en/doc/5d903e848db1d1b83e0ec8f744e55570-0350012021/CMO-Pink-Sheet-March-2021
+    - https://thedocs.worldbank.org/en/doc/18675f1d1639c7a34d463f59263ba0a2-0050012025/world-bank-commodities-price-data-the-pink-sheet
+    - https://thedocs.worldbank.org/en/doc/74e8be41ceb20fa0da750cda2f6b9e4e-0050012026/world-bank-commodities-price-data-the-pink-sheet
+  method: parse_official_detail_main_document_and_related_hrefs
+  # Ordered by precedence. Every candidate found for an issue month is retained
+  # and tried in this order; the first whose PDF CONTENTS identify it as that
+  # issue wins. R1 kept only the first equal-ranked hit and had no way back.
+  discovery_methods:
+    - official_detail_main_document
+    - official_related_href
+    - official_family_original_href
+    - official_public_documents_search
+    - pattern_probe_within_discovered_folder
+  pattern_probe_outranked_by_official_links: true
+  construct_urls_from_guessed_hash: false
+  filename_forms_parsed:
+    hyphenated: CMO-Pink-Sheet-{Month}-{Year}.pdf
+    # The MAIN DOCUMENT href on an individual detail page squashes the name.
+    # Missing this form is why February 2021 was invisible to the first run.
+    squashed: CMOPinkSheet{Month}{Year}.pdf
+
+# --- URL-path semantics (ROOT CAUSE OF THE R1 FEBRUARY 2025 DEFECT) ----------
+# The two path segments are NOT interchangeable, and R1 treated them as if they
+# were.
+url_path_semantics:
+  related_path_is_issue_specific: true
+  original_path_is_filename_agnostic: true
+  original_path_evidence: >-
+    Under /en/doc/<document-hash>/original/, the World Bank serves that document
+    family's MAIN document regardless of the filename in the path. Verified
+    directly: requesting
+    .../18675f1d1639c7a34d463f59263ba0a2-0050012025/original/CMO-Pink-Sheet-NONSENSE-9999.pdf
+    returns exactly the same bytes as .../original/CMO-Pink-Sheet-June-2025.pdf.
+    The filename is decorative on this path; only the document hash selects
+    content.
+  consequence: >-
+    A /original/ URL may NEVER be used to assert which ISSUE a file is. Only
+    /related/ URLs and detail-page main-document links name a specific issue,
+    and even those are accepted only after the PDF's own contents are checked.
+
+# --- issue identity validation (NEW IN C1.5-R2) ------------------------------
+# The filename is a CLAIM about identity. The document's own contents are the
+# EVIDENCE. No file is counted until the evidence agrees with the claim.
+issue_identity_validation:
+  enforced: true
+  checks:
+    - internal_pdf_creation_date_falls_inside_expected_issue_month
+    - newest_displayed_monthly_column_equals_expected_issue_month_minus_one
+  on_failure: try_next_candidate_then_record_unvalidated
+  cross_month_checksum_collision: raise_error
+  cross_month_checksum_collision_rationale: >-
+    Two DIFFERENT expected issue months cannot both pass identity validation on
+    the same bytes. If that ever happens it is a defect in this pipeline, not a
+    fact about the archive, so it raises IssueIdentityError instead of being
+    recorded as `duplicate_content`. R1's silent duplicate verdict is precisely
+    how a fetch bug became a false claim about the world.
+  storage_identity: "{document_hash}__{filename}"
+  storage_identity_rationale: >-
+    Basenames collide across World Bank document families. Raw-file paths and
+    cache keys are keyed on the canonical document hash plus filename, so two
+    families' same-named PDFs can never overwrite or shadow each other.
+
+latest_vintage_only: false
+
+# --- archived issue coverage (MEASURED, derived in C1.5-R2) ------------------
+archived_issue_coverage_start: 2021-02-01 # earliest required ISSUE
+archived_issue_coverage_end: 2026-06-01 # latest required ISSUE
+expected_issue_count: 65
+issues_validated: 65
+distinct_issues_obtained: 65
+distinct_sha256_count: 65 # 65 issues, 65 distinct checksums, zero collisions
+duplicate_content_issues: [] # none; the R1 entry was a fetch defect
+missing_issues: []
+issues_by_discovery_method:
+  official_related_href: 63
+  official_detail_main_document: 1
+  official_family_original_href: 1
+issue_anomalies: {}
+
+# R1 recorded a February 2025 anomaly. It was wrong. The claim is retained here
+# as a correction record rather than deleted, so the mistake stays auditable.
+superseded_findings:
+  2025-02-01:
+    r1_claim: >-
+      "No distinct February 2025 issue exists; the RELATED link serves a PDF
+      byte-identical to January 2025."
+    r1_claim_status: FALSE
+    r2_evidence: >-
+      The February 2025 issue exists and is distinct. Retrieved from
+      https://thedocs.worldbank.org/en/doc/18675f1d1639c7a34d463f59263ba0a2-0050012025/related/CMO-Pink-Sheet-February-2025.pdf
+      — 256,996 bytes, SHA-256
+      94f053ef4134d5278ba71feec6613aff5d62eeeebf78ea4fb9b226217d7a7907,
+      internal creation date 2025-02-04, newest displayed column 2025-01.
+      January 2025 is a different document: 257,605 bytes, SHA-256
+      b53a6b98c921bdb8cf9f68f170cc6d65c6e341970cb7747a0fb4e91dcf7ef1a5,
+      created 2025-01-03, newest displayed column 2024-12.
+    root_cause: >-
+      R1 requested the /original/ variant of the February anchor. That path is
+      filename-agnostic and served the family's main document, whose bytes were
+      January's. R1's href regex ranked /related/ and /original/ identically, so
+      the first-seen /original/ hit won and the correct /related/ URL was
+      discarded. Nothing then checked the file's own date or columns, so the
+      wrong bytes were accepted, and the resulting checksum match with January
+      was reported as an archive fact instead of a fetch bug.
+
+required_reference_window:
+  start: 2021-01-01
+  end: 2026-05-01
+  months: 65
+reference_months_with_verified_first_release: 65
+reference_months_upper_bound_only: 0
+reference_months_without_evidence: 0
+
+# --- publication timing (SEPARATE from revision safety) ----------------------
+minimum_publication_lag_months: 1
+publication_timing_status: verified
+publication_timing_verified: true
+publication_lag_month_distribution:
+  1: 65
+typical_publication_lag_months: 1
+publication_delay_days:
+  min: 1
+  median: 2
+  max: 25
+publication_delay_day_distribution:
+  1: 5
+  2: 30
+  3: 10
+  4: 12
+  5: 2
+  6: 4
+  9: 1
+  25: 1
+publication_timing_basis: >-
+  All 65 required reference months (2021-01..2026-05) have a MEASURED
+  first-release issue, each independently identity-validated against its own PDF
+  creation date and displayed columns. Every one became available in month t+1,
+  1-25 days after its month end (median 2; the 25-day maximum is a single
+  month). The smallest lag sufficient for EVERY observed month is therefore t+1,
+  and the status is `verified` because no month rests on a bound. Lag 2 was
+  recorded by C1.5-R1 only because the pipeline had downloaded the wrong
+  February 2025 file; it is not retained.
+
+same_reference_month_available_at_calendar_origin: false
+lag_zero_prohibited: true
+same_month_finding: >-
+  Structurally unavailable. Every verified reference month was first published
+  AFTER its own month end, so the completed value for month t does not exist at
+  any forecast origin inside month t.
+
+# --- backtest eligibility (R2 §6 contract) -----------------------------------
+eligible_for_primary_backtest: true
+eligible_for_primary_backtest_basis: >-
+  Every required reference month has a measured first release from a validated
+  issue, and all 15 B4 development origins are covered. This authorises ARCHIVED
+  FIRST-RELEASE values as the primary commodity series. It does not authorise
+  any commodity series as a model feature.
+eligible_for_sensitivity_analysis: true
+eligible_for_sensitivity_analysis_scope: >-
+  Latest-vintage workbook values, used only in a clearly-labelled sensitivity
+  comparison against the first-release fit.
+point_in_time_supported: full
+point_in_time_support_scope: >-
+  On the FEATURE side only. Archived first-release values are reconstructed for
+  all 65 required reference months and all 15 B4 development origins. The MPI
+  TARGET remains latest-vintage because no MPI release calendar has been
+  verified, so a point-in-time feature paired with that target is still not a
+  real-time backtest and must not be described as one.
+coverage_fraction: 1.0
+publication_timing_verified_note: >-
+  `publication_timing_verified: true` refers to WHEN values became public. It
+  says nothing about whether those values later changed; see revision_status.
+latest_vintage_backtest_eligible: true
+latest_vintage_is_point_in_time: false
+latest_vintage_note: >-
+  Lagging latest-vintage data does not make it point-in-time. Any evaluation
+  built on it remains a latest-vintage historical evaluation.
+archived_first_release_backtest_eligible: true
+archived_first_release_caveat: null
+archived_first_release_coverage:
+  verified_reference_months: 65
+  reference_months_examined: 65
+  fraction_of_reference_window: 1.0
+  required_forecast_origins: 15
+  covered_origins: 15
+  origin_coverage_fraction: 1.0
+  missing_origins: []
+
+# --- revision safety (SEPARATE from publication timing) ----------------------
+revision_status: revisions_observed
+revision_audit_status: revisions_observed
+revision_safe_lag_months: null
+revision_safe_lag_blocker: >-
+  Revisions beyond display rounding were observed in five of seven series, and
+  LNG Japan is revised in all 65 comparable months. No fixed lag is shown to
+  guarantee final values. This does NOT null the publication lag, which measures
+  a different thing.
+# Scoped to the 65-month required window. Archived issues also display two
+# pre-window months (2020-11, 2020-12); those are reported separately below, so
+# that no series can exceed the contracted month count.
+revision_summary:
+  brent_crude_usd_bbl: { comparable: 65, revised: 0, max_pct: null }
+  rubber_rss3_usd_kg: { comparable: 65, revised: 0, max_pct: null }
+  aluminum_usd_mt: { comparable: 65, revised: 1, max_pct: 0.13 }
+  copper_usd_mt: { comparable: 65, revised: 2, max_pct: 0.06 }
+  coal_australia_usd_mt: { comparable: 57, revised: 2, max_pct: 5.23 }
+  palm_oil_usd_mt: { comparable: 65, revised: 20, max_pct: 2.32 }
+  lng_japan_usd_mmbtu: { comparable: 65, revised: 65, max_pct: 34.10 }
+revision_window_scope:
+  in_window_reference_months: 65
+  max_comparable_per_series: 65
+  out_of_window_reference_months: [2020-11-01, 2020-12-01]
+  out_of_window_observations: 14
+  out_of_window_revisions_beyond_rounding: 0
+  note: >-
+    The February 2021 issue displays late-2020 columns. Those months are outside
+    the contracted window, are excluded from the headline statistics, and are
+    reported here instead of being silently folded in — which is what produced
+    R1's 67-month per-series counts.
+
+recommended_operational_lag_months: 2
+recommended_operational_lag_basis: >-
+  POLICY, not measurement. The measured publication requirement is t+1; one
+  further month of margin is added because the most recent months of each issue
+  are estimates that are demonstrably revised. C2 must not cite this number as a
+  verified minimum.
+
+# --- forecast issuance contract ----------------------------------------------
+forecast_issuance_contract: calendar_boundary_month_based
+forecast_issuance_contract_evidence: >-
+  B4 (configs/evaluation_splits.yaml) defines the feature rule as
+  `feature_available_month <= forecast_origin_month` with
+  `basis: month_based_latest_vintage` and
+  `is_real_time_release_date_rule: false`. B1 emits release_date and
+  available_as_of as NULL because no MPI release calendar was verified.
+operational_release_contract_supported: false
+operational_release_blocker: >-
+  Verified historical MPI release dates and forecast issuance timestamps still
+  do not exist in this repository. A month label must not be treated as a
+  release timestamp.
+
+timing_status: verified
+
+# --- footnote semantics (CORRECTED in C1.5-R3) -------------------------------
+# C1.5-R1/R2 read the table token `a/` as an ESTIMATE marker. It is not one.
+# The Pink Sheet's own footnote block defines the single-letter tokens as INDEX
+# MEMBERSHIP. Brent carries `a/` in all 65 issues and is nowhere described as an
+# estimate; treating the token as an estimate flag mislabelled every Brent
+# observation and gave the LNG estimate statistics a misleading name.
+source_footnote_semantics:
+  markers:
+    a/: included_in_the_energy_index
+    b/: included_in_the_non_energy_index
+    c/: included_in_the_precious_metals_index
+    d/: index_definition_footnote
+  raw_marker_preserved_verbatim: true
+  index_membership_implies_estimate_status: false
+  rule: >-
+    A footnote token may be mapped ONLY to its documented index meaning.
+    Estimate status must never be inferred from index membership, in either
+    direction: a marked row is not thereby an estimate, and an unmarked row is
+    not thereby final.
+  observed_marker_variation: >-
+    The source is not internally consistent about printing these tokens — the
+    Rubber RSS3 row carries `b/` in 22 of the 65 archived issues and omits it in
+    the other 43. The marker is recorded exactly as displayed in each issue and
+    is not normalised, which is a further reason it cannot carry semantic weight.
+
+# --- estimates (RECALCULATED in C1.5-R3 from independent evidence) -----------
+estimated_value_policy:
+  evidence_source: pdf_description_section
+  estimate_rule_version: pink_sheet_description_rule_v1
+  lng_evidence_text: >-
+    "Liquefied natural gas (Japan), LNG, import price, cif; recent two months'
+    averages are estimates."
+  lng_evidence_present_in_issues: 65 # of 65; matched, never assumed
+  estimate_statuses:
+    - source_documented_estimate
+    - not_covered_by_current_estimate_rule
+    - not_documented_as_estimate
+    - unknown
+  absent_evidence_yields: unknown # never `false`
+  absent_evidence_rationale: >-
+    Failing to parse the Description note means the issue's estimate status is
+    unobserved, not that the value is final. `false` would convert a parsing gap
+    into a factual claim — the same class of error as C1.5-R1's February 2025
+    verdict.
+
+  # Derived by position within each issue's own ordered monthly columns.
+  lng_first_releases_documented_as_estimates: 65
+  lng_estimate_status_unknown: 0
+  lng_estimates_with_a_later_non_estimated_vintage: 63
+  lng_estimates_revised_before_first_non_estimated_vintage: 63
+  lng_estimates_unchanged_at_first_non_estimated_vintage: 0
+  lng_right_censored_or_unresolved: 2
+  lng_right_censored_months: [2026-04-01, 2026-05-01]
+  lng_documented_estimates_differing_from_latest_vintage: 65
+
+  # Numerical revision facts, UNCHANGED by this correction. They were measured
+  # independently of any estimate marker and are re-verified identical.
+  lng_revision_frequency: 1.0
+  lng_median_abs_pct_revision: 4.01
+  lng_max_abs_pct_revision: 34.10
+
+  policy: >-
+    An observation whose `estimate_status` is `source_documented_estimate` must
+    carry that status through to any feature built from it, and must not be
+    treated as final. Status is read from the Description-derived field, NEVER
+    from a footnote token.
+  finality_note: >-
+    No observation anywhere in this project is described as `final`.
+    `first_non_estimated_vintage` records only the first archived issue in which
+    the documented two-month rule no longer covers a month; later revision
+    remains possible and is measured separately.
+  lng_japan_primary_feature_eligible: false
+  lng_exclusion_basis: >-
+    Unchanged and independent of this correction: LNG first releases differ from
+    the current workbook in 65 of 65 in-window months, by up to 34.10%. The
+    exclusion rests on that measured revision record, not on estimate labelling.
+
+# Superseded by C1.5-R3, retained so the error stays auditable.
+superseded_estimate_fields:
+  lng_estimate_to_final_transitions:
+    previous_value: 65
+    previous_definition: >-
+      Observations carrying the `a/` token that also differed from the current
+      workbook.
+    status: RENAMED_AND_SUPERSEDED
+    replaced_by:
+      - documented_estimates_differing_from_latest_vintage (65 — numerically
+        unchanged, but now counted from Description evidence rather than from
+        the `a/` token, and no longer described as reaching a "final" value)
+      - lng_estimates_with_a_later_non_estimated_vintage (63 — the actual
+        transition count under the documented rule; 2 months are right-censored)
+    note: >-
+      The old name asserted two things the evidence does not support: that `a/`
+      meant estimate, and that the latest vintage is final. The value 65 is
+      retained for the workbook-difference metric because it was independently
+      re-derived, not because it was previously reported. The TRANSITION count
+      is 63.
+  estimate_marker:
+    status: REPLACED
+    replaced_by:
+      [source_footnote_marker, source_footnote_meaning, estimate_status,
+       estimate_evidence_type, estimate_evidence_text, estimate_rule_version,
+       estimate_evidence_url]
+
+# --- conditional series (C1 semantic findings, preserved unchanged) ----------
+conditional_series_policy:
+  coal_australia_usd_mt:
+    definition_break: spot_to_futures_at_2022_02
+    disclosed_in_archived_issue: unresolved
+    remains_excluded_from_primary_feature_set: true
+    classified_as_numerical_revision: false
+  palm_oil_usd_mt:
+    definition_break: [2021-01, 2024-11, 2025-02]
+    disclosed_in_archived_issue: unresolved
+    remains_excluded_from_primary_feature_set: true
+    classified_as_numerical_revision: false
+  definition_break_attribution: >-
+    A break is attributed only when the regime now governing a month began AFTER
+    that month was first published — the case where the two vintages genuinely
+    quote different things. The coal +118% figure reported by an intermediate
+    C1.5-R1 pass was an EXTRACTION ARTIFACT (missing monthly cells causing
+    quarterly values to be read), now fixed, not a definition break.
+
+# --- approval state ----------------------------------------------------------
+approval_state:
+  source_verified: unchanged_from_c1 # 5 verified, 2 conditional
+  timing_approved: true # publication timing measured for all 65 months
+  feature_semantics_approved: false
+  model_feature_approved: false # C1.5 must not set this true
+
+# Explicit per-series restatement. Timing approval is not feature approval.
+series_model_feature_approval:
+  brent_crude_usd_bbl: { model_feature_approved: false }
+  rubber_rss3_usd_kg: { model_feature_approved: false }
+  aluminum_usd_mt: { model_feature_approved: false }
+  copper_usd_mt: { model_feature_approved: false }
+  coal_australia_usd_mt: { model_feature_approved: false }
+  palm_oil_usd_mt: { model_feature_approved: false }
+  lng_japan_usd_mmbtu: { model_feature_approved: false }
+
+decision_evidence:
+  - docs/c1_5_commodity_timing_audit.json
+  - docs/c1_5_commodity_timing_audit.md
+  - docs/c1_5_commodity_timing_decision.md
+  - data/raw/_manifests/WB_PINKSHEET_VINTAGES_manifest.jsonl
+
+not_in_scope_for_c1_5:
+  - feature_engineering
+  - joining_commodity_data_to_mpi
+  - target_association
+  - model_training
+  - baseline_evaluation
+  - locked_test_access

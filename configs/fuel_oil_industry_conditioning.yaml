@@ -1,0 +1,367 @@
+# Task C9 — sector-093 fuel-oil exposure and industry-conditioned features.
+#
+# PREREGISTERED. The two-phase boundary, the exposure formula, the proxy-fitness
+# and direction vocabularies, the eligibility gate, the status precedence and the
+# expected-count formulas were written before any exposure was derived and before
+# any C8 numeric value was read.
+#
+# SOURCE-LEVEL STRUCTURAL CONDITIONING ONLY. No MPI join, no target association,
+# no outcome-based channel selection, no model, no locked test. C3, C5, C7, C7.5
+# and C8 artifacts are IMMUTABLE here.
+
+schema_version: 1
+task: C9
+config_version: fuel_oil_industry_conditioning_v1
+phase_a_version: c9_phase_a_structural_decision_v1
+conditioning_formula_version: c9_fuel_oil_direct_sector093_v1
+
+# ---------------------------------------------------------------------------
+# Inherited from C8 and C6.5. Restated, NOT re-decided.
+# ---------------------------------------------------------------------------
+inherited_status:
+  eppo_fo600_channel:
+    source_transformations_ready_for_structural_conditioning: true
+  eppo_fo1500_channel:
+    source_transformations_ready_for_structural_conditioning: true
+  eppo_hsd:
+    authorized: false
+    reason: ordinary_h_diesel_absent_for_305_document_days_2023_09_to_2024_12
+
+inherited_restrictions:
+  additive_aggregation_allowed: false
+  simple_average_allowed: false
+  automatic_composite_index_allowed: false
+  simultaneous_model_entry_approved: false
+  outcome_based_channel_selection_allowed: false
+
+timing_policy:
+  latest_vintage_used: true
+  historical_release_timing_verified: false
+  point_in_time_supported: false
+  fully_real_time_backtest: false
+  minimum_verified_publication_lag_months: null
+  operational_policy_lag_months: 2
+  operational_lag_is_measured: false
+  source_available_as_of: null
+  availability_basis: conservative_policy_not_historical_measurement
+
+provenance:
+  target_joined: false
+  target_association_computed: false
+  model_trained: false
+  locked_test_accessed: false
+  model_feature_approved: false
+
+preserved_decisions:
+  c8_formulas_values_or_nulls_changed: false
+  c8_availability_changed: false
+  c7_or_c7_5_source_semantics_changed: false
+  c6_5_latest_vintage_policy_changed: false
+  c3_or_c3r1_matrices_changed: false
+  c4_features_changed: false
+  c5_path_decomposition_changed: false
+  d3_contract_changed: false
+  d4_results_changed: false
+  b3_targets_changed: false
+
+# ---------------------------------------------------------------------------
+# The two-phase boundary. Phase A decides structure without seeing a value.
+# ---------------------------------------------------------------------------
+phases:
+  phase_a:
+    name: structural_decision
+    may_read:
+      - nesdc_io_matrix
+      - sector_descriptions
+      - industry_crosswalk
+      - c3_c3r1_structural_metadata
+      - c5_mediator_findings
+      - c8_channel_metadata_only
+    must_not_read:
+      - c8_numeric_feature_values
+      - mpi_values
+      - targets
+      - predictions
+      - evaluation_metrics
+    produces:
+      - sector_093_industry_exposures
+      - proxy_fitness_decisions
+      - direction_decisions
+      - eligibility
+      - expected_row_count_formulas
+      - structural_decision_checksum
+    frozen_before_phase_b: true
+  phase_b:
+    name: conditioning
+    precondition: phase_a_artifact_written_and_checksum_frozen
+    reasserts_checksum_before_loading_c8_values: true
+    eligibility_change_after_loading_values: raises
+
+# ---------------------------------------------------------------------------
+# Exposure. DIRECT coefficient on sector 093 only.
+# ---------------------------------------------------------------------------
+exposure:
+  io_sector_code: "093"
+  io_sector_label: "Petroleum refineries"
+  measure: purchaser
+  direct_coefficient_formula: "A[093,j] = Z[093,j] / X_j"
+  industry_aggregation_weighted_form: "E[093,g] = sum_j (X_j / sum_l X_l) * A[093,j]"
+  industry_aggregation_exact_form: "E[093,g] = sum_j Z[093,j] / sum_j X_j"
+  both_forms_calculated_independently: true
+  reconciliation_tolerance: 1.0e-12
+  prohibited:
+    - sector_031_crude_exposure_reused_as_sector_093
+    - brent_exposure_reused
+    - total_requirement_T_equals_L_minus_I
+    - total_requirement_exposure
+    - weights_inferred_from_target_outcomes
+    - normalisation_across_industries
+  structural_checks:
+    - sector_093_exists_exactly_once
+    - official_label_matches
+    - no_final_demand_row_enters_z
+    - no_value_added_row_enters_z
+    - every_included_sector_has_positive_gross_output
+    - industry_weights_sum_to_one
+    - coefficients_finite_and_nonnegative
+    - no_industry_sector_assigned_twice
+    - purchasers_price_basis_preserved
+    - deterministic
+  large_exposure_is_an_error: false
+
+# ---------------------------------------------------------------------------
+# Price stage versus valuation basis. The mismatch is recorded, not glossed.
+# ---------------------------------------------------------------------------
+valuation:
+  eppo_price_stage: ex_refinery
+  eppo_included_components: [base_ex_refinery_price]
+  eppo_excluded_components:
+    [excise_tax, municipal_tax, oil_fund, conservation_fund, wholesale_components,
+     vat, marketing_margin, retail_margin]
+  io_valuation_basis: purchasers_prices
+  io_import_treatment: import_inclusive
+  valuation_basis_alignment:
+    partial_mismatch_purchasers_price_coefficient_x_ex_refinery_price
+  structural_interaction_only: true
+  monetary_cost_measure: false
+  elasticity: false
+  causal_effect: false
+  prohibited_claim: >-
+    Multiplying the EPPO price by the I/O coefficient does NOT produce baht cost
+    per unit of industrial output. The price stage and the valuation basis differ.
+
+# ---------------------------------------------------------------------------
+# Proxy fitness. Sector 093 is a basket; fuel oil is one product in it.
+# ---------------------------------------------------------------------------
+proxy_fitness:
+  sector_093_official_basket:
+    [gasoline, jet oil, LPG, asphalt, paraffin, sulfur, kerosene, diesel, fuel oil]
+  basket_source: NESDC 2015 sector classification, definition of sector 093
+  statuses:
+    - fit_for_structural_use
+    - broad_proxy_use_with_caution
+    - not_fit_for_product_specific_use
+    - unresolved
+  considerations:
+    - industry_directly_purchases_sector_093_output
+    - official_io_data_identify_the_purchased_petroleum_product
+    - fuel_oil_can_represent_the_full_sector_093_basket
+    - exposure_is_observed_zero
+    - industry_contains_sector_093_itself
+    - product_specific_consumption_evidence_exists
+  fuel_oil_use_inferred_from_a_positive_coefficient: false
+  default_confidence_high_without_product_specific_evidence: false
+  product_specific_evidence_sources_permitted_in_phase_a:
+    - nesdc_io_matrix
+    - nesdc_sector_definitions
+    - industry_crosswalk
+    - c3_c3r1_structural_metadata
+    - c5_mediator_findings
+  absence_of_evidence_note: >-
+    The 179-sector table does not split refinery products by type, so no source
+    Phase A may read identifies which product an industry buys. That is a limit
+    of the permitted sources, not proof that no such evidence exists anywhere.
+
+# ---------------------------------------------------------------------------
+# Direction. Never forced.
+# ---------------------------------------------------------------------------
+direction:
+  channels: [cost_pressure, mixed_or_ambiguous, unresolved]
+  consumer_industry:
+    direction_channel: cost_pressure
+    direction_multiplier: 1
+  industry_containing_the_producer_sector:
+    direction_channel: mixed_or_ambiguous
+    direction_multiplier: null
+    reason: >-
+      A higher refinery-product price is simultaneously revenue and input cost.
+      The net sign is unresolved and is not forced to +1.
+  realized_volatility_interpretation: disruption_magnitude_nonnegative
+  volatility_called_a_price_increase: false
+
+# ---------------------------------------------------------------------------
+# Eligibility gate. Zero, unresolved and ineligible are three states.
+# ---------------------------------------------------------------------------
+eligibility:
+  conditions:
+    - sector_093_exposure_resolved
+    - exposure_finite_and_nonnegative
+    - proxy_fitness_not_not_fit_for_product_specific_use
+    - direction_resolved
+    - direction_multiplier_non_null
+    - no_target_outcome_used
+    - shared_channel_restrictions_preserved
+  observed_zero_remains_eligible: true
+  observed_zero_quality_flag: observed_zero_direct_exposure
+  mixed_direction_is_ineligible_for_the_default_feature: true
+  ineligible_pairs_deleted_from_the_audit_table: false
+
+# ---------------------------------------------------------------------------
+# The frozen Phase-A grid and the expected Phase-B counts.
+# ---------------------------------------------------------------------------
+structural_audit_grid:
+  industries: 12
+  channels: 2
+  rows: 24
+  columns:
+    [industry_id, channel_id, io_sector_code, direct_exposure, observed_zero,
+     proxy_fit, confidence, direction_channel, direction_multiplier, eligible,
+     exclusion_reason, valuation_basis_alignment, structural_source_checksum,
+     exposure_row_checksum, phase_a_decision_checksum]
+
+expected_counts:
+  full_grid_formula: "2 x 12 x 65 x 5"
+  full_grid_rows: 7800
+  source_numeric_rows_formula: "598 x eligible_industries_per_channel"
+  source_gap_rows_formula: "52 x eligible_industries_per_channel"
+  ineligible_rows_formula: "650 x ineligible_industries_per_channel"
+  c8_source_finite_rows: 598
+  c8_source_null_rows: 52
+  c8_rows_per_channel_pair: 650
+  derived_after_phase_a_freeze: true
+  edited_after_conditioning_begins: false
+
+# ---------------------------------------------------------------------------
+# Conditioning.
+# ---------------------------------------------------------------------------
+conditioning:
+  formula: "z[g,c,m,f] = x[c,m,f] * E093[g] * s[g,c]"
+  normalisation_across_industries: false
+  normalisation_across_channels: false
+  normalisation_across_transformations: false
+  total_requirement_exposure_used: false
+  units:
+    price_level: baht_per_litre_x_io_coefficient
+    log_change_1m_pct: percentage_point_log_change_x_io_coefficient
+    log_change_3m_pct: percentage_point_log_change_x_io_coefficient
+    log_change_12m_pct: percentage_point_log_change_x_io_coefficient
+    realized_volatility_3m_pct:
+      percentage_point_log_change_volatility_x_io_coefficient
+  not_a_currency_cost: true
+  not_an_elasticity: true
+  not_a_forecast_coefficient: true
+
+conditioned_statuses:
+  - available_nonzero
+  - zero_due_to_observed_zero_exposure
+  - source_insufficient_history
+  - source_current_month_gap
+  - source_input_window_gap
+  - not_generated_due_to_direction_ambiguity
+  - not_generated_due_to_proxy_ineligibility
+  - structural_exposure_unresolved
+
+status_precedence:
+  - structural_ineligibility
+  - source_transformation_null
+  - structural_exposure_zero
+  - available_nonzero
+ineligible_pair_converted_to_zero: false
+missing_source_converted_to_zero_when_exposure_is_zero: false
+
+# ---------------------------------------------------------------------------
+# Channel variants. Same exposure vector, never combined.
+# ---------------------------------------------------------------------------
+variants:
+  fo600_direct_sector093:
+    channel_id: eppo_fo600_channel
+    series_id: eppo_ex_refinery_fo600_2s
+  fo1500_direct_sector093:
+    channel_id: eppo_fo1500_channel
+    series_id: eppo_ex_refinery_fo1500_2s
+shared_structural_exposure_group: io_sector_093
+variant_restrictions:
+  additive_aggregation_allowed: false
+  simple_average_allowed: false
+  automatic_composite_index_allowed: false
+  simultaneous_model_entry_approved: false
+  outcome_based_variant_selection_allowed: false
+  prohibited_constructions:
+    - added_conditioned_features
+    - averaged_conditioned_features
+    - combined_fuel_oil_index
+    - pca
+    - two_independent_exposure_measurements_claim
+    - primary_variant_chosen_from_target_performance
+
+# ---------------------------------------------------------------------------
+# Availability.
+# ---------------------------------------------------------------------------
+availability:
+  rule: "max(source policy_available_month, structural available month)"
+  structural_available_by: 2020-03-31
+  structural_reference_year: 2015
+  structural_available_month: "2020-03"
+  backdated_to_reference_year: false
+  download_timestamp_used: false
+  evidence_type: official_download_page_publication_date
+  evidence_url: https://www.nesdc.go.th/download/i-o-table-of-thailand-2015/
+  source_policy_expected_to_dominate: true
+  source_available_as_of: null
+  availability_basis: conservative_policy_not_historical_measurement
+  latest_vintage_used: true
+  point_in_time_supported: false
+  fully_real_time_backtest: false
+
+# ---------------------------------------------------------------------------
+# Development-only snapshot.
+# ---------------------------------------------------------------------------
+development_snapshot:
+  issue_month_start: "2024-01"
+  issue_month_end: "2025-03"
+  issue_months: 15
+  variants: 2
+  industries: 12
+  transformations: 5
+  cells: 1800
+  reference_month_rule: latest_permitted_by_policy_lag_2
+  ineligible_cells: null_plus_mask
+  observed_structural_zero_cells: numeric_zero
+  source_null_cells: rejected
+  channels_combined_in_one_model_ready_row: false
+  targets_read: false
+  purge_and_locked_reported_from_key_ranges_only: true
+
+# ---------------------------------------------------------------------------
+# Authorization after C9.
+# ---------------------------------------------------------------------------
+authorization_after_c9:
+  industry_conditioned_features_created: true
+  ready_for_development_only_assembly: gate_dependent
+  feature_semantics_approved: false
+  model_feature_approved: false
+  target_join_authorized: false
+  modeling_authorized: false
+  locked_test_evaluation_authorized: false
+  note: >-
+    A structurally conditioned feature is not automatically predictive or
+    model-approved.
+
+outputs:
+  phase_a_decision_markdown: docs/c9_sector093_exposure_decision.md
+  phase_a_decision_json: docs/c9_sector093_exposure_decision.json
+  audit_markdown: docs/c9_fuel_oil_conditioning_audit.md
+  audit_json: docs/c9_fuel_oil_conditioning_audit.json
+  conditioned_table: data/features/c9_fuel_oil_conditioned.parquet
+  development_snapshot: data/features/c9_fuel_oil_development_snapshot.parquet
+  generated_parquet_git_ignored: true

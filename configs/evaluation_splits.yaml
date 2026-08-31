@@ -1,0 +1,164 @@
+# Walk-forward evaluation splits — Task B4
+#
+# PREREGISTERED. Written before any baseline metric was computed.
+#
+# The locked final test period below is RESERVED, not evaluated. B4 produces
+# only a manifest of its keys, ranges, row counts and checksums. No target
+# distribution, metric, risk-level frequency, plot, or model comparison is
+# computed on it, and the default runner has no flag that would do so.
+# Unlocking it belongs to a later, explicit task.
+
+schema_version: 1
+evaluation_harness_version: walk_forward_harness_v1
+task: B4
+target_definition_version: production_stress_target_v1
+
+horizons_months: [1, 3]
+
+# --- development walk-forward period ----------------------------------------
+development:
+  first_origin: 2024-01-01
+  last_origin: 2025-03-01
+  origin_count: 15
+  industries: 12
+  expected_rows_per_horizon: 180 # 15 origins x 12 industries
+  expected_rows_all_horizons: 360
+  # Reporting groups only. These are NOT random train/validation splits and NOT
+  # separate fitting regimes: calibrator and baseline state are rebuilt
+  # independently at EVERY monthly origin regardless of block.
+  blocks:
+    - name: DEV-1
+      first_origin: 2024-01-01
+      last_origin: 2024-05-01
+    - name: DEV-2
+      first_origin: 2024-06-01
+      last_origin: 2024-10-01
+    - name: DEV-3
+      first_origin: 2024-11-01
+      last_origin: 2025-03-01
+
+# --- purge / model-selection buffer -----------------------------------------
+# No evaluation metric is reported for these origins. The buffer guarantees
+# every 3-month development target window is complete before the locked test
+# period begins, so a development result can never be informed by a window that
+# extends into test territory.
+purge_buffer:
+  first_origin: 2025-04-01
+  last_origin: 2025-06-01
+  origin_count: 3
+  metrics_reported: false
+  permitted_later_use: >-
+    Final expanding-window training only, and only after model-selection rules
+    are frozen.
+
+# --- locked final test — RESERVED, NOT EVALUATED IN B4 ----------------------
+locked_test:
+  evaluated_in_b4: false
+  manifest_only: true
+  horizons:
+    1:
+      first_origin: 2025-07-01
+      last_origin: 2026-04-01
+      origin_count: 10
+      expected_rows: 120 # 10 x 12
+    3:
+      first_origin: 2025-07-01
+      last_origin: 2026-02-01
+      origin_count: 8
+      expected_rows: 96 # 8 x 12
+  prohibited_outputs:
+    - target_distributions
+    - baseline_metrics
+    - risk_level_frequencies
+    - plots
+    - model_comparisons
+
+# --- walk-forward information rules -----------------------------------------
+information_rules:
+  calibration:
+    # The monthly stress value AT the forecast origin is treated as known: the
+    # historical-evaluation contract assumes the origin month's own observation
+    # is in hand when the forecast is made.
+    rule: "stress_month <= forecast_origin_month"
+    include_origin_month: true
+    min_reference_observations: 24
+    refit_at_every_origin: true
+    fit_once_over_development: false # explicitly forbidden
+  training_labels:
+    # Enforced on the target WINDOW END, not on the label's origin date. A
+    # 3-month label originating before t can still reach past t, and using it
+    # would leak the outcome the model is being asked to predict.
+    rule: "target_window_end <= forecast_origin_month"
+    enforced_per_horizon: true
+    select_by_origin_date_only: false # explicitly forbidden
+  evaluation_label:
+    rule: >-
+      The current origin's target is transformed only AFTER the baseline
+      prediction is produced and the calibrator state is frozen.
+  features:
+    # B4 ships no features, but the contract is defined now so later tasks
+    # inherit it.
+    rule: "feature_available_month <= forecast_origin_month"
+    basis: month_based_latest_vintage
+    is_real_time_release_date_rule: false
+    note: >-
+      Verified publication dates do not exist for these sources, so this is a
+      MONTH-BASED LATEST-VINTAGE rule, not a real-time release-date rule. It
+      cannot detect a value that was published late within its reference month.
+    on_violation: raise
+    silently_drop_violations: false
+
+# --- uncertainty -------------------------------------------------------------
+bootstrap:
+  method: moving_block_over_origin_months
+  block_length_months: 3
+  replications: 1000
+  confidence_level: 0.95
+  random_seed: 20260827
+  # Industries are NOT resampled independently: all 12 industries of a selected
+  # origin month travel together, because they share common calendar shocks.
+  cluster_unit: forecast_origin_month
+  keep_all_industries_together: true
+  inconclusive_when_ci_crosses_zero: true
+
+# --- metrics -----------------------------------------------------------------
+metrics:
+  primary: macro_industry_mae_on_score
+  primary_definition: >-
+    Compute each industry's MAE on the 0-100 score first, then average the 12
+    industry MAEs with equal weight. This prevents an industry with more
+    extreme values from dominating model selection.
+  r_squared_as_primary: false
+  secondary:
+    - pooled_mae
+    - macro_rmse
+    - pooled_rmse
+    - median_absolute_error
+    - pooled_spearman
+    - per_industry_mae
+    - by_development_block
+  high_stress_event:
+    score_threshold: 85 # combines High and Severe
+    report: [observed_events, precision, recall, f1, pr_auc_when_defined,
+             false_negative_count]
+    pr_auc_when_undefined: report_null_with_reason
+  severe_event:
+    score_threshold: 95
+    reporting: descriptive_counts_only
+    note: Too few events for stable rate metrics; do not emphasize them.
+  skill:
+    reference_baseline: industry_historical_mean
+    formula: "skill = 1 - model_mae / historical_mean_mae"
+    paired_differences_by: forecast_origin_month
+
+# --- baseline selection ------------------------------------------------------
+baseline_selection:
+  per_horizon: true
+  uses_locked_test_information: false
+  rules:
+    - lowest_development_macro_industry_mae
+    - if_effectively_tied_lower_false_negative_count_at_score_85
+    - if_still_tied_choose_the_simpler_baseline
+  effective_tie_definition: >-
+    Two baselines are effectively tied when the 95% bootstrap CI of their paired
+    macro-MAE difference includes zero.

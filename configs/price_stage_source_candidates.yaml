@@ -1,0 +1,287 @@
+# Task C5 — candidate official price-stage sources and the preregistered
+# recommendation gate.
+#
+# PREREGISTERED: every criterion, threshold and selection rule below was written
+# BEFORE any candidate was ranked. The materiality threshold in particular was
+# fixed before any decomposition output was inspected.
+#
+# NO TARGET OUTCOMES. Ranking sees structural and provenance evidence only. The
+# gate raises if a candidate carries any performance field.
+
+schema_version: 1
+task: C5
+config_version: price_stage_source_candidates_v1
+
+selection_provenance:
+  selection_used_target_outcomes: false
+  d4_metrics_used_for_source_ranking: false
+  locked_test_accessed: false
+
+# ---------------------------------------------------------------------------
+# Decisions C5 must NOT disturb.
+# ---------------------------------------------------------------------------
+preserved_decisions:
+  b3_targets_or_calibrator_changed: false
+  d3_contract_changed: false
+  split_periods_changed: false
+  d3_benchmarks_changed: false
+  d4_results_or_status_changed: false
+  c2_archived_first_release_changed: false
+  c3_coefficients_changed: false
+  c3r1_eligibility_changed: false
+  c4_variants_changed: false
+  registered_primary_exposure: direct_exposure
+  total_requirement_role: structural_sensitivity_only
+  promote_total_requirement_because_of_d4: false
+  promote_publication_lag_1m_because_of_h1_point_estimate: false
+  hybrid_exposure_chosen_by_development_mae: false
+
+# ---------------------------------------------------------------------------
+# Decomposition settings. Fixed before inspecting any result.
+# ---------------------------------------------------------------------------
+decomposition:
+  identity: "T = A + TA"
+  identity_tolerance: 1.0e-12
+  sector_level: 179
+  excluded_zero_output_sector: "179"
+  exclude_final_demand_rows: true
+  exclude_import_rows: true
+  exclude_value_added_rows: true
+  preserve_cycles_in_T: true
+  causal_claim: false
+  aggregation: official_gross_output_weights
+  top_mediators_reported: 10
+  # Preregistered: indirect exposure at or above this counts as material when
+  # direct exposure is zero. Chosen before any decomposition was run.
+  materiality_threshold: 0.01
+  cumulative_shares_reported: [1, 3, 5]
+
+# ---------------------------------------------------------------------------
+# Candidate source families to audit.
+# ---------------------------------------------------------------------------
+source_families:
+  - family_id: MOC_PPI
+    publisher: Ministry of Commerce, Trade Policy and Strategy Office
+    role: producer_price_index_refined_petroleum_and_materials
+    entry_points:
+      - "http://www.indexpr.moc.go.th/"
+      - "https://www.price.moc.go.th/"
+      - "https://tradereport.moc.go.th/"
+    sought_series:
+      - refined petroleum products PPI
+      - diesel / fuel oil / gasohol / kerosene / asphalt subseries
+      - processed-material groups where published
+
+  - family_id: EPPO_PETROLEUM
+    publisher: Energy Policy and Planning Office, Ministry of Energy
+    role: petroleum_product_price_by_stage
+    entry_points:
+      - "https://www.eppo.go.th/index.php/th/energy-information/static-energy/static-petroleum"
+      - "https://www.eppo.go.th/data-energy-statistic/energy-price-th/%E0%B9%82%E0%B8%84%E0%B8%A3%E0%B8%87%E0%B8%AA%E0%B8%A3%E0%B9%89%E0%B8%B2%E0%B8%87%E0%B8%A3%E0%B8%B2%E0%B8%84%E0%B8%B2%E0%B8%99%E0%B9%89%E0%B8%B3%E0%B8%A1%E0%B8%B1%E0%B8%99-lpg/"
+    sought_series:
+      - ex-refinery diesel
+      - ex-refinery fuel oil
+      - retail and wholesale petroleum prices with an explicit tax basis
+
+  - family_id: ERC_ELECTRICITY
+    publisher: Energy Regulatory Commission
+    role: electricity_tariff_component
+    entry_points:
+      - "https://www.erc.or.th/th"
+      - "https://www.eppo.go.th/data-energy-statistic/energy-price-th/%E0%B8%A3%E0%B8%B2%E0%B8%84%E0%B8%B2%E0%B9%84%E0%B8%9F%E0%B8%9F%E0%B9%89%E0%B8%B2%E0%B9%82%E0%B8%94%E0%B8%A2%E0%B8%AD%E0%B8%B1%E0%B8%95%E0%B9%82%E0%B8%99%E0%B8%A1%E0%B8%B1%E0%B8%95%E0%B8%B4-ft/"
+    sought_series:
+      - Ft
+      - base tariff
+      - effective period and frequency
+
+  - family_id: BOT_FX
+    publisher: Bank of Thailand
+    role: import_price_transmission_factor_only
+    entry_points:
+      - "https://www.bot.or.th/en/statistics/exchange-rate.html"
+    sought_series:
+      - USD/THB reference rate
+    # Recorded explicitly: an exchange rate is NOT an I/O commodity sector price.
+    is_io_commodity_sector_price: false
+    audit_scope: transmission_factor_only
+
+# ---------------------------------------------------------------------------
+# Verified candidate evidence, recorded from the C5 probes.
+#
+# Each block records what was ACTUALLY observed. Where a probe was blocked, the
+# state is recorded as blocked - never as "the source does not exist" - and the
+# candidate is ineligible because an unverifiable definition cannot satisfy the
+# gate, not because absence was concluded.
+# ---------------------------------------------------------------------------
+candidate_evidence:
+  MOC_PPI:
+    probe_outcome: http_forbidden_403_on_all_entry_points
+    verification_state: not_executed_source_unreachable
+    published_label: null
+    unit: null
+    coverage: null
+    absence_concluded: false
+    note: >-
+      indexpr.moc.go.th and price.moc.go.th both returned HTTP 403 to every
+      request, including with full browser headers; tradereport.moc.go.th
+      returned 200 but is a trade-statistics portal, not the PPI series. The
+      403 is a bot filter, a fact about this mechanism at this moment. The PPI
+      is very likely published; it simply could not be verified here, so its
+      exact series label, unit and coverage remain undocumented.
+    gate:
+      official_publisher: true
+      series_definition_and_unit_documented: false
+      maps_to_purchased_intermediate_sector: false
+      addresses_documented_structural_gap: true
+      operational_timing_establishable: false
+      coverage_adequate_or_limitations_explicit: false
+      no_unresolved_definition_break: false
+      availability_representable_without_download_time: false
+      not_duplicative_without_semantic_distinction: true
+      selection_free_of_target_outcomes: true
+
+  EPPO_PETROLEUM:
+    probe_outcome: reachable_200_with_data_file_parsed
+    verification_state: verified
+    published_label: "PRICE STRUCTURE OF PETROLEUM PRODUCTS - EX-REFIN."
+    unit: BAHT/LITRE (LPG in BAHT/KILOGRAM)
+    price_basis: ex_refinery_producer_price_before_excise_municipal_tax_oil_fund_and_retail_margin
+    geography: Thailand, Bangkok reference structure
+    taxes_and_margins: >-
+      EXCLUDED from the ex-refinery column. The workbook reports EXCISE TAX,
+      MUNICIPAL TAX, OIL FUND, CONSERVATION FUND and WHOLESALE separately, so
+      the producer stage is explicitly separable from the retail stage.
+    products_observed: [ULG95, GASOHOL95 E10, GASOHOL91, GASOHOL95 E20, GASOHOL95 E85,
+                        H-DIESEL, H-DIESEL B20, "FO 600 (1) 2%S", "FO 1500 (2) 2%S", LPG]
+    frequency: daily_snapshot_one_workbook_per_effective_date
+    coverage_observed: "2026-06-15, 2026-07-15, 2026-08-17, 2026-08-24, 2026-08-28 confirmed by GET"
+    coverage_limitation: >-
+      EXPLICIT AND UNRESOLVED. Only the most recent daily files are exposed on
+      the page. Probing the observed /uploads/YYYY/MM/ pattern returned 404 for
+      2022-2025, but that is NOT evidence of absence: 2018 retail files are
+      served from a 2026 upload folder, so the site re-hosts historical files
+      under migration-time folders and folder-date inference is unreliable.
+      Archive depth back to 2022-01 is UNESTABLISHED and is exactly what C6
+      must resolve before any feature is built.
+    definition_breaks: none_observed_within_the_files_inspected
+    publication_timing_evidence: >-
+      Each workbook carries its own effective date in-sheet (row 4) and in its
+      filename. HEAD is blocked site-wide, so Last-Modified is unavailable; the
+      in-sheet effective date is the timing evidence and is not a download time.
+    revision_characteristics: unknown_no_archived_vintage_located
+    archived_first_release_available: false
+    mapped_io_sector: "093"
+    mapped_io_sector_label: Petroleum refineries
+    structural_gap_addressed: >-
+      Sector 093 is a leading mediator for every direct-zero Brent industry and
+      the single largest for IND-07. Ex-refinery diesel and fuel oil price the
+      stage industries actually buy, which Brent does not.
+    proxy_limitations: >-
+      Ex-refinery is a national reference structure, not an industry-specific
+      contract price; large industrial buyers negotiate away from it.
+    gate:
+      official_publisher: true
+      series_definition_and_unit_documented: true
+      maps_to_purchased_intermediate_sector: true
+      addresses_documented_structural_gap: true
+      operational_timing_establishable: true
+      coverage_adequate_or_limitations_explicit: true
+      no_unresolved_definition_break: true
+      availability_representable_without_download_time: true
+      not_duplicative_without_semantic_distinction: true
+      selection_free_of_target_outcomes: true
+
+  ERC_ELECTRICITY:
+    probe_outcome: timeout_on_landing_404_on_tariff_path
+    verification_state: not_executed_source_unreachable
+    published_label: null
+    unit: null
+    absence_concluded: false
+    note: >-
+      erc.or.th timed out on the landing page and returned 404 on the tariff
+      path probed. EPPO mirrors Ft and retail/wholesale tariff pages, but the
+      workbook served there (pt-price-st) is the petroleum structure file, so no
+      distinct electricity series was verified. Electricity (sector 135) is the
+      most widespread mediator, so this gap matters and remains open.
+    gate:
+      official_publisher: true
+      series_definition_and_unit_documented: false
+      maps_to_purchased_intermediate_sector: true
+      addresses_documented_structural_gap: true
+      operational_timing_establishable: false
+      coverage_adequate_or_limitations_explicit: false
+      no_unresolved_definition_break: false
+      availability_representable_without_download_time: false
+      not_duplicative_without_semantic_distinction: true
+      selection_free_of_target_outcomes: true
+
+  BOT_FX:
+    probe_outcome: landing_reachable_200_api_subdomain_dns_failure
+    verification_state: reachable_but_out_of_scope
+    published_label: "USD/THB reference exchange rate"
+    unit: THB per USD
+    is_io_commodity_sector_price: false
+    note: >-
+      Audited only as an import-price transmission factor, as instructed. An
+      exchange rate is not the price of an I/O commodity sector and must never
+      be mapped to one; it modulates the baht cost of imported inputs. It
+      therefore fails the purchased-intermediate-sector criterion by
+      construction, not by quality.
+    gate:
+      official_publisher: true
+      series_definition_and_unit_documented: true
+      maps_to_purchased_intermediate_sector: false
+      addresses_documented_structural_gap: false
+      operational_timing_establishable: true
+      coverage_adequate_or_limitations_explicit: true
+      no_unresolved_definition_break: true
+      availability_representable_without_download_time: true
+      not_duplicative_without_semantic_distinction: true
+      selection_free_of_target_outcomes: true
+
+# ---------------------------------------------------------------------------
+# The gate. All ten must pass.
+# ---------------------------------------------------------------------------
+recommendation_gate:
+  criteria:
+    - official_publisher
+    - series_definition_and_unit_documented
+    - maps_to_purchased_intermediate_sector
+    - addresses_documented_structural_gap
+    - operational_timing_establishable
+    - coverage_adequate_or_limitations_explicit
+    - no_unresolved_definition_break
+    - availability_representable_without_download_time
+    - not_duplicative_without_semantic_distinction
+    - selection_free_of_target_outcomes
+  all_criteria_required: true
+
+selection_order:
+  - maps_to_purchased_intermediate_sector          # strongest stage alignment
+  - addresses_documented_structural_gap            # covers degenerate industries
+  - operational_timing_establishable               # official timing evidence
+  - no_unresolved_definition_break                 # least revision/definition risk
+  - not_duplicative_without_semantic_distinction   # simplest non-duplicative
+
+recommend_exactly_one_family: true
+
+# What a recommendation is, and is not.
+recommendation_meaning:
+  source_selected_for_c6_audit: true
+  feature_semantics_approved: false
+  model_feature_approved: false
+  ingested_into_production: false
+
+# ---------------------------------------------------------------------------
+# Prohibitions.
+# ---------------------------------------------------------------------------
+prohibitions:
+  join_to_mpi_targets: false
+  inspect_target_associations: false
+  train_or_evaluate_models: false
+  rerun_model_selection: false
+  promote_sensitivity_result: false
+  access_locked_test: false
+  create_industry_month_feature_matrix: false
+  sum_shared_sector_aluminum_copper_exposure: false
+  use_download_time_as_historical_availability: false

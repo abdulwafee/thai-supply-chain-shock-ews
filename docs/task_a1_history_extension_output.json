@@ -1,0 +1,2576 @@
+{
+  "edition_component_audits": {
+    "current_MPI": {
+      "edition_id": "current",
+      "component": "MPI",
+      "file_path": "data\\raw\\OIE_MPI\\2026-08-26\\Prodidx1.xlsx",
+      "classification_label": "TSIC",
+      "divisions_found": [
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32
+      ],
+      "weight_sum": 100.0,
+      "duplicate_divisions": {},
+      "earliest_month": "2021-01-01",
+      "latest_month": "2026-06-01",
+      "month_count": 66,
+      "is_chronological": true,
+      "has_duplicate_months": false,
+      "gap_months": []
+    },
+    "current_CapU": {
+      "edition_id": "current",
+      "component": "CapU",
+      "file_path": "data\\raw\\OIE_CAPU\\2026-08-26\\capidx.xlsx",
+      "classification_label": "TSIC",
+      "divisions_found": [
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32
+      ],
+      "weight_sum": 100.0,
+      "duplicate_divisions": {},
+      "earliest_month": "2021-01-01",
+      "latest_month": "2026-06-01",
+      "month_count": 66,
+      "is_chronological": true,
+      "has_duplicate_months": false,
+      "gap_months": []
+    },
+    "2559_2016_MPI": {
+      "edition_id": "2559_2016",
+      "component": "MPI",
+      "file_path": "data\\raw\\OIE_MPI_HIST_2559_2566\\2026-08-26\\extracted\\Prodidx1.xlsx",
+      "classification_label": "TSIC",
+      "divisions_found": [
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        17,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32
+      ],
+      "weight_sum": 100.0001,
+      "duplicate_divisions": {},
+      "earliest_month": "2016-01-01",
+      "latest_month": "2023-12-01",
+      "month_count": 96,
+      "is_chronological": true,
+      "has_duplicate_months": false,
+      "gap_months": []
+    },
+    "2559_2016_CapU": {
+      "edition_id": "2559_2016",
+      "component": "CapU",
+      "file_path": "data\\raw\\OIE_MPI_HIST_2559_2566\\2026-08-26\\extracted\\capidx.xlsx",
+      "classification_label": "TSIC",
+      "divisions_found": [
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        17,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32
+      ],
+      "weight_sum": 100.0001,
+      "duplicate_divisions": {},
+      "earliest_month": "2016-01-01",
+      "latest_month": "2023-12-01",
+      "month_count": 96,
+      "is_chronological": true,
+      "has_duplicate_months": false,
+      "gap_months": []
+    },
+    "2554_2011_MPI": {
+      "edition_id": "2554_2011",
+      "component": "MPI",
+      "file_path": "data\\raw\\OIE_MPI_HIST_2554_2561\\2026-08-26\\extracted\\Prodidx1.xlsx",
+      "classification_label": "ISIC",
+      "divisions_found": [
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        17,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32
+      ],
+      "weight_sum": 100.0,
+      "duplicate_divisions": {},
+      "earliest_month": "2011-01-01",
+      "latest_month": "2018-12-01",
+      "month_count": 96,
+      "is_chronological": true,
+      "has_duplicate_months": false,
+      "gap_months": []
+    },
+    "2554_2011_CapU": {
+      "edition_id": "2554_2011",
+      "component": "CapU",
+      "file_path": "data\\raw\\OIE_MPI_HIST_2554_2561\\2026-08-26\\extracted\\capidx.xlsx",
+      "classification_label": "ISIC",
+      "divisions_found": [
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        17,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32
+      ],
+      "weight_sum": 100.0,
+      "duplicate_divisions": {},
+      "earliest_month": "2011-01-01",
+      "latest_month": "2018-12-01",
+      "month_count": 96,
+      "is_chronological": true,
+      "has_duplicate_months": false,
+      "gap_months": []
+    }
+  },
+  "pairwise_division_comparisons": {
+    "current_MPI__vs__2559_2016_MPI": {
+      "edition_a": "current_MPI",
+      "edition_b": "2559_2016_MPI",
+      "divisions_a": [
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32
+      ],
+      "divisions_b": [
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        17,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32
+      ],
+      "intersection": [
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        17,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32
+      ],
+      "intersection_count": 21,
+      "only_in_a": [
+        16
+      ],
+      "only_in_b": []
+    },
+    "current_MPI__vs__2554_2011_MPI": {
+      "edition_a": "current_MPI",
+      "edition_b": "2554_2011_MPI",
+      "divisions_a": [
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32
+      ],
+      "divisions_b": [
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        17,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32
+      ],
+      "intersection": [
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        17,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32
+      ],
+      "intersection_count": 21,
+      "only_in_a": [
+        16
+      ],
+      "only_in_b": []
+    },
+    "2559_2016_MPI__vs__2554_2011_MPI": {
+      "edition_a": "2559_2016_MPI",
+      "edition_b": "2554_2011_MPI",
+      "divisions_a": [
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        17,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32
+      ],
+      "divisions_b": [
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        17,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32
+      ],
+      "intersection": [
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        17,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32
+      ],
+      "intersection_count": 21,
+      "only_in_a": [],
+      "only_in_b": []
+    },
+    "current_CapU__vs__2559_2016_CapU": {
+      "edition_a": "current_CapU",
+      "edition_b": "2559_2016_CapU",
+      "divisions_a": [
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32
+      ],
+      "divisions_b": [
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        17,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32
+      ],
+      "intersection": [
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        17,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32
+      ],
+      "intersection_count": 21,
+      "only_in_a": [
+        16
+      ],
+      "only_in_b": []
+    },
+    "current_CapU__vs__2554_2011_CapU": {
+      "edition_a": "current_CapU",
+      "edition_b": "2554_2011_CapU",
+      "divisions_a": [
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32
+      ],
+      "divisions_b": [
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        17,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32
+      ],
+      "intersection": [
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        17,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32
+      ],
+      "intersection_count": 21,
+      "only_in_a": [
+        16
+      ],
+      "only_in_b": []
+    },
+    "2559_2016_CapU__vs__2554_2011_CapU": {
+      "edition_a": "2559_2016_CapU",
+      "edition_b": "2554_2011_CapU",
+      "divisions_a": [
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        17,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32
+      ],
+      "divisions_b": [
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        17,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32
+      ],
+      "intersection": [
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        17,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32
+      ],
+      "intersection_count": 21,
+      "only_in_a": [],
+      "only_in_b": []
+    }
+  },
+  "industry_bridge_tables": {
+    "MPI__current__vs__2559_2016": {
+      "IND-01": {
+        "required_divisions": [
+          10,
+          11
+        ],
+        "present_by_edition": {
+          "current": [
+            10,
+            11
+          ],
+          "2559_2016": [
+            10,
+            11
+          ]
+        },
+        "coverage_by_edition": {
+          "current": "full",
+          "2559_2016": "full"
+        },
+        "composition_consistent": true,
+        "classification_compatible": true,
+        "overlap_validated": true,
+        "bridge_approved": true,
+        "reason_if_blocked": null,
+        "overlap_validation_status": "Approved",
+        "overlap_validation_reasons": [
+          "All provisional criteria met."
+        ],
+        "overlap_validation_bridge_version": "oie_overlap_bridge_v1_2026-08-26"
+      },
+      "IND-02": {
+        "required_divisions": [
+          13,
+          14,
+          15
+        ],
+        "present_by_edition": {
+          "current": [
+            13,
+            14,
+            15
+          ],
+          "2559_2016": [
+            13,
+            14,
+            15
+          ]
+        },
+        "coverage_by_edition": {
+          "current": "full",
+          "2559_2016": "full"
+        },
+        "composition_consistent": true,
+        "classification_compatible": true,
+        "overlap_validated": true,
+        "bridge_approved": true,
+        "reason_if_blocked": null,
+        "overlap_validation_status": "Approved",
+        "overlap_validation_reasons": [
+          "All provisional criteria met."
+        ],
+        "overlap_validation_bridge_version": "oie_overlap_bridge_v1_2026-08-26"
+      },
+      "IND-03": {
+        "required_divisions": [
+          16,
+          17,
+          18
+        ],
+        "present_by_edition": {
+          "current": [
+            16,
+            17
+          ],
+          "2559_2016": [
+            17
+          ]
+        },
+        "coverage_by_edition": {
+          "current": "partial",
+          "2559_2016": "partial"
+        },
+        "composition_consistent": false,
+        "classification_compatible": true,
+        "overlap_validated": false,
+        "bridge_approved": false,
+        "reason_if_blocked": "Present-division set differs across editions — a series built from different divisions in different periods changes meaning at the bridge date and is not a clean bridge, regardless of edition-level coverage counts."
+      },
+      "IND-04": {
+        "required_divisions": [
+          19
+        ],
+        "present_by_edition": {
+          "current": [
+            19
+          ],
+          "2559_2016": [
+            19
+          ]
+        },
+        "coverage_by_edition": {
+          "current": "full",
+          "2559_2016": "full"
+        },
+        "composition_consistent": true,
+        "classification_compatible": true,
+        "overlap_validated": true,
+        "bridge_approved": true,
+        "reason_if_blocked": null,
+        "overlap_validation_status": "Approved",
+        "overlap_validation_reasons": [
+          "All provisional criteria met."
+        ],
+        "overlap_validation_bridge_version": "oie_overlap_bridge_v1_2026-08-26"
+      },
+      "IND-05": {
+        "required_divisions": [
+          20,
+          21
+        ],
+        "present_by_edition": {
+          "current": [
+            20,
+            21
+          ],
+          "2559_2016": [
+            20,
+            21
+          ]
+        },
+        "coverage_by_edition": {
+          "current": "full",
+          "2559_2016": "full"
+        },
+        "composition_consistent": true,
+        "classification_compatible": true,
+        "overlap_validated": true,
+        "bridge_approved": false,
+        "reason_if_blocked": null,
+        "overlap_validation_status": "Rejected",
+        "overlap_validation_reasons": [
+          "Unexplained discontinuity in: ['2023-01-01', '2023-08-01']"
+        ],
+        "overlap_validation_bridge_version": "oie_overlap_bridge_v1_2026-08-26"
+      },
+      "IND-06": {
+        "required_divisions": [
+          22
+        ],
+        "present_by_edition": {
+          "current": [
+            22
+          ],
+          "2559_2016": [
+            22
+          ]
+        },
+        "coverage_by_edition": {
+          "current": "full",
+          "2559_2016": "full"
+        },
+        "composition_consistent": true,
+        "classification_compatible": true,
+        "overlap_validated": true,
+        "bridge_approved": false,
+        "reason_if_blocked": null,
+        "overlap_validation_status": "Conditional",
+        "overlap_validation_reasons": [
+          "Rebased-level Pearson r=0.843 < 0.9"
+        ],
+        "overlap_validation_bridge_version": "oie_overlap_bridge_v1_2026-08-26"
+      },
+      "IND-07": {
+        "required_divisions": [
+          23
+        ],
+        "present_by_edition": {
+          "current": [
+            23
+          ],
+          "2559_2016": [
+            23
+          ]
+        },
+        "coverage_by_edition": {
+          "current": "full",
+          "2559_2016": "full"
+        },
+        "composition_consistent": true,
+        "classification_compatible": true,
+        "overlap_validated": true,
+        "bridge_approved": false,
+        "reason_if_blocked": null,
+        "overlap_validation_status": "Conditional",
+        "overlap_validation_reasons": [
+          "Rebased-level Pearson r=0.893 < 0.9",
+          "YoY mean bias=3.18pp exceeds 3.0pp"
+        ],
+        "overlap_validation_bridge_version": "oie_overlap_bridge_v1_2026-08-26"
+      },
+      "IND-08": {
+        "required_divisions": [
+          24,
+          25
+        ],
+        "present_by_edition": {
+          "current": [
+            24,
+            25
+          ],
+          "2559_2016": [
+            24,
+            25
+          ]
+        },
+        "coverage_by_edition": {
+          "current": "full",
+          "2559_2016": "full"
+        },
+        "composition_consistent": true,
+        "classification_compatible": true,
+        "overlap_validated": true,
+        "bridge_approved": false,
+        "reason_if_blocked": null,
+        "overlap_validation_status": "Conditional",
+        "overlap_validation_reasons": [
+          "YoY mean bias=3.51pp exceeds 3.0pp"
+        ],
+        "overlap_validation_bridge_version": "oie_overlap_bridge_v1_2026-08-26"
+      },
+      "IND-09": {
+        "required_divisions": [
+          26,
+          27
+        ],
+        "present_by_edition": {
+          "current": [
+            26,
+            27
+          ],
+          "2559_2016": [
+            26,
+            27
+          ]
+        },
+        "coverage_by_edition": {
+          "current": "full",
+          "2559_2016": "full"
+        },
+        "composition_consistent": true,
+        "classification_compatible": true,
+        "overlap_validated": true,
+        "bridge_approved": true,
+        "reason_if_blocked": null,
+        "overlap_validation_status": "Approved",
+        "overlap_validation_reasons": [
+          "All provisional criteria met."
+        ],
+        "overlap_validation_bridge_version": "oie_overlap_bridge_v1_2026-08-26"
+      },
+      "IND-10": {
+        "required_divisions": [
+          28
+        ],
+        "present_by_edition": {
+          "current": [
+            28
+          ],
+          "2559_2016": [
+            28
+          ]
+        },
+        "coverage_by_edition": {
+          "current": "full",
+          "2559_2016": "full"
+        },
+        "composition_consistent": true,
+        "classification_compatible": true,
+        "overlap_validated": true,
+        "bridge_approved": true,
+        "reason_if_blocked": null,
+        "overlap_validation_status": "Approved",
+        "overlap_validation_reasons": [
+          "All provisional criteria met."
+        ],
+        "overlap_validation_bridge_version": "oie_overlap_bridge_v1_2026-08-26"
+      },
+      "IND-11": {
+        "required_divisions": [
+          29,
+          30
+        ],
+        "present_by_edition": {
+          "current": [
+            29,
+            30
+          ],
+          "2559_2016": [
+            29,
+            30
+          ]
+        },
+        "coverage_by_edition": {
+          "current": "full",
+          "2559_2016": "full"
+        },
+        "composition_consistent": true,
+        "classification_compatible": true,
+        "overlap_validated": true,
+        "bridge_approved": false,
+        "reason_if_blocked": null,
+        "overlap_validation_status": "Rejected",
+        "overlap_validation_reasons": [
+          "Unexplained discontinuity in: ['2023-11-01']"
+        ],
+        "overlap_validation_bridge_version": "oie_overlap_bridge_v1_2026-08-26"
+      },
+      "IND-12": {
+        "required_divisions": [
+          31,
+          32,
+          33
+        ],
+        "present_by_edition": {
+          "current": [
+            31,
+            32
+          ],
+          "2559_2016": [
+            31,
+            32
+          ]
+        },
+        "coverage_by_edition": {
+          "current": "partial",
+          "2559_2016": "partial"
+        },
+        "composition_consistent": true,
+        "classification_compatible": true,
+        "overlap_validated": true,
+        "bridge_approved": false,
+        "reason_if_blocked": null,
+        "overlap_validation_status": "Conditional",
+        "overlap_validation_reasons": [
+          "YoY mean bias=4.88pp exceeds 3.0pp"
+        ],
+        "overlap_validation_bridge_version": "oie_overlap_bridge_v1_2026-08-26"
+      }
+    },
+    "MPI__current__vs__2554_2011": {
+      "IND-01": {
+        "required_divisions": [
+          10,
+          11
+        ],
+        "present_by_edition": {
+          "current": [
+            10,
+            11
+          ],
+          "2554_2011": [
+            10,
+            11
+          ]
+        },
+        "coverage_by_edition": {
+          "current": "full",
+          "2554_2011": "full"
+        },
+        "composition_consistent": true,
+        "classification_compatible": "unresolved",
+        "overlap_validated": false,
+        "bridge_approved": false,
+        "reason_if_blocked": "Classification label differs between editions (TSIC vs. ISIC) and no methodology document confirms semantic equivalence — treated as unresolved, not assumed compatible."
+      },
+      "IND-02": {
+        "required_divisions": [
+          13,
+          14,
+          15
+        ],
+        "present_by_edition": {
+          "current": [
+            13,
+            14,
+            15
+          ],
+          "2554_2011": [
+            13,
+            14,
+            15
+          ]
+        },
+        "coverage_by_edition": {
+          "current": "full",
+          "2554_2011": "full"
+        },
+        "composition_consistent": true,
+        "classification_compatible": "unresolved",
+        "overlap_validated": false,
+        "bridge_approved": false,
+        "reason_if_blocked": "Classification label differs between editions (TSIC vs. ISIC) and no methodology document confirms semantic equivalence — treated as unresolved, not assumed compatible."
+      },
+      "IND-03": {
+        "required_divisions": [
+          16,
+          17,
+          18
+        ],
+        "present_by_edition": {
+          "current": [
+            16,
+            17
+          ],
+          "2554_2011": [
+            17
+          ]
+        },
+        "coverage_by_edition": {
+          "current": "partial",
+          "2554_2011": "partial"
+        },
+        "composition_consistent": false,
+        "classification_compatible": "unresolved",
+        "overlap_validated": false,
+        "bridge_approved": false,
+        "reason_if_blocked": "Present-division set differs across editions — a series built from different divisions in different periods changes meaning at the bridge date and is not a clean bridge, regardless of edition-level coverage counts."
+      },
+      "IND-04": {
+        "required_divisions": [
+          19
+        ],
+        "present_by_edition": {
+          "current": [
+            19
+          ],
+          "2554_2011": [
+            19
+          ]
+        },
+        "coverage_by_edition": {
+          "current": "full",
+          "2554_2011": "full"
+        },
+        "composition_consistent": true,
+        "classification_compatible": "unresolved",
+        "overlap_validated": false,
+        "bridge_approved": false,
+        "reason_if_blocked": "Classification label differs between editions (TSIC vs. ISIC) and no methodology document confirms semantic equivalence — treated as unresolved, not assumed compatible."
+      },
+      "IND-05": {
+        "required_divisions": [
+          20,
+          21
+        ],
+        "present_by_edition": {
+          "current": [
+            20,
+            21
+          ],
+          "2554_2011": [
+            20,
+            21
+          ]
+        },
+        "coverage_by_edition": {
+          "current": "full",
+          "2554_2011": "full"
+        },
+        "composition_consistent": true,
+        "classification_compatible": "unresolved",
+        "overlap_validated": false,
+        "bridge_approved": false,
+        "reason_if_blocked": "Classification label differs between editions (TSIC vs. ISIC) and no methodology document confirms semantic equivalence — treated as unresolved, not assumed compatible."
+      },
+      "IND-06": {
+        "required_divisions": [
+          22
+        ],
+        "present_by_edition": {
+          "current": [
+            22
+          ],
+          "2554_2011": [
+            22
+          ]
+        },
+        "coverage_by_edition": {
+          "current": "full",
+          "2554_2011": "full"
+        },
+        "composition_consistent": true,
+        "classification_compatible": "unresolved",
+        "overlap_validated": false,
+        "bridge_approved": false,
+        "reason_if_blocked": "Classification label differs between editions (TSIC vs. ISIC) and no methodology document confirms semantic equivalence — treated as unresolved, not assumed compatible."
+      },
+      "IND-07": {
+        "required_divisions": [
+          23
+        ],
+        "present_by_edition": {
+          "current": [
+            23
+          ],
+          "2554_2011": [
+            23
+          ]
+        },
+        "coverage_by_edition": {
+          "current": "full",
+          "2554_2011": "full"
+        },
+        "composition_consistent": true,
+        "classification_compatible": "unresolved",
+        "overlap_validated": false,
+        "bridge_approved": false,
+        "reason_if_blocked": "Classification label differs between editions (TSIC vs. ISIC) and no methodology document confirms semantic equivalence — treated as unresolved, not assumed compatible."
+      },
+      "IND-08": {
+        "required_divisions": [
+          24,
+          25
+        ],
+        "present_by_edition": {
+          "current": [
+            24,
+            25
+          ],
+          "2554_2011": [
+            24,
+            25
+          ]
+        },
+        "coverage_by_edition": {
+          "current": "full",
+          "2554_2011": "full"
+        },
+        "composition_consistent": true,
+        "classification_compatible": "unresolved",
+        "overlap_validated": false,
+        "bridge_approved": false,
+        "reason_if_blocked": "Classification label differs between editions (TSIC vs. ISIC) and no methodology document confirms semantic equivalence — treated as unresolved, not assumed compatible."
+      },
+      "IND-09": {
+        "required_divisions": [
+          26,
+          27
+        ],
+        "present_by_edition": {
+          "current": [
+            26,
+            27
+          ],
+          "2554_2011": [
+            26,
+            27
+          ]
+        },
+        "coverage_by_edition": {
+          "current": "full",
+          "2554_2011": "full"
+        },
+        "composition_consistent": true,
+        "classification_compatible": "unresolved",
+        "overlap_validated": false,
+        "bridge_approved": false,
+        "reason_if_blocked": "Classification label differs between editions (TSIC vs. ISIC) and no methodology document confirms semantic equivalence — treated as unresolved, not assumed compatible."
+      },
+      "IND-10": {
+        "required_divisions": [
+          28
+        ],
+        "present_by_edition": {
+          "current": [
+            28
+          ],
+          "2554_2011": [
+            28
+          ]
+        },
+        "coverage_by_edition": {
+          "current": "full",
+          "2554_2011": "full"
+        },
+        "composition_consistent": true,
+        "classification_compatible": "unresolved",
+        "overlap_validated": false,
+        "bridge_approved": false,
+        "reason_if_blocked": "Classification label differs between editions (TSIC vs. ISIC) and no methodology document confirms semantic equivalence — treated as unresolved, not assumed compatible."
+      },
+      "IND-11": {
+        "required_divisions": [
+          29,
+          30
+        ],
+        "present_by_edition": {
+          "current": [
+            29,
+            30
+          ],
+          "2554_2011": [
+            29,
+            30
+          ]
+        },
+        "coverage_by_edition": {
+          "current": "full",
+          "2554_2011": "full"
+        },
+        "composition_consistent": true,
+        "classification_compatible": "unresolved",
+        "overlap_validated": false,
+        "bridge_approved": false,
+        "reason_if_blocked": "Classification label differs between editions (TSIC vs. ISIC) and no methodology document confirms semantic equivalence — treated as unresolved, not assumed compatible."
+      },
+      "IND-12": {
+        "required_divisions": [
+          31,
+          32,
+          33
+        ],
+        "present_by_edition": {
+          "current": [
+            31,
+            32
+          ],
+          "2554_2011": [
+            31,
+            32
+          ]
+        },
+        "coverage_by_edition": {
+          "current": "partial",
+          "2554_2011": "partial"
+        },
+        "composition_consistent": true,
+        "classification_compatible": "unresolved",
+        "overlap_validated": false,
+        "bridge_approved": false,
+        "reason_if_blocked": "Classification label differs between editions (TSIC vs. ISIC) and no methodology document confirms semantic equivalence — treated as unresolved, not assumed compatible."
+      }
+    },
+    "MPI__2559_2016__vs__2554_2011": {
+      "IND-01": {
+        "required_divisions": [
+          10,
+          11
+        ],
+        "present_by_edition": {
+          "2559_2016": [
+            10,
+            11
+          ],
+          "2554_2011": [
+            10,
+            11
+          ]
+        },
+        "coverage_by_edition": {
+          "2559_2016": "full",
+          "2554_2011": "full"
+        },
+        "composition_consistent": true,
+        "classification_compatible": "unresolved",
+        "overlap_validated": false,
+        "bridge_approved": false,
+        "reason_if_blocked": "Classification label differs between editions (TSIC vs. ISIC) and no methodology document confirms semantic equivalence — treated as unresolved, not assumed compatible."
+      },
+      "IND-02": {
+        "required_divisions": [
+          13,
+          14,
+          15
+        ],
+        "present_by_edition": {
+          "2559_2016": [
+            13,
+            14,
+            15
+          ],
+          "2554_2011": [
+            13,
+            14,
+            15
+          ]
+        },
+        "coverage_by_edition": {
+          "2559_2016": "full",
+          "2554_2011": "full"
+        },
+        "composition_consistent": true,
+        "classification_compatible": "unresolved",
+        "overlap_validated": false,
+        "bridge_approved": false,
+        "reason_if_blocked": "Classification label differs between editions (TSIC vs. ISIC) and no methodology document confirms semantic equivalence — treated as unresolved, not assumed compatible."
+      },
+      "IND-03": {
+        "required_divisions": [
+          16,
+          17,
+          18
+        ],
+        "present_by_edition": {
+          "2559_2016": [
+            17
+          ],
+          "2554_2011": [
+            17
+          ]
+        },
+        "coverage_by_edition": {
+          "2559_2016": "partial",
+          "2554_2011": "partial"
+        },
+        "composition_consistent": true,
+        "classification_compatible": "unresolved",
+        "overlap_validated": false,
+        "bridge_approved": false,
+        "reason_if_blocked": "Classification label differs between editions (TSIC vs. ISIC) and no methodology document confirms semantic equivalence — treated as unresolved, not assumed compatible."
+      },
+      "IND-04": {
+        "required_divisions": [
+          19
+        ],
+        "present_by_edition": {
+          "2559_2016": [
+            19
+          ],
+          "2554_2011": [
+            19
+          ]
+        },
+        "coverage_by_edition": {
+          "2559_2016": "full",
+          "2554_2011": "full"
+        },
+        "composition_consistent": true,
+        "classification_compatible": "unresolved",
+        "overlap_validated": false,
+        "bridge_approved": false,
+        "reason_if_blocked": "Classification label differs between editions (TSIC vs. ISIC) and no methodology document confirms semantic equivalence — treated as unresolved, not assumed compatible."
+      },
+      "IND-05": {
+        "required_divisions": [
+          20,
+          21
+        ],
+        "present_by_edition": {
+          "2559_2016": [
+            20,
+            21
+          ],
+          "2554_2011": [
+            20,
+            21
+          ]
+        },
+        "coverage_by_edition": {
+          "2559_2016": "full",
+          "2554_2011": "full"
+        },
+        "composition_consistent": true,
+        "classification_compatible": "unresolved",
+        "overlap_validated": false,
+        "bridge_approved": false,
+        "reason_if_blocked": "Classification label differs between editions (TSIC vs. ISIC) and no methodology document confirms semantic equivalence — treated as unresolved, not assumed compatible."
+      },
+      "IND-06": {
+        "required_divisions": [
+          22
+        ],
+        "present_by_edition": {
+          "2559_2016": [
+            22
+          ],
+          "2554_2011": [
+            22
+          ]
+        },
+        "coverage_by_edition": {
+          "2559_2016": "full",
+          "2554_2011": "full"
+        },
+        "composition_consistent": true,
+        "classification_compatible": "unresolved",
+        "overlap_validated": false,
+        "bridge_approved": false,
+        "reason_if_blocked": "Classification label differs between editions (TSIC vs. ISIC) and no methodology document confirms semantic equivalence — treated as unresolved, not assumed compatible."
+      },
+      "IND-07": {
+        "required_divisions": [
+          23
+        ],
+        "present_by_edition": {
+          "2559_2016": [
+            23
+          ],
+          "2554_2011": [
+            23
+          ]
+        },
+        "coverage_by_edition": {
+          "2559_2016": "full",
+          "2554_2011": "full"
+        },
+        "composition_consistent": true,
+        "classification_compatible": "unresolved",
+        "overlap_validated": false,
+        "bridge_approved": false,
+        "reason_if_blocked": "Classification label differs between editions (TSIC vs. ISIC) and no methodology document confirms semantic equivalence — treated as unresolved, not assumed compatible."
+      },
+      "IND-08": {
+        "required_divisions": [
+          24,
+          25
+        ],
+        "present_by_edition": {
+          "2559_2016": [
+            24,
+            25
+          ],
+          "2554_2011": [
+            24,
+            25
+          ]
+        },
+        "coverage_by_edition": {
+          "2559_2016": "full",
+          "2554_2011": "full"
+        },
+        "composition_consistent": true,
+        "classification_compatible": "unresolved",
+        "overlap_validated": false,
+        "bridge_approved": false,
+        "reason_if_blocked": "Classification label differs between editions (TSIC vs. ISIC) and no methodology document confirms semantic equivalence — treated as unresolved, not assumed compatible."
+      },
+      "IND-09": {
+        "required_divisions": [
+          26,
+          27
+        ],
+        "present_by_edition": {
+          "2559_2016": [
+            26,
+            27
+          ],
+          "2554_2011": [
+            26,
+            27
+          ]
+        },
+        "coverage_by_edition": {
+          "2559_2016": "full",
+          "2554_2011": "full"
+        },
+        "composition_consistent": true,
+        "classification_compatible": "unresolved",
+        "overlap_validated": false,
+        "bridge_approved": false,
+        "reason_if_blocked": "Classification label differs between editions (TSIC vs. ISIC) and no methodology document confirms semantic equivalence — treated as unresolved, not assumed compatible."
+      },
+      "IND-10": {
+        "required_divisions": [
+          28
+        ],
+        "present_by_edition": {
+          "2559_2016": [
+            28
+          ],
+          "2554_2011": [
+            28
+          ]
+        },
+        "coverage_by_edition": {
+          "2559_2016": "full",
+          "2554_2011": "full"
+        },
+        "composition_consistent": true,
+        "classification_compatible": "unresolved",
+        "overlap_validated": false,
+        "bridge_approved": false,
+        "reason_if_blocked": "Classification label differs between editions (TSIC vs. ISIC) and no methodology document confirms semantic equivalence — treated as unresolved, not assumed compatible."
+      },
+      "IND-11": {
+        "required_divisions": [
+          29,
+          30
+        ],
+        "present_by_edition": {
+          "2559_2016": [
+            29,
+            30
+          ],
+          "2554_2011": [
+            29,
+            30
+          ]
+        },
+        "coverage_by_edition": {
+          "2559_2016": "full",
+          "2554_2011": "full"
+        },
+        "composition_consistent": true,
+        "classification_compatible": "unresolved",
+        "overlap_validated": false,
+        "bridge_approved": false,
+        "reason_if_blocked": "Classification label differs between editions (TSIC vs. ISIC) and no methodology document confirms semantic equivalence — treated as unresolved, not assumed compatible."
+      },
+      "IND-12": {
+        "required_divisions": [
+          31,
+          32,
+          33
+        ],
+        "present_by_edition": {
+          "2559_2016": [
+            31,
+            32
+          ],
+          "2554_2011": [
+            31,
+            32
+          ]
+        },
+        "coverage_by_edition": {
+          "2559_2016": "partial",
+          "2554_2011": "partial"
+        },
+        "composition_consistent": true,
+        "classification_compatible": "unresolved",
+        "overlap_validated": false,
+        "bridge_approved": false,
+        "reason_if_blocked": "Classification label differs between editions (TSIC vs. ISIC) and no methodology document confirms semantic equivalence — treated as unresolved, not assumed compatible."
+      }
+    },
+    "CapU__current__vs__2559_2016": {
+      "IND-01": {
+        "required_divisions": [
+          10,
+          11
+        ],
+        "present_by_edition": {
+          "current": [
+            10,
+            11
+          ],
+          "2559_2016": [
+            10,
+            11
+          ]
+        },
+        "coverage_by_edition": {
+          "current": "full",
+          "2559_2016": "full"
+        },
+        "composition_consistent": true,
+        "classification_compatible": true,
+        "overlap_validated": true,
+        "bridge_approved": true,
+        "reason_if_blocked": null,
+        "overlap_validation_status": "Approved",
+        "overlap_validation_reasons": [
+          "All provisional criteria met."
+        ],
+        "overlap_validation_bridge_version": "oie_overlap_bridge_v1_2026-08-26"
+      },
+      "IND-02": {
+        "required_divisions": [
+          13,
+          14,
+          15
+        ],
+        "present_by_edition": {
+          "current": [
+            13,
+            14,
+            15
+          ],
+          "2559_2016": [
+            13,
+            14,
+            15
+          ]
+        },
+        "coverage_by_edition": {
+          "current": "full",
+          "2559_2016": "full"
+        },
+        "composition_consistent": true,
+        "classification_compatible": true,
+        "overlap_validated": true,
+        "bridge_approved": true,
+        "reason_if_blocked": null,
+        "overlap_validation_status": "Approved",
+        "overlap_validation_reasons": [
+          "All provisional criteria met."
+        ],
+        "overlap_validation_bridge_version": "oie_overlap_bridge_v1_2026-08-26"
+      },
+      "IND-03": {
+        "required_divisions": [
+          16,
+          17,
+          18
+        ],
+        "present_by_edition": {
+          "current": [
+            16,
+            17
+          ],
+          "2559_2016": [
+            17
+          ]
+        },
+        "coverage_by_edition": {
+          "current": "partial",
+          "2559_2016": "partial"
+        },
+        "composition_consistent": false,
+        "classification_compatible": true,
+        "overlap_validated": false,
+        "bridge_approved": false,
+        "reason_if_blocked": "Present-division set differs across editions — a series built from different divisions in different periods changes meaning at the bridge date and is not a clean bridge, regardless of edition-level coverage counts."
+      },
+      "IND-04": {
+        "required_divisions": [
+          19
+        ],
+        "present_by_edition": {
+          "current": [
+            19
+          ],
+          "2559_2016": [
+            19
+          ]
+        },
+        "coverage_by_edition": {
+          "current": "full",
+          "2559_2016": "full"
+        },
+        "composition_consistent": true,
+        "classification_compatible": true,
+        "overlap_validated": true,
+        "bridge_approved": true,
+        "reason_if_blocked": null,
+        "overlap_validation_status": "Approved",
+        "overlap_validation_reasons": [
+          "All provisional criteria met."
+        ],
+        "overlap_validation_bridge_version": "oie_overlap_bridge_v1_2026-08-26"
+      },
+      "IND-05": {
+        "required_divisions": [
+          20,
+          21
+        ],
+        "present_by_edition": {
+          "current": [
+            20,
+            21
+          ],
+          "2559_2016": [
+            20,
+            21
+          ]
+        },
+        "coverage_by_edition": {
+          "current": "full",
+          "2559_2016": "full"
+        },
+        "composition_consistent": true,
+        "classification_compatible": true,
+        "overlap_validated": true,
+        "bridge_approved": true,
+        "reason_if_blocked": null,
+        "overlap_validation_status": "Approved",
+        "overlap_validation_reasons": [
+          "All provisional criteria met."
+        ],
+        "overlap_validation_bridge_version": "oie_overlap_bridge_v1_2026-08-26"
+      },
+      "IND-06": {
+        "required_divisions": [
+          22
+        ],
+        "present_by_edition": {
+          "current": [
+            22
+          ],
+          "2559_2016": [
+            22
+          ]
+        },
+        "coverage_by_edition": {
+          "current": "full",
+          "2559_2016": "full"
+        },
+        "composition_consistent": true,
+        "classification_compatible": true,
+        "overlap_validated": true,
+        "bridge_approved": true,
+        "reason_if_blocked": null,
+        "overlap_validation_status": "Approved",
+        "overlap_validation_reasons": [
+          "All provisional criteria met."
+        ],
+        "overlap_validation_bridge_version": "oie_overlap_bridge_v1_2026-08-26"
+      },
+      "IND-07": {
+        "required_divisions": [
+          23
+        ],
+        "present_by_edition": {
+          "current": [
+            23
+          ],
+          "2559_2016": [
+            23
+          ]
+        },
+        "coverage_by_edition": {
+          "current": "full",
+          "2559_2016": "full"
+        },
+        "composition_consistent": true,
+        "classification_compatible": true,
+        "overlap_validated": true,
+        "bridge_approved": false,
+        "reason_if_blocked": null,
+        "overlap_validation_status": "Conditional",
+        "overlap_validation_reasons": [
+          "Rebased-level Pearson r=0.840 < 0.9",
+          "YoY Pearson r=0.806 < 0.85"
+        ],
+        "overlap_validation_bridge_version": "oie_overlap_bridge_v1_2026-08-26"
+      },
+      "IND-08": {
+        "required_divisions": [
+          24,
+          25
+        ],
+        "present_by_edition": {
+          "current": [
+            24,
+            25
+          ],
+          "2559_2016": [
+            24,
+            25
+          ]
+        },
+        "coverage_by_edition": {
+          "current": "full",
+          "2559_2016": "full"
+        },
+        "composition_consistent": true,
+        "classification_compatible": true,
+        "overlap_validated": true,
+        "bridge_approved": true,
+        "reason_if_blocked": null,
+        "overlap_validation_status": "Approved",
+        "overlap_validation_reasons": [
+          "All provisional criteria met."
+        ],
+        "overlap_validation_bridge_version": "oie_overlap_bridge_v1_2026-08-26"
+      },
+      "IND-09": {
+        "required_divisions": [
+          26,
+          27
+        ],
+        "present_by_edition": {
+          "current": [
+            26,
+            27
+          ],
+          "2559_2016": [
+            26,
+            27
+          ]
+        },
+        "coverage_by_edition": {
+          "current": "full",
+          "2559_2016": "full"
+        },
+        "composition_consistent": true,
+        "classification_compatible": true,
+        "overlap_validated": true,
+        "bridge_approved": true,
+        "reason_if_blocked": null,
+        "overlap_validation_status": "Approved",
+        "overlap_validation_reasons": [
+          "All provisional criteria met."
+        ],
+        "overlap_validation_bridge_version": "oie_overlap_bridge_v1_2026-08-26"
+      },
+      "IND-10": {
+        "required_divisions": [
+          28
+        ],
+        "present_by_edition": {
+          "current": [
+            28
+          ],
+          "2559_2016": [
+            28
+          ]
+        },
+        "coverage_by_edition": {
+          "current": "full",
+          "2559_2016": "full"
+        },
+        "composition_consistent": true,
+        "classification_compatible": true,
+        "overlap_validated": true,
+        "bridge_approved": true,
+        "reason_if_blocked": null,
+        "overlap_validation_status": "Approved",
+        "overlap_validation_reasons": [
+          "All provisional criteria met."
+        ],
+        "overlap_validation_bridge_version": "oie_overlap_bridge_v1_2026-08-26"
+      },
+      "IND-11": {
+        "required_divisions": [
+          29,
+          30
+        ],
+        "present_by_edition": {
+          "current": [
+            29,
+            30
+          ],
+          "2559_2016": [
+            29,
+            30
+          ]
+        },
+        "coverage_by_edition": {
+          "current": "full",
+          "2559_2016": "full"
+        },
+        "composition_consistent": true,
+        "classification_compatible": true,
+        "overlap_validated": true,
+        "bridge_approved": true,
+        "reason_if_blocked": null,
+        "overlap_validation_status": "Approved",
+        "overlap_validation_reasons": [
+          "All provisional criteria met."
+        ],
+        "overlap_validation_bridge_version": "oie_overlap_bridge_v1_2026-08-26"
+      },
+      "IND-12": {
+        "required_divisions": [
+          31,
+          32,
+          33
+        ],
+        "present_by_edition": {
+          "current": [
+            31,
+            32
+          ],
+          "2559_2016": [
+            31,
+            32
+          ]
+        },
+        "coverage_by_edition": {
+          "current": "partial",
+          "2559_2016": "partial"
+        },
+        "composition_consistent": true,
+        "classification_compatible": true,
+        "overlap_validated": true,
+        "bridge_approved": false,
+        "reason_if_blocked": null,
+        "overlap_validation_status": "Rejected",
+        "overlap_validation_reasons": [
+          "Rebased-level Pearson r=0.869 < 0.9",
+          "Unexplained discontinuity in: ['2023-03-01', '2023-05-01', '2023-06-01']",
+          "YoY mean bias=3.95pp exceeds 3.0pp"
+        ],
+        "overlap_validation_bridge_version": "oie_overlap_bridge_v1_2026-08-26"
+      }
+    },
+    "CapU__current__vs__2554_2011": {
+      "IND-01": {
+        "required_divisions": [
+          10,
+          11
+        ],
+        "present_by_edition": {
+          "current": [
+            10,
+            11
+          ],
+          "2554_2011": [
+            10,
+            11
+          ]
+        },
+        "coverage_by_edition": {
+          "current": "full",
+          "2554_2011": "full"
+        },
+        "composition_consistent": true,
+        "classification_compatible": "unresolved",
+        "overlap_validated": false,
+        "bridge_approved": false,
+        "reason_if_blocked": "Classification label differs between editions (TSIC vs. ISIC) and no methodology document confirms semantic equivalence — treated as unresolved, not assumed compatible."
+      },
+      "IND-02": {
+        "required_divisions": [
+          13,
+          14,
+          15
+        ],
+        "present_by_edition": {
+          "current": [
+            13,
+            14,
+            15
+          ],
+          "2554_2011": [
+            13,
+            14,
+            15
+          ]
+        },
+        "coverage_by_edition": {
+          "current": "full",
+          "2554_2011": "full"
+        },
+        "composition_consistent": true,
+        "classification_compatible": "unresolved",
+        "overlap_validated": false,
+        "bridge_approved": false,
+        "reason_if_blocked": "Classification label differs between editions (TSIC vs. ISIC) and no methodology document confirms semantic equivalence — treated as unresolved, not assumed compatible."
+      },
+      "IND-03": {
+        "required_divisions": [
+          16,
+          17,
+          18
+        ],
+        "present_by_edition": {
+          "current": [
+            16,
+            17
+          ],
+          "2554_2011": [
+            17
+          ]
+        },
+        "coverage_by_edition": {
+          "current": "partial",
+          "2554_2011": "partial"
+        },
+        "composition_consistent": false,
+        "classification_compatible": "unresolved",
+        "overlap_validated": false,
+        "bridge_approved": false,
+        "reason_if_blocked": "Present-division set differs across editions — a series built from different divisions in different periods changes meaning at the bridge date and is not a clean bridge, regardless of edition-level coverage counts."
+      },
+      "IND-04": {
+        "required_divisions": [
+          19
+        ],
+        "present_by_edition": {
+          "current": [
+            19
+          ],
+          "2554_2011": [
+            19
+          ]
+        },
+        "coverage_by_edition": {
+          "current": "full",
+          "2554_2011": "full"
+        },
+        "composition_consistent": true,
+        "classification_compatible": "unresolved",
+        "overlap_validated": false,
+        "bridge_approved": false,
+        "reason_if_blocked": "Classification label differs between editions (TSIC vs. ISIC) and no methodology document confirms semantic equivalence — treated as unresolved, not assumed compatible."
+      },
+      "IND-05": {
+        "required_divisions": [
+          20,
+          21
+        ],
+        "present_by_edition": {
+          "current": [
+            20,
+            21
+          ],
+          "2554_2011": [
+            20,
+            21
+          ]
+        },
+        "coverage_by_edition": {
+          "current": "full",
+          "2554_2011": "full"
+        },
+        "composition_consistent": true,
+        "classification_compatible": "unresolved",
+        "overlap_validated": false,
+        "bridge_approved": false,
+        "reason_if_blocked": "Classification label differs between editions (TSIC vs. ISIC) and no methodology document confirms semantic equivalence — treated as unresolved, not assumed compatible."
+      },
+      "IND-06": {
+        "required_divisions": [
+          22
+        ],
+        "present_by_edition": {
+          "current": [
+            22
+          ],
+          "2554_2011": [
+            22
+          ]
+        },
+        "coverage_by_edition": {
+          "current": "full",
+          "2554_2011": "full"
+        },
+        "composition_consistent": true,
+        "classification_compatible": "unresolved",
+        "overlap_validated": false,
+        "bridge_approved": false,
+        "reason_if_blocked": "Classification label differs between editions (TSIC vs. ISIC) and no methodology document confirms semantic equivalence — treated as unresolved, not assumed compatible."
+      },
+      "IND-07": {
+        "required_divisions": [
+          23
+        ],
+        "present_by_edition": {
+          "current": [
+            23
+          ],
+          "2554_2011": [
+            23
+          ]
+        },
+        "coverage_by_edition": {
+          "current": "full",
+          "2554_2011": "full"
+        },
+        "composition_consistent": true,
+        "classification_compatible": "unresolved",
+        "overlap_validated": false,
+        "bridge_approved": false,
+        "reason_if_blocked": "Classification label differs between editions (TSIC vs. ISIC) and no methodology document confirms semantic equivalence — treated as unresolved, not assumed compatible."
+      },
+      "IND-08": {
+        "required_divisions": [
+          24,
+          25
+        ],
+        "present_by_edition": {
+          "current": [
+            24,
+            25
+          ],
+          "2554_2011": [
+            24,
+            25
+          ]
+        },
+        "coverage_by_edition": {
+          "current": "full",
+          "2554_2011": "full"
+        },
+        "composition_consistent": true,
+        "classification_compatible": "unresolved",
+        "overlap_validated": false,
+        "bridge_approved": false,
+        "reason_if_blocked": "Classification label differs between editions (TSIC vs. ISIC) and no methodology document confirms semantic equivalence — treated as unresolved, not assumed compatible."
+      },
+      "IND-09": {
+        "required_divisions": [
+          26,
+          27
+        ],
+        "present_by_edition": {
+          "current": [
+            26,
+            27
+          ],
+          "2554_2011": [
+            26,
+            27
+          ]
+        },
+        "coverage_by_edition": {
+          "current": "full",
+          "2554_2011": "full"
+        },
+        "composition_consistent": true,
+        "classification_compatible": "unresolved",
+        "overlap_validated": false,
+        "bridge_approved": false,
+        "reason_if_blocked": "Classification label differs between editions (TSIC vs. ISIC) and no methodology document confirms semantic equivalence — treated as unresolved, not assumed compatible."
+      },
+      "IND-10": {
+        "required_divisions": [
+          28
+        ],
+        "present_by_edition": {
+          "current": [
+            28
+          ],
+          "2554_2011": [
+            28
+          ]
+        },
+        "coverage_by_edition": {
+          "current": "full",
+          "2554_2011": "full"
+        },
+        "composition_consistent": true,
+        "classification_compatible": "unresolved",
+        "overlap_validated": false,
+        "bridge_approved": false,
+        "reason_if_blocked": "Classification label differs between editions (TSIC vs. ISIC) and no methodology document confirms semantic equivalence — treated as unresolved, not assumed compatible."
+      },
+      "IND-11": {
+        "required_divisions": [
+          29,
+          30
+        ],
+        "present_by_edition": {
+          "current": [
+            29,
+            30
+          ],
+          "2554_2011": [
+            29,
+            30
+          ]
+        },
+        "coverage_by_edition": {
+          "current": "full",
+          "2554_2011": "full"
+        },
+        "composition_consistent": true,
+        "classification_compatible": "unresolved",
+        "overlap_validated": false,
+        "bridge_approved": false,
+        "reason_if_blocked": "Classification label differs between editions (TSIC vs. ISIC) and no methodology document confirms semantic equivalence — treated as unresolved, not assumed compatible."
+      },
+      "IND-12": {
+        "required_divisions": [
+          31,
+          32,
+          33
+        ],
+        "present_by_edition": {
+          "current": [
+            31,
+            32
+          ],
+          "2554_2011": [
+            31,
+            32
+          ]
+        },
+        "coverage_by_edition": {
+          "current": "partial",
+          "2554_2011": "partial"
+        },
+        "composition_consistent": true,
+        "classification_compatible": "unresolved",
+        "overlap_validated": false,
+        "bridge_approved": false,
+        "reason_if_blocked": "Classification label differs between editions (TSIC vs. ISIC) and no methodology document confirms semantic equivalence — treated as unresolved, not assumed compatible."
+      }
+    },
+    "CapU__2559_2016__vs__2554_2011": {
+      "IND-01": {
+        "required_divisions": [
+          10,
+          11
+        ],
+        "present_by_edition": {
+          "2559_2016": [
+            10,
+            11
+          ],
+          "2554_2011": [
+            10,
+            11
+          ]
+        },
+        "coverage_by_edition": {
+          "2559_2016": "full",
+          "2554_2011": "full"
+        },
+        "composition_consistent": true,
+        "classification_compatible": "unresolved",
+        "overlap_validated": false,
+        "bridge_approved": false,
+        "reason_if_blocked": "Classification label differs between editions (TSIC vs. ISIC) and no methodology document confirms semantic equivalence — treated as unresolved, not assumed compatible."
+      },
+      "IND-02": {
+        "required_divisions": [
+          13,
+          14,
+          15
+        ],
+        "present_by_edition": {
+          "2559_2016": [
+            13,
+            14,
+            15
+          ],
+          "2554_2011": [
+            13,
+            14,
+            15
+          ]
+        },
+        "coverage_by_edition": {
+          "2559_2016": "full",
+          "2554_2011": "full"
+        },
+        "composition_consistent": true,
+        "classification_compatible": "unresolved",
+        "overlap_validated": false,
+        "bridge_approved": false,
+        "reason_if_blocked": "Classification label differs between editions (TSIC vs. ISIC) and no methodology document confirms semantic equivalence — treated as unresolved, not assumed compatible."
+      },
+      "IND-03": {
+        "required_divisions": [
+          16,
+          17,
+          18
+        ],
+        "present_by_edition": {
+          "2559_2016": [
+            17
+          ],
+          "2554_2011": [
+            17
+          ]
+        },
+        "coverage_by_edition": {
+          "2559_2016": "partial",
+          "2554_2011": "partial"
+        },
+        "composition_consistent": true,
+        "classification_compatible": "unresolved",
+        "overlap_validated": false,
+        "bridge_approved": false,
+        "reason_if_blocked": "Classification label differs between editions (TSIC vs. ISIC) and no methodology document confirms semantic equivalence — treated as unresolved, not assumed compatible."
+      },
+      "IND-04": {
+        "required_divisions": [
+          19
+        ],
+        "present_by_edition": {
+          "2559_2016": [
+            19
+          ],
+          "2554_2011": [
+            19
+          ]
+        },
+        "coverage_by_edition": {
+          "2559_2016": "full",
+          "2554_2011": "full"
+        },
+        "composition_consistent": true,
+        "classification_compatible": "unresolved",
+        "overlap_validated": false,
+        "bridge_approved": false,
+        "reason_if_blocked": "Classification label differs between editions (TSIC vs. ISIC) and no methodology document confirms semantic equivalence — treated as unresolved, not assumed compatible."
+      },
+      "IND-05": {
+        "required_divisions": [
+          20,
+          21
+        ],
+        "present_by_edition": {
+          "2559_2016": [
+            20,
+            21
+          ],
+          "2554_2011": [
+            20,
+            21
+          ]
+        },
+        "coverage_by_edition": {
+          "2559_2016": "full",
+          "2554_2011": "full"
+        },
+        "composition_consistent": true,
+        "classification_compatible": "unresolved",
+        "overlap_validated": false,
+        "bridge_approved": false,
+        "reason_if_blocked": "Classification label differs between editions (TSIC vs. ISIC) and no methodology document confirms semantic equivalence — treated as unresolved, not assumed compatible."
+      },
+      "IND-06": {
+        "required_divisions": [
+          22
+        ],
+        "present_by_edition": {
+          "2559_2016": [
+            22
+          ],
+          "2554_2011": [
+            22
+          ]
+        },
+        "coverage_by_edition": {
+          "2559_2016": "full",
+          "2554_2011": "full"
+        },
+        "composition_consistent": true,
+        "classification_compatible": "unresolved",
+        "overlap_validated": false,
+        "bridge_approved": false,
+        "reason_if_blocked": "Classification label differs between editions (TSIC vs. ISIC) and no methodology document confirms semantic equivalence — treated as unresolved, not assumed compatible."
+      },
+      "IND-07": {
+        "required_divisions": [
+          23
+        ],
+        "present_by_edition": {
+          "2559_2016": [
+            23
+          ],
+          "2554_2011": [
+            23
+          ]
+        },
+        "coverage_by_edition": {
+          "2559_2016": "full",
+          "2554_2011": "full"
+        },
+        "composition_consistent": true,
+        "classification_compatible": "unresolved",
+        "overlap_validated": false,
+        "bridge_approved": false,
+        "reason_if_blocked": "Classification label differs between editions (TSIC vs. ISIC) and no methodology document confirms semantic equivalence — treated as unresolved, not assumed compatible."
+      },
+      "IND-08": {
+        "required_divisions": [
+          24,
+          25
+        ],
+        "present_by_edition": {
+          "2559_2016": [
+            24,
+            25
+          ],
+          "2554_2011": [
+            24,
+            25
+          ]
+        },
+        "coverage_by_edition": {
+          "2559_2016": "full",
+          "2554_2011": "full"
+        },
+        "composition_consistent": true,
+        "classification_compatible": "unresolved",
+        "overlap_validated": false,
+        "bridge_approved": false,
+        "reason_if_blocked": "Classification label differs between editions (TSIC vs. ISIC) and no methodology document confirms semantic equivalence — treated as unresolved, not assumed compatible."
+      },
+      "IND-09": {
+        "required_divisions": [
+          26,
+          27
+        ],
+        "present_by_edition": {
+          "2559_2016": [
+            26,
+            27
+          ],
+          "2554_2011": [
+            26,
+            27
+          ]
+        },
+        "coverage_by_edition": {
+          "2559_2016": "full",
+          "2554_2011": "full"
+        },
+        "composition_consistent": true,
+        "classification_compatible": "unresolved",
+        "overlap_validated": false,
+        "bridge_approved": false,
+        "reason_if_blocked": "Classification label differs between editions (TSIC vs. ISIC) and no methodology document confirms semantic equivalence — treated as unresolved, not assumed compatible."
+      },
+      "IND-10": {
+        "required_divisions": [
+          28
+        ],
+        "present_by_edition": {
+          "2559_2016": [
+            28
+          ],
+          "2554_2011": [
+            28
+          ]
+        },
+        "coverage_by_edition": {
+          "2559_2016": "full",
+          "2554_2011": "full"
+        },
+        "composition_consistent": true,
+        "classification_compatible": "unresolved",
+        "overlap_validated": false,
+        "bridge_approved": false,
+        "reason_if_blocked": "Classification label differs between editions (TSIC vs. ISIC) and no methodology document confirms semantic equivalence — treated as unresolved, not assumed compatible."
+      },
+      "IND-11": {
+        "required_divisions": [
+          29,
+          30
+        ],
+        "present_by_edition": {
+          "2559_2016": [
+            29,
+            30
+          ],
+          "2554_2011": [
+            29,
+            30
+          ]
+        },
+        "coverage_by_edition": {
+          "2559_2016": "full",
+          "2554_2011": "full"
+        },
+        "composition_consistent": true,
+        "classification_compatible": "unresolved",
+        "overlap_validated": false,
+        "bridge_approved": false,
+        "reason_if_blocked": "Classification label differs between editions (TSIC vs. ISIC) and no methodology document confirms semantic equivalence — treated as unresolved, not assumed compatible."
+      },
+      "IND-12": {
+        "required_divisions": [
+          31,
+          32,
+          33
+        ],
+        "present_by_edition": {
+          "2559_2016": [
+            31,
+            32
+          ],
+          "2554_2011": [
+            31,
+            32
+          ]
+        },
+        "coverage_by_edition": {
+          "2559_2016": "partial",
+          "2554_2011": "partial"
+        },
+        "composition_consistent": true,
+        "classification_compatible": "unresolved",
+        "overlap_validated": false,
+        "bridge_approved": false,
+        "reason_if_blocked": "Classification label differs between editions (TSIC vs. ISIC) and no methodology document confirms semantic equivalence — treated as unresolved, not assumed compatible."
+      }
+    }
+  }
+}

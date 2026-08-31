@@ -1,0 +1,269 @@
+# Preregistered commodity feature definitions — Task C2.
+#
+# Written BEFORE any feature was computed and BEFORE any association with the
+# target could be measured. C2 approves DETERMINISTIC CONSTRUCTION only: that a
+# feature is computed correctly from evidence that existed at the time. It says
+# nothing about predictive usefulness, and it must not.
+#
+# Five approval concepts stay strictly separate in this project:
+#   source_verified            (C1)   — the data exists, parses, is documented
+#   timing_approved            (C1.5) — availability is established
+#   feature_construction_approved (C2, this file) — the transformation is
+#                                       deterministic, leakage-safe, reproducible
+#   feature_semantics_approved (C3)   — industry exposure and direction reviewed
+#   model_feature_approved     (later)— cleared as a model input
+# C2 must not set feature_semantics_approved or model_feature_approved true.
+
+schema_version: 1
+feature_definition_version: c2_commodity_features_v1
+task: C2
+
+# --- authoritative input -----------------------------------------------------
+# Archived FIRST-RELEASE values only. The C1 latest-vintage workbook is never
+# substituted for a month that has an archived value: a latest-vintage number
+# for an old month is a number nobody had at the time.
+input:
+  dataset: docs/c1_5_commodity_timing_audit.json
+  dataset_task: C1.5-R2
+  value_field: archived_first_release_displayed_value
+  latest_vintage_substitution_permitted: false
+  required_properties:
+    reference_month_start: 2021-01-01
+    reference_month_end: 2026-05-01
+    reference_months: 65
+    archived_issue_coverage: 65
+    point_in_time_supported: full
+    minimum_publication_lag_months: 1
+    publication_timing_verified: true
+  precision_policy: >-
+    The PDF's displayed precision is the evidence and is preserved verbatim in
+    `displayed_text`. C2 never increases it. Calculated features are NOT rounded
+    — rounding a derived value would invent precision of a different kind.
+
+# --- series policy -----------------------------------------------------------
+primary_series:
+  - brent_crude_usd_bbl
+  - aluminum_usd_mt
+  - copper_usd_mt
+  - rubber_rss3_usd_kg
+
+excluded_series:
+  lng_japan_usd_mmbtu:
+    reason: >-
+      First-release values were revised in 65 of 65 required months, by up to
+      34.10% (C1.5-R2). A point-in-time feature built from a number that always
+      moves would encode revision noise as signal.
+    replaced_with: null
+  coal_australia_usd_mt:
+    reason: >-
+      Definition break at 2022-02 — the benchmark switches from spot to futures
+      inside the modelled window (C1, AD-R30). A log change across that boundary
+      compares two different things.
+    replaced_with: null
+  palm_oil_usd_mt:
+    reason: >-
+      Three grade and delivery-basis changes (2021-01, 2024-11, 2025-02) inside
+      the modelled window (C1, AD-R30).
+    replaced_with: null
+
+no_substitutes_for_excluded_series: true
+substitution_rationale: >-
+  C2 builds features from sources already cleared in C1; it does not re-select
+  sources. Replacing an excluded series with an alternative would be a new
+  source decision made without the C1 verification that justifies one.
+
+# --- availability contract ---------------------------------------------------
+# Publication timing and operational policy are different things and are stored
+# in different fields. Nothing may present the operational margin as measured.
+availability:
+  minimum_publication_lag_months: 1 # MEASURED (C1.5-R2, all 65 months at t+1)
+  lag_zero_prohibited: true
+  lag_zero_rationale: >-
+    Month t's completed value does not exist at any forecast origin inside
+    month t. Structural (AD-R36), not merely unverified.
+
+  policies:
+    operational_lag_2m:
+      operational_lag_months: 2
+      label: primary
+      is_primary: true
+      basis: >-
+        POLICY. The measured publication requirement of 1 month plus one month
+        of margin, because the newest months of each issue are subject to
+        revision. The margin is a judgement call, not a measurement.
+    publication_lag_1m:
+      operational_lag_months: 1
+      label: sensitivity_only
+      is_primary: false
+      basis: >-
+        The MEASURED publication lag with no revision margin, resting on the
+        same archived publication evidence. Permitted for a clearly-labelled
+        sensitivity comparison only.
+      constraints:
+        - must_not_be_default_output
+        - must_not_be_compared_with_targets_in_c2
+        - must_not_replace_primary_policy
+
+  rules:
+    policy_available_month: reference_month + operational_lag_months
+    feature_available_month: >-
+      max(policy_available_month, every input observation's
+      source_available_month) — a multi-month transformation is only as
+      available as its LATEST input, never as its final reference month alone.
+    derived_from_download_date: false
+    derived_from_download_date_note: >-
+      Availability comes from each archived issue's own internal creation date.
+      The download timestamp is never used as a proxy.
+
+# --- preregistered transformations -------------------------------------------
+# Exactly five. No other window, rolling z-score, shock flag, moving average,
+# interaction term, or direction adjustment is created in C2.
+features:
+  price_level:
+    formula: x_m = p_m
+    unit: source_unit
+    input_lags: [0]
+    min_history_months: 0
+  log_change_1m_pct:
+    formula: 100 * (ln(p_m) - ln(p_{m-1}))
+    unit: percent_log
+    input_lags: [1, 0]
+    min_history_months: 1
+  log_change_3m_pct:
+    formula: 100 * (ln(p_m) - ln(p_{m-3}))
+    unit: percent_log
+    input_lags: [3, 0]
+    min_history_months: 3
+  log_change_12m_pct:
+    formula: 100 * (ln(p_m) - ln(p_{m-12}))
+    unit: percent_log
+    input_lags: [12, 0]
+    min_history_months: 12
+  realized_volatility_3m_pct:
+    formula: std_ddof0(r_{m-2}, r_{m-1}, r_m) where r_j = 100*(ln p_j - ln p_{j-1})
+    unit: percent_log
+    # FOUR inputs, not three: r_{m-2} is itself a change from m-3, so p_{m-3} is
+    # consumed. Declaring three would understate both lineage and availability.
+    input_lags: [3, 2, 1, 0]
+    min_history_months: 3
+    degrees_of_freedom: 0
+    ddof_rationale: >-
+      Population standard deviation by preregistration. ddof=1 would inflate
+      every value by sqrt(3/2) (~22%) on a 3-observation window — a definitional
+      choice, not a property of the market.
+
+logarithm_base: natural
+percentage_scaling: 100x
+
+# --- expected coverage (derived from the lags above, not hard-coded) ---------
+expected_rows_per_series:
+  price_level: 65
+  log_change_1m_pct: 64
+  log_change_3m_pct: 62
+  log_change_12m_pct: 53
+  realized_volatility_3m_pct: 62
+  total: 306
+expected_primary_canonical_rows: 1224 # 306 x 4 series
+fail_if_row_count_differs: true
+manufacture_early_window_values: false
+
+# --- data handling -----------------------------------------------------------
+data_handling:
+  imputation: none
+  forward_fill: none
+  interpolation: none
+  clipping: none
+  winsorization: none
+  rounding_of_calculated_features: none
+  missing_production_input: fail_explicitly
+  non_positive_price_input: fail_explicitly
+  non_finite_feature_value: fail_explicitly
+
+# --- lineage -----------------------------------------------------------------
+lineage:
+  checksum_algorithm: sha256
+  checksum_tuple_fields:
+    - series_id
+    - input_reference_month
+    - displayed_first_release_text
+    - displayed_first_release_value
+    - source_issue_date
+    - source_issue_sha256
+  ordering: chronological_oldest_first
+  ordering_rationale: >-
+    A transformation reading the same months in a different order is a different
+    transformation, so order is part of the digest.
+  every_input_recorded: true
+  fail_if_input_published_after_feature_available_month: true
+
+# --- canonical grain ---------------------------------------------------------
+canonical_key: [series_id, feature_name, reference_month, availability_policy]
+canonical_ordering: [series_id, feature_name, reference_month]
+wide_table_derived_from_long_table: true
+wide_table_has_independent_transformation_logic: false
+
+# --- scope guards ------------------------------------------------------------
+# C2 computes NONE of the following. Each would make a construction task into a
+# selection task, and selection informed by the target is how leakage enters.
+not_computed_in_c2:
+  - pearson_or_spearman_correlation_with_mpi
+  - mutual_information
+  - granger_causality
+  - feature_importance
+  - predictive_performance
+  - high_stress_event_statistics
+  - target_distributions
+  - industry_specific_signs_or_weights
+  - industry_dependency_matrix
+  - feature_target_join
+  - feature_selection_using_target_outcomes
+  - model_training
+  - b4_baseline_comparison
+  - locked_final_test_access
+feature_removed_for_weak_target_association: false
+
+# --- approval state ----------------------------------------------------------
+approval_state:
+  source_verified: unchanged_from_c1
+  timing_approved: unchanged_from_c1_5_r2
+  feature_construction_approved: true # deterministic, leakage-safe, reproducible
+  feature_semantics_approved: false # industry exposure/direction is C3
+  model_feature_approved: false # C2 must not set this true
+
+series_model_feature_approval:
+  brent_crude_usd_bbl: { model_feature_approved: false }
+  aluminum_usd_mt: { model_feature_approved: false }
+  copper_usd_mt: { model_feature_approved: false }
+  rubber_rss3_usd_kg: { model_feature_approved: false }
+
+# --- known limitation carried into C2 ----------------------------------------
+source_footnote_semantics:
+  note: >-
+    RESOLVED by C1.5-R3. C2 first flagged that C1.5's boolean `estimate_marker`
+    was set by the token "a/", which the archived issues' own footnote block
+    defines as "Included in the energy index". C1.5-R3 replaced that field with
+    separate index-membership and estimate-status fields.
+  markers:
+    a/: included_in_the_energy_index
+    b/: included_in_the_non_energy_index
+    c/: included_in_the_precious_metals_index
+    d/: index_definition_footnote
+  c2_reinterprets_marker_as_estimate_flag: false
+  c2_columns:
+    - source_footnote_marker # raw token, verbatim
+    - source_footnote_meaning # documented index meaning
+    - estimate_status # from independent Description evidence
+  primary_series_estimate_status: not_documented_as_estimate # all four
+  metadata_only_change_note: >-
+    Adding these columns changed the canonical table's CONTENT CHECKSUM without
+    changing a single feature value, availability month, lineage checksum, or
+    row count — all 2,448 rows were verified identical before and after. A
+    metadata checksum change and a feature-value change are not the same event
+    and are reported separately.
+
+outputs:
+  canonical_long: data/features/commodity_features_long.parquet
+  wide: data/features/commodity_features_wide.parquet
+  sensitivity_long: data/features/commodity_features_long_sensitivity_lag1.parquet
+  audit_json: docs/c2_commodity_feature_audit.json
+  parquet_git_ignored: true

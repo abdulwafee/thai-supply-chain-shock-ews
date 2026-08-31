@@ -1,0 +1,74 @@
+{
+  "task": "D3-R1",
+  "purpose": "Corrects the interpretation of the operational persistence versus no-contraction comparison. Numerical D3 results are unchanged; this document only states what the existing intervals do and do not support.",
+  "source": "docs/d3_operational_baseline_results.json",
+  "no_new_statistic_computed": true,
+  "prohibited_and_not_performed": [
+    "new_hypothesis_test",
+    "another_bootstrap_seed",
+    "different_block_length",
+    "one_sided_interval",
+    "post_hoc_subgroup",
+    "new_tie_threshold"
+  ],
+  "reason_no_further_testing": "The paired intervals D3 already produced answer the question. Running another test on the same development sample would be a second look at data already used, and would search for a conclusive result rather than measure one.",
+  "conclusion": "On macro MAE, persistence and no-contraction are effectively tied within uncertainty at both horizons. The preregistered tie-break on high-stress false negatives resolves the selection decisively in favour of persistence, and the selected benchmark is unchanged.",
+  "why_persistence_is_not_weak": "An inconclusive MAE difference is not evidence of a weak benchmark. Persistence is selected on two grounds: a lower point-estimate macro MAE at both horizons, and substantially fewer high-stress false negatives under the registered tie-break (8 vs 21 at h=1; 4 vs 28 at h=3). Missing a high-stress event is the costly error for an early-warning system, and no-contraction never predicts one at all.",
+  "future_model_comparator_policy": {
+    "primary_comparator": {
+      "1": "operational_persistence_latest_published",
+      "3": "operational_persistence_trailing_3m_max"
+    },
+    "secondary_comparator": "operational_no_contraction",
+    "no_contraction_removed": false,
+    "note": "Future models must beat the selected persistence baseline as the primary comparator and must also report no-contraction as a secondary comparator. No-contraction is retained precisely because it is close on MAE."
+  },
+  "horizons": {
+    "1": {
+      "selected_operational_benchmark": "operational_persistence_latest_published",
+      "persistence_macro_mae": 17.094469420180285,
+      "no_contraction_macro_mae": 19.445323994788307,
+      "macro_mae_point_estimate_favours": "operational_persistence_latest_published",
+      "paired_difference_key": "operational_no_contraction__vs__operational_persistence_latest_published",
+      "paired_difference_point_estimate": 2.3508545746080216,
+      "paired_difference_ci": [
+        -2.647787528444476,
+        6.5716331817505305
+      ],
+      "paired_ci_crosses_zero": true,
+      "persistence_false_negatives": 8,
+      "no_contraction_false_negatives": 21,
+      "false_negative_margin": 13,
+      "mae_difference_conclusive": false,
+      "mae_superiority_over_no_contraction": "inconclusive",
+      "tie_break_applied": "high_stress_false_negative_count",
+      "selected_operational_benchmark_unchanged": true,
+      "benchmark_selection_robust_to_tie_interpretation": true,
+      "no_contraction_retained_as_secondary_reference": true,
+      "additional_test_on_same_development_sample_required": false
+    },
+    "3": {
+      "selected_operational_benchmark": "operational_persistence_trailing_3m_max",
+      "persistence_macro_mae": 16.63380109495526,
+      "no_contraction_macro_mae": 16.97906065726465,
+      "macro_mae_point_estimate_favours": "operational_persistence_trailing_3m_max",
+      "paired_difference_key": "operational_no_contraction__vs__operational_persistence_trailing_3m_max",
+      "paired_difference_point_estimate": 0.3452595623093906,
+      "paired_difference_ci": [
+        -2.6858233295859226,
+        4.633257144645368
+      ],
+      "paired_ci_crosses_zero": true,
+      "persistence_false_negatives": 4,
+      "no_contraction_false_negatives": 28,
+      "false_negative_margin": 24,
+      "mae_difference_conclusive": false,
+      "mae_superiority_over_no_contraction": "inconclusive",
+      "tie_break_applied": "high_stress_false_negative_count",
+      "selected_operational_benchmark_unchanged": true,
+      "benchmark_selection_robust_to_tie_interpretation": true,
+      "no_contraction_retained_as_secondary_reference": true,
+      "additional_test_on_same_development_sample_required": false
+    }
+  }
+}

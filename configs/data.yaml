@@ -1,0 +1,78 @@
+# Data configuration — Thai Supply Chain Shock Early Warning System
+#
+# DRAFT. This file consolidates what were previously four separate files
+# (config/industries.yaml, config/sources.yaml, config/paths.yaml) from the
+# architecture-design phase into the `configs/data.yaml` layout requested for
+# the code scaffold.
+# See docs/architecture/decision_log.md for the adjustment note.
+#
+# Fields marked UNRESOLVED are placeholders only. Do not fill them in without
+# verification from an actual source — see docs/data_source_inventory.md.
+
+schema_version: 1
+
+# --- monthly date range -----------------------------------------------------
+# UNRESOLVED: the earliest common monthly start date across the core target
+# series (MPI, CapU, PPI, exports) has not been verified — see
+# docs/data_source_inventory.md §5. Do not set start_period until that is
+# confirmed from OIE's own methodology documentation.
+date_range:
+  start_period: null   # UNRESOLVED — e.g. "2015-01" once verified, not before
+  end_period: null      # UNRESOLVED — resolved at each pipeline run to "latest available"
+
+# --- data paths --------------------------------------------------------------
+# All paths are relative to a project root resolved from an environment
+# variable at runtime — no absolute paths are hard-coded. See .env.example.
+project_root_env_var: "THAI_SUPPLY_CHAIN_EWS_ROOT"
+paths:
+  raw: "data/raw"
+  interim: "data/interim"
+  mapping: "data/mapping"
+  processed: "data/processed"
+  features: "data/features"
+  targets: "data/targets"
+  model_input: "data/model_input"
+
+# --- 12 industry identifiers --------------------------------------------------
+# MOVED. The industry taxonomy now lives in a single source of truth:
+#
+#     configs/industry_mapping.yaml
+#
+# loaded and validated by `thai_supply_chain_ews.data.taxonomy.load_taxonomy()`.
+# The draft list that used to sit here (which omitted TSIC 12 and included the
+# unreported divisions 18 and 33) was replaced in Task B1; keeping a second copy
+# here would let the two drift apart silently.
+#
+# data/mapping/industry_map.csv mirrors the YAML for human/CSV consumers and
+# names the YAML as its source_of_truth column.
+industry_mapping_config: "configs/industry_mapping.yaml"
+
+# Resolved in Task B1: TSIC Division 12 (tobacco) is assigned to IND-01, which
+# is named "Food, Beverages and Tobacco" accordingly. The previous
+# `unresolved_taxonomy_items` entry for it is closed — see
+# docs/architecture/decision_log.md AD-R8.
+
+# --- release-lag settings -----------------------------------------------------
+# publication_lag_days is either an empirically observed value (with its basis
+# noted) or null if not yet verified. Do not treat a null lag as zero — the
+# point-in-time pipeline must block on a missing value, not assume same-day
+# availability. See docs/architecture/data_architecture.md §3 and §10 rule 4.
+release_lag:
+  OIE_MPI:
+    publication_lag_days: 30
+    basis: "Empirically observed once: March-2024 MPI print dated 'as of 30 April 2024' in an OIE press release. Not a guaranteed SLA."
+  OIE_CAPU:
+    publication_lag_days: 30
+    basis: "Assumed same release cadence as OIE_MPI (published together); not independently confirmed."
+  MOC_PPI:
+    publication_lag_days: null
+    basis: "UNRESOLVED — see docs/data_source_inventory.md"
+  MOC_EXPORT:
+    publication_lag_days: null
+    basis: "UNRESOLVED — a secondary source mentioned 'up to ~2 months' for detailed HS-level data, not independently confirmed"
+  FRED_BRENT:
+    publication_lag_days: 1
+    basis: "Verified live: daily benchmark price series"
+  WB_PINKSHEET:
+    publication_lag_days: 30
+    basis: "Verified live: monthly report cadence"

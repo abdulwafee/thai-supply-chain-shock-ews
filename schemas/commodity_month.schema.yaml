@@ -1,0 +1,102 @@
+# Schema for data/interim/commodity_month.parquet — Task C1.
+# Describes what the code ACTUALLY writes
+# (thai_supply_chain_ews.data.world_bank_commodities.CANONICAL_COLUMNS),
+# verified by tests/test_c1_commodity_ingestion.py.
+#
+# LEVELS ONLY. No derived feature of any kind is present, by design.
+
+schema_version: 1
+table: interim/commodity_month
+grain: [series_id, month]
+primary_key: [series_id, month]
+written_by: thai_supply_chain_ews.data.world_bank_commodities.build_canonical_table
+source_family: world_bank_pink_sheet
+data_framing: latest_vintage_historical_data
+point_in_time_supported: false
+
+columns:
+  - name: series_id
+    type: string
+    nullable: false
+    note: "Project-internal candidate id, e.g. brent_crude_usd_bbl."
+  - name: source_series_label
+    type: string
+    nullable: false
+    note: "The workbook's own label, preserved verbatim including any footnote marker."
+  - name: month
+    type: date
+    nullable: false
+    format: first-of-month
+    note: "Parsed from the YYYYMmm period code; Excel serials are rejected, not guessed."
+  - name: value
+    type: float64
+    nullable: false
+    note: "Published level, unrounded. Missing months are absent, never imputed."
+  - name: unit
+    type: string
+    nullable: false
+    note: "Extracted from the workbook unit row, parentheses stripped, e.g. $/bbl."
+  - name: currency
+    type: string
+    nullable: true
+  - name: frequency
+    type: string
+    nullable: false
+    allowed_values: [monthly]
+  - name: source_name
+    type: string
+    nullable: false
+  - name: source_url
+    type: string
+    nullable: false
+    note: "The URL resolved by landing-page discovery at acquisition time."
+  - name: source_vintage
+    type: string
+    nullable: true
+  - name: downloaded_at_utc
+    type: string
+    nullable: false
+  - name: raw_file_sha256
+    type: string
+    nullable: false
+  - name: source_verified
+    type: bool
+    nullable: false
+    note: "Per-candidate gate outcome. NOT an approval to use as a model feature."
+  - name: quality_flag
+    type: string
+    nullable: false
+    allowed_values: [ok]
+    note: "Only 'ok' rows are emitted; missing/non-numeric cells produce no row."
+  - name: release_date
+    type: datetime
+    nullable: true
+    rule: "ALWAYS null — historical release vintages are not available for this source."
+  - name: available_as_of
+    type: datetime
+    nullable: true
+    rule: "ALWAYS null — must not be inferred from the current download date."
+  - name: point_in_time_supported
+    type: bool
+    nullable: false
+    allowed_values: [false]
+
+not_computed_in_this_layer:
+  - mom_change
+  - yoy_change
+  - lags
+  - volatility
+  - z_scores
+  - shock_flags
+  - unit_conversion
+  - join_to_forecast_target
+
+snapshot_expectations:
+  note: >-
+    Tied to the raw workbook SHA-256 recorded in the manifest. Integration
+    assertions for the current vintage, not universal invariants.
+  series_count: 7
+  rows: 5269
+  first_month: 1960-01-01
+  last_month: 2026-07-01
+  required_window_missingness_pct: 0.0

@@ -1,0 +1,427 @@
+# Task C11-R1 — specification-correction and outcome-access governance closure.
+#
+# C11-R1 corrects the formal METHODOLOGICAL STATUS of C11 without changing or
+# suppressing any of its mathematical findings. Two facts are separated here
+# that C11 reported together:
+#
+#   1. The architecture decision is REPRODUCIBLE without any D-series result.
+#   2. The original C11 EXECUTION was not outcome-blind: a development metric
+#      artifact was opened during it.
+#
+# A dependency-clean decision and an outcome-blind execution history are
+# different facts, and no umbrella `outcome_free: true` is claimed anywhere.
+#
+# C11-R1 FITS NOTHING. No target join, no model, no performance, no channel
+# selection, no locked test. C8/C9/C10/C11 artifacts are IMMUTABLE here, and the
+# original C11 record is preserved rather than rewritten.
+
+schema_version: 1
+task: C11-R1
+config_version: fuel_oil_architecture_governance_v1
+correction_version: c11r1_corrected_gate_specification_v1
+supersedes_status_of: C11
+supersedes_findings_of: none
+original_artifacts_modified: false
+existing_decision_log_entries_modified: false
+
+# ---------------------------------------------------------------------------
+# 1. THE PRESERVED ORIGINAL RECORD.
+#
+# The C11 files are left BYTE-IDENTICAL. C11-R1 is an overlay; it does not edit
+# a generated document, because a later regeneration would then silently erase
+# the correction and the record of what C11 actually claimed would be lost.
+#
+# Two kinds of pin, and they answer different questions:
+#   * byte_sha256    — a FORWARD integrity baseline, valid from C11-R1 onward.
+#                      A legitimate C11 rerun changes it, because the Markdown
+#                      and JSON carry a generation timestamp.
+#   * content_checksum — the DURABLE identity, computed with generation
+#                      timestamps excluded. This survives a rerun, so a change
+#                      here means the record itself changed.
+# ---------------------------------------------------------------------------
+preserved_c11_record:
+  artifacts:
+    decision_json:
+      path: docs/c11_architecture_decision.json
+      byte_sha256:
+        d482d80fa74f5a488d3b02f4a2fd0a38d0155b9393f43c779c63cb6345cd3d73
+      carries_generation_timestamp: true
+    decision_markdown:
+      path: docs/c11_architecture_decision.md
+      byte_sha256:
+        9a5467c89243f0c3b6aa79075814abd13ceb6b4e77fbf4b0f9c4cbb68124046e
+      carries_generation_timestamp: true
+    protocol_markdown:
+      path: docs/c11_architecture_decision_protocol.md
+      byte_sha256:
+        e823f9dcc1e7ce6dd7cd242e7e8f957d868b7a0d7c44ba4398eca96def31cd3d
+      carries_generation_timestamp: false
+    frozen_criteria:
+      path: configs/fuel_oil_modeling_architecture.yaml
+      byte_sha256:
+        b90229da37d9393b646746d7bd2a5889df5903f9f81d961aa765a9cdbfde348d
+      carries_generation_timestamp: false
+  durable_checksums:
+    c11_content_checksum:
+      6d525648f0e7e30860dc065c17a896426a0cf008f7ef62096974d4954c9f6d77
+    c11_decision_checksum:
+      001b1d901311c1da0de1e707ca10a97f91e54584b21e52ee8c943421fc068403
+    c11_decision_criteria_checksum:
+      0f81513566f98d1d5047dcb298935607f5abdb35510cf0e3c53c1bc6998d8397
+    c11_lineage_checksum:
+      73a3b1e6f680e2ea2be1f9f50d5fbcb7b21e53d0064dcfee222c725b49e33a4b
+  preserved_disclosures:
+    - original_gate_expectation
+    - original_observed_gate_result
+    - gate_correction_disclosure
+    - d3_result_file_access_disclosure
+  c11_rewritten: false
+  c11_disclosures_removed: false
+  decision_log_entries_modified: false
+
+# ---------------------------------------------------------------------------
+# 2. THE FROZEN CORRECTED-GATE SPECIFICATION.
+#
+# The original preregistered gate set and the corrected gate set are kept
+# SEPARATE. The corrected gate is mathematically valid; reproducibility does not
+# convert a post-observation correction into preregistration.
+# ---------------------------------------------------------------------------
+corrected_gate_specification:
+  gate: pooled_interaction_survives_the_specified_preprocessing
+
+  original:
+    preregistered_expectation: >-
+      Per-industry standardization would reduce the STACKED combined rank from
+      10 to 5.
+    original_preregistered_stacked_rank_expectation: 5
+    gate_condition_as_originally_implemented: >-
+      The gate required the per-industry-standardisation COUNTERFACTUAL to show
+      a stacked rank drop, which made a gate about the specified preprocessing
+      depend on a construction the preprocessing contract forbids.
+    original_gate_implementation_valid: false
+    original_preregistered_gate_set_passed: false
+
+  observed:
+    observed_stacked_rank_under_prohibited_preprocessing: 10
+    centered_exposures_contain_both_signs: true
+    positive_sign_industries: 3
+    negative_sign_industries: 8
+    per_industry_standardization_maps_interaction_to: "+Xtilde or -Xtilde"
+    stacking_both_sign_groups_preserves_two_directions: true
+    therefore_stacked_rank_remains: 10
+
+  correct_measurements:
+    within_industry_combined_rank: 5
+    intended_combined_rank: 10
+    interaction_blocks_intended: 11
+    interaction_blocks_after_prohibited_preprocessing: 2
+    sign_equivalence_groups: 2
+    sign_identity_residual_approx: 4.440892098500626e-16
+    selected_preprocessing_retains_interaction_rank: true
+    selected_preprocessing_interaction_rank: 5
+    prohibited_preprocessing_destroys_continuous_exposure_magnitude: true
+    prohibited_preprocessing_destroys_magnitude_even_though_stacked_rank_is_10: true
+
+  corrected_gate_condition: >-
+    Under THE SPECIFIED preprocessing the interaction block is present at its
+    expected rank, the combined rank equals the sum of the two block ranks, the
+    interaction is not standardised inside an industry, and a constant exposure
+    would be detected as a rank-zero interaction.
+  corrected_gate_set_passed: true
+
+  status:
+    gate_implementation_corrected_after_observation: true
+    thresholds_changed_after_observation: false
+    numerical_tolerance_changed: false
+    expectations_rewritten_as_preregistered: false
+    architecture_decision_cleanly_preregistered: false
+    original_nine_gates_passed_without_qualification: false
+
+  why_the_correction_is_justified:
+    incorrect_question: >-
+      Does the prohibited preprocessing force the entire STACKED matrix rank to
+      five? This is FALSE, because the exposure signs preserve two stacked
+      directions.
+    correct_question: >-
+      Does per-industry standardization preserve continuous exposure MAGNITUDE
+      within an industry? This is FALSE: standardize(E_g X) equals
+      standardize(X) when E_g > 0 and -standardize(X) when E_g < 0, so only the
+      sign survives and the magnitude does not.
+    conclusion: >-
+      The corrected gate is valid on mathematical grounds, but it remains a
+      post-observation specification correction. Reproducibility does not
+      convert it into preregistration.
+
+# ---------------------------------------------------------------------------
+# 3. THE OUTCOME-ACCESS INCIDENT, RECORDED EXACTLY.
+#
+# The task names one file. Six D-series JSON documents were in fact opened
+# during C11, and all six are recorded, because a partial incident record is
+# not an incident record.
+# ---------------------------------------------------------------------------
+outcome_access_incident:
+  occurred_during: C11
+  files_opened:
+    - path: docs/d3_operational_baseline_results.json
+      contains_development_metric_values: true
+      metric_values_displayed: true
+      displayed: [macro_industry_mae, b4_reference_macro_industry_mae,
+                  operational_penalty, content_checksum,
+                  operational_contract_version]
+      purpose_attempted: identify_the_operational_benchmark_contract_name
+      required_for_that_purpose: false
+      why_not_required: >-
+        The benchmark name operational_persistence_latest_published was already
+        present in docs/architecture/decision_log.md, docs/methodology.md and
+        README.md, which are non-result documentation.
+    - path: docs/d4_operational_model_results.json
+      contains_development_metric_values: true
+      metric_values_displayed: false
+      displayed: [model_name, model_version, content_checksum]
+      purpose_attempted: identify_the_operational_model_contract_name
+      required_for_that_purpose: false
+    - path: docs/d3_locked_test_manifest.json
+      contains_development_metric_values: false
+      contains_locked_test_outcomes: false
+      metric_values_displayed: false
+      displayed: [key_names_only]
+      note: >-
+        A manifest asserting the locked test was NOT evaluated. No locked
+        outcome exists in it and none was read.
+    - path: docs/d3_restored_d1_checksums.json
+      contains_development_metric_values: false
+      metric_values_displayed: false
+      displayed: [key_names_only]
+    - path: docs/d3r1_artifact_inventory.json
+      contains_development_metric_values: false
+      metric_values_displayed: false
+      displayed: [key_names_only]
+    - path: docs/d3r1_benchmark_interpretation.json
+      contains_development_metric_values: false
+      metric_values_displayed: false
+      displayed: [key_names_only]
+  files_opened_count: 6
+  files_with_metric_values_displayed: 1
+
+  status:
+    development_metric_artifact_accessed: true
+    development_target_values_accessed: false
+    development_target_values_accessed_basis: >-
+      No target table, target column or target observation was opened. The
+      D-series files above are audit documents; the target tables
+      (targets/industry_month_targets, production_stress_month,
+      forecast_target_raw) were never opened during C11, which is independently
+      supported by the static read-call inspection of the C11 runner and by the
+      absence of any target path in this session's C11 commands.
+    locked_test_accessed: false
+    locked_test_manifest_opened: true
+    locked_test_outcomes_accessed: false
+    metric_values_used_in_architecture_decision: false
+    metric_artifact_required_for_decision: false
+    outcome_free_execution: false
+    decision_reproducible_without_metric_artifact: true
+    later_guard_retroactively_erases_access: false
+    clean_rerun_restores_original_outcome_blindness: false
+    umbrella_outcome_free_claim_made: false
+
+  remediation:
+    c11_runner_blocks_d_series_paths: true
+    c11_test_asserts_no_d_series_read_call: true
+    c11r1_uses_an_allowlist_not_a_denylist: true
+    remediation_is_forward_only: true
+    remediation_note: >-
+      A guard added afterwards prevents recurrence. It does not, and is not
+      claimed to, alter what happened.
+
+# ---------------------------------------------------------------------------
+# 4. Information-flow audit. Allowlist, not denylist: an input is permitted
+# because it is named here, not because it failed to match a forbidden pattern.
+# ---------------------------------------------------------------------------
+information_flow:
+  permitted_inputs:
+    - configs/fuel_oil_architecture_governance.yaml
+    - configs/fuel_oil_modeling_architecture.yaml
+    - configs/fuel_oil_industry_conditioning.yaml
+    - docs/c11_architecture_decision.json
+    - docs/c10_design_matrix_audit.json
+    - docs/c9_sector093_exposure_decision.json
+    - docs/c9_fuel_oil_conditioning_audit.json
+    - docs/c8_eppo_transformation_audit.json
+    - docs/c7_5_eppo_semantic_decision.json
+    - docs/c3_commodity_exposure_matrix.json
+    - docs/c3_io_source_audit.json
+    - data/features/c8_eppo_fuel_oil_transformations.parquet
+  permitted_dependency_classes:
+    - c9_c10_feature_and_structural_artifacts
+    - sector_093_exposures
+    - candidate_design_formulas
+    - frozen_preprocessing_rules
+    - rank_and_column_space_identities
+    - industry_eligibility
+    - source_availability_and_lineage
+  forbidden_dependency_classes:
+    - d1_d3_d4_mae_or_rmse
+    - high_stress_metrics
+    - predictions_or_residuals
+    - target_values
+    - channel_performance
+    - locked_test_results
+  forbidden_path_fragments:
+    - /d1_
+    - /d3_
+    - /d4_
+    - d3r1_
+    - b4_
+    - target
+    - production_stress
+    - industry_month_panel
+    - prediction
+    - residual
+    - locked
+    - holdout
+    - walk_forward
+    - _mae
+    - _rmse
+    - metrics
+  methods:
+    - static_dependency_inspection
+    - controlled_path_guards
+    - checksum_reconstruction
+    - metric_substitution_invariance
+  d3_result_file_reopened_during_c11r1: false
+  conclusion_permitted: architecture_decision_dependency_clean
+  conclusion_does_not_prove: original_execution_was_outcome_blind
+
+# ---------------------------------------------------------------------------
+# 5. Mathematical invariants to reproduce WITHOUT any D-series path.
+# ---------------------------------------------------------------------------
+reproduction:
+  variants: [fo600_direct_sector093, fo1500_direct_sector093]
+  expected:
+    candidate_b_projector_residual_max: 1.0e-12
+    candidate_b_column_space_equivalent_to_candidate_a: true
+    source_block_rank: 5
+    interaction_block_rank: 5
+    combined_source_and_interaction_rank: 10
+    full_design_rank: 21
+    full_design_columns: 21
+    constant_exposure_interaction_rank: 0
+    invalid_coding_rank: 21
+    invalid_coding_columns: 22
+    eligible_industries: 11
+    exposure_cross_industry_spread_positive: true
+    ind_04_eligible: false
+    ind_04_direction_channel: mixed_or_ambiguous
+    channels_kept_separate: true
+    panel_rows: 165
+    unique_issue_months: 15
+  upstream_checksums:
+    c9_phase_a_checksum:
+      d528aba4aedcb8b8051ad618d66d49c71239267fb26fd2ead292ee90b12c9703
+    c10_content_checksum:
+      bb520f9e74f49afbf6f50d934dea6630c81ea366c24f78b548d03f4a95c24d1c
+    c10_diagnostic_contract_checksum:
+      1c88cdd7f2017aa94ee1b069be436c469ee08adcf649fe6ad4c981f995eb2041
+    c11_content_checksum:
+      6d525648f0e7e30860dc065c17a896426a0cf008f7ef62096974d4954c9f6d77
+  expected_architecture: pooled_common_effect_plus_centered_sector093_interaction
+  architecture_stands_only_if_reproduced_without_d_series: true
+
+# ---------------------------------------------------------------------------
+# 6. The corrected decision status.
+# ---------------------------------------------------------------------------
+decision_status:
+  architecture_decision_status:
+    exploratory_supported_after_documented_specification_correction
+  architecture_mathematically_supported: true
+  architecture_confirmatorily_selected: false
+  architecture_selection_outcome_independence_proven_by_dependency: true
+  original_process_outcome_blind: false
+  eligible_for_confirmatory_claims: false
+  eligible_for_locked_test: false
+  architecture_invalidated_by_process_imperfection: false
+  architecture_upgraded_because_the_correction_is_convincing: false
+
+# ---------------------------------------------------------------------------
+# 7. The selected architecture's scope, preserved unchanged.
+# ---------------------------------------------------------------------------
+architecture_scope:
+  formula: >-
+    r[g,t,h] = alpha[g,h] + sum_f beta[h,f] * xtilde[t,f]
+    + sum_f theta[h,f] * ec[g] * xtilde[t,f]
+  source_transformations_scaled_across_training_issue_months: true
+  frozen_centered_sector093_exposure: true
+  interaction_constructed_after_source_scaling: true
+  per_industry_interaction_standardization: false
+  industry_fixed_effects_without_redundant_global_intercept: true
+  horizons_fitted_separately: true
+  ind_04_benchmark_passthrough: true
+  fo600_and_fo1500_separate_variants: true
+  simultaneous_channel_entry: false
+  outcome_based_channel_promotion: false
+  interpretation: non_causal_predictive_interaction
+
+# ---------------------------------------------------------------------------
+# 8. Closure gates. All must pass before D5 is authorized.
+# ---------------------------------------------------------------------------
+closure_gates:
+  - c11_original_record_preserved
+  - original_and_corrected_gate_sets_kept_separate
+  - correction_not_presented_as_preregistered
+  - outcome_access_incident_recorded_accurately
+  - architecture_reproduced_without_d_series_access
+  - architecture_decision_dependency_clean
+  - decision_status_is_exploratory_not_confirmatory
+  - architecture_scope_preserved
+  - no_model_prediction_target_or_metric_artifact_created
+all_closure_gates_must_pass: true
+
+# ---------------------------------------------------------------------------
+# 9. Bounded D5 authorization. Granted ONLY if every closure gate passes.
+# ---------------------------------------------------------------------------
+d5_authorization:
+  scope:
+    development_issue_months: ["2024-01", "2025-03"]
+    operational_release_timing_contract: operational_contract_v1
+    variants_evaluated: [fo600_direct_sector093, fo1500_direct_sector093]
+    variants_are_separate_parallel_exploratory: true
+    combined_or_selected_fuel_oil_channel: false
+    architecture: C_pooled_common_effect_plus_centered_exposure_interaction
+    other_architectures_authorized: false
+    ind_04_in_evaluation_denominators: true
+    ind_04_benchmark_passthrough: true
+    validation_and_uncertainty_clustered_by: issue_month
+    operational_benchmarks_reproduced_from_registered_formulas: true
+    purge_metrics: false
+    locked_test_access: false
+    confirmatory_claims: false
+    model_feature_approval_from_development_evidence_alone: false
+  fields:
+    d5_protocol_preregistration_authorized: true
+    d5_development_target_join_authorized: true
+    d5_exploratory_modeling_authorized: true
+    d5_channel_selection_authorized: false
+    d5_confirmatory_claims_authorized: false
+    d5_purge_evaluation_authorized: false
+    d5_locked_test_evaluation_authorized: false
+  authorization_void_if_dependency_reconstruction_fails: true
+
+# ---------------------------------------------------------------------------
+prohibited_in_c11r1:
+  - model_fit
+  - target_join
+  - predictive_performance_calculation
+  - channel_selection
+  - locked_test_access
+  - reopening_the_d3_result_artifact
+  - editing_c11_artifacts
+  - modifying_existing_decision_log_entries
+
+outputs:
+  governance_markdown: docs/c11r1_governance_decision.md
+  governance_json: docs/c11r1_governance_decision.json
+  erratum_markdown: docs/c11_architecture_decision.errata.md
+  model_artifact_created: false
+  prediction_artifact_created: false
+  metric_artifact_created: false
+  target_joined_artifact_created: false

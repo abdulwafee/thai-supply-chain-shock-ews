@@ -1,0 +1,975 @@
+{
+ "april_2026": {
+  "note": "The maximum registered issue month is 2026-04 and the policy lag is 2, so no registered key reaches reference month 2026-04. The gap is kept and reported anyway.",
+  "null_rows_retained_in_the_grid": 10,
+  "reference_month": "2026-04",
+  "removed_because_operationally_unused": false,
+  "selected_by_any_registered_issue_key": false,
+  "selections": [],
+  "statuses": {
+   "current_month_source_gap": 10
+  }
+ },
+ "authorizations": {
+  "c8_fo1500_transformation_authorized": true,
+  "c8_fo600_transformation_authorized": true,
+  "c8_hsd_transformation_authorized": false,
+  "c8_imputation_authorized": false,
+  "c8_industry_conditioning_authorized": false,
+  "c8_locked_test_evaluation_authorized": false,
+  "c8_modeling_authorized": false,
+  "c8_outcome_based_channel_selection_authorized": false,
+  "c8_simultaneous_additive_fuel_oil_use_authorized": false,
+  "c8_target_join_authorized": false
+ },
+ "availability": {
+  "availability_basis": "conservative_policy_not_historical_measurement",
+  "equality_verified_not_hard_coded": true,
+  "examples": [
+   {
+    "issue_month": "2024-01",
+    "latest_permitted_reference_month": "2023-11"
+   },
+   {
+    "issue_month": "2025-03",
+    "latest_permitted_reference_month": "2025-01"
+   },
+   {
+    "issue_month": "2026-04",
+    "latest_permitted_reference_month": "2026-02"
+   }
+  ],
+  "expected_equality": "policy_available_month == reference_month + 2 months",
+  "latest_vintage_used": true,
+  "minimum_verified_publication_lag_months": null,
+  "operational_lag_is_measured": false,
+  "point_in_time_supported": false,
+  "policy_available_month_rule": "max_policy_month_over_required_source_inputs",
+  "policy_month_equality_verified_rows": 650,
+  "policy_month_translated_into_a_release_date": false,
+  "selector": "select_source_transformations_available_at_issue",
+  "selector_examples": [
+   {
+    "issue_month": "2024-01",
+    "latest_permitted_reference_month": "2023-11",
+    "matches_expected": true,
+    "max_reference_month_returned": "2023-11",
+    "rows_returned": 156
+   },
+   {
+    "issue_month": "2025-03",
+    "latest_permitted_reference_month": "2025-01",
+    "matches_expected": true,
+    "max_reference_month_returned": "2025-01",
+    "rows_returned": 226
+   },
+   {
+    "issue_month": "2026-04",
+    "latest_permitted_reference_month": "2026-02",
+    "matches_expected": true,
+    "max_reference_month_returned": "2026-02",
+    "rows_returned": 291
+   }
+  ],
+  "selector_rules": [
+   "policy_available_month <= issue_month",
+   "exactly_one_fuel_oil_channel",
+   "null_transformation_rows_rejected",
+   "reference_month_t_and_t_minus_1_rejected",
+   "target_values_never_read"
+  ],
+  "source_available_as_of": null,
+  "source_available_as_of_null_rows": 650
+ },
+ "c2_reconciliation": {
+  "divergent_logic_copied_into_c8": false,
+  "equivalent_timing_quality_implied": false,
+  "formula_compatible_with_c2": true,
+  "input_lags": {
+   "log_change_12m_pct": [
+    12,
+    0
+   ],
+   "log_change_1m_pct": [
+    1,
+    0
+   ],
+   "log_change_3m_pct": [
+    3,
+    0
+   ],
+   "price_level": [
+    0
+   ],
+   "realized_volatility_3m_pct": [
+    3,
+    2,
+    1,
+    0
+   ]
+  },
+  "natural_logarithm": true,
+  "scaled_by_100": true,
+  "shared_implementation": [
+   "thai_supply_chain_ews.features.commodity_features.log_change_pct",
+   "thai_supply_chain_ews.features.commodity_features.realized_volatility_pct",
+   "thai_supply_chain_ews.features.commodity_features.FEATURE_DEFINITIONS"
+  ],
+  "shared_production_implementation": [
+   "thai_supply_chain_ews.features.commodity_features.log_change_pct",
+   "thai_supply_chain_ews.features.commodity_features.realized_volatility_pct",
+   "thai_supply_chain_ews.features.commodity_features.FEATURE_DEFINITIONS"
+  ],
+  "source_timing_contract_differs_from_c2": true,
+  "timing_differences": {
+   "c2_point_in_time_supported": true,
+   "c2_publication_timing": "measured",
+   "c2_values": "archived_first_release",
+   "c8_operational_lag": "policy_based",
+   "c8_point_in_time_supported": false,
+   "c8_values": "latest_vintage"
+  },
+  "volatility_ddof": 0,
+  "volatility_required_price_levels": 4
+ },
+ "c7_5_invariants": {
+  "all_reproduced": true,
+  "checks": {
+   "approved_complete_inventory_rows": {
+    "actual": 168,
+    "expected": 168,
+    "reproduced": true
+   },
+   "approved_with_source_label_variant_rows": {
+    "actual": 8,
+    "expected": 8,
+    "reproduced": true
+   },
+   "c8_fo1500_authorized": {
+    "actual": true,
+    "expected": true,
+    "reproduced": true
+   },
+   "c8_fo600_authorized": {
+    "actual": true,
+    "expected": true,
+    "reproduced": true
+   },
+   "c8_hsd_not_authorized": {
+    "actual": false,
+    "expected": false,
+    "reproduced": true
+   },
+   "every_source_available_as_of_null": {
+    "actual": true,
+    "expected": true,
+    "reproduced": true
+   },
+   "fo1500_equivalence_established": {
+    "actual": "equivalence_established",
+    "expected": "equivalence_established",
+    "reproduced": true
+   },
+   "fo1500_strict_null_2026_04": {
+    "actual": null,
+    "expected": null,
+    "reproduced": true
+   },
+   "fo1500_transformation_ready": {
+    "actual": true,
+    "expected": true,
+    "reproduced": true
+   },
+   "fo600_equivalence_established": {
+    "actual": "equivalence_established",
+    "expected": "equivalence_established",
+    "reproduced": true
+   },
+   "fo600_strict_null_2026_04": {
+    "actual": null,
+    "expected": null,
+    "reproduced": true
+   },
+   "fo600_transformation_ready": {
+    "actual": true,
+    "expected": true,
+    "reproduced": true
+   },
+   "fo_variant_months_2024_07_to_2024_10": {
+    "actual": [
+     "2024-07",
+     "2024-08",
+     "2024-09",
+     "2024-10"
+    ],
+    "expected": [
+     "2024-07",
+     "2024-08",
+     "2024-09",
+     "2024-10"
+    ],
+    "reproduced": true
+   },
+   "hsd_gap_2023_09_to_2024_12": {
+    "actual": [
+     "2023-09",
+     "2024-12",
+     16
+    ],
+    "expected": [
+     "2023-09",
+     "2024-12",
+     16
+    ],
+    "reproduced": true
+   },
+   "hsd_not_transformation_ready": {
+    "actual": false,
+    "expected": false,
+    "reproduced": true
+   },
+   "known_document_gap_rows": {
+    "actual": 3,
+    "expected": 3,
+    "reproduced": true
+   },
+   "operational_lag_is_measured": {
+    "actual": false,
+    "expected": false,
+    "reproduced": true
+   },
+   "operational_policy_lag_months": {
+    "actual": 2,
+    "expected": 2,
+    "reproduced": true
+   },
+   "overlay_parquet_rows": {
+    "actual": 195,
+    "expected": 195,
+    "reproduced": true
+   },
+   "raw_labels_preserved": {
+    "actual": false,
+    "expected": false,
+    "reproduced": true
+   },
+   "reference_month_range": {
+    "actual": [
+     "2021-01",
+     "2026-05"
+    ],
+    "expected": [
+     "2021-01",
+     "2026-05"
+    ],
+    "reproduced": true
+   },
+   "reference_months_per_series": {
+    "actual": [
+     65
+    ],
+    "expected": [
+     65
+    ],
+    "reproduced": true
+   },
+   "semantic_definition_gap_rows": {
+    "actual": 16,
+    "expected": 16,
+    "reproduced": true
+   },
+   "semantic_monthly_rows": {
+    "actual": 195,
+    "expected": 195,
+    "reproduced": true
+   },
+   "simultaneous_additive_fuel_oil_use_prohibited": {
+    "actual": false,
+    "expected": false,
+    "reproduced": true
+   }
+  },
+  "failed": []
+ },
+ "c9_boundary": {
+  "industry_conditioning_authorized": false,
+  "locked_test_evaluation_authorized": false,
+  "modeling_authorized": false,
+  "note": "C8 produced source-level transformed data. Conditioning it on industry exposure is a separate decision that has not been taken.",
+  "outcome_based_channel_selection_authorized": false,
+  "simultaneous_additive_fuel_oil_use_authorized": false,
+  "target_join_authorized": false
+ },
+ "channels": {
+  "additive_aggregation_allowed": false,
+  "automatic_composite_index_allowed": false,
+  "both_channels_in_one_source_audit_table_allowed": true,
+  "channel_ids": [
+   "eppo_fo1500_channel",
+   "eppo_fo600_channel"
+  ],
+  "outcome_based_channel_selection_allowed": false,
+  "prohibited_constructions": [
+   "combined_fuel_oil_index",
+   "mean_of_fo600_and_fo1500",
+   "sum_of_their_features",
+   "weighted_average",
+   "pca",
+   "model_ready_matrix_with_both_as_simultaneously_approved_predictors"
+  ],
+  "reason": "The channel ID is part of the table key, so keeping both variants in one source-level audit table does not combine them. Combining would double-count the single I/O sector 093 coefficient they share.",
+  "shared_price_stage_group": "io_sector_093_fuel_oil",
+  "simple_average_allowed": false,
+  "simultaneous_model_entry_approved": false
+ },
+ "config_version": "eppo_fuel_oil_transformations_v1",
+ "content_checksum": "89195c01ba56b0b30c6bcd68eb9af069bf80da49da1192b03b899445379c46fe",
+ "counts": {
+  "counts_altered_after_observing_output": false,
+  "counts_reconciled": true,
+  "derived_from_declared_lags": {
+   "log_change_12m_pct": {
+    "finite": 52,
+    "null_rows": 13
+   },
+   "log_change_1m_pct": {
+    "finite": 62,
+    "null_rows": 3
+   },
+   "log_change_3m_pct": {
+    "finite": 61,
+    "null_rows": 4
+   },
+   "price_level": {
+    "finite": 64,
+    "null_rows": 1
+   },
+   "realized_volatility_3m_pct": {
+    "finite": 60,
+    "null_rows": 5
+   },
+   "total": {
+    "finite": 299,
+    "null_rows": 26
+   }
+  },
+  "disagreements": [],
+  "observed_by_channel": {
+   "eppo_fo1500_channel": {
+    "log_change_12m_pct": {
+     "finite": 52,
+     "null_rows": 13
+    },
+    "log_change_1m_pct": {
+     "finite": 62,
+     "null_rows": 3
+    },
+    "log_change_3m_pct": {
+     "finite": 61,
+     "null_rows": 4
+    },
+    "price_level": {
+     "finite": 64,
+     "null_rows": 1
+    },
+    "realized_volatility_3m_pct": {
+     "finite": 60,
+     "null_rows": 5
+    }
+   },
+   "eppo_fo600_channel": {
+    "log_change_12m_pct": {
+     "finite": 52,
+     "null_rows": 13
+    },
+    "log_change_1m_pct": {
+     "finite": 62,
+     "null_rows": 3
+    },
+    "log_change_3m_pct": {
+     "finite": 61,
+     "null_rows": 4
+    },
+    "price_level": {
+     "finite": 64,
+     "null_rows": 1
+    },
+    "realized_volatility_3m_pct": {
+     "finite": 60,
+     "null_rows": 5
+    }
+   }
+  },
+  "preregistered": {
+   "both_series": {
+    "feature_grid_rows": 650,
+    "finite_feature_rows": 598,
+    "null_feature_rows": 52
+   },
+   "counts_altered_after_observing_output": false,
+   "known_strict_source_gaps": [
+    "2026-04"
+   ],
+   "per_series": {
+    "log_change_12m_pct": {
+     "finite": 52,
+     "null_rows": 13
+    },
+    "log_change_1m_pct": {
+     "finite": 62,
+     "null_rows": 3
+    },
+    "log_change_3m_pct": {
+     "finite": 61,
+     "null_rows": 4
+    },
+    "price_level": {
+     "finite": 64,
+     "null_rows": 1
+    },
+    "realized_volatility_3m_pct": {
+     "finite": 60,
+     "null_rows": 5
+    },
+    "total": {
+     "finite": 299,
+     "null_rows": 26
+    }
+   }
+  },
+  "totals": {
+   "feature_grid_rows": 650,
+   "finite_feature_rows": 598,
+   "null_feature_rows": 52
+  }
+ },
+ "feature_table": {
+  "model_feature_approved_rows": 0,
+  "output": "data/features/c8_eppo_fuel_oil_transformations.parquet",
+  "rows": 650,
+  "unique_key": [
+   "channel_id",
+   "reference_month",
+   "transformation_id"
+  ],
+  "units": {
+   "log_change_12m_pct": "percentage_point_log_change",
+   "log_change_1m_pct": "percentage_point_log_change",
+   "log_change_3m_pct": "percentage_point_log_change",
+   "price_level": "baht_per_litre",
+   "realized_volatility_3m_pct": "percentage_point_log_change_volatility"
+  }
+ },
+ "generated_at_utc": "2026-08-29T04:01:05.103144+00:00",
+ "input": {
+  "approved_transformation_inputs": 128,
+  "dataset": "data/interim/c7_5_eppo_monthly_semantic.parquet",
+  "dataset_task": "C7.5",
+  "descriptive_value_read": false,
+  "hsd_read": false,
+  "never_use": [
+   "monthly_value_descriptive",
+   "eppo_ex_refinery_hsd",
+   "blend_diesel",
+   "wholesale_price",
+   "retail_price",
+   "incomplete_source_month",
+   "imputed_or_interpolated_value"
+  ],
+  "reference_month_end": "2026-05",
+  "reference_month_start": "2021-01",
+  "reference_months": 65,
+  "required_gate_field": "approved_transformation_input",
+  "required_unit": "BAHT/LITRE",
+  "series": {
+   "eppo_ex_refinery_fo1500_2s": {
+    "channel_id": "eppo_fo1500_channel",
+    "exact_labels": [
+     "FO 1500 (2) 2%S",
+     "FO 1500 2%S"
+    ]
+   },
+   "eppo_ex_refinery_fo600_2s": {
+    "channel_id": "eppo_fo600_channel",
+    "exact_labels": [
+     "FO 600 (1) 2%S",
+     "FO 600 2%S"
+    ]
+   }
+  },
+  "source_months_loaded": 130,
+  "strict_gaps": [
+   "2026-04"
+  ],
+  "value_field": "monthly_value_strict"
+ },
+ "issue_key_coverage": {
+  "development": {
+   "eppo_fo1500_channel": {
+    "issue_months": 15,
+    "issue_months_with_a_blocked_transformation": [],
+    "issue_months_with_no_blocked_transformation": 15,
+    "latest_permitted_reference_month_range": [
+     "2023-11",
+     "2025-01"
+    ],
+    "reference_months_with_a_blocked_transformation": [],
+    "target_values_read": false
+   },
+   "eppo_fo600_channel": {
+    "issue_months": 15,
+    "issue_months_with_a_blocked_transformation": [],
+    "issue_months_with_no_blocked_transformation": 15,
+    "latest_permitted_reference_month_range": [
+     "2023-11",
+     "2025-01"
+    ],
+    "reference_months_with_a_blocked_transformation": [],
+    "target_values_read": false
+   }
+  },
+  "locked_test": {
+   "eppo_fo1500_channel": {
+    "issue_months": 10,
+    "issue_months_with_a_blocked_transformation": [],
+    "issue_months_with_no_blocked_transformation": 10,
+    "latest_permitted_reference_month_range": [
+     "2025-05",
+     "2026-02"
+    ],
+    "reference_months_with_a_blocked_transformation": [],
+    "target_values_read": false
+   },
+   "eppo_fo600_channel": {
+    "issue_months": 10,
+    "issue_months_with_a_blocked_transformation": [],
+    "issue_months_with_no_blocked_transformation": 10,
+    "latest_permitted_reference_month_range": [
+     "2025-05",
+     "2026-02"
+    ],
+    "reference_months_with_a_blocked_transformation": [],
+    "target_values_read": false
+   }
+  },
+  "purge": {
+   "eppo_fo1500_channel": {
+    "issue_months": 3,
+    "issue_months_with_a_blocked_transformation": [],
+    "issue_months_with_no_blocked_transformation": 3,
+    "latest_permitted_reference_month_range": [
+     "2025-02",
+     "2025-04"
+    ],
+    "reference_months_with_a_blocked_transformation": [],
+    "target_values_read": false
+   },
+   "eppo_fo600_channel": {
+    "issue_months": 3,
+    "issue_months_with_a_blocked_transformation": [],
+    "issue_months_with_no_blocked_transformation": 3,
+    "latest_permitted_reference_month_range": [
+     "2025-02",
+     "2025-04"
+    ],
+    "reference_months_with_a_blocked_transformation": [],
+    "target_values_read": false
+   }
+  }
+ },
+ "lineage": {
+  "distinct_checksums": 650,
+  "lineage_version": "c8_eppo_transformation_lineage_v1",
+  "null_rows_with_complete_lineage": 52,
+  "rows_with_a_checksum": 650,
+  "source_input_fields": [
+   "series_id",
+   "reference_month",
+   "monthly_value_strict",
+   "source_product_label",
+   "semantic_equivalence_rule_id",
+   "aggregation_rule_version",
+   "monthly_lineage_checksum",
+   "aggregation_status",
+   "approved_transformation_input",
+   "policy_available_month"
+  ]
+ },
+ "missingness": {
+  "by_channel": {
+   "eppo_fo1500_channel": {
+    "current_month_source_gap": [
+     [
+      "2026-04",
+      "log_change_12m_pct"
+     ],
+     [
+      "2026-04",
+      "log_change_1m_pct"
+     ],
+     [
+      "2026-04",
+      "log_change_3m_pct"
+     ],
+     [
+      "2026-04",
+      "price_level"
+     ],
+     [
+      "2026-04",
+      "realized_volatility_3m_pct"
+     ]
+    ],
+    "input_window_source_gap": [
+     [
+      "2026-05",
+      "log_change_1m_pct"
+     ],
+     [
+      "2026-05",
+      "realized_volatility_3m_pct"
+     ]
+    ],
+    "insufficient_feature_history": [
+     [
+      "2021-01",
+      "log_change_12m_pct"
+     ],
+     [
+      "2021-01",
+      "log_change_1m_pct"
+     ],
+     [
+      "2021-01",
+      "log_change_3m_pct"
+     ],
+     [
+      "2021-01",
+      "realized_volatility_3m_pct"
+     ],
+     [
+      "2021-02",
+      "log_change_12m_pct"
+     ],
+     [
+      "2021-02",
+      "log_change_3m_pct"
+     ],
+     [
+      "2021-02",
+      "realized_volatility_3m_pct"
+     ],
+     [
+      "2021-03",
+      "log_change_12m_pct"
+     ],
+     [
+      "2021-03",
+      "log_change_3m_pct"
+     ],
+     [
+      "2021-03",
+      "realized_volatility_3m_pct"
+     ],
+     [
+      "2021-04",
+      "log_change_12m_pct"
+     ],
+     [
+      "2021-05",
+      "log_change_12m_pct"
+     ],
+     [
+      "2021-06",
+      "log_change_12m_pct"
+     ],
+     [
+      "2021-07",
+      "log_change_12m_pct"
+     ],
+     [
+      "2021-08",
+      "log_change_12m_pct"
+     ],
+     [
+      "2021-09",
+      "log_change_12m_pct"
+     ],
+     [
+      "2021-10",
+      "log_change_12m_pct"
+     ],
+     [
+      "2021-11",
+      "log_change_12m_pct"
+     ],
+     [
+      "2021-12",
+      "log_change_12m_pct"
+     ]
+    ]
+   },
+   "eppo_fo600_channel": {
+    "current_month_source_gap": [
+     [
+      "2026-04",
+      "log_change_12m_pct"
+     ],
+     [
+      "2026-04",
+      "log_change_1m_pct"
+     ],
+     [
+      "2026-04",
+      "log_change_3m_pct"
+     ],
+     [
+      "2026-04",
+      "price_level"
+     ],
+     [
+      "2026-04",
+      "realized_volatility_3m_pct"
+     ]
+    ],
+    "input_window_source_gap": [
+     [
+      "2026-05",
+      "log_change_1m_pct"
+     ],
+     [
+      "2026-05",
+      "realized_volatility_3m_pct"
+     ]
+    ],
+    "insufficient_feature_history": [
+     [
+      "2021-01",
+      "log_change_12m_pct"
+     ],
+     [
+      "2021-01",
+      "log_change_1m_pct"
+     ],
+     [
+      "2021-01",
+      "log_change_3m_pct"
+     ],
+     [
+      "2021-01",
+      "realized_volatility_3m_pct"
+     ],
+     [
+      "2021-02",
+      "log_change_12m_pct"
+     ],
+     [
+      "2021-02",
+      "log_change_3m_pct"
+     ],
+     [
+      "2021-02",
+      "realized_volatility_3m_pct"
+     ],
+     [
+      "2021-03",
+      "log_change_12m_pct"
+     ],
+     [
+      "2021-03",
+      "log_change_3m_pct"
+     ],
+     [
+      "2021-03",
+      "realized_volatility_3m_pct"
+     ],
+     [
+      "2021-04",
+      "log_change_12m_pct"
+     ],
+     [
+      "2021-05",
+      "log_change_12m_pct"
+     ],
+     [
+      "2021-06",
+      "log_change_12m_pct"
+     ],
+     [
+      "2021-07",
+      "log_change_12m_pct"
+     ],
+     [
+      "2021-08",
+      "log_change_12m_pct"
+     ],
+     [
+      "2021-09",
+      "log_change_12m_pct"
+     ],
+     [
+      "2021-10",
+      "log_change_12m_pct"
+     ],
+     [
+      "2021-11",
+      "log_change_12m_pct"
+     ],
+     [
+      "2021-12",
+      "log_change_12m_pct"
+     ]
+    ]
+   }
+  },
+  "status_counts": {
+   "available_numeric": 598,
+   "current_month_source_gap": 10,
+   "input_window_source_gap": 4,
+   "insufficient_feature_history": 38
+  },
+  "status_precedence": [
+   "unauthorized_source_series",
+   "source_unit_mismatch",
+   "insufficient_feature_history",
+   "current_month_source_gap",
+   "input_window_source_gap",
+   "nonpositive_source_value",
+   "available_numeric"
+  ]
+ },
+ "numerical_rules": {
+  "backward_fill": false,
+  "clipping": false,
+  "forward_fill": false,
+  "imputation": false,
+  "input_price_must_be_finite_and_positive": true,
+  "interpolation": false,
+  "logarithm": "natural",
+  "normalization": false,
+  "raise_explicitly_for": [
+   "zero_input",
+   "negative_input",
+   "infinite_input",
+   "nonnumeric_input",
+   "duplicate_series_month_source_key",
+   "inconsistent_unit",
+   "unauthorized_product"
+  ],
+  "rounding": "none",
+  "scaled_by": 100,
+  "substitution_from_the_other_fuel_oil": false,
+  "volatility_ddof": 0,
+  "winsorization": false
+ },
+ "preserved_decisions": {
+  "b3_targets_changed": false,
+  "c3_or_c3r1_exposure_changed": false,
+  "c4_variants_changed": false,
+  "c5_structural_findings_changed": false,
+  "c6_5_latest_vintage_policy_changed": false,
+  "c7_5_monthly_semantic_view_changed": false,
+  "c7_5_semantic_equivalence_mapping_changed": false,
+  "c7_canonical_daily_table_changed": false,
+  "c7_exact_displayed_labels_changed": false,
+  "c7_monthly_audit_table_changed": false,
+  "c7_raw_workbooks_changed": false,
+  "d3_contract_changed": false,
+  "d4_results_changed": false
+ },
+ "provenance": {
+  "industry_conditioned_features_created": false,
+  "locked_test_accessed": false,
+  "model_feature_approved": false,
+  "model_trained": false,
+  "target_association_computed": false,
+  "target_joined": false
+ },
+ "readiness": {
+  "eppo_fo1500_channel": {
+   "feature_semantics_approved": false,
+   "finite_rows": 299,
+   "industry_conditioned_features_created": false,
+   "model_feature_approved": false,
+   "null_rows": 26,
+   "rows": 325,
+   "source_transformations_created": true,
+   "source_transformations_ready_for_structural_conditioning": true
+  },
+  "eppo_fo600_channel": {
+   "feature_semantics_approved": false,
+   "finite_rows": 299,
+   "industry_conditioned_features_created": false,
+   "model_feature_approved": false,
+   "null_rows": 26,
+   "rows": 325,
+   "source_transformations_created": true,
+   "source_transformations_ready_for_structural_conditioning": true
+  }
+ },
+ "task": "C8",
+ "timing_policy": {
+  "availability_basis": "conservative_policy_not_historical_measurement",
+  "availability_policy_version": "c6_5_conservative_policy_lag_2_v1",
+  "fully_real_time_backtest": false,
+  "historical_release_timing_verified": false,
+  "latest_vintage_values_used": true,
+  "minimum_verified_publication_lag_months": null,
+  "operational_lag_is_measured": false,
+  "operational_policy_lag_months": 2,
+  "point_in_time_values_supported": false
+ },
+ "transformation_formula_version": "c8_eppo_fuel_oil_transformations_v1",
+ "transformations": {
+  "log_change_12m_pct": {
+   "endpoint_definition": true,
+   "formula": "c12_m = 100 * (ln p_m - ln p_{m-12})",
+   "input_lags": [
+    12,
+    0
+   ],
+   "required_input_count": 2,
+   "unit": "percentage_point_log_change"
+  },
+  "log_change_1m_pct": {
+   "formula": "r_m = 100 * (ln p_m - ln p_{m-1})",
+   "input_lags": [
+    1,
+    0
+   ],
+   "required_input_count": 2,
+   "unit": "percentage_point_log_change"
+  },
+  "log_change_3m_pct": {
+   "endpoint_definition": true,
+   "formula": "c3_m = 100 * (ln p_m - ln p_{m-3})",
+   "input_lags": [
+    3,
+    0
+   ],
+   "required_input_count": 2,
+   "sum_of_rounded_monthly_changes": false,
+   "unit": "percentage_point_log_change"
+  },
+  "price_level": {
+   "formula": "x_m = p_m",
+   "input_lags": [
+    0
+   ],
+   "required_input_count": 1,
+   "unit": "baht_per_litre"
+  },
+  "realized_volatility_3m_pct": {
+   "formula": "v3_m = std_ddof0(r_{m-2}, r_{m-1}, r_m)",
+   "input_lags": [
+    3,
+    2,
+    1,
+    0
+   ],
+   "note": "FOUR price levels, not three. r_{m-2} is itself a change from m-3, so declaring three would understate both the lineage and the availability requirement.",
+   "required_input_count": 4,
+   "unit": "percentage_point_log_change_volatility"
+  }
+ }
+}

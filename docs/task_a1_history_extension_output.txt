@@ -1,0 +1,39 @@
+Retrieving and manifesting older editions (idempotent)...
+
+=== Edition/component summary ===
+current_MPI: label=TSIC divisions=22 months=66 (2021-01-01..2026-06-01) chronological=True dup_months=False gaps=0 weight_sum=100.0 dup_divisions=none
+current_CapU: label=TSIC divisions=22 months=66 (2021-01-01..2026-06-01) chronological=True dup_months=False gaps=0 weight_sum=100.0 dup_divisions=none
+2559_2016_MPI: label=TSIC divisions=21 months=96 (2016-01-01..2023-12-01) chronological=True dup_months=False gaps=0 weight_sum=100.0001 dup_divisions=none
+2559_2016_CapU: label=TSIC divisions=21 months=96 (2016-01-01..2023-12-01) chronological=True dup_months=False gaps=0 weight_sum=100.0001 dup_divisions=none
+2554_2011_MPI: label=ISIC divisions=21 months=96 (2011-01-01..2018-12-01) chronological=True dup_months=False gaps=0 weight_sum=100.0 dup_divisions=none
+2554_2011_CapU: label=ISIC divisions=21 months=96 (2011-01-01..2018-12-01) chronological=True dup_months=False gaps=0 weight_sum=100.0 dup_divisions=none
+
+=== Pairwise division intersections (component-specific) ===
+current_MPI__vs__2559_2016_MPI: intersection_count=21 only_in_a=[16] only_in_b=[]
+current_MPI__vs__2554_2011_MPI: intersection_count=21 only_in_a=[16] only_in_b=[]
+2559_2016_MPI__vs__2554_2011_MPI: intersection_count=21 only_in_a=[] only_in_b=[]
+current_CapU__vs__2559_2016_CapU: intersection_count=21 only_in_a=[16] only_in_b=[]
+current_CapU__vs__2554_2011_CapU: intersection_count=21 only_in_a=[16] only_in_b=[]
+2559_2016_CapU__vs__2554_2011_CapU: intersection_count=21 only_in_a=[] only_in_b=[]
+
+=== Industry bridge status, per edition pair (4-stage) ===
+MPI__current__vs__2559_2016: classification_compatible=True | composition_consistent=11/12 ['IND-01', 'IND-02', 'IND-04', 'IND-05', 'IND-06', 'IND-07', 'IND-08', 'IND-09', 'IND-10', 'IND-11', 'IND-12'] | NOT consistent=1/12 ['IND-03']
+    overlap_validated evidence applied (docs/oie_overlap_validation.md): bridge_approved=['IND-01', 'IND-02', 'IND-04', 'IND-09', 'IND-10'] validated_but_not_approved=['IND-05', 'IND-06', 'IND-07', 'IND-08', 'IND-11', 'IND-12']
+    IND-03: Present-division set differs across editions — a series built from different divisions in different periods changes meaning at the bridge date and is not a clean bridge, regardless of edition-level coverage counts.
+MPI__current__vs__2554_2011: classification_compatible=unresolved | composition_consistent=11/12 ['IND-01', 'IND-02', 'IND-04', 'IND-05', 'IND-06', 'IND-07', 'IND-08', 'IND-09', 'IND-10', 'IND-11', 'IND-12'] | NOT consistent=1/12 ['IND-03']
+    overlap_validated / bridge_approved: False for all industries in this structural-only audit — see docs/oie_overlap_validation.md for the empirically-validated status.
+    IND-03: Present-division set differs across editions — a series built from different divisions in different periods changes meaning at the bridge date and is not a clean bridge, regardless of edition-level coverage counts.
+MPI__2559_2016__vs__2554_2011: classification_compatible=unresolved | composition_consistent=12/12 ['IND-01', 'IND-02', 'IND-03', 'IND-04', 'IND-05', 'IND-06', 'IND-07', 'IND-08', 'IND-09', 'IND-10', 'IND-11', 'IND-12'] | NOT consistent=0/12 []
+    overlap_validated / bridge_approved: False for all industries in this structural-only audit — see docs/oie_overlap_validation.md for the empirically-validated status.
+CapU__current__vs__2559_2016: classification_compatible=True | composition_consistent=11/12 ['IND-01', 'IND-02', 'IND-04', 'IND-05', 'IND-06', 'IND-07', 'IND-08', 'IND-09', 'IND-10', 'IND-11', 'IND-12'] | NOT consistent=1/12 ['IND-03']
+    overlap_validated evidence applied (docs/oie_overlap_validation.md): bridge_approved=['IND-01', 'IND-02', 'IND-04', 'IND-05', 'IND-06', 'IND-08', 'IND-09', 'IND-10', 'IND-11'] validated_but_not_approved=['IND-07', 'IND-12']
+    IND-03: Present-division set differs across editions — a series built from different divisions in different periods changes meaning at the bridge date and is not a clean bridge, regardless of edition-level coverage counts.
+CapU__current__vs__2554_2011: classification_compatible=unresolved | composition_consistent=11/12 ['IND-01', 'IND-02', 'IND-04', 'IND-05', 'IND-06', 'IND-07', 'IND-08', 'IND-09', 'IND-10', 'IND-11', 'IND-12'] | NOT consistent=1/12 ['IND-03']
+    overlap_validated / bridge_approved: False for all industries in this structural-only audit — see docs/oie_overlap_validation.md for the empirically-validated status.
+    IND-03: Present-division set differs across editions — a series built from different divisions in different periods changes meaning at the bridge date and is not a clean bridge, regardless of edition-level coverage counts.
+CapU__2559_2016__vs__2554_2011: classification_compatible=unresolved | composition_consistent=12/12 ['IND-01', 'IND-02', 'IND-03', 'IND-04', 'IND-05', 'IND-06', 'IND-07', 'IND-08', 'IND-09', 'IND-10', 'IND-11', 'IND-12'] | NOT consistent=0/12 []
+    overlap_validated / bridge_approved: False for all industries in this structural-only audit — see docs/oie_overlap_validation.md for the empirically-validated status.
+
+Machine-readable output written to docs\task_a1_history_extension_output.json
+
+This script performs no level-linking or growth-rate-linking itself. The current-vs-2016-based bridge tables above were patched with real empirical evidence from scripts/validate_oie_overlap.py (docs\oie_overlap_validation_output.json). All ISIC-involving pairs remain overlap_validated=False / bridge_approved=False — they were never in that script's scope.

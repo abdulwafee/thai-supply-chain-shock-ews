@@ -1,0 +1,635 @@
+# Task E2 — reproducible portfolio release preparation.
+#
+# FROZEN BEFORE THE RELEASE TREE IS BUILT. The allowlist rules, the category
+# taxonomy, the locked-path protection, the packaging prohibitions, the CI
+# constraints and the readiness vocabulary are hashed first.
+#
+# E2 PREPARES A RELEASE CANDIDATE. IT PUBLISHES NOTHING. No commit, no tag, no
+# push, no PyPI upload, no GitHub release. It reopens no modeling, recomputes no
+# metric, and never opens, hashes, scans or copies a locked outcome.
+#
+# THE ALLOWLIST FAILS CLOSED. A path that matches no rule is EXCLUDED and
+# reported as unclassified, never admitted by default. That is the whole point:
+# the dangerous file is the one nobody thought about.
+
+schema_version: 1
+task: E2
+config_version: e2_release_preparation_v1
+release_contract_version: e2_release_contract_v1
+release_candidate_version: "0.1.0"
+
+# ---------------------------------------------------------------------------
+# 1. The E1 closeout, preserved. Release preparation alters no scientific
+#    conclusion and no evaluation artifact.
+# ---------------------------------------------------------------------------
+preserved_closeout:
+  development_program_status: closed_without_supported_incremental_commodity_model
+  registered_operational_reference_source: D3
+  operational_model_selected: false
+  production_deployment_authorized: false
+  model_feature_approved: false
+  locked_test_status: sealed_unopened
+  locked_test_outcomes_read: false
+  latest_vintage_target_evaluation: true
+  fully_real_time_backtest: false
+  c12_fuel_oil_closure_active: true
+  # These are the content checksums each upstream document DECLARES ABOUT
+  # ITSELF, copied here as a cross-reference. Each task computed its own with
+  # its own rule; E2 does not re-derive seven conventions, it checks that the
+  # declarations have not moved, and separately records its own sha256 of the
+  # bytes so a later edit is detectable even if the declaration is edited too.
+  e1_evidence_ledger_checksum:
+    09d3a0b59734c131361ebe899fec0e8431d624c3658e4ac4ed6251714e436eef
+  upstream_content_checksums:
+    d1_development_results:
+      e7d3d2cb6e376891550c5c528d34b2daef3356bc6df299fc486f8271aa128a6c
+    d3_operational_baseline_results:
+      b5d70211e302c0e5d8da6f8fb6d01fcc688873d6c7655376472b1d48ba88b197
+    d4_operational_model_results:
+      6d9d32d7164d4d6aa25ad634271b1747d75727d068b94b58b8a1b4f9d2fdf3ae
+    d5_development_results:
+      0eb3d613d34fdde2274a56c2bcd97695b652991da663ce6390b70d9e53deaf0e
+    c10_design_matrix_audit:
+      bb520f9e74f49afbf6f50d934dea6630c81ea366c24f78b548d03f4a95c24d1c
+    c11r1_governance_decision:
+      a536dbb85444add1051e589e170bcc10756ff335ba1283723ac1644b4d36dbca
+    c12_channel_closure:
+      ee26a8552d595544c72340aa1ad78987582ad3d266f0e5acc4240d09124f8320
+  scientific_artifacts_modified: false
+
+# ---------------------------------------------------------------------------
+# 2. Inventory taxonomy. Built from the FILESYSTEM and git, never inferred from
+#    documentation.
+# ---------------------------------------------------------------------------
+inventory:
+  source: filesystem_and_git
+  inferred_from_documentation: false
+  skip_directories: [".git", ".venv", "__pycache__", ".pytest_cache",
+                     ".ruff_cache", ".mypy_cache", "node_modules"]
+  large_file_threshold_bytes: 1048576
+  categories:
+    # Order matters: the first matching rule wins, so the narrow roots come
+    # before the broad ones. data/raw/_manifests/ must be tested before
+    # data/raw/, because the manifests ship and the workbooks do not.
+    build_metadata: {roots: ["src/thai_supply_chain_ews.egg-info/"], suffixes: []}
+    source_code: {roots: ["src/"], suffixes: [".py"]}
+    tests_and_fixtures: {roots: ["tests/"], suffixes: [".py", ".csv", ".json", ".yaml", ".txt"]}
+    configuration: {roots: ["configs/"], suffixes: [".yaml", ".yml"]}
+    schemas: {roots: ["schemas/"], suffixes: [".yaml", ".yml"]}
+    documentation: {roots: ["docs/", "app/", "notebooks/"],
+                    suffixes: [".md", ".json", ".png", ".ipynb"]}
+    scripts: {roots: ["scripts/"], suffixes: [".py"]}
+    release_review_record: {roots: ["docs/e2_release_"], suffixes: [".json", ".md"]}
+    generated_logs: {roots: ["docs/"], suffixes: [".txt"]}
+    mapping_reference_data: {roots: ["data/mapping/"], suffixes: [".csv", ".yaml", ".md"]}
+    retrieval_manifests: {roots: ["data/raw/_manifests/"], suffixes: [".jsonl", ".json"]}
+    http_response_artifacts: {roots: ["data/raw/"], suffixes: [".txt"]}
+    data_directory_readmes: {roots: ["data/"], suffixes: [".md"]}
+    raw_third_party_documents:
+      roots: ["data/raw/"]
+      suffixes: [".xls", ".xlsx", ".pdf", ".zip", ".htm", ".html"]
+    cached_downloads: {roots: ["data/interim/"], suffixes: [".json", ".jsonl", ".html"]}
+    generated_tables:
+      roots: ["data/features/", "data/processed/", "data/targets/",
+              "data/interim/"]
+      suffixes: [".parquet", ".csv"]
+    model_and_prediction_tables:
+      roots: ["data/model_input/", "models/"]
+      suffixes: [".parquet", ".pkl", ".joblib", ".bin"]
+    packaging_and_ci: {roots: [".github/", ""], suffixes: [".toml", ".cfg", ".yml", ".txt"]}
+    project_documentation: {roots: [""], suffixes: [".md"]}
+    version_control_config: {roots: [".gitignore", ".gitattributes"], suffixes: []}
+    environment_template: {roots: [".env.example"], suffixes: []}
+    local_environment: {roots: [".venv/", ".env", ".idea/", ".vscode/"], suffixes: []}
+    temporary: {roots: [], suffixes: [".tmp", ".bak", ".swp", ".orig"]}
+
+# ---------------------------------------------------------------------------
+# 3. The public-release allowlist. Fail-closed: an unmatched path is EXCLUDED.
+# ---------------------------------------------------------------------------
+allowlist:
+  fail_closed: true
+  unknown_path_admitted_by_default: false
+  include_globs:
+    - "src/**/*.py"
+    - "tests/**/*.py"
+    - "tests/data_backed_tests.txt"
+    - "scripts/**/*.py"
+    - "configs/*.yaml"
+    - "schemas/*.yaml"
+    - "docs/**/*.md"
+    - "docs/**/*.json"
+    - "docs/**/*.png"
+    - "data/mapping/**"
+    - "data/raw/_manifests/*.jsonl"
+    - "data/*/README.md"
+    - "app/**/*.md"
+    - "notebooks/**/*.md"
+    - "README.md"
+    - "pyproject.toml"
+    - ".gitignore"
+    - ".env.example"
+    - "requirements.lock.txt"
+    - "requirements-dev.lock.txt"
+    - ".github/workflows/*.yml"
+    - "THIRD_PARTY_NOTICES.md"
+    - "DATA_SOURCES.md"
+  exclude_globs:
+    - "**/__pycache__/**"
+    - "**/*.pyc"
+    - ".venv/**"
+    - ".env"
+    - "**/*.local.yaml"
+    - "data/raw/**"
+    - "data/interim/**"
+    - "data/processed/**"
+    - "data/features/**"
+    - "data/targets/**"
+    - "data/model_input/**"
+    - "models/**"
+    - "**/*.parquet"
+    - "**/*.xls"
+    - "**/*.xlsx"
+    - "**/*.pdf"
+    - "**/*.zip"
+    - "**/*.pkl"
+    - "**/*.joblib"
+    - "data/**/*.png"
+    - "**/*.ipynb"
+    - ".pytest_cache/**"
+    - ".ruff_cache/**"
+    - "**/*.egg-info/**"
+    - "docs/*.txt"          # raw console logs from Task A1; the same content is
+                            # published in the A1 audit documents
+
+  exclude_overrides_include: true
+
+  # E2's own review record SHIPS — a consumer needs the manifest to verify what
+  # they received — but the manifest does not list these three, because each one
+  # quotes the manifest checksum. A manifest covering them could never reach a
+  # fixed point: its checksum would change on every run whether or not anything
+  # else did. A SHA256SUMS file omits itself for the same reason.
+  self_referential_outputs:
+    - docs/e2_release_candidate_manifest.json
+    - docs/e2_release_readiness.json
+    - docs/e2_release_readiness.md
+
+  # A directory-wide exclusion is the safe default, so the few files that must
+  # escape one are enumerated as LITERAL paths — no wildcards, no globs, nothing
+  # that could widen later by accident. An exemption is honoured only if the path
+  # ALSO matches an include glob, so it takes two independent decisions to admit
+  # a file from an excluded directory.
+  exclude_exemptions:
+    - data/raw/_manifests/EPPO_PRICE_STRUCTURE_manifest.jsonl
+    - data/raw/_manifests/NESDC_IO_manifest.jsonl
+    - data/raw/_manifests/OIE_CAPU_manifest.jsonl
+    - data/raw/_manifests/OIE_MPI_HIST_2554_2011_manifest.jsonl
+    - data/raw/_manifests/OIE_MPI_HIST_2559_2016_manifest.jsonl
+    - data/raw/_manifests/OIE_MPI_manifest.jsonl
+    - data/raw/_manifests/WB_PINKSHEET_manifest.jsonl
+    - data/raw/_manifests/WB_PINKSHEET_VINTAGES_manifest.jsonl
+    - data/raw/README.md
+    - data/interim/README.md
+    - data/processed/README.md
+    - data/features/README.md
+    - data/targets/README.md
+    - data/model_input/README.md
+  exemptions_are_literal_paths: true
+  exemption_requires_matching_include_glob: true
+  exemption_rationale: >-
+    The retrieval manifests carry source URLs, publisher timestamps and SHA-256
+    checksums for every downloaded file, and they are what makes a tier-2
+    reproduction possible without redistributing a single third-party byte. The
+    data-directory READMEs explain what belongs in each directory that ships
+    empty. Neither set contains observations, credentials or absolute paths.
+  prohibited_in_release:
+    - raw_xls_xlsx_pdf_downloads
+    - generated_parquet
+    - cached_http_responses
+    - cookies_headers_sessions_or_waf_artifacts
+    - local_virtual_environments
+    - ide_files
+    - absolute_local_paths
+    - locked_test_target_outcomes
+    - generated_predictions_and_fitted_models
+    - credentials_and_secrets
+    - files_whose_redistribution_status_is_unresolved
+
+# ---------------------------------------------------------------------------
+# 4. Locked-test protection. Identified from CONTRACTS AND PATH METADATA ONLY.
+# ---------------------------------------------------------------------------
+locked_test:
+  contracts:
+    - docs/d3_locked_test_manifest.json
+    - docs/b4_locked_test_manifest.json
+  manifests_are_key_only: true
+  outcome_path_fragments:
+    - "locked_test/"
+    - "locked_outcome"
+    - "locked_target"
+    - "locked_prediction"
+    - "locked_score"
+    - "final_test_outcome"
+  prohibited_operations:
+    - open_locked_outcome_contents
+    - hash_locked_outcome_contents
+    - pass_locked_outcomes_to_a_secret_scanner
+    - include_locked_outcomes_in_a_package_build
+    - copy_locked_outcomes_into_the_release_tree
+    - infer_locked_values_from_size_or_serialization_metadata
+  required_fields:
+    locked_test_status: sealed_unopened
+    locked_paths_opened: 0
+    locked_paths_hashed: 0
+    locked_paths_packaged: 0
+    locked_paths_secret_scanned: 0
+    locked_test_release_excluded: true
+
+# ---------------------------------------------------------------------------
+# 5. Dependency locking. Uses the repository's EXISTING toolchain.
+# ---------------------------------------------------------------------------
+dependencies:
+  existing_package_manager: pip_with_setuptools
+  build_backend: setuptools.build_meta
+  second_dependency_manager_introduced: false
+  second_manager_reason: >-
+    None introduced. The repository already builds with setuptools and installs
+    with pip; adding poetry, uv or pdm would create a second source of truth for
+    the same dependency set.
+  lock_mechanism: pip_requirements_lock
+  runtime_lock: requirements.lock.txt
+  development_lock: requirements-dev.lock.txt
+  runtime_and_development_separated: true
+  declared_python: ">=3.11"
+  ci_python: "3.11"
+  resolver_platform_recorded: true
+  cross_platform_lock_guaranteed: false
+  platform_note: >-
+    The lock is resolved on one platform and interpreter. Binary wheels for
+    pandas, numpy, pyarrow and matplotlib are platform-specific, so this is a
+    platform-scoped lock rather than a universal one, and it says so instead of
+    claiming reproducibility it cannot deliver.
+  justified_dependencies:
+    xlrd: >-
+      Required to read EPPO's legacy .xls price-structure workbooks
+      (2021-01..2023-01). openpyxl cannot read the old BIFF format.
+    pyarrow: >-
+      Used through pandas via engine="pyarrow" for typed Parquet output; it is
+      an engine rather than a direct import, which is why no import statement
+      names it.
+  undeclared_runtime_import_is_a_failure: true
+  unused_declared_dependency_is_a_failure_unless_documented: true
+
+  # -- Correction recorded AFTER measurement. The frozen values above are left
+  #    exactly as they were written; this block records what was observed and
+  #    what changed, rather than quietly editing the contract to match the data.
+  ci_python_correction:
+    changed_after_observation: true
+    ci_python_frozen: "3.11"
+    ci_python_effective: "3.14"
+    resolving_interpreter: "3.14.3"
+    resolving_platform: win_amd64
+    lock_minimum_admitted_python: "3.12"
+    blocking_distribution: "numpy==2.5.2 (Requires-Python >=3.12)"
+    reason: >-
+      The lock was frozen with ci_python 3.11 before the installed set was
+      measured. Every pinned distribution's declared Requires-Python was then
+      read, and numpy 2.5.2 admits 3.12 and above. A CI job on 3.11 installing
+      this lock would fail on numpy. Two repairs were rejected: pinning an older
+      numpy would put a version into the lock that nothing in this preparation
+      ever ran, and lowering the claim while keeping the job would ship a red
+      workflow. CI therefore runs the interpreter on which the lock was actually
+      resolved and verified.
+    declared_requires_python_floor: ">=3.11"
+    declared_floor_verified: false
+    declared_floor_note: >-
+      pyproject still declares >=3.11 and that floor is NOT verified here: no
+      3.11 interpreter exists on this machine and an unlocked 3.11 install would
+      resolve a numpy nothing has tested. Recorded as a documented limitation
+      with a recommendation, not silently narrowed on the owner's behalf.
+
+# ---------------------------------------------------------------------------
+# 6. Test tiers. A skipped data-backed audit is NEVER counted as a passing
+#    hermetic test.
+# ---------------------------------------------------------------------------
+test_tiers:
+  hermetic:
+    description: >-
+      Runs from a clean checkout with synthetic or redistributable fixtures. No
+      network, no local raw files. Must run in CI.
+    requires_network: false
+    requires_local_raw_data: false
+    runs_in_ci: true
+  data_backed:
+    description: >-
+      Source audits that re-read the officially downloaded workbooks and PDFs,
+      and checks against the git-ignored generated tables. Optional reproduction
+      workflows, documented as such.
+    requires_network: true
+    requires_local_raw_data: true
+    runs_in_ci: false
+    silently_skipped_and_counted_as_clean: false
+    registry: tests/data_backed_tests.txt
+    gate: tests/conftest.py
+    gate_decides_from: filesystem_presence_of_local_inputs
+    gate_decides_from_environment_variable: false
+    registry_verified_every_run: true
+    # The registry is proved rather than trusted: with it removed, every entry
+    # must fail, nothing else may fail, and every failure must name a missing
+    # input somewhere in its traceback.
+    missing_input_markers:
+      - "data/raw/"
+      - "data\\raw\\"
+      - "data/interim/"
+      - "data\\interim\\"
+      - "data/processed/"
+      - "data\\processed\\"
+      - "data/features/"
+      - "data\\features\\"
+      - "data/targets/"
+      - "data\\targets\\"
+      - "data/model_input/"
+      - "data\\model_input\\"
+      - "b1_panel missing"
+      - "b1 artifact missing"
+      - "primary_io_table"
+      - "points at a missing file"
+      - "records a missing file"
+  report_counts: [collected, passed, skipped, deselected, failed]
+  counts_measured_from_command_output: true
+  counts_copied_from_prior_totals: false
+  tests_weakened_to_obtain_green_ci: false
+  worktree_must_be_clean_after_tests: true
+
+# ---------------------------------------------------------------------------
+# 7. Continuous integration.
+# ---------------------------------------------------------------------------
+ci:
+  workflow: .github/workflows/ci.yml
+  permissions: {contents: read}
+  python_version: "3.11"          # frozen value, preserved
+  python_version_effective: "3.14"  # see dependencies.ci_python_correction
+  actions_pinned_to_commit_sha: true
+  mutable_major_version_tags_used: false
+  uses_repository_secrets: false
+  downloads_official_datasets_on_pull_request: false
+  accesses_purge_or_locked_artifacts: false
+  explicit_timeouts: true
+  cache_keyed_by_lock_checksum: true
+  steps:
+    - install_from_lock
+    - ruff
+    - hermetic_test_suite
+    - parse_configs_and_schemas
+    - build_package
+    - inspect_package_contents
+    - confirm_worktree_clean
+
+# ---------------------------------------------------------------------------
+# 8. Package build and content prohibitions.
+# ---------------------------------------------------------------------------
+package:
+  build_in_temporary_directory: true
+  formats: [wheel, sdist]
+  published: false
+  prohibited_members:
+    - ".parquet"
+    - ".pdf"
+    - ".xls"
+    - ".xlsx"
+    - ".zip"
+    - ".pkl"
+    - ".joblib"
+    - ".pyc"
+  prohibited_member_fragments:
+    - "data/raw/"
+    - "data/interim/"
+    - "data/features/"
+    - "data/model_input/"
+    - "locked_test"
+    - ".venv/"
+    - ".env"
+  required_metadata:
+    name: thai-supply-chain-ews
+    version: "0.1.0"
+    requires_python: ">=3.11"
+  deterministic_paths: true
+  second_build_equivalent_contents: true
+  archive_timestamp_differences_documented: true
+
+# ---------------------------------------------------------------------------
+# 9. Secret and privacy review.
+# ---------------------------------------------------------------------------
+security:
+  secret_scanner: detect-secrets
+  scan_scope: public_release_allowlist_and_permitted_history
+  git_history_commits: 0
+  git_history_note: >-
+    The repository has no commits, so there is no history to scan and no
+    possibility that a locked outcome was ever tracked. This is recorded as a
+    measured fact, not an assumption.
+  locked_paths_excluded_before_scanning: true
+  additional_patterns:
+    - api_keys_and_tokens
+    - passwords
+    - cookies_and_sessions
+    - authorization_headers
+    - private_urls
+    - personal_email_addresses
+    - absolute_home_paths
+    - usernames_embedded_in_paths
+    - local_ip_addresses
+    - temporary_download_credentials
+    - notebook_output_with_environment_information
+  secret_values_printed: false
+  report_redacted_fingerprints_only: true
+  discovered_credential_is_a_release_blocker: true
+
+  # Findings a person has looked at and identified as something other than a
+  # credential. Keyed on path, family and redacted fingerprint — never on a line
+  # number, because a suppression that survives an edit stops meaning anything.
+  # A finding matching no entry stays UNREVIEWED, which is a third state,
+  # distinct from both "credential" and "benign": nobody has said which it is.
+  reviewed_non_credential_findings:
+    - path: configs/e2_release_preparation.yaml
+      family: Secret Keyword
+      fingerprint: 3c2ae4bf3ee0
+      # Worded WITHOUT reproducing a keyword-and-value pair. Quoting the setting
+      # verbatim here would trip the same rule again and the review record would
+      # generate the findings it exists to explain.
+      reason: >-
+        The scanner matched the secret-scanner setting a few lines above, whose
+        value is the scanner's own name. A configuration line naming the tool
+        that enforces it is not a credential.
+    - path: docs/c6_eppo_archive_audit.json
+      family: Hex High Entropy String
+      fingerprint: a1e2a7d41430
+      reason: >-
+        An EPPO media identifier from the publisher's public REST index,
+        recorded under `documents` so a download can be traced back to the
+        record that produced it. It is a public document id, not a secret.
+  unreviewed_finding_is_reported_not_suppressed: true
+  dependency_audit:
+    tool: pip-audit
+    scope: locked_dependency_set
+    record: [tool_version, database_timestamp, package, advisory_id,
+             installed_version, fixed_version, runtime_or_dev, remediation]
+    silent_upgrade_permitted: false
+    clean_audit_is_a_permanent_guarantee: false
+
+# ---------------------------------------------------------------------------
+# 10. Licensing. Code and third-party data are separate questions.
+# ---------------------------------------------------------------------------
+licensing:
+  code:
+    license_file_present: false
+    pyproject_license_text: "Unlicensed - student portfolio project"
+    owner_license_decision_required: true
+    license_chosen_automatically: false
+    recommendation_permitted: true
+    recommendation: >-
+      MIT for the code is the conventional choice for a portfolio repository:
+      it is short, permissive, widely recognised by recruiters and compatible
+      with the third-party data terms below. This is a RECOMMENDATION ONLY and
+      no LICENSE file is created without the owner's explicit approval.
+  data:
+    raw_bytes_included_in_release: false
+    public_download_access_implies_redistribution: false
+    unclear_redistribution_resolution: >-
+      Exclude the raw files; publish acquisition code, URLs, checksums and
+      derived documentation instead.
+    publisher_families:
+      - publisher: Office of Industrial Economics (OIE), Thailand
+        source_url: "https://www.oie.go.th/view/1/industrial_index/TH-TH"
+        file_types: [".xlsx", ".zip"]
+        raw_bytes_in_release: false
+        known_license_or_terms: not_stated_on_the_portal
+        attribution_required: yes_by_convention_for_official_statistics
+        redistribution_status: unresolved
+        commercial_use_status: not_stated
+        unresolved_questions:
+          - "No machine-readable terms of use are published alongside the index."
+      - publisher: World Bank
+        source_url: "https://www.worldbank.org/en/research/commodity-markets"
+        file_types: [".pdf", ".xlsx"]
+        raw_bytes_in_release: false
+        known_license_or_terms: >-
+          World Bank datasets are generally offered under CC BY 4.0 through the
+          Open Data initiative, but the Pink Sheet archive pages consulted here
+          did not state a licence inline.
+        attribution_required: true
+        redistribution_status: likely_permitted_but_not_confirmed_inline
+        commercial_use_status: likely_permitted_under_cc_by
+        unresolved_questions:
+          - "No inline licence statement on the archived Pink Sheet issues."
+      - publisher: >-
+          Office of the National Economic and Social Development Council
+          (NESDC), Thailand
+        source_url: "https://www.nesdc.go.th/download/i-o-table-of-thailand-2015/"
+        file_types: [".xlsx", ".pdf"]
+        raw_bytes_in_release: false
+        known_license_or_terms: not_stated_on_the_download_page
+        attribution_required: yes_by_convention_for_official_statistics
+        redistribution_status: unresolved
+        commercial_use_status: not_stated
+        unresolved_questions:
+          - "The 2015 input-output workbook carries no licence file."
+      - publisher: Energy Policy and Planning Office (EPPO), Thailand
+        source_url: "https://www.eppo.go.th/index.php/en/en-energystatistics"
+        file_types: [".xls", ".xlsx"]
+        raw_bytes_in_release: false
+        known_license_or_terms: not_stated_on_the_portal
+        attribution_required: yes_by_convention_for_official_statistics
+        redistribution_status: unresolved
+        commercial_use_status: not_stated
+        unresolved_questions:
+          - "Price-structure workbooks are served without terms of use."
+
+# ---------------------------------------------------------------------------
+# 11. Attribution and citation. Owner metadata is NOT invented.
+# ---------------------------------------------------------------------------
+attribution:
+  third_party_notices: THIRD_PARTY_NOTICES.md
+  data_sources: DATA_SOURCES.md
+  citation_cff_created: false
+  citation_cff_blocked_reason: >-
+    CITATION.cff requires the author's real name, and pyproject.toml currently
+    carries the placeholder "Project author". A citation file naming a person
+    who has not approved it would be worse than none, so this stays an explicit
+    blocker rather than a guess.
+  owner_metadata_invented: false
+  unknown_owner_metadata_is_a_release_blocker: true
+
+# ---------------------------------------------------------------------------
+# 12. Reproducibility tiers.
+# ---------------------------------------------------------------------------
+reproducibility_tiers:
+  tier_1:
+    name: code_verification
+    inputs: [public release tree, locked dependency contract]
+    network_required: false
+    approximate_storage_mb: 5
+    guarantees: [clean install, lint, schema parse, hermetic tests, package build]
+    exclusions: [official downloads, generated tables, locked test]
+  tier_2:
+    name: source_audit_reproduction
+    inputs: [official publisher downloads, retrieval manifests]
+    network_required: true
+    approximate_storage_mb: 110
+    guarantees: [checksum validation, archive parsing, source transformations]
+    exclusions: [locked test]
+    works_without_external_data: false
+  tier_3:
+    name: full_historical_development_reproduction
+    inputs: [tier 2 outputs, authorized development targets]
+    network_required: true
+    approximate_storage_mb: 130
+    guarantees: [feature build, development walk-forward, evidence ledger]
+    exclusions: [locked final test]
+    works_without_external_data: false
+  nondeterministic_metadata:
+    - archive member timestamps in built distributions
+    - generation timestamps inside audit documents (excluded from content checksums)
+    - retrieval timestamps in acquisition manifests
+
+# ---------------------------------------------------------------------------
+# 13. Readiness vocabulary and blockers.
+# ---------------------------------------------------------------------------
+readiness:
+  statuses:
+    - release_candidate_ready
+    - release_candidate_ready_with_documented_nonblocking_limitations
+    - release_candidate_blocked
+  blockers:
+    - missing_owner_license_decision
+    - secret_or_credential_exposure
+    - locked_outcome_present_in_intended_release_or_history
+    - clean_installation_failure
+    - hermetic_ci_failure
+    - package_includes_prohibited_files
+    - unresolved_redistribution_of_included_raw_data
+    - dependency_vulnerability_without_accepted_resolution
+    - tests_mutate_the_release_worktree
+  ready_because_working_directory_passes_tests: false
+
+prohibited_actions:
+  - commit
+  - tag
+  - push
+  - publish_to_pypi
+  - create_a_github_release
+  - reopen_modeling
+  - read_locked_outcomes
+  - modify_scientific_result_artifacts
+
+outputs:
+  release_manifest: docs/e2_release_candidate_manifest.json
+  readiness_json: docs/e2_release_readiness.json
+  readiness_markdown: docs/e2_release_readiness.md
+  release_checklist: docs/e2_release_checklist.md
+  reproducibility_guide: docs/e2_reproducibility_guide.md
+  data_license_review: docs/e2_data_license_review.md
+  third_party_notices: THIRD_PARTY_NOTICES.md
+  data_sources: DATA_SOURCES.md
+  ci_workflow: .github/workflows/ci.yml
+  runtime_lock: requirements.lock.txt
+  development_lock: requirements-dev.lock.txt

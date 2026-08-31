@@ -1,0 +1,1604 @@
+{
+  "task": "D3",
+  "generated_at_utc": "2026-08-28T04:42:11.801367+00:00",
+  "operational_contract_version": "operational_contract_v1",
+  "evaluation_framing": "release_lag_aware_latest_vintage_evaluation",
+  "dataset_flags": {
+    "evaluation_framing": "release_lag_aware_latest_vintage_evaluation",
+    "release_timing_aware": true,
+    "latest_vintage_target_values": true,
+    "point_in_time_target_values": false,
+    "fully_real_time_backtest": false,
+    "same_month_stress_used": false,
+    "locked_test_accessed": false
+  },
+  "contract_status": {
+    "status": "operational_month_timing_supported",
+    "all_development_issue_dates_verified": true,
+    "every_input_obeys_release_timing": true,
+    "no_same_month_stress_used": true,
+    "label_availability_enforced": true,
+    "point_in_time_values_supported": false,
+    "latest_vintage_evaluation": true,
+    "fully_real_time_backtest": false
+  },
+  "split": {
+    "development_issue_months": [
+      "2024-01-01",
+      "2024-02-01",
+      "2024-03-01",
+      "2024-04-01",
+      "2024-05-01",
+      "2024-06-01",
+      "2024-07-01",
+      "2024-08-01",
+      "2024-09-01",
+      "2024-10-01",
+      "2024-11-01",
+      "2024-12-01",
+      "2025-01-01",
+      "2025-02-01",
+      "2025-03-01"
+    ],
+    "development_issue_month_count": 15,
+    "purge_months": [
+      "2025-04",
+      "2025-05",
+      "2025-06"
+    ],
+    "purge_metrics_calculated": false,
+    "locked_test_months": [
+      "2025-07",
+      "2025-08",
+      "2025-09",
+      "2025-10",
+      "2025-11",
+      "2025-12",
+      "2026-01",
+      "2026-02",
+      "2026-03",
+      "2026-04"
+    ],
+    "locked_test_evaluated": false,
+    "locked_test_outcomes_read": false
+  },
+  "origin_contracts": [
+    {
+      "forecast_origin_month": "2024-01-01",
+      "forecast_issue_date": "2024-01-31",
+      "forecast_issue_datetime_utc": "2024-01-31T07:21:40+00:00",
+      "latest_available_stress_month": "2023-12-01",
+      "calibration_reference_end": "2023-12-01",
+      "release_reference_month": "2023-12-01",
+      "publication_month": "2024-01",
+      "publication_lag_days": 30,
+      "timing_evidence_class": "attachment_corroborated",
+      "target_months": {
+        "1": [
+          "2024-02-01",
+          "2024-02-01"
+        ],
+        "3": [
+          "2024-02-01",
+          "2024-04-01"
+        ]
+      },
+      "split_name": "DEV-1"
+    },
+    {
+      "forecast_origin_month": "2024-02-01",
+      "forecast_issue_date": "2024-02-29",
+      "forecast_issue_datetime_utc": "2024-02-29T05:46:47+00:00",
+      "latest_available_stress_month": "2024-01-01",
+      "calibration_reference_end": "2024-01-01",
+      "release_reference_month": "2024-01-01",
+      "publication_month": "2024-02",
+      "publication_lag_days": 28,
+      "timing_evidence_class": "attachment_corroborated",
+      "target_months": {
+        "1": [
+          "2024-03-01",
+          "2024-03-01"
+        ],
+        "3": [
+          "2024-03-01",
+          "2024-05-01"
+        ]
+      },
+      "split_name": "DEV-1"
+    },
+    {
+      "forecast_origin_month": "2024-03-01",
+      "forecast_issue_date": "2024-03-28",
+      "forecast_issue_datetime_utc": "2024-03-28T05:35:47+00:00",
+      "latest_available_stress_month": "2024-02-01",
+      "calibration_reference_end": "2024-02-01",
+      "release_reference_month": "2024-02-01",
+      "publication_month": "2024-03",
+      "publication_lag_days": 27,
+      "timing_evidence_class": "attachment_corroborated",
+      "target_months": {
+        "1": [
+          "2024-04-01",
+          "2024-04-01"
+        ],
+        "3": [
+          "2024-04-01",
+          "2024-06-01"
+        ]
+      },
+      "split_name": "DEV-1"
+    },
+    {
+      "forecast_origin_month": "2024-04-01",
+      "forecast_issue_date": "2024-04-30",
+      "forecast_issue_datetime_utc": "2024-04-30T06:13:00+00:00",
+      "latest_available_stress_month": "2024-03-01",
+      "calibration_reference_end": "2024-03-01",
+      "release_reference_month": "2024-03-01",
+      "publication_month": "2024-04",
+      "publication_lag_days": 29,
+      "timing_evidence_class": "attachment_corroborated",
+      "target_months": {
+        "1": [
+          "2024-05-01",
+          "2024-05-01"
+        ],
+        "3": [
+          "2024-05-01",
+          "2024-07-01"
+        ]
+      },
+      "split_name": "DEV-1"
+    },
+    {
+      "forecast_origin_month": "2024-05-01",
+      "forecast_issue_date": "2024-05-30",
+      "forecast_issue_datetime_utc": "2024-05-30T06:01:38+00:00",
+      "latest_available_stress_month": "2024-04-01",
+      "calibration_reference_end": "2024-04-01",
+      "release_reference_month": "2024-04-01",
+      "publication_month": "2024-05",
+      "publication_lag_days": 29,
+      "timing_evidence_class": "rehosted_listing_later_than_attachment",
+      "target_months": {
+        "1": [
+          "2024-06-01",
+          "2024-06-01"
+        ],
+        "3": [
+          "2024-06-01",
+          "2024-08-01"
+        ]
+      },
+      "split_name": "DEV-1"
+    },
+    {
+      "forecast_origin_month": "2024-06-01",
+      "forecast_issue_date": "2024-06-28",
+      "forecast_issue_datetime_utc": "2024-06-28T06:28:11+00:00",
+      "latest_available_stress_month": "2024-05-01",
+      "calibration_reference_end": "2024-05-01",
+      "release_reference_month": "2024-05-01",
+      "publication_month": "2024-06",
+      "publication_lag_days": 27,
+      "timing_evidence_class": "attachment_corroborated",
+      "target_months": {
+        "1": [
+          "2024-07-01",
+          "2024-07-01"
+        ],
+        "3": [
+          "2024-07-01",
+          "2024-09-01"
+        ]
+      },
+      "split_name": "DEV-2"
+    },
+    {
+      "forecast_origin_month": "2024-07-01",
+      "forecast_issue_date": "2024-07-31",
+      "forecast_issue_datetime_utc": "2024-07-31T06:18:15+00:00",
+      "latest_available_stress_month": "2024-06-01",
+      "calibration_reference_end": "2024-06-01",
+      "release_reference_month": "2024-06-01",
+      "publication_month": "2024-07",
+      "publication_lag_days": 30,
+      "timing_evidence_class": "attachment_corroborated",
+      "target_months": {
+        "1": [
+          "2024-08-01",
+          "2024-08-01"
+        ],
+        "3": [
+          "2024-08-01",
+          "2024-10-01"
+        ]
+      },
+      "split_name": "DEV-2"
+    },
+    {
+      "forecast_origin_month": "2024-08-01",
+      "forecast_issue_date": "2024-08-30",
+      "forecast_issue_datetime_utc": "2024-08-30T05:58:25+00:00",
+      "latest_available_stress_month": "2024-07-01",
+      "calibration_reference_end": "2024-07-01",
+      "release_reference_month": "2024-07-01",
+      "publication_month": "2024-08",
+      "publication_lag_days": 29,
+      "timing_evidence_class": "attachment_corroborated",
+      "target_months": {
+        "1": [
+          "2024-09-01",
+          "2024-09-01"
+        ],
+        "3": [
+          "2024-09-01",
+          "2024-11-01"
+        ]
+      },
+      "split_name": "DEV-2"
+    },
+    {
+      "forecast_origin_month": "2024-09-01",
+      "forecast_issue_date": "2024-09-26",
+      "forecast_issue_datetime_utc": "2024-09-26T06:24:19+00:00",
+      "latest_available_stress_month": "2024-08-01",
+      "calibration_reference_end": "2024-08-01",
+      "release_reference_month": "2024-08-01",
+      "publication_month": "2024-09",
+      "publication_lag_days": 25,
+      "timing_evidence_class": "attachment_corroborated",
+      "target_months": {
+        "1": [
+          "2024-10-01",
+          "2024-10-01"
+        ],
+        "3": [
+          "2024-10-01",
+          "2024-12-01"
+        ]
+      },
+      "split_name": "DEV-2"
+    },
+    {
+      "forecast_origin_month": "2024-10-01",
+      "forecast_issue_date": "2024-10-30",
+      "forecast_issue_datetime_utc": "2024-10-30T06:00:31+00:00",
+      "latest_available_stress_month": "2024-09-01",
+      "calibration_reference_end": "2024-09-01",
+      "release_reference_month": "2024-09-01",
+      "publication_month": "2024-10",
+      "publication_lag_days": 29,
+      "timing_evidence_class": "attachment_corroborated",
+      "target_months": {
+        "1": [
+          "2024-11-01",
+          "2024-11-01"
+        ],
+        "3": [
+          "2024-11-01",
+          "2025-01-01"
+        ]
+      },
+      "split_name": "DEV-2"
+    },
+    {
+      "forecast_origin_month": "2024-11-01",
+      "forecast_issue_date": "2024-11-27",
+      "forecast_issue_datetime_utc": "2024-11-27T07:06:55+00:00",
+      "latest_available_stress_month": "2024-10-01",
+      "calibration_reference_end": "2024-10-01",
+      "release_reference_month": "2024-10-01",
+      "publication_month": "2024-11",
+      "publication_lag_days": 26,
+      "timing_evidence_class": "attachment_corroborated",
+      "target_months": {
+        "1": [
+          "2024-12-01",
+          "2024-12-01"
+        ],
+        "3": [
+          "2024-12-01",
+          "2025-02-01"
+        ]
+      },
+      "split_name": "DEV-3"
+    },
+    {
+      "forecast_origin_month": "2024-12-01",
+      "forecast_issue_date": "2024-12-27",
+      "forecast_issue_datetime_utc": "2024-12-27T07:45:50+00:00",
+      "latest_available_stress_month": "2024-11-01",
+      "calibration_reference_end": "2024-11-01",
+      "release_reference_month": "2024-11-01",
+      "publication_month": "2024-12",
+      "publication_lag_days": 26,
+      "timing_evidence_class": "attachment_corroborated",
+      "target_months": {
+        "1": [
+          "2025-01-01",
+          "2025-01-01"
+        ],
+        "3": [
+          "2025-01-01",
+          "2025-03-01"
+        ]
+      },
+      "split_name": "DEV-3"
+    },
+    {
+      "forecast_origin_month": "2025-01-01",
+      "forecast_issue_date": "2025-01-30",
+      "forecast_issue_datetime_utc": "2025-01-30T05:40:40+00:00",
+      "latest_available_stress_month": "2024-12-01",
+      "calibration_reference_end": "2024-12-01",
+      "release_reference_month": "2024-12-01",
+      "publication_month": "2025-01",
+      "publication_lag_days": 29,
+      "timing_evidence_class": "attachment_corroborated",
+      "target_months": {
+        "1": [
+          "2025-02-01",
+          "2025-02-01"
+        ],
+        "3": [
+          "2025-02-01",
+          "2025-04-01"
+        ]
+      },
+      "split_name": "DEV-3"
+    },
+    {
+      "forecast_origin_month": "2025-02-01",
+      "forecast_issue_date": "2025-02-27",
+      "forecast_issue_datetime_utc": "2025-02-27T06:49:36+00:00",
+      "latest_available_stress_month": "2025-01-01",
+      "calibration_reference_end": "2025-01-01",
+      "release_reference_month": "2025-01-01",
+      "publication_month": "2025-02",
+      "publication_lag_days": 26,
+      "timing_evidence_class": "attachment_corroborated",
+      "target_months": {
+        "1": [
+          "2025-03-01",
+          "2025-03-01"
+        ],
+        "3": [
+          "2025-03-01",
+          "2025-05-01"
+        ]
+      },
+      "split_name": "DEV-3"
+    },
+    {
+      "forecast_origin_month": "2025-03-01",
+      "forecast_issue_date": "2025-03-28",
+      "forecast_issue_datetime_utc": "2025-03-28T04:14:49+00:00",
+      "latest_available_stress_month": "2025-02-01",
+      "calibration_reference_end": "2025-02-01",
+      "release_reference_month": "2025-02-01",
+      "publication_month": "2025-03",
+      "publication_lag_days": 27,
+      "timing_evidence_class": "rehosted_listing_later_than_attachment",
+      "target_months": {
+        "1": [
+          "2025-04-01",
+          "2025-04-01"
+        ],
+        "3": [
+          "2025-04-01",
+          "2025-06-01"
+        ]
+      },
+      "split_name": "DEV-3"
+    }
+  ],
+  "label_availability": [
+    {
+      "forecast_origin_month": "2024-01-01",
+      "horizon": 1,
+      "latest_permitted_label_origin": "2023-11-01",
+      "row_count": 276,
+      "max_target_window_end": "2023-12-01",
+      "max_target_available_month": "2024-01-01"
+    },
+    {
+      "forecast_origin_month": "2024-01-01",
+      "horizon": 3,
+      "latest_permitted_label_origin": "2023-09-01",
+      "row_count": 252,
+      "max_target_window_end": "2023-12-01",
+      "max_target_available_month": "2024-01-01"
+    },
+    {
+      "forecast_origin_month": "2024-02-01",
+      "horizon": 1,
+      "latest_permitted_label_origin": "2023-12-01",
+      "row_count": 288,
+      "max_target_window_end": "2024-01-01",
+      "max_target_available_month": "2024-02-01"
+    },
+    {
+      "forecast_origin_month": "2024-02-01",
+      "horizon": 3,
+      "latest_permitted_label_origin": "2023-10-01",
+      "row_count": 264,
+      "max_target_window_end": "2024-01-01",
+      "max_target_available_month": "2024-02-01"
+    },
+    {
+      "forecast_origin_month": "2024-03-01",
+      "horizon": 1,
+      "latest_permitted_label_origin": "2024-01-01",
+      "row_count": 300,
+      "max_target_window_end": "2024-02-01",
+      "max_target_available_month": "2024-03-01"
+    },
+    {
+      "forecast_origin_month": "2024-03-01",
+      "horizon": 3,
+      "latest_permitted_label_origin": "2023-11-01",
+      "row_count": 276,
+      "max_target_window_end": "2024-02-01",
+      "max_target_available_month": "2024-03-01"
+    },
+    {
+      "forecast_origin_month": "2024-04-01",
+      "horizon": 1,
+      "latest_permitted_label_origin": "2024-02-01",
+      "row_count": 312,
+      "max_target_window_end": "2024-03-01",
+      "max_target_available_month": "2024-04-01"
+    },
+    {
+      "forecast_origin_month": "2024-04-01",
+      "horizon": 3,
+      "latest_permitted_label_origin": "2023-12-01",
+      "row_count": 288,
+      "max_target_window_end": "2024-03-01",
+      "max_target_available_month": "2024-04-01"
+    },
+    {
+      "forecast_origin_month": "2024-05-01",
+      "horizon": 1,
+      "latest_permitted_label_origin": "2024-03-01",
+      "row_count": 324,
+      "max_target_window_end": "2024-04-01",
+      "max_target_available_month": "2024-05-01"
+    },
+    {
+      "forecast_origin_month": "2024-05-01",
+      "horizon": 3,
+      "latest_permitted_label_origin": "2024-01-01",
+      "row_count": 300,
+      "max_target_window_end": "2024-04-01",
+      "max_target_available_month": "2024-05-01"
+    },
+    {
+      "forecast_origin_month": "2024-06-01",
+      "horizon": 1,
+      "latest_permitted_label_origin": "2024-04-01",
+      "row_count": 336,
+      "max_target_window_end": "2024-05-01",
+      "max_target_available_month": "2024-06-01"
+    },
+    {
+      "forecast_origin_month": "2024-06-01",
+      "horizon": 3,
+      "latest_permitted_label_origin": "2024-02-01",
+      "row_count": 312,
+      "max_target_window_end": "2024-05-01",
+      "max_target_available_month": "2024-06-01"
+    },
+    {
+      "forecast_origin_month": "2024-07-01",
+      "horizon": 1,
+      "latest_permitted_label_origin": "2024-05-01",
+      "row_count": 348,
+      "max_target_window_end": "2024-06-01",
+      "max_target_available_month": "2024-07-01"
+    },
+    {
+      "forecast_origin_month": "2024-07-01",
+      "horizon": 3,
+      "latest_permitted_label_origin": "2024-03-01",
+      "row_count": 324,
+      "max_target_window_end": "2024-06-01",
+      "max_target_available_month": "2024-07-01"
+    },
+    {
+      "forecast_origin_month": "2024-08-01",
+      "horizon": 1,
+      "latest_permitted_label_origin": "2024-06-01",
+      "row_count": 360,
+      "max_target_window_end": "2024-07-01",
+      "max_target_available_month": "2024-08-01"
+    },
+    {
+      "forecast_origin_month": "2024-08-01",
+      "horizon": 3,
+      "latest_permitted_label_origin": "2024-04-01",
+      "row_count": 336,
+      "max_target_window_end": "2024-07-01",
+      "max_target_available_month": "2024-08-01"
+    },
+    {
+      "forecast_origin_month": "2024-09-01",
+      "horizon": 1,
+      "latest_permitted_label_origin": "2024-07-01",
+      "row_count": 372,
+      "max_target_window_end": "2024-08-01",
+      "max_target_available_month": "2024-09-01"
+    },
+    {
+      "forecast_origin_month": "2024-09-01",
+      "horizon": 3,
+      "latest_permitted_label_origin": "2024-05-01",
+      "row_count": 348,
+      "max_target_window_end": "2024-08-01",
+      "max_target_available_month": "2024-09-01"
+    },
+    {
+      "forecast_origin_month": "2024-10-01",
+      "horizon": 1,
+      "latest_permitted_label_origin": "2024-08-01",
+      "row_count": 384,
+      "max_target_window_end": "2024-09-01",
+      "max_target_available_month": "2024-10-01"
+    },
+    {
+      "forecast_origin_month": "2024-10-01",
+      "horizon": 3,
+      "latest_permitted_label_origin": "2024-06-01",
+      "row_count": 360,
+      "max_target_window_end": "2024-09-01",
+      "max_target_available_month": "2024-10-01"
+    },
+    {
+      "forecast_origin_month": "2024-11-01",
+      "horizon": 1,
+      "latest_permitted_label_origin": "2024-09-01",
+      "row_count": 396,
+      "max_target_window_end": "2024-10-01",
+      "max_target_available_month": "2024-11-01"
+    },
+    {
+      "forecast_origin_month": "2024-11-01",
+      "horizon": 3,
+      "latest_permitted_label_origin": "2024-07-01",
+      "row_count": 372,
+      "max_target_window_end": "2024-10-01",
+      "max_target_available_month": "2024-11-01"
+    },
+    {
+      "forecast_origin_month": "2024-12-01",
+      "horizon": 1,
+      "latest_permitted_label_origin": "2024-10-01",
+      "row_count": 408,
+      "max_target_window_end": "2024-11-01",
+      "max_target_available_month": "2024-12-01"
+    },
+    {
+      "forecast_origin_month": "2024-12-01",
+      "horizon": 3,
+      "latest_permitted_label_origin": "2024-08-01",
+      "row_count": 384,
+      "max_target_window_end": "2024-11-01",
+      "max_target_available_month": "2024-12-01"
+    },
+    {
+      "forecast_origin_month": "2025-01-01",
+      "horizon": 1,
+      "latest_permitted_label_origin": "2024-11-01",
+      "row_count": 420,
+      "max_target_window_end": "2024-12-01",
+      "max_target_available_month": "2025-01-01"
+    },
+    {
+      "forecast_origin_month": "2025-01-01",
+      "horizon": 3,
+      "latest_permitted_label_origin": "2024-09-01",
+      "row_count": 396,
+      "max_target_window_end": "2024-12-01",
+      "max_target_available_month": "2025-01-01"
+    },
+    {
+      "forecast_origin_month": "2025-02-01",
+      "horizon": 1,
+      "latest_permitted_label_origin": "2024-12-01",
+      "row_count": 432,
+      "max_target_window_end": "2025-01-01",
+      "max_target_available_month": "2025-02-01"
+    },
+    {
+      "forecast_origin_month": "2025-02-01",
+      "horizon": 3,
+      "latest_permitted_label_origin": "2024-10-01",
+      "row_count": 408,
+      "max_target_window_end": "2025-01-01",
+      "max_target_available_month": "2025-02-01"
+    },
+    {
+      "forecast_origin_month": "2025-03-01",
+      "horizon": 1,
+      "latest_permitted_label_origin": "2025-01-01",
+      "row_count": 444,
+      "max_target_window_end": "2025-02-01",
+      "max_target_available_month": "2025-03-01"
+    },
+    {
+      "forecast_origin_month": "2025-03-01",
+      "horizon": 3,
+      "latest_permitted_label_origin": "2024-11-01",
+      "row_count": 420,
+      "max_target_window_end": "2025-02-01",
+      "max_target_available_month": "2025-03-01"
+    }
+  ],
+  "prediction_counts": {
+    "total": 1620,
+    "horizon_1": 720,
+    "horizon_3": 900,
+    "per_horizon_baseline": {
+      "h1_operational_persistence_latest_published": 180,
+      "h1_operational_industry_historical_mean": 180,
+      "h1_operational_seasonal_naive": 180,
+      "h1_operational_no_contraction": 180,
+      "h3_operational_persistence_latest_published": 180,
+      "h3_operational_persistence_trailing_3m_max": 180,
+      "h3_operational_industry_historical_mean": 180,
+      "h3_operational_seasonal_naive": 180,
+      "h3_operational_no_contraction": 180
+    }
+  },
+  "metrics": {
+    "1": {
+      "baselines": {
+        "operational_persistence_latest_published": {
+          "macro_industry_mae": 17.094469420180285,
+          "pooled_mae": 17.094469420180282,
+          "macro_industry_rmse": 20.742740359732483,
+          "pooled_rmse": 21.367471960435513,
+          "median_absolute_error": 14.932432432432432,
+          "pooled_spearman": 0.6918365730425987,
+          "per_industry_mae": {
+            "IND-01": 21.70392707718453,
+            "IND-02": 15.744954803469756,
+            "IND-03": 13.544061774930942,
+            "IND-04": 16.705280021727162,
+            "IND-05": 22.65048151983448,
+            "IND-06": 24.83607809558951,
+            "IND-07": 16.010194306617073,
+            "IND-08": 17.038521932732145,
+            "IND-09": 9.8766947699495,
+            "IND-10": 14.046078018634315,
+            "IND-11": 14.643736932153011,
+            "IND-12": 18.333623789340997
+          },
+          "by_development_block": {
+            "DEV-1": 16.164814814814815,
+            "DEV-2": 14.261617495870835,
+            "DEV-3": 20.8569759498552
+          },
+          "high_stress": {
+            "threshold": 85.0,
+            "observed_events": 21,
+            "predicted_events": 23,
+            "true_positive": 13,
+            "false_positive": 10,
+            "false_negative": 8,
+            "precision": 0.5652173913043478,
+            "recall": 0.6190476190476191,
+            "f1": 0.5909090909090909,
+            "pr_auc": 0.5680990721087374,
+            "pr_auc_undefined_reason": null
+          },
+          "severe_counts": {
+            "threshold": 95.0,
+            "observed_events": 12,
+            "predicted_events": 12,
+            "both": 4,
+            "reporting": "descriptive_counts_only",
+            "note": "Too few events for stable rate metrics; not used for selection."
+          },
+          "rows": 180,
+          "macro_mae_ci": {
+            "point_estimate": 17.094469420180285,
+            "ci_low": 14.891864116818587,
+            "ci_high": 19.471975771262084,
+            "replications": 1000,
+            "block_length_months": 3,
+            "seed": 20260828,
+            "cluster_unit": "forecast_origin_month",
+            "n_month_clusters": 15,
+            "keeps_all_industries_together": true
+          },
+          "mae_skill_vs_reference": 0.3887769805303991,
+          "paired_vs_reference": {
+            "point_estimate": -10.873177209055473,
+            "ci_low": -16.809419221620743,
+            "ci_high": -4.5024576896947215,
+            "replications": 1000,
+            "block_length_months": 3,
+            "seed": 20260828,
+            "cluster_unit": "forecast_origin_month",
+            "paired": true,
+            "verdict": "excludes_zero",
+            "conclusive": true
+          }
+        },
+        "operational_industry_historical_mean": {
+          "macro_industry_mae": 27.96764662923576,
+          "pooled_mae": 27.967646629235762,
+          "macro_industry_rmse": 31.717337422526608,
+          "pooled_rmse": 32.2968535292039,
+          "median_absolute_error": 28.698717948717952,
+          "pooled_spearman": -0.5601190169594058,
+          "per_industry_mae": {
+            "IND-01": 19.80211807954345,
+            "IND-02": 21.240946138118595,
+            "IND-03": 20.186783292358836,
+            "IND-04": 26.316093299292074,
+            "IND-05": 29.810965851483342,
+            "IND-06": 19.16394796713621,
+            "IND-07": 32.0183319244097,
+            "IND-08": 38.305859868062655,
+            "IND-09": 40.17053946335417,
+            "IND-10": 32.206180314842356,
+            "IND-11": 34.82599633354827,
+            "IND-12": 21.563997018679444
+          },
+          "by_development_block": {
+            "DEV-1": 31.26615658898268,
+            "DEV-2": 30.565703966809355,
+            "DEV-3": 22.071079331915247
+          },
+          "high_stress": {
+            "threshold": 85.0,
+            "observed_events": 21,
+            "predicted_events": 0,
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 21,
+            "precision": null,
+            "recall": 0.0,
+            "f1": null,
+            "pr_auc": 0.06966656605125837,
+            "pr_auc_undefined_reason": null
+          },
+          "severe_counts": {
+            "threshold": 95.0,
+            "observed_events": 12,
+            "predicted_events": 0,
+            "both": 0,
+            "reporting": "descriptive_counts_only",
+            "note": "Too few events for stable rate metrics; not used for selection."
+          },
+          "rows": 180,
+          "macro_mae_ci": {
+            "point_estimate": 27.96764662923576,
+            "ci_low": 24.2529138888575,
+            "ci_high": 32.42948731458364,
+            "replications": 1000,
+            "block_length_months": 3,
+            "seed": 20260828,
+            "cluster_unit": "forecast_origin_month",
+            "n_month_clusters": 15,
+            "keeps_all_industries_together": true
+          },
+          "mae_skill_vs_reference": 0.0
+        },
+        "operational_seasonal_naive": {
+          "macro_industry_mae": 40.12999114004463,
+          "pooled_mae": 40.12999114004464,
+          "macro_industry_rmse": 46.34139877300313,
+          "pooled_rmse": 46.77838091917611,
+          "median_absolute_error": 36.20689655172414,
+          "pooled_spearman": -0.2293651057944615,
+          "per_industry_mae": {
+            "IND-01": 40.79857945956149,
+            "IND-02": 43.210059417036504,
+            "IND-03": 37.20356897812261,
+            "IND-04": 31.613661403299975,
+            "IND-05": 39.19140280288955,
+            "IND-06": 38.40514893459593,
+            "IND-07": 27.872195343765252,
+            "IND-08": 43.91418366870337,
+            "IND-09": 51.4912579795481,
+            "IND-10": 50.89226053450094,
+            "IND-11": 34.358055274286315,
+            "IND-12": 42.609519884225556
+          },
+          "by_development_block": {
+            "DEV-1": 43.37684167684168,
+            "DEV-2": 45.58448992146156,
+            "DEV-3": 31.428641821830677
+          },
+          "high_stress": {
+            "threshold": 85.0,
+            "observed_events": 21,
+            "predicted_events": 29,
+            "true_positive": 1,
+            "false_positive": 28,
+            "false_negative": 20,
+            "precision": 0.034482758620689655,
+            "recall": 0.047619047619047616,
+            "f1": 0.04,
+            "pr_auc": 0.10925239704819074,
+            "pr_auc_undefined_reason": null
+          },
+          "severe_counts": {
+            "threshold": 95.0,
+            "observed_events": 12,
+            "predicted_events": 6,
+            "both": 0,
+            "reporting": "descriptive_counts_only",
+            "note": "Too few events for stable rate metrics; not used for selection."
+          },
+          "rows": 180,
+          "macro_mae_ci": {
+            "point_estimate": 40.12999114004463,
+            "ci_low": 34.77080194263952,
+            "ci_high": 45.96669275533685,
+            "replications": 1000,
+            "block_length_months": 3,
+            "seed": 20260828,
+            "cluster_unit": "forecast_origin_month",
+            "n_month_clusters": 15,
+            "keeps_all_industries_together": true
+          },
+          "mae_skill_vs_reference": -0.4348719315587697,
+          "paired_vs_reference": {
+            "point_estimate": 12.162344510808872,
+            "ci_low": 9.936727720907886,
+            "ci_high": 14.599494272418678,
+            "replications": 1000,
+            "block_length_months": 3,
+            "seed": 20260828,
+            "cluster_unit": "forecast_origin_month",
+            "paired": true,
+            "verdict": "excludes_zero",
+            "conclusive": true
+          }
+        },
+        "operational_no_contraction": {
+          "macro_industry_mae": 19.445323994788307,
+          "pooled_mae": 19.44532399478831,
+          "macro_industry_rmse": 23.331501220882064,
+          "pooled_rmse": 24.661738816245368,
+          "median_absolute_error": 14.495798319327733,
+          "pooled_spearman": 0.605857859192945,
+          "per_industry_mae": {
+            "IND-01": 26.45403939864913,
+            "IND-02": 11.108253510187604,
+            "IND-03": 12.051294087844445,
+            "IND-04": 12.963133563362435,
+            "IND-05": 20.630516325538945,
+            "IND-06": 19.20157493373502,
+            "IND-07": 30.333028248544977,
+            "IND-08": 11.465958892570965,
+            "IND-09": 10.693822563700888,
+            "IND-10": 28.906690650156563,
+            "IND-11": 33.48172018406576,
+            "IND-12": 16.05385557910299
+          },
+          "by_development_block": {
+            "DEV-1": 20.862895129561796,
+            "DEV-2": 21.56274613487489,
+            "DEV-3": 15.910330719928242
+          },
+          "high_stress": {
+            "threshold": 85.0,
+            "observed_events": 21,
+            "predicted_events": 0,
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 21,
+            "precision": null,
+            "recall": 0.0,
+            "f1": null,
+            "pr_auc": 0.25331208052820997,
+            "pr_auc_undefined_reason": null
+          },
+          "severe_counts": {
+            "threshold": 95.0,
+            "observed_events": 12,
+            "predicted_events": 0,
+            "both": 0,
+            "reporting": "descriptive_counts_only",
+            "note": "Too few events for stable rate metrics; not used for selection."
+          },
+          "rows": 180,
+          "macro_mae_ci": {
+            "point_estimate": 19.445323994788307,
+            "ci_low": 16.767569547912867,
+            "ci_high": 21.51570660047826,
+            "replications": 1000,
+            "block_length_months": 3,
+            "seed": 20260828,
+            "cluster_unit": "forecast_origin_month",
+            "n_month_clusters": 15,
+            "keeps_all_industries_together": true
+          },
+          "mae_skill_vs_reference": 0.3047207635103165,
+          "paired_vs_reference": {
+            "point_estimate": -8.522322634447452,
+            "ci_low": -11.362811234912465,
+            "ci_high": -6.496721171650114,
+            "replications": 1000,
+            "block_length_months": 3,
+            "seed": 20260828,
+            "cluster_unit": "forecast_origin_month",
+            "paired": true,
+            "verdict": "excludes_zero",
+            "conclusive": true
+          }
+        }
+      },
+      "paired_differences": {
+        "operational_industry_historical_mean__vs__operational_no_contraction": {
+          "point_estimate": 8.522322634447452,
+          "ci_low": 6.444301021669155,
+          "ci_high": 11.402298444204094,
+          "replications": 1000,
+          "block_length_months": 3,
+          "seed": 20260828,
+          "cluster_unit": "forecast_origin_month",
+          "paired": true,
+          "verdict": "excludes_zero",
+          "conclusive": true
+        },
+        "operational_industry_historical_mean__vs__operational_persistence_latest_published": {
+          "point_estimate": 10.873177209055473,
+          "ci_low": 5.083611015162097,
+          "ci_high": 17.17872002684068,
+          "replications": 1000,
+          "block_length_months": 3,
+          "seed": 20260828,
+          "cluster_unit": "forecast_origin_month",
+          "paired": true,
+          "verdict": "excludes_zero",
+          "conclusive": true
+        },
+        "operational_industry_historical_mean__vs__operational_seasonal_naive": {
+          "point_estimate": -12.162344510808872,
+          "ci_low": -14.65118752543437,
+          "ci_high": -9.75711743100496,
+          "replications": 1000,
+          "block_length_months": 3,
+          "seed": 20260828,
+          "cluster_unit": "forecast_origin_month",
+          "paired": true,
+          "verdict": "excludes_zero",
+          "conclusive": true
+        },
+        "operational_no_contraction__vs__operational_persistence_latest_published": {
+          "point_estimate": 2.3508545746080216,
+          "ci_low": -2.647787528444476,
+          "ci_high": 6.5716331817505305,
+          "replications": 1000,
+          "block_length_months": 3,
+          "seed": 20260828,
+          "cluster_unit": "forecast_origin_month",
+          "paired": true,
+          "verdict": "inconclusive",
+          "conclusive": false
+        },
+        "operational_no_contraction__vs__operational_seasonal_naive": {
+          "point_estimate": -20.684667145256324,
+          "ci_low": -24.674096189410278,
+          "ci_high": -16.980529052382906,
+          "replications": 1000,
+          "block_length_months": 3,
+          "seed": 20260828,
+          "cluster_unit": "forecast_origin_month",
+          "paired": true,
+          "verdict": "excludes_zero",
+          "conclusive": true
+        },
+        "operational_persistence_latest_published__vs__operational_seasonal_naive": {
+          "point_estimate": -23.035521719864345,
+          "ci_low": -30.319350584316346,
+          "ci_high": -15.872383642778379,
+          "replications": 1000,
+          "block_length_months": 3,
+          "seed": 20260828,
+          "cluster_unit": "forecast_origin_month",
+          "paired": true,
+          "verdict": "excludes_zero",
+          "conclusive": true
+        }
+      }
+    },
+    "3": {
+      "baselines": {
+        "operational_persistence_latest_published": {
+          "macro_industry_mae": 18.36696767831577,
+          "pooled_mae": 18.366967678315767,
+          "macro_industry_rmse": 22.33855128344752,
+          "pooled_rmse": 23.43881833137808,
+          "median_absolute_error": 15.892857142857142,
+          "pooled_spearman": 0.6922393916083214,
+          "per_industry_mae": {
+            "IND-01": 28.91269562574081,
+            "IND-02": 14.366162423445212,
+            "IND-03": 16.351659828303166,
+            "IND-04": 17.24611321341424,
+            "IND-05": 29.78500792980927,
+            "IND-06": 23.373360682110675,
+            "IND-07": 11.56301216206651,
+            "IND-08": 13.748210935222117,
+            "IND-09": 9.26668113188526,
+            "IND-10": 23.615296721676547,
+            "IND-11": 13.535961937883764,
+            "IND-12": 18.639449548231656
+          },
+          "by_development_block": {
+            "DEV-1": 14.994987111653778,
+            "DEV-2": 16.511399801687624,
+            "DEV-3": 23.594516121605903
+          },
+          "high_stress": {
+            "threshold": 85.0,
+            "observed_events": 28,
+            "predicted_events": 23,
+            "true_positive": 18,
+            "false_positive": 5,
+            "false_negative": 10,
+            "precision": 0.782608695652174,
+            "recall": 0.6428571428571429,
+            "f1": 0.7058823529411765,
+            "pr_auc": 0.6930364240805443,
+            "pr_auc_undefined_reason": null
+          },
+          "severe_counts": {
+            "threshold": 95.0,
+            "observed_events": 21,
+            "predicted_events": 12,
+            "both": 7,
+            "reporting": "descriptive_counts_only",
+            "note": "Too few events for stable rate metrics; not used for selection."
+          },
+          "rows": 180,
+          "macro_mae_ci": {
+            "point_estimate": 18.36696767831577,
+            "ci_low": 15.843199208098461,
+            "ci_high": 21.87002223691288,
+            "replications": 1000,
+            "block_length_months": 3,
+            "seed": 20260828,
+            "cluster_unit": "forecast_origin_month",
+            "n_month_clusters": 15,
+            "keeps_all_industries_together": true
+          },
+          "mae_skill_vs_reference": 0.3802883582316142,
+          "paired_vs_reference": {
+            "point_estimate": -11.270958157488256,
+            "ci_low": -19.205514830236428,
+            "ci_high": -2.200194577795389,
+            "replications": 1000,
+            "block_length_months": 3,
+            "seed": 20260828,
+            "cluster_unit": "forecast_origin_month",
+            "paired": true,
+            "verdict": "excludes_zero",
+            "conclusive": true
+          }
+        },
+        "operational_persistence_trailing_3m_max": {
+          "macro_industry_mae": 16.63380109495526,
+          "pooled_mae": 16.633801094955256,
+          "macro_industry_rmse": 21.23588402530078,
+          "pooled_rmse": 22.862369887469935,
+          "median_absolute_error": 13.235294117647058,
+          "pooled_spearman": 0.6693138218346627,
+          "per_industry_mae": {
+            "IND-01": 32.14965390448408,
+            "IND-02": 14.792139770799796,
+            "IND-03": 10.274278375155724,
+            "IND-04": 8.0149471005277,
+            "IND-05": 17.308153831009225,
+            "IND-06": 18.371419722417205,
+            "IND-07": 12.323353791538269,
+            "IND-08": 16.70201452721652,
+            "IND-09": 16.096280267253874,
+            "IND-10": 29.178794905620652,
+            "IND-11": 12.311334593361074,
+            "IND-12": 12.083242350078983
+          },
+          "by_development_block": {
+            "DEV-1": 18.666870166870165,
+            "DEV-2": 13.340297440478196,
+            "DEV-3": 17.89423567751741
+          },
+          "high_stress": {
+            "threshold": 85.0,
+            "observed_events": 28,
+            "predicted_events": 40,
+            "true_positive": 24,
+            "false_positive": 16,
+            "false_negative": 4,
+            "precision": 0.6,
+            "recall": 0.8571428571428571,
+            "f1": 0.7058823529411764,
+            "pr_auc": 0.6169281689560444,
+            "pr_auc_undefined_reason": null
+          },
+          "severe_counts": {
+            "threshold": 95.0,
+            "observed_events": 21,
+            "predicted_events": 29,
+            "both": 17,
+            "reporting": "descriptive_counts_only",
+            "note": "Too few events for stable rate metrics; not used for selection."
+          },
+          "rows": 180,
+          "macro_mae_ci": {
+            "point_estimate": 16.63380109495526,
+            "ci_low": 13.534104624985016,
+            "ci_high": 18.799259092758565,
+            "replications": 1000,
+            "block_length_months": 3,
+            "seed": 20260828,
+            "cluster_unit": "forecast_origin_month",
+            "n_month_clusters": 15,
+            "keeps_all_industries_together": true
+          },
+          "mae_skill_vs_reference": 0.43876635675831144,
+          "paired_vs_reference": {
+            "point_estimate": -13.004124740848766,
+            "ci_low": -19.607884822415222,
+            "ci_high": -7.1131889456477095,
+            "replications": 1000,
+            "block_length_months": 3,
+            "seed": 20260828,
+            "cluster_unit": "forecast_origin_month",
+            "paired": true,
+            "verdict": "excludes_zero",
+            "conclusive": true
+          }
+        },
+        "operational_industry_historical_mean": {
+          "macro_industry_mae": 29.637925835804026,
+          "pooled_mae": 29.637925835804023,
+          "macro_industry_rmse": 32.84036841816438,
+          "pooled_rmse": 34.80080042837248,
+          "median_absolute_error": 26.749542558959064,
+          "pooled_spearman": -0.3192517043927337,
+          "per_industry_mae": {
+            "IND-01": 23.86109208213815,
+            "IND-02": 23.90322095469049,
+            "IND-03": 21.8506462136996,
+            "IND-04": 16.136115422668738,
+            "IND-05": 21.686735784182112,
+            "IND-06": 19.837382902333456,
+            "IND-07": 28.650150988241872,
+            "IND-08": 52.221232440402154,
+            "IND-09": 53.9601697456833,
+            "IND-10": 44.33160774220232,
+            "IND-11": 30.455658469415813,
+            "IND-12": 18.761097283990274
+          },
+          "by_development_block": {
+            "DEV-1": 37.414566959252944,
+            "DEV-2": 30.138378798637877,
+            "DEV-3": 21.360831749521243
+          },
+          "high_stress": {
+            "threshold": 85.0,
+            "observed_events": 28,
+            "predicted_events": 0,
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 28,
+            "precision": null,
+            "recall": 0.0,
+            "f1": null,
+            "pr_auc": 0.11922463359289469,
+            "pr_auc_undefined_reason": null
+          },
+          "severe_counts": {
+            "threshold": 95.0,
+            "observed_events": 21,
+            "predicted_events": 0,
+            "both": 0,
+            "reporting": "descriptive_counts_only",
+            "note": "Too few events for stable rate metrics; not used for selection."
+          },
+          "rows": 180,
+          "macro_mae_ci": {
+            "point_estimate": 29.637925835804026,
+            "ci_low": 24.037426731896815,
+            "ci_high": 35.26635569228545,
+            "replications": 1000,
+            "block_length_months": 3,
+            "seed": 20260828,
+            "cluster_unit": "forecast_origin_month",
+            "n_month_clusters": 15,
+            "keeps_all_industries_together": true
+          },
+          "mae_skill_vs_reference": 0.0
+        },
+        "operational_seasonal_naive": {
+          "macro_industry_mae": 37.61090445569762,
+          "pooled_mae": 37.61090445569763,
+          "macro_industry_rmse": 42.43805018005114,
+          "pooled_rmse": 44.358015265195846,
+          "median_absolute_error": 36.48580121703854,
+          "pooled_spearman": -0.11583512730030822,
+          "per_industry_mae": {
+            "IND-01": 40.148756554299446,
+            "IND-02": 41.08540364151065,
+            "IND-03": 36.73038344074808,
+            "IND-04": 9.48541186959219,
+            "IND-05": 32.73368062177838,
+            "IND-06": 31.64598015239671,
+            "IND-07": 24.177590674344508,
+            "IND-08": 51.11774935082432,
+            "IND-09": 57.23643750691245,
+            "IND-10": 60.07190356843297,
+            "IND-11": 26.430574918648457,
+            "IND-12": 40.46698116888333
+          },
+          "by_development_block": {
+            "DEV-1": 47.085232668566,
+            "DEV-2": 37.35834499050572,
+            "DEV-3": 28.389135708021158
+          },
+          "high_stress": {
+            "threshold": 85.0,
+            "observed_events": 28,
+            "predicted_events": 68,
+            "true_positive": 9,
+            "false_positive": 59,
+            "false_negative": 19,
+            "precision": 0.1323529411764706,
+            "recall": 0.32142857142857145,
+            "f1": 0.18749999999999997,
+            "pr_auc": 0.16070771780133922,
+            "pr_auc_undefined_reason": null
+          },
+          "severe_counts": {
+            "threshold": 95.0,
+            "observed_events": 21,
+            "predicted_events": 19,
+            "both": 0,
+            "reporting": "descriptive_counts_only",
+            "note": "Too few events for stable rate metrics; not used for selection."
+          },
+          "rows": 180,
+          "macro_mae_ci": {
+            "point_estimate": 37.61090445569762,
+            "ci_low": 30.51575427982204,
+            "ci_high": 44.54299382645815,
+            "replications": 1000,
+            "block_length_months": 3,
+            "seed": 20260828,
+            "cluster_unit": "forecast_origin_month",
+            "n_month_clusters": 15,
+            "keeps_all_industries_together": true
+          },
+          "mae_skill_vs_reference": -0.2690127056820508,
+          "paired_vs_reference": {
+            "point_estimate": 7.9729786198935955,
+            "ci_low": 6.053736098973364,
+            "ci_high": 9.304112211198618,
+            "replications": 1000,
+            "block_length_months": 3,
+            "seed": 20260828,
+            "cluster_unit": "forecast_origin_month",
+            "paired": true,
+            "verdict": "excludes_zero",
+            "conclusive": true
+          }
+        },
+        "operational_no_contraction": {
+          "macro_industry_mae": 16.97906065726465,
+          "pooled_mae": 16.97906065726465,
+          "macro_industry_rmse": 19.984396325222885,
+          "pooled_rmse": 22.481998917825376,
+          "median_absolute_error": 12.701612903225808,
+          "pooled_spearman": 0.7034312337503562,
+          "per_industry_mae": {
+            "IND-01": 18.593306676972855,
+            "IND-02": 3.667257573604323,
+            "IND-03": 15.314524807802684,
+            "IND-04": 7.947010449706113,
+            "IND-05": 15.294047112134752,
+            "IND-06": 12.011620737578975,
+            "IND-07": 34.9653425519119,
+            "IND-08": 11.826821283076429,
+            "IND-09": 10.960245707245843,
+            "IND-10": 25.117006929280883,
+            "IND-11": 38.32903246097574,
+            "IND-12": 9.722511596885314
+          },
+          "by_development_block": {
+            "DEV-1": 18.42246981413648,
+            "DEV-2": 18.066625304771858,
+            "DEV-3": 14.448086852885616
+          },
+          "high_stress": {
+            "threshold": 85.0,
+            "observed_events": 28,
+            "predicted_events": 0,
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 28,
+            "precision": null,
+            "recall": 0.0,
+            "f1": null,
+            "pr_auc": 0.32486415002557817,
+            "pr_auc_undefined_reason": null
+          },
+          "severe_counts": {
+            "threshold": 95.0,
+            "observed_events": 21,
+            "predicted_events": 0,
+            "both": 0,
+            "reporting": "descriptive_counts_only",
+            "note": "Too few events for stable rate metrics; not used for selection."
+          },
+          "rows": 180,
+          "macro_mae_ci": {
+            "point_estimate": 16.97906065726465,
+            "ci_low": 15.361851061227568,
+            "ci_high": 18.47233200665774,
+            "replications": 1000,
+            "block_length_months": 3,
+            "seed": 20260828,
+            "cluster_unit": "forecast_origin_month",
+            "n_month_clusters": 15,
+            "keeps_all_industries_together": true
+          },
+          "mae_skill_vs_reference": 0.42711710828450966,
+          "paired_vs_reference": {
+            "point_estimate": -12.658865178539376,
+            "ci_low": -17.496000546390714,
+            "ci_high": -7.897392598915302,
+            "replications": 1000,
+            "block_length_months": 3,
+            "seed": 20260828,
+            "cluster_unit": "forecast_origin_month",
+            "paired": true,
+            "verdict": "excludes_zero",
+            "conclusive": true
+          }
+        }
+      },
+      "paired_differences": {
+        "operational_industry_historical_mean__vs__operational_no_contraction": {
+          "point_estimate": 12.658865178539376,
+          "ci_low": 7.554049442983692,
+          "ci_high": 17.406602050623917,
+          "replications": 1000,
+          "block_length_months": 3,
+          "seed": 20260828,
+          "cluster_unit": "forecast_origin_month",
+          "paired": true,
+          "verdict": "excludes_zero",
+          "conclusive": true
+        },
+        "operational_industry_historical_mean__vs__operational_persistence_latest_published": {
+          "point_estimate": 11.270958157488256,
+          "ci_low": 2.3723444459358256,
+          "ci_high": 19.5566759007777,
+          "replications": 1000,
+          "block_length_months": 3,
+          "seed": 20260828,
+          "cluster_unit": "forecast_origin_month",
+          "paired": true,
+          "verdict": "excludes_zero",
+          "conclusive": true
+        },
+        "operational_industry_historical_mean__vs__operational_persistence_trailing_3m_max": {
+          "point_estimate": 13.004124740848766,
+          "ci_low": 7.4870954104341605,
+          "ci_high": 19.757874288336712,
+          "replications": 1000,
+          "block_length_months": 3,
+          "seed": 20260828,
+          "cluster_unit": "forecast_origin_month",
+          "paired": true,
+          "verdict": "excludes_zero",
+          "conclusive": true
+        },
+        "operational_industry_historical_mean__vs__operational_seasonal_naive": {
+          "point_estimate": -7.9729786198935955,
+          "ci_low": -9.42680578780594,
+          "ci_high": -6.122802092576524,
+          "replications": 1000,
+          "block_length_months": 3,
+          "seed": 20260828,
+          "cluster_unit": "forecast_origin_month",
+          "paired": true,
+          "verdict": "excludes_zero",
+          "conclusive": true
+        },
+        "operational_no_contraction__vs__operational_persistence_latest_published": {
+          "point_estimate": -1.3879070210511202,
+          "ci_low": -5.473152331908392,
+          "ci_high": 2.5238816996047255,
+          "replications": 1000,
+          "block_length_months": 3,
+          "seed": 20260828,
+          "cluster_unit": "forecast_origin_month",
+          "paired": true,
+          "verdict": "inconclusive",
+          "conclusive": false
+        },
+        "operational_no_contraction__vs__operational_persistence_trailing_3m_max": {
+          "point_estimate": 0.3452595623093906,
+          "ci_low": -2.6858233295859226,
+          "ci_high": 4.633257144645368,
+          "replications": 1000,
+          "block_length_months": 3,
+          "seed": 20260828,
+          "cluster_unit": "forecast_origin_month",
+          "paired": true,
+          "verdict": "inconclusive",
+          "conclusive": false
+        },
+        "operational_no_contraction__vs__operational_seasonal_naive": {
+          "point_estimate": -20.63184379843297,
+          "ci_low": -26.754730191475748,
+          "ci_high": -14.306591878598883,
+          "replications": 1000,
+          "block_length_months": 3,
+          "seed": 20260828,
+          "cluster_unit": "forecast_origin_month",
+          "paired": true,
+          "verdict": "excludes_zero",
+          "conclusive": true
+        },
+        "operational_persistence_latest_published__vs__operational_persistence_trailing_3m_max": {
+          "point_estimate": 1.7331665833605108,
+          "ci_low": -1.680400100253485,
+          "ci_high": 6.808601627542489,
+          "replications": 1000,
+          "block_length_months": 3,
+          "seed": 20260828,
+          "cluster_unit": "forecast_origin_month",
+          "paired": true,
+          "verdict": "inconclusive",
+          "conclusive": false
+        },
+        "operational_persistence_latest_published__vs__operational_seasonal_naive": {
+          "point_estimate": -19.24393677738185,
+          "ci_low": -28.30206646694462,
+          "ci_high": -8.624629082843825,
+          "replications": 1000,
+          "block_length_months": 3,
+          "seed": 20260828,
+          "cluster_unit": "forecast_origin_month",
+          "paired": true,
+          "verdict": "excludes_zero",
+          "conclusive": true
+        },
+        "operational_persistence_trailing_3m_max__vs__operational_seasonal_naive": {
+          "point_estimate": -20.977103360742362,
+          "ci_low": -28.574893284834886,
+          "ci_high": -14.245849281910942,
+          "replications": 1000,
+          "block_length_months": 3,
+          "seed": 20260828,
+          "cluster_unit": "forecast_origin_month",
+          "paired": true,
+          "verdict": "excludes_zero",
+          "conclusive": true
+        }
+      }
+    }
+  },
+  "benchmark_selection": {
+    "1": {
+      "selected_benchmark": "operational_persistence_latest_published",
+      "rule_applied": "lowest_macro_industry_mae",
+      "macro_industry_mae": 17.094469420180285,
+      "candidates_considered": [
+        "operational_persistence_latest_published",
+        "operational_no_contraction",
+        "operational_industry_historical_mean",
+        "operational_seasonal_naive"
+      ],
+      "tie_tolerance": 1e-06,
+      "selection_used_only_development_data": true,
+      "excluded_from_selection": [
+        "purge_outcomes",
+        "locked_outcomes",
+        "d1_model_performance",
+        "sensitivity_variants",
+        "b4_current_month_persistence"
+      ],
+      "b4_reference_baseline": "persistence_current_month",
+      "b4_reference_macro_industry_mae": 14.528671173147524,
+      "operational_penalty": 2.5657982470327614,
+      "operational_penalty_attribution": "NOT attributable solely to publication lag. The calibrator cutoff and the training-label availability rule changed at the same time, so the difference is a joint effect of all three changes."
+    },
+    "3": {
+      "selected_benchmark": "operational_persistence_trailing_3m_max",
+      "rule_applied": "lowest_macro_industry_mae",
+      "macro_industry_mae": 16.63380109495526,
+      "candidates_considered": [
+        "operational_persistence_trailing_3m_max",
+        "operational_no_contraction",
+        "operational_persistence_latest_published",
+        "operational_industry_historical_mean",
+        "operational_seasonal_naive"
+      ],
+      "tie_tolerance": 1e-06,
+      "selection_used_only_development_data": true,
+      "excluded_from_selection": [
+        "purge_outcomes",
+        "locked_outcomes",
+        "d1_model_performance",
+        "sensitivity_variants",
+        "b4_current_month_persistence"
+      ],
+      "b4_reference_baseline": "persistence_trailing_3m_max",
+      "b4_reference_macro_industry_mae": 14.698493624422762,
+      "operational_penalty": 1.9353074705324982,
+      "operational_penalty_attribution": "NOT attributable solely to publication lag. The calibrator cutoff and the training-label availability rule changed at the same time, so the difference is a joint effect of all three changes."
+    }
+  },
+  "calibrator_fingerprints": {
+    "2024-01-01": "652ab69f9fe1cad4435f58150edeced7ea3636db0626a9f5bcbb79e1921e3315;8b7bef571138d0fd8f39dab939360649ca69a6a526e26f31a0fbd70c3aef9e1c;22df71bb954e63003a11b8f8f28b071682d147217f9e11715a039bec1a7a8b5c;4b839a4a69c46b8a5aa9303c7d4a132d57898ccc2efba9ee0bf5a8950841fe43;8df2d9eace139c88b6902e695ec2dedb80b5870613eb5c4b14f18ed7a7b82f26;8ec331e25dfbb15a3a31704450dcb61363c6c63b02adb91673efe9e0a2598905;9120ba16956dbd132db6eb2e8e163a480cc89faac5f0d8a4e2ca0c1dca0e5a3b;a112d622867222262c393ea0d0b47481a3f3d89abe600d0cf6a82840fcbcce6b;f1b0a05ee19fd7ccb3aa030bed384fa0af7263442eb3a234db2b2a656e2f7370;a822ad8a9614b11b00aea3900b0761b101b60aef71191945817acabf29df3b89;f45403f71afbd96436e3dc3cbf4bdbc75f7550ca4c5c8082fd6cb765de7dfb85;125aef9ac4643917e344f94c2713128a516b660908782f19b8d46bf37b380cd5",
+    "2024-02-01": "a0008ddf9492aa5b09ed4c5ca421aa795339ade28b6713cb85b58116d20e0ad7;755f7b71f3afd6ae9e676ff0fbe0de30200abb85aa8262c2d40176730493b62a;6b66f28eae640fb42a88130c259124d04dc37daf2d1e51cea0b4b586bd9ea040;861a5491fff7ddf13d3a6d204e0ed64f66b1e1c99b70b75b505aae71a073f59a;7c1ccb35318dee9360c273a5e685424f76693577dce0a2ecd1226b26ce446a47;d3b6fcc7513b8132d357f9f69b9c1bfb16570562493e0e9aeae7f6ccba5d5eae;fa6626d4267812aed4abbc90fecda96e5dc54dc49cb69cbcefc33ee224e1416c;7c946489f3a31c0853106d26a11a52b536971a85392066e23bbf2220081d94a6;1e1bf96e4dd79a95822135e639db5795573cf7ca61420779c61138edc804e7a4;ca61a1ff9f16aad7ffbd67e8b64dd0492ed18a87ae318471be867e96eafb9605;bde66e996cbd4d7b652aea6fe8665ee383f411559dc297f6d963a710b4bd48c7;09fed983d17b8ef65b1513cec828e62fff798403eb1cc8a0a9870e16192249d8",
+    "2024-03-01": "d4d04449d245d467829f25ca71b9c4ad0208314ae092a1d36b75fdf5561e6b95;ccac7210ba085b16576aeeadfad993d19cda0f42461dd7fbebaf6f747ca8c4f6;6c096cf35f1001077afcfa520d8caf34c6ac6941be5eb20c2e0a56baa9371cdd;dd8f0877f8e680736e0a1eeaadd03160044a57bdf94c938b887983011f772cb0;eaa4eb64751f623c10055bc6668dac645abe9a105f5fbd9d9d18e988c9da4eb0;ee20f4dbf42c8d9459fe817950b3f773ae530595d707eb7d44d858f75e1fa07b;9e548f743181c05fa17fc56e9401695ecb9d557bbdbb35cc51b36dbe09c161e0;3abad679fa2bf87f1ad8974a2867be520c36996e287fcb79ca591374b81de4f3;1df41775611cf9bae4df67c4e73f697b2eabbe90b2240bcaf96c790a1d39c5a2;4b1d8d557c669c600bfad3030f21210b804e77f9bb9f83add963484f6f41e970;b8cd7ea9770f93d01166e0e8cf0db46aea2b820536fbf4383d1403fce1a4e5d7;59bfd4570392e4f21c50d7551cba5778c1224cfd47f1dc519021004794ac1e75",
+    "2024-04-01": "089263a97e633e78ea0e9286886a931e26c32811bb0abc79ef0c8e585877dcc9;c63f7858b3d572fe488579910abb85429f22a7ccb6d1e4eb34cef9ba11430ee2;063c42375ef8bf7c697f1b43e8e2dea8783eb09651f86893840a6c5d642bed4c;d07175517f39e60601807ac6ef40bd2365b0110f4e50ae1cd56acd8e66837648;816b21dba56d4292c88f970d68ec576311c0a93cd2091de3042e39ab88d69e80;63596264b10252d30ea7941558d540282e2a26998b15677917c5fa2748247755;212d383715a5e3fc0442e002f8d14a32691f1ee8093dd489c6cf3ebf1cd5cc65;8c583c125e7d8832a5eb1407a2b8d158e5b8c5f4a5b4e90880268224b4aca99f;ea3f52b2da3945ddb34695e9b79a2d30afc74da54042963c9f4d9a094819b78f;89564f1ba0fa14f1229d6fd4cc9995dde82d30dd22b3afb7ddc94792fb295008;cfc41b3f14b36f38a82911e85261b892a370ebeeb8e92a6a30d0af30b070630e;ba6b796039fa6a843f5b0902e2e03ca02663364068d9c0adbcae7fbd38706dce",
+    "2024-05-01": "de6452559bce9ac9eed4d2506fd71ddb33dc6ac16caa0abb0c791d2b577f8ef3;5676657598b8949e949c6a96a49fe96ff7e58b391e39b6f5d05b66006a1f26f4;54ffaf730cb5208504a6604300403f7aa6d883f90decfc8f64c0456d2fc5742a;efa5da115dd0a1ce5abb9b27aeb0c1ac689f194d83c130245041c2bc5847bf34;e102565733fd23e1f5482f5fff7b419d33ff5edf250f79c5b6ea4e051fd8a722;7112bf6fd12b4c57591b9aed547be5e1e7db93c8df9934ab4e33019fd8f5893a;a6c83df2a3e00292a23d3f1782033412b16a987e7bc4f6c2fb19941df858973b;84adad0238681126f9444077ebb45e940382444c9370289b0f6ac6e5d6b13e45;0d65fa069112884144003c144a4d6505f686e004e2e608a927333fc581846266;0a72c18a380d957c4c3155b41ccf45b9f4d3fe57776a328cfb8b86a8f84e3ca2;156069073a40733464cece7f34d33d20fe239773e63f1a61ca5c6c1df11351ed;cdc57bd958dc82aec0acd5503f19bbb16b79dade4e103c403c45354dd8a78b1d",
+    "2024-06-01": "5cfc46a2df1399bf2e0cafd9f61420398febdeb83e25f13caffe35efca1101a3;37cc06d8673697c85682d3e21fe0843a03849c98ff87b1998c04fbca1337a7c4;c5c64e01683150d2cc9c01ddf3f9692e919906826c6c00ed85b04cec31c8261b;f301a4ec75645119ec2bcafd0111bfc9a628bcf24d9a436e8a9121b1f86327d0;e74d982836653012fd2092de2baa97ff57cd93102e9634b086d121504d7c1fee;5eed37b728eaab5b511bb8c31ee09c5256461d80c5f126a272e12b26f26d9262;c274024f4750843ef23a9ff123849ff9fb6a9ee152ac4eedc3ff678f20b4ad7b;72b3a52c06ab46601c38b0cb20cda0d3243139ce683a7610a3b15eb109d6bf2b;61b0b7eb6867d89ce931da4071f693651747029a788bf4303e46a21c2c59a058;b389d32b34af9b4d57b811a8d40eecfc0387971b3fc278fd5aaa0d29d05a5fee;1448dc491e33543c3bc42acfcf850a1a30dcb7dd6668c64a827efe7c70986a33;5809892ffa0f1caf274d77ccf153ac0b92ab0053ddb9a4e29985389dfd402581",
+    "2024-07-01": "09dc122dea58ce286bcdc5c6de3fd8f41145826d3ca4c24b80ff78bccef79647;43aa456cb32a0528896578d736e543ded6f5553d6ada50ca9e13f5fcd59c1649;5151935cb13b10c0f36dd868dd2553c6e20b405e84319977b6a4adb317d18302;796a8a26510e64b68930271d86f86072bc646f9d216983c45c09968fd48da6d1;31ad46a7441d3d490bde544216c206b3dec6fdef2e7e2d0dfbf00e97930b49d7;75234d94338e6e2690cc18d78102de24d03f4de67740ff52f204446cbb66e583;e7cee47351872d5d3c0c76becafef1f346f0a5fb57b32797cccbeac5b8bf08ed;79a62459e8bf72d4526f8aed924262492f543c064104071ed5f95abe1b2c757d;bd3efe420ae095ca3ada1551aa15f10c64cb96a1a8f8b6024cadc16fbb411345;f3ee9a4eac478c2540ef7d58305759d8497beb63f5d3be9110a1c9a9da47df2d;6e57062cfdd856c717c0978fcea89ffb0555aeb41567986f573be63227f8f3bf;a5950e9e4fc6d20744162d9123895118bf6fe0d6acd9cd8a48fabd49b6227d78",
+    "2024-08-01": "03df1c11f98aa216291fc027ee052b6d212dce4a3bb20c3c83d8e3ceeeee16c9;887f81cc6ffc0915afad71653f3de9fe76682dd5c141b3f8729fc2d8fe889c79;3fe265f4789fbe1998d1dd086c892e279a0a7ac93d90efe1c3152c1a68621ddd;1c9ac359ec381c04d96df05ef9e86015e0cb276a78b1802a68b99889f214bd84;3dc6234d6a721ae20bd4e0394e7d90d5ba5994d46b82a41c0c809171d1f6c1cc;63c7dadf1239fc49f2d7cb28a748d7e7b79b02484cc4f68a2c1b05c69d4930b9;a8125afb98f476cb74f0bdc3d558ed850a06311f49a76b56013b87256b3d3022;88d5f169978b82ae8a364a10b46fd4e45ebe1b68e8655f27631e5060017560a6;8b94384aefb1c64f758e4ee6660914a1065964bb4a7a9d188963d2cebf8de650;d0a1479dc0f0bfbc07b8cb3d4f8f7de2b9339094a358fb5eadc4e76a6f64e2d4;595c61c8eb1d604274599b8d3da2fcfb69d955f32e3d096f85725855c4ea0bc2;4b6c3d60098e793dae6625bde9f737c1303dfc903c7a9127662c21935af776bb",
+    "2024-09-01": "eccbc74a1b5b3ecf15085e628740c3e224a184c80cc2234edfbb29338a15df3a;05392584b201f6a9966cab015a8bd534db5af31f802307730d7bebe5f8f1e604;1deac22bdd8a4c01e370198ae487f3bed82eb97539f6a60ab82a51b765e08620;7c96dfd0665f6783b3b1a3fa8ff607c5f91c72663a6937f4e0e34af5d25710d5;b8311697c5dba97aba9b03ac1c4d0231cce511bdde8e5011730b736c78f19299;c633dcb4a2e7b80c15b73b4bed7342174f32bdeb9b214ea1e7fbfe4ceada890d;a4b8d000ef16d358fc2b37998e5387590925e84dd1ffb656f45a26d1f20e4506;d155c756bd5be7f49870b68b736b5d155c4113e288efc7d919d8417c5cc4570e;53bcc3916a719eb1760b240c3b4de4cecd37ee7a672daecc8e0d95cb38af1294;35db16d4e701dae92f29cfd70e7f43a18d05c793bb83024f5211190ee1702969;bc1bd2ea5fec4be6c19c19c8bbe83152bb23a01f348c68bae2b226f876af40dd;9e1376386f915263ed0f1e8624f3be2c4bd8ffd26a80481634724dc264f48460",
+    "2024-10-01": "1ee2484cb8b99486590071bc147af275d003c9a56bbb4476af87b14dd4a6b2e8;1bf5b317b5630d22f1d0441b718eefed370070303256ea22ea87ac84d7f25cf4;e7c1a2fcb1badcc118d1d81ff940705ec188658ef57738f978c32c98bf531efa;1923822949d90d13a34aae8baacd291254b13f273a083d5e696e74d1c43ecf06;d4ebd9e9808cf509416ce2cc017fadd8d6ad0eb82a7b0d546afb2822ae940979;97b8fd5e0b08e6ca7a06bc5d23ffffb94d3b933174f10e9b028ec610931d50ec;5d8063c855c28579f09eef2ccef4a7bae7086495f13912ff26b98f9041923820;83b6f1486df0f4563a1efe6b3c54aa74d3ca77aecdc14adf23f567fb8d2cf204;012bd173a9f1eefe1f400ad4919469ffc1f6ac201473cb4f1e5d11547498907d;f497db009406969a5736e20e22b85eabd92358eefb9a09ce2e6e5fd53e4e5b15;806d6e2142b36e4d59f26e7950ce9ae28573f7f0cfb8e679f682db4da9784778;2c8b5bdec4da568331239234b1c84947c9c91bbd52db087061afa3cd57254dac",
+    "2024-11-01": "df01fac10da3886890b5bf334e87dec8bf4e8771360b009c5526c630a57fbb4b;39af5c089ada361feefa5eba8f20360f24ee0c38acad993dbe3287b82116f6be;1448ebc2d97879642457d10014d0b32b44841b0049509ad08bba5d2d901efb5d;687b32743a15c827001d86a1fe6b8a5cd31bcf76a01842a0e8d8fc73bb511445;8dec7e86fb6b96fed043206e18f3248ebbbba058cd4301fbf12b4b6e10637d71;d65cbe26e59b30938d5d2d15d0366b080e7a10414a10acc382afe57e1d3978e1;8c13537a86adfc1f5cea518422f778fc8de402b208a50fcd45a756dea2fe43c6;5c2ee116a51def09f674d947dcbf203da5eaa980a515cfbd09070b1612791fc3;951bc333d4fab50c0b8975fdcac4d1be25137325571602d3594c5a13b5cc5f19;bd4f7f8a0bf06cc7a43c2050b26bfcc2f17d52a4705269699d37acb4c884ec14;84d8d1d96224f7b133d2f4b2e1715bca10af26df3e5bb81b0937091fb70165fd;39545cf47e5613c233387f0e86f41a16462a5eeacc38c4c94fa24ec30ad022b6",
+    "2024-12-01": "91fc46b894eaf5bc0ff5bfd96b41893a6e1962fd6c096aabaacf97dd21721132;166e48dbe719d4c843de0b5f281c70fcf37381548e54cd94ede5ca6bb38be473;ddcfd471ea0101643e42fca926c6479c7c3e2b83313938b9b17f763eda1920cf;0e39e46a0de02dabe41e5c024f3ef0a1af1b4f045d46f3d44ff1ba5e0115f461;b9823a2bda0fb605531c215f5eb3a37d885184a476e0d4de5fef786a28fcb1a5;05886270b1b09b5f4ca7f96046f8dc66c45d31256a549c5f419638b8d13977f3;1d413916179ca5ff450f96988d3c8ef8d744eb5e7a702b819c5abb455d3b40a2;48c6926bcf41dc53de8717fda8fc50c50b0345e127c24a24974cf81e0236c760;29ffa31ce551672eb5f125f895fec84bc0612bcb1a9bb45471c114bc60fff567;d3a36be3447fedc5ca0ee326a6cf5e607a16f0115240c226c25731566ca4c0e7;e9880127614e57b31a3247732d805a3a51f076ac9c4763e9f2552d9a0db5c0b2;a6f4df0dab057b13b49f3b94f4642f37a7e87800454be166ed88381ecafb2e6b",
+    "2025-01-01": "9e1f9e63c0593b39881ddd55ca2dca3df62f518b7df924fc49593c411222f87e;7847a0276589f5f293f81026d372e2e6b8e2a381efdd69512ae27b1f8158d498;5da6497b19dd26391393e58530ff89a43a5b5ae4515f8343258330b2257150fa;ac2c10fc84514625752a3e294d90696a373116befb0bff2093ac3a861dc66f2f;eff1f2f2e4e91476ea1e6546d3c58b9fadde390a9b04520214b19dfcc1e75e5d;d15fb0163fe9b3cb7bff18bd3ba6d7f1f211ebdd5c3e326bdcff64813ce95876;3e4271b5fd6f968f4b65f3a00df588209a1a16c9a231e82568ef829cdebaad35;8ee46321f07cc7b5fedcd6fef707b74a776532c0ac994148eb556b262243c5a9;25932ea583dc86f613c75e36e89ec6fa7e47bfc02d35d16ef8b4f3abcc30c9e1;3a62fd2b841d723c2c38634dd07fc0f0f6f35d6209a0741d50b5e59f5e09aec3;0074f98323b9e2ec440fbcc9eba03247b4c6016cb477ea44815289e2807e3aa3;965c16b7e245c9e3bf82578788a03824f1fb5e848478d94065db4ae32b3b5bb0",
+    "2025-02-01": "421325af40365f46ac062eeff87c21d6fed51af62877e1f7480b189d52d25174;9fc2e3f54e0abeaf9fe0ba41a033ed6722935938c31d158d27612bb4ef20801f;d00cdb4773502b4759ccf935e945b2b9652bb179f2ec09f2311ff3568e949eeb;3f86db3c33fe185e6acbb845c45b05f1f1b6af0734a654ef2bcd6d476bcf2dc4;da3b41ace17ca2b341e319845d1258db8ec268992104e507a35b41d1eb9dec25;e43a0b4e06f517ae5bd776a10acacef9fad1f9e9b252621ad5f9a3557e692d74;7d1ef43b5b4b70e4f06d693de98db302b48a636dd867b9930deeed6b04816fab;78a65d5482ae2db06495a072d36bb6a7664183288c5c88662e2e0d2158c1daeb;db62dab2935fe475c7aa835352558ec2d7554b8452cafb214da02545c2e9e0ff;0c1249192a7f94abf045955c96ef2250e18c72c00082ae533d92b19a16ae0c4b;dcac412aeb4ecb9e1be869688cdf6375bbb4385e9763616e8caaf3c330b48693;e739edb703a93cdb0f1a7c6a7aab601975ef70c28e575bd52157bf97a3f01a03",
+    "2025-03-01": "f5da3748dace7ba3f2dd0667da48abf49bf8ff278b347159e6389db11459c3ab;8b89a2c08cbf0b1b0da347fef6826d4798a931b29cd8d5733318302b4eb7d19f;b340e8db81adf1f524f5b0faad0653e9f37e2d3a2970fe1661e2027eecba851e;f9f73c0322995bb4f8cb6cc0e61baf8e8603fcdd1017490003921dce087fd1c4;d9e580c4817da060cfa28fe35ac24494a2f672af0e6c91cee923de1be54f2f25;5fcff66beee27f6ba035a50ecefa20ef3c11dd2a561a14b6358dc491f4ee030b;9ac6f0170f394b2be368b8d0fed31af93f95efe52f6e25dd6f33caec46fc624e;baf9de56affa29a750e11f2bf6617befa8a3fb55a57b8fd67a57dd740aaae59b;35104a78c8ce8e03924d9d8f8ecad050e5a7940244e3a947e9ef826b566db0b0;b310c0eaa9120b76e5c49bd7c8fd1ee4d5803958995d24c4f1672da74ce89fc0;acdc0b10b763e4d20b0914d36cdc37cd8e3a492c67a2596471b9a1cdfed90cc8;5ebe9cb05f614c2e8435c262047a90772d59a2a379d501adfad4a2464001cf4c"
+  },
+  "b3_invariants_reproduced": {
+    "monthly_rows": 636,
+    "monthly_industries": 12,
+    "monthly_months_per_industry": [
+      53
+    ],
+    "monthly_first": "2022-01-01",
+    "monthly_last": "2026-05-01",
+    "horizons": {
+      "1": {
+        "rows": 624,
+        "per_industry": [
+          52
+        ],
+        "first": "2022-01-01",
+        "last": "2026-04-01"
+      },
+      "3": {
+        "rows": 600,
+        "per_industry": [
+          50
+        ],
+        "first": "2022-01-01",
+        "last": "2026-02-01"
+      }
+    },
+    "combined_rows": 1224,
+    "uses_2026_06": [],
+    "duplicate_keys": 0,
+    "target_definition_versions": [
+      "production_stress_target_v1"
+    ],
+    "primary_component_count": 1,
+    "primary_component": "mpi_adverse_yoy",
+    "all_invariants_reproduced": true,
+    "failures": []
+  },
+  "content_checksum": "b5d70211e302c0e5d8da6f8fb6d01fcc688873d6c7655376472b1d48ba88b197",
+  "outputs": {
+    "predictions_path": "data/model_input/d3_operational_predictions.parquet",
+    "predictions_sha256": "d1d2bd178d90fd9b8e4c475866f703e380408e2b3746addba31589c59974e784"
+  }
+}

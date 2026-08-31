@@ -1,0 +1,71 @@
+{
+  "task": "C1",
+  "audit_version": "c1_commodity_source_audit_v1",
+  "canonical_table": {
+    "file": "data/interim/commodity_month.parquet",
+    "rows": 5269,
+    "series": [
+      "aluminum_usd_mt",
+      "brent_crude_usd_bbl",
+      "coal_australia_usd_mt",
+      "copper_usd_mt",
+      "lng_japan_usd_mmbtu",
+      "palm_oil_usd_mt",
+      "rubber_rss3_usd_kg"
+    ],
+    "series_count": 7,
+    "first_month": "1960-01-01",
+    "last_month": "2026-07-01",
+    "unique_series_month_keys": true,
+    "rows_by_series": {
+      "aluminum_usd_mt": 799,
+      "brent_crude_usd_bbl": 799,
+      "coal_australia_usd_mt": 679,
+      "copper_usd_mt": 799,
+      "lng_japan_usd_mmbtu": 595,
+      "palm_oil_usd_mt": 799,
+      "rubber_rss3_usd_kg": 799
+    }
+  },
+  "provenance": {
+    "source_url": "https://thedocs.worldbank.org/en/doc/74e8be41ceb20fa0da750cda2f6b9e4e-0050012026/related/CMO-Historical-Data-Monthly.xlsx",
+    "downloaded_at_utc": "2026-08-27T04:01:23Z",
+    "sha256": "7902a77505ebdc5d202ce65f666c2ee1b04b626f042d7738ed3e6f7d112c8433",
+    "source_vintage": "July-2026",
+    "updated_on_in_workbook": "Updated on August 04, 2026"
+  },
+  "status_counts": {
+    "source_verified": 5,
+    "conditional": 2,
+    "rejected": 0
+  },
+  "brent_cross_check": {
+    "status": "not_executed_source_unreachable",
+    "reasons": [
+      "FRED was unreachable from this environment. No cross-check numbers are reported — a blocked source is recorded as blocked, never estimated.",
+      "ConnectionResetError: [WinError 10054] An existing connection was forcibly closed by the remote host"
+    ],
+    "metrics": null,
+    "fred_provenance": {
+      "error": "ConnectionResetError: [WinError 10054] An existing connection was forcibly closed by the remote host",
+      "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=MCOILBRENTEU",
+      "note": "FRED was unreachable from this environment. No cross-check numbers are reported — a blocked source is recorded as blocked, never estimated."
+    },
+    "world_bank_series_replaced": false
+  },
+  "timing": {
+    "latest_vintage_only": true,
+    "point_in_time_backtest_supported": false,
+    "same_month_availability_verified": false,
+    "minimum_safe_lag_months": null,
+    "timing_status": "unresolved",
+    "c2_default_policy": "C2 must default to LAGGED use unless stronger publication evidence is found. The lag is deliberately NOT chosen in C1 — that requires a separate timing and transformation decision."
+  },
+  "feature_transformations_created": false,
+  "unit_conversions_applied": false,
+  "target_joined": false,
+  "target_association_computed": false,
+  "locked_test_accessed": false,
+  "model_feature_approved_any_candidate": false,
+  "upstream_artifacts_unmodified": true
+}

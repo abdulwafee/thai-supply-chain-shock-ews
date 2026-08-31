@@ -1,0 +1,3075 @@
+{
+  "task": "C5",
+  "generated_at_utc": "2026-08-28T09:04:32.779802+00:00",
+  "config_version": "price_stage_source_candidates_v1",
+  "selection_provenance": {
+    "selection_used_target_outcomes": false,
+    "d4_metrics_used_for_source_ranking": false,
+    "locked_test_accessed": false
+  },
+  "families_audited": [
+    "MOC_PPI",
+    "EPPO_PETROLEUM",
+    "ERC_ELECTRICITY",
+    "BOT_FX"
+  ],
+  "probes": [
+    {
+      "candidate_id": "MOC_PPI",
+      "source_family": "MOC_PPI",
+      "publisher": "Ministry of Commerce, Trade Policy and Strategy Office",
+      "official_url": "http://www.indexpr.moc.go.th/",
+      "published_label": null,
+      "unit": null,
+      "price_basis": null,
+      "geography": null,
+      "taxes_and_margins": null,
+      "frequency": null,
+      "first_observation": null,
+      "last_observation": null,
+      "required_window_coverage": null,
+      "missingness": null,
+      "definition_breaks": null,
+      "publication_timing_evidence": null,
+      "revision_characteristics": null,
+      "archived_first_release_available": null,
+      "mapped_io_sector": null,
+      "mapped_io_sector_label": null,
+      "structural_gap_addressed": null,
+      "proxy_limitations": null,
+      "probe_state": "not_executed_source_unreachable",
+      "probe_detail": {
+        "probe_outcome": "http_forbidden_403_on_all_entry_points",
+        "absence_concluded": false,
+        "note": "indexpr.moc.go.th and price.moc.go.th both returned HTTP 403 to every request, including with full browser headers; tradereport.moc.go.th returned 200 but is a trade-statistics portal, not the PPI series. The 403 is a bot filter, a fact about this mechanism at this moment. The PPI is very likely published; it simply could not be verified here, so its exact series label, unit and coverage remain undocumented.",
+        "entry_point_probes": [
+          {
+            "url": "http://www.indexpr.moc.go.th/",
+            "state": "http_forbidden",
+            "http_status": 403,
+            "content_length": 0,
+            "content_type": null,
+            "last_modified": null
+          },
+          {
+            "url": "https://www.price.moc.go.th/",
+            "state": "http_forbidden",
+            "http_status": 403,
+            "content_length": 0,
+            "content_type": null,
+            "last_modified": null
+          },
+          {
+            "url": "https://tradereport.moc.go.th/",
+            "state": "reachable",
+            "http_status": 200,
+            "content_length": 97638,
+            "content_type": "text/html; charset=UTF-8",
+            "last_modified": null
+          }
+        ]
+      },
+      "gate_results": {
+        "official_publisher": true,
+        "series_definition_and_unit_documented": false,
+        "maps_to_purchased_intermediate_sector": false,
+        "addresses_documented_structural_gap": true,
+        "operational_timing_establishable": false,
+        "coverage_adequate_or_limitations_explicit": false,
+        "no_unresolved_definition_break": false,
+        "availability_representable_without_download_time": false,
+        "not_duplicative_without_semantic_distinction": true,
+        "selection_free_of_target_outcomes": true
+      },
+      "gate_passed": false,
+      "rejection_reasons": [
+        "series_definition_and_unit_documented",
+        "maps_to_purchased_intermediate_sector",
+        "operational_timing_establishable",
+        "coverage_adequate_or_limitations_explicit",
+        "no_unresolved_definition_break",
+        "availability_representable_without_download_time"
+      ],
+      "recommended_for_c6": false
+    },
+    {
+      "candidate_id": "EPPO_PETROLEUM",
+      "source_family": "EPPO_PETROLEUM",
+      "publisher": "Energy Policy and Planning Office, Ministry of Energy",
+      "official_url": "https://www.eppo.go.th/index.php/th/energy-information/static-energy/static-petroleum",
+      "published_label": "PRICE STRUCTURE OF PETROLEUM PRODUCTS - EX-REFIN.",
+      "unit": "BAHT/LITRE (LPG in BAHT/KILOGRAM)",
+      "price_basis": "ex_refinery_producer_price_before_excise_municipal_tax_oil_fund_and_retail_margin",
+      "geography": "Thailand, Bangkok reference structure",
+      "taxes_and_margins": "EXCLUDED from the ex-refinery column. The workbook reports EXCISE TAX, MUNICIPAL TAX, OIL FUND, CONSERVATION FUND and WHOLESALE separately, so the producer stage is explicitly separable from the retail stage.",
+      "frequency": "daily_snapshot_one_workbook_per_effective_date",
+      "first_observation": "2026-06-15, 2026-07-15, 2026-08-17, 2026-08-24, 2026-08-28 confirmed by GET",
+      "last_observation": "2026-06-15, 2026-07-15, 2026-08-17, 2026-08-24, 2026-08-28 confirmed by GET",
+      "required_window_coverage": "EXPLICIT AND UNRESOLVED. Only the most recent daily files are exposed on the page. Probing the observed /uploads/YYYY/MM/ pattern returned 404 for 2022-2025, but that is NOT evidence of absence: 2018 retail files are served from a 2026 upload folder, so the site re-hosts historical files under migration-time folders and folder-date inference is unreliable. Archive depth back to 2022-01 is UNESTABLISHED and is exactly what C6 must resolve before any feature is built.",
+      "missingness": "EXPLICIT AND UNRESOLVED. Only the most recent daily files are exposed on the page. Probing the observed /uploads/YYYY/MM/ pattern returned 404 for 2022-2025, but that is NOT evidence of absence: 2018 retail files are served from a 2026 upload folder, so the site re-hosts historical files under migration-time folders and folder-date inference is unreliable. Archive depth back to 2022-01 is UNESTABLISHED and is exactly what C6 must resolve before any feature is built.",
+      "definition_breaks": "none_observed_within_the_files_inspected",
+      "publication_timing_evidence": "Each workbook carries its own effective date in-sheet (row 4) and in its filename. HEAD is blocked site-wide, so Last-Modified is unavailable; the in-sheet effective date is the timing evidence and is not a download time.",
+      "revision_characteristics": "unknown_no_archived_vintage_located",
+      "archived_first_release_available": false,
+      "mapped_io_sector": "093",
+      "mapped_io_sector_label": "Petroleum refineries",
+      "structural_gap_addressed": "Sector 093 is a leading mediator for every direct-zero Brent industry and the single largest for IND-07. Ex-refinery diesel and fuel oil price the stage industries actually buy, which Brent does not.",
+      "proxy_limitations": "Ex-refinery is a national reference structure, not an industry-specific contract price; large industrial buyers negotiate away from it.",
+      "probe_state": "verified",
+      "probe_detail": {
+        "probe_outcome": "reachable_200_with_data_file_parsed",
+        "absence_concluded": false,
+        "note": null,
+        "entry_point_probes": [
+          {
+            "url": "https://www.eppo.go.th/index.php/th/energy-information/static-energy/static-petroleum",
+            "state": "reachable",
+            "http_status": 200,
+            "content_length": 802209,
+            "content_type": "text/html; charset=UTF-8",
+            "last_modified": "Fri, 28 Aug 2026 08:37:42 GMT"
+          },
+          {
+            "url": "https://www.eppo.go.th/data-energy-statistic/energy-price-th/%E0%B9%82%E0%B8%84%E0%B8%A3%E0%B8%87%E0%B8%AA%E0%B8%A3%E0%B9%89%E0%B8%B2%E0%B8%87%E0%B8%A3%E0%B8%B2%E0%B8%84%E0%B8%B2%E0%B8%99%E0%B9%89%E0%B8%B3%E0%B8%A1%E0%B8%B1%E0%B8%99-lpg/",
+            "state": "reachable",
+            "http_status": 200,
+            "content_length": 551501,
+            "content_type": "text/html; charset=UTF-8",
+            "last_modified": "Fri, 28 Aug 2026 09:03:40 GMT"
+          }
+        ]
+      },
+      "gate_results": {
+        "official_publisher": true,
+        "series_definition_and_unit_documented": true,
+        "maps_to_purchased_intermediate_sector": true,
+        "addresses_documented_structural_gap": true,
+        "operational_timing_establishable": true,
+        "coverage_adequate_or_limitations_explicit": true,
+        "no_unresolved_definition_break": true,
+        "availability_representable_without_download_time": true,
+        "not_duplicative_without_semantic_distinction": true,
+        "selection_free_of_target_outcomes": true
+      },
+      "gate_passed": true,
+      "rejection_reasons": [],
+      "recommended_for_c6": true
+    },
+    {
+      "candidate_id": "ERC_ELECTRICITY",
+      "source_family": "ERC_ELECTRICITY",
+      "publisher": "Energy Regulatory Commission",
+      "official_url": "https://www.erc.or.th/th",
+      "published_label": null,
+      "unit": null,
+      "price_basis": null,
+      "geography": null,
+      "taxes_and_margins": null,
+      "frequency": null,
+      "first_observation": null,
+      "last_observation": null,
+      "required_window_coverage": null,
+      "missingness": null,
+      "definition_breaks": null,
+      "publication_timing_evidence": null,
+      "revision_characteristics": null,
+      "archived_first_release_available": null,
+      "mapped_io_sector": null,
+      "mapped_io_sector_label": null,
+      "structural_gap_addressed": null,
+      "proxy_limitations": null,
+      "probe_state": "not_executed_source_unreachable",
+      "probe_detail": {
+        "probe_outcome": "timeout_on_landing_404_on_tariff_path",
+        "absence_concluded": false,
+        "note": "erc.or.th timed out on the landing page and returned 404 on the tariff path probed. EPPO mirrors Ft and retail/wholesale tariff pages, but the workbook served there (pt-price-st) is the petroleum structure file, so no distinct electricity series was verified. Electricity (sector 135) is the most widespread mediator, so this gap matters and remains open.",
+        "entry_point_probes": [
+          {
+            "url": "https://www.erc.or.th/th",
+            "state": "reachable",
+            "http_status": 200,
+            "content_length": 534525,
+            "content_type": "text/html; charset=UTF-8",
+            "last_modified": null
+          },
+          {
+            "url": "https://www.eppo.go.th/data-energy-statistic/energy-price-th/%E0%B8%A3%E0%B8%B2%E0%B8%84%E0%B8%B2%E0%B9%84%E0%B8%9F%E0%B8%9F%E0%B9%89%E0%B8%B2%E0%B9%82%E0%B8%94%E0%B8%A2%E0%B8%AD%E0%B8%B1%E0%B8%95%E0%B9%82%E0%B8%99%E0%B8%A1%E0%B8%B1%E0%B8%95%E0%B8%B4-ft/",
+            "state": "reachable",
+            "http_status": 200,
+            "content_length": 467838,
+            "content_type": "text/html; charset=UTF-8",
+            "last_modified": "Fri, 28 Aug 2026 08:49:00 GMT"
+          }
+        ]
+      },
+      "gate_results": {
+        "official_publisher": true,
+        "series_definition_and_unit_documented": false,
+        "maps_to_purchased_intermediate_sector": true,
+        "addresses_documented_structural_gap": true,
+        "operational_timing_establishable": false,
+        "coverage_adequate_or_limitations_explicit": false,
+        "no_unresolved_definition_break": false,
+        "availability_representable_without_download_time": false,
+        "not_duplicative_without_semantic_distinction": true,
+        "selection_free_of_target_outcomes": true
+      },
+      "gate_passed": false,
+      "rejection_reasons": [
+        "series_definition_and_unit_documented",
+        "operational_timing_establishable",
+        "coverage_adequate_or_limitations_explicit",
+        "no_unresolved_definition_break",
+        "availability_representable_without_download_time"
+      ],
+      "recommended_for_c6": false
+    },
+    {
+      "candidate_id": "BOT_FX",
+      "source_family": "BOT_FX",
+      "publisher": "Bank of Thailand",
+      "official_url": "https://www.bot.or.th/en/statistics/exchange-rate.html",
+      "published_label": "USD/THB reference exchange rate",
+      "unit": "THB per USD",
+      "price_basis": null,
+      "geography": null,
+      "taxes_and_margins": null,
+      "frequency": null,
+      "first_observation": null,
+      "last_observation": null,
+      "required_window_coverage": null,
+      "missingness": null,
+      "definition_breaks": null,
+      "publication_timing_evidence": null,
+      "revision_characteristics": null,
+      "archived_first_release_available": null,
+      "mapped_io_sector": null,
+      "mapped_io_sector_label": null,
+      "structural_gap_addressed": null,
+      "proxy_limitations": null,
+      "probe_state": "reachable_but_out_of_scope",
+      "probe_detail": {
+        "probe_outcome": "landing_reachable_200_api_subdomain_dns_failure",
+        "absence_concluded": false,
+        "note": "Audited only as an import-price transmission factor, as instructed. An exchange rate is not the price of an I/O commodity sector and must never be mapped to one; it modulates the baht cost of imported inputs. It therefore fails the purchased-intermediate-sector criterion by construction, not by quality.",
+        "entry_point_probes": [
+          {
+            "url": "https://www.bot.or.th/en/statistics/exchange-rate.html",
+            "state": "reachable",
+            "http_status": 200,
+            "content_length": 80595,
+            "content_type": "text/html;charset=utf-8",
+            "last_modified": "Fri, 28 Aug 2026 07:30:15 GMT"
+          }
+        ]
+      },
+      "gate_results": {
+        "official_publisher": true,
+        "series_definition_and_unit_documented": true,
+        "maps_to_purchased_intermediate_sector": false,
+        "addresses_documented_structural_gap": false,
+        "operational_timing_establishable": true,
+        "coverage_adequate_or_limitations_explicit": true,
+        "no_unresolved_definition_break": true,
+        "availability_representable_without_download_time": true,
+        "not_duplicative_without_semantic_distinction": true,
+        "selection_free_of_target_outcomes": true
+      },
+      "gate_passed": false,
+      "rejection_reasons": [
+        "maps_to_purchased_intermediate_sector",
+        "addresses_documented_structural_gap"
+      ],
+      "recommended_for_c6": false
+    }
+  ],
+  "gate_criteria": [
+    "official_publisher",
+    "series_definition_and_unit_documented",
+    "maps_to_purchased_intermediate_sector",
+    "addresses_documented_structural_gap",
+    "operational_timing_establishable",
+    "coverage_adequate_or_limitations_explicit",
+    "no_unresolved_definition_break",
+    "availability_representable_without_download_time",
+    "not_duplicative_without_semantic_distinction",
+    "selection_free_of_target_outcomes"
+  ],
+  "selection_order": [
+    "maps_to_purchased_intermediate_sector",
+    "addresses_documented_structural_gap",
+    "operational_timing_establishable",
+    "no_unresolved_definition_break",
+    "not_duplicative_without_semantic_distinction"
+  ],
+  "eligible_candidates": [
+    "EPPO_PETROLEUM"
+  ],
+  "rejected_candidates": {
+    "MOC_PPI": [
+      "series_definition_and_unit_documented",
+      "maps_to_purchased_intermediate_sector",
+      "operational_timing_establishable",
+      "coverage_adequate_or_limitations_explicit",
+      "no_unresolved_definition_break",
+      "availability_representable_without_download_time"
+    ],
+    "ERC_ELECTRICITY": [
+      "series_definition_and_unit_documented",
+      "operational_timing_establishable",
+      "coverage_adequate_or_limitations_explicit",
+      "no_unresolved_definition_break",
+      "availability_representable_without_download_time"
+    ],
+    "BOT_FX": [
+      "maps_to_purchased_intermediate_sector",
+      "addresses_documented_structural_gap"
+    ]
+  },
+  "recommended_family": "EPPO_PETROLEUM",
+  "recommendation_meaning": {
+    "source_selected_for_c6_audit": true,
+    "feature_semantics_approved": false,
+    "model_feature_approved": false,
+    "ingested_into_production": false
+  },
+  "content_checksum": "267d3d1b90515a3a8990a08484a53e5d7c0ca613d8125f67fc5856b209cb1fca",
+  "price_stage_alignment": [
+    {
+      "commodity_series_id": "aluminum_usd_mt",
+      "industry_id": "IND-01",
+      "world_bank_series": "aluminum_usd_mt",
+      "mapped_raw_io_sector": "107",
+      "mapped_raw_io_sector_label": "Non-ferrous metal",
+      "leading_purchased_sectors": [
+        {
+          "sector_code": "111",
+          "sector_label": "Other fabricated metal products",
+          "contribution": 0.0033959560191981287,
+          "share_of_indirect": 0.3275830863787743
+        },
+        {
+          "sector_code": "115",
+          "sector_label": "Special industrial machinery",
+          "contribution": 0.0007442285483702986,
+          "share_of_indirect": 0.07179029512399396
+        },
+        {
+          "sector_code": "001",
+          "sector_label": "Paddy",
+          "contribution": 0.0005358307452451317,
+          "share_of_indirect": 0.05168768037976118
+        },
+        {
+          "sector_code": "180",
+          "sector_label": "Unclassified",
+          "contribution": 0.00030524142715911167,
+          "share_of_indirect": 0.029444412187368155
+        },
+        {
+          "sector_code": "135",
+          "sector_label": "Electricity",
+          "contribution": 0.00027127003076172877,
+          "share_of_indirect": 0.026167439571250714
+        }
+      ],
+      "direct_exposure": 0.0002181634956282774,
+      "indirect_exposure": 0.010366701335952029,
+      "total_exposure": 0.010584864831580306,
+      "price_stage": "raw_commodity_direct_purchase",
+      "world_bank_price_represents_purchased_stage": true,
+      "alignment_status": "broad_proxy_with_caution",
+      "evidence": "Direct coefficient 0.000218 is positive, so the industry purchases sector 107 (Non-ferrous metal) across the factory gate. The World Bank series prices that sector's output.",
+      "limitations": "The 2015 I/O structure is held time-invariant; coefficients describe 2015 purchasing patterns, not the evaluation period. The decomposition is an exact attribution of the Leontief identity, not a causal claim. Source sector 107 is shared with ['copper_usd_mt']. The coefficient cannot separate them, so the two series are NOT independent measurements and their exposures must never be summed.",
+      "additional_series_could_close_gap": true,
+      "shared_source_sector_warning": "Source sector 107 is shared with ['copper_usd_mt']. The coefficient cannot separate them, so the two series are NOT independent measurements and their exposures must never be summed.",
+      "proxy_fitness_status": null,
+      "diagnostics": {
+        "cumulative_share_top1": 0.3275830863787743,
+        "cumulative_share_top3": 0.4510610618825295,
+        "cumulative_share_top5": 0.5066729136411483,
+        "direct_is_observed_zero": false,
+        "indirect_material_despite_direct_zero": false
+      }
+    },
+    {
+      "commodity_series_id": "aluminum_usd_mt",
+      "industry_id": "IND-02",
+      "world_bank_series": "aluminum_usd_mt",
+      "mapped_raw_io_sector": "107",
+      "mapped_raw_io_sector_label": "Non-ferrous metal",
+      "leading_purchased_sectors": [
+        {
+          "sector_code": "068",
+          "sector_label": "Weaving",
+          "contribution": 0.001824587399350615,
+          "share_of_indirect": 0.16941530141514163
+        },
+        {
+          "sector_code": "134",
+          "sector_label": "Other manufactured goods",
+          "contribution": 0.0017947397524972724,
+          "share_of_indirect": 0.16664390877591184
+        },
+        {
+          "sector_code": "067",
+          "sector_label": "Spinning",
+          "contribution": 0.0011483109128047982,
+          "share_of_indirect": 0.10662215440069361
+        },
+        {
+          "sector_code": "115",
+          "sector_label": "Special industrial machinery",
+          "contribution": 0.001071099967409287,
+          "share_of_indirect": 0.09945301819412763
+        },
+        {
+          "sector_code": "111",
+          "sector_label": "Other fabricated metal products",
+          "contribution": 0.0009278536960382136,
+          "share_of_indirect": 0.08615241650765167
+        }
+      ],
+      "direct_exposure": 5.810075949402196e-07,
+      "indirect_exposure": 0.010769909117474444,
+      "total_exposure": 0.010770490125069388,
+      "price_stage": "raw_commodity_direct_purchase",
+      "world_bank_price_represents_purchased_stage": true,
+      "alignment_status": "broad_proxy_with_caution",
+      "evidence": "Direct coefficient 0.000001 is positive, so the industry purchases sector 107 (Non-ferrous metal) across the factory gate. The World Bank series prices that sector's output.",
+      "limitations": "The 2015 I/O structure is held time-invariant; coefficients describe 2015 purchasing patterns, not the evaluation period. The decomposition is an exact attribution of the Leontief identity, not a causal claim. Source sector 107 is shared with ['copper_usd_mt']. The coefficient cannot separate them, so the two series are NOT independent measurements and their exposures must never be summed.",
+      "additional_series_could_close_gap": true,
+      "shared_source_sector_warning": "Source sector 107 is shared with ['copper_usd_mt']. The coefficient cannot separate them, so the two series are NOT independent measurements and their exposures must never be summed.",
+      "proxy_fitness_status": null,
+      "diagnostics": {
+        "cumulative_share_top1": 0.16941530141514163,
+        "cumulative_share_top3": 0.4426813645917471,
+        "cumulative_share_top5": 0.6282867992935264,
+        "direct_is_observed_zero": false,
+        "indirect_material_despite_direct_zero": false
+      }
+    },
+    {
+      "commodity_series_id": "aluminum_usd_mt",
+      "industry_id": "IND-03",
+      "world_bank_series": "aluminum_usd_mt",
+      "mapped_raw_io_sector": "107",
+      "mapped_raw_io_sector_label": "Non-ferrous metal",
+      "leading_purchased_sectors": [
+        {
+          "sector_code": "025",
+          "sector_label": "Logging",
+          "contribution": 0.002833265769064846,
+          "share_of_indirect": 0.21324196854051689
+        },
+        {
+          "sector_code": "081",
+          "sector_label": "Pulp, paper and paperboard",
+          "contribution": 0.002824963235047614,
+          "share_of_indirect": 0.21261708939326573
+        },
+        {
+          "sector_code": "078",
+          "sector_label": "Saw mills",
+          "contribution": 0.0013382493624089305,
+          "share_of_indirect": 0.10072155304102026
+        },
+        {
+          "sector_code": "115",
+          "sector_label": "Special industrial machinery",
+          "contribution": 0.0012636723638646283,
+          "share_of_indirect": 0.09510861473107865
+        },
+        {
+          "sector_code": "111",
+          "sector_label": "Other fabricated metal products",
+          "contribution": 0.001155732116320363,
+          "share_of_indirect": 0.08698463599163023
+        }
+      ],
+      "direct_exposure": 8.925964248937842e-05,
+      "indirect_exposure": 0.013286623587544462,
+      "total_exposure": 0.01337588323003384,
+      "price_stage": "raw_commodity_direct_purchase",
+      "world_bank_price_represents_purchased_stage": true,
+      "alignment_status": "broad_proxy_with_caution",
+      "evidence": "Direct coefficient 0.000089 is positive, so the industry purchases sector 107 (Non-ferrous metal) across the factory gate. The World Bank series prices that sector's output.",
+      "limitations": "The 2015 I/O structure is held time-invariant; coefficients describe 2015 purchasing patterns, not the evaluation period. The decomposition is an exact attribution of the Leontief identity, not a causal claim. Source sector 107 is shared with ['copper_usd_mt']. The coefficient cannot separate them, so the two series are NOT independent measurements and their exposures must never be summed.",
+      "additional_series_could_close_gap": true,
+      "shared_source_sector_warning": "Source sector 107 is shared with ['copper_usd_mt']. The coefficient cannot separate them, so the two series are NOT independent measurements and their exposures must never be summed.",
+      "proxy_fitness_status": null,
+      "diagnostics": {
+        "cumulative_share_top1": 0.21324196854051689,
+        "cumulative_share_top3": 0.5265806109748029,
+        "cumulative_share_top5": 0.7086738616975118,
+        "direct_is_observed_zero": false,
+        "indirect_material_despite_direct_zero": false
+      }
+    },
+    {
+      "commodity_series_id": "aluminum_usd_mt",
+      "industry_id": "IND-04",
+      "world_bank_series": "aluminum_usd_mt",
+      "mapped_raw_io_sector": "107",
+      "mapped_raw_io_sector_label": "Non-ferrous metal",
+      "leading_purchased_sectors": [
+        {
+          "sector_code": "031",
+          "sector_label": "Petroleum and natural gas",
+          "contribution": 0.0054084205111713125,
+          "share_of_indirect": 0.8068184222554933
+        },
+        {
+          "sector_code": "115",
+          "sector_label": "Special industrial machinery",
+          "contribution": 0.0004339257371694675,
+          "share_of_indirect": 0.06473225924574047
+        },
+        {
+          "sector_code": "084",
+          "sector_label": "Basic industrial chemicals",
+          "contribution": 0.0003422643519038319,
+          "share_of_indirect": 0.051058379027104035
+        },
+        {
+          "sector_code": "136",
+          "sector_label": "Pipe line and gas distribution",
+          "contribution": 0.00012448908317850681,
+          "share_of_indirect": 0.018571057015750285
+        },
+        {
+          "sector_code": "094",
+          "sector_label": "Other petroleum products",
+          "contribution": 7.496185055203259e-05,
+          "share_of_indirect": 0.011182673733822632
+        }
+      ],
+      "direct_exposure": 0.0,
+      "indirect_exposure": 0.006703392438724758,
+      "total_exposure": 0.00670339243872476,
+      "price_stage": "processed_material_purchase",
+      "world_bank_price_represents_purchased_stage": false,
+      "alignment_status": "broad_proxy_with_caution",
+      "evidence": "Direct coefficient is exactly zero: the industry buys no Non-ferrous metal directly. Indirect exposure 0.006703 reaches it through Petroleum and natural gas (80.7% of indirect), so the purchased price stage is processed_material_purchase, not the raw commodity.",
+      "limitations": "The 2015 I/O structure is held time-invariant; coefficients describe 2015 purchasing patterns, not the evaluation period. The decomposition is an exact attribution of the Leontief identity, not a causal claim. Source sector 107 is shared with ['copper_usd_mt']. The coefficient cannot separate them, so the two series are NOT independent measurements and their exposures must never be summed.",
+      "additional_series_could_close_gap": true,
+      "shared_source_sector_warning": "Source sector 107 is shared with ['copper_usd_mt']. The coefficient cannot separate them, so the two series are NOT independent measurements and their exposures must never be summed.",
+      "proxy_fitness_status": null,
+      "diagnostics": {
+        "cumulative_share_top1": 0.8068184222554933,
+        "cumulative_share_top3": 0.9226090605283378,
+        "cumulative_share_top5": 0.9523627912779107,
+        "direct_is_observed_zero": true,
+        "indirect_material_despite_direct_zero": false
+      }
+    },
+    {
+      "commodity_series_id": "aluminum_usd_mt",
+      "industry_id": "IND-05",
+      "world_bank_series": "aluminum_usd_mt",
+      "mapped_raw_io_sector": "107",
+      "mapped_raw_io_sector_label": "Non-ferrous metal",
+      "leading_purchased_sectors": [
+        {
+          "sector_code": "084",
+          "sector_label": "Basic industrial chemicals",
+          "contribution": 0.0016787897624590937,
+          "share_of_indirect": 0.18997678450959757
+        },
+        {
+          "sector_code": "115",
+          "sector_label": "Special industrial machinery",
+          "contribution": 0.0012323258958564641,
+          "share_of_indirect": 0.13945362093451819
+        },
+        {
+          "sector_code": "086",
+          "sector_label": "Petrochemical products",
+          "contribution": 0.0012233283536116292,
+          "share_of_indirect": 0.1384354326048138
+        },
+        {
+          "sector_code": "111",
+          "sector_label": "Other fabricated metal products",
+          "contribution": 0.0006557626609400553,
+          "share_of_indirect": 0.07420803039944959
+        },
+        {
+          "sector_code": "093",
+          "sector_label": "Petroleum refineries",
+          "contribution": 0.00043953026465820045,
+          "share_of_indirect": 0.04973853679695164
+        }
+      ],
+      "direct_exposure": 6.131119827745322e-05,
+      "indirect_exposure": 0.008836815334003517,
+      "total_exposure": 0.00889812653228097,
+      "price_stage": "raw_commodity_direct_purchase",
+      "world_bank_price_represents_purchased_stage": true,
+      "alignment_status": "broad_proxy_with_caution",
+      "evidence": "Direct coefficient 0.000061 is positive, so the industry purchases sector 107 (Non-ferrous metal) across the factory gate. The World Bank series prices that sector's output.",
+      "limitations": "The 2015 I/O structure is held time-invariant; coefficients describe 2015 purchasing patterns, not the evaluation period. The decomposition is an exact attribution of the Leontief identity, not a causal claim. Source sector 107 is shared with ['copper_usd_mt']. The coefficient cannot separate them, so the two series are NOT independent measurements and their exposures must never be summed.",
+      "additional_series_could_close_gap": true,
+      "shared_source_sector_warning": "Source sector 107 is shared with ['copper_usd_mt']. The coefficient cannot separate them, so the two series are NOT independent measurements and their exposures must never be summed.",
+      "proxy_fitness_status": null,
+      "diagnostics": {
+        "cumulative_share_top1": 0.18997678450959757,
+        "cumulative_share_top3": 0.46786583804892956,
+        "cumulative_share_top5": 0.5918124052453309,
+        "direct_is_observed_zero": false,
+        "indirect_material_despite_direct_zero": false
+      }
+    },
+    {
+      "commodity_series_id": "aluminum_usd_mt",
+      "industry_id": "IND-06",
+      "world_bank_series": "aluminum_usd_mt",
+      "mapped_raw_io_sector": "107",
+      "mapped_raw_io_sector_label": "Non-ferrous metal",
+      "leading_purchased_sectors": [
+        {
+          "sector_code": "086",
+          "sector_label": "Petrochemical products",
+          "contribution": 0.001996514047036698,
+          "share_of_indirect": 0.25401626085000967
+        },
+        {
+          "sector_code": "115",
+          "sector_label": "Special industrial machinery",
+          "contribution": 0.000998011808451535,
+          "share_of_indirect": 0.12697693173924118
+        },
+        {
+          "sector_code": "111",
+          "sector_label": "Other fabricated metal products",
+          "contribution": 0.0007743211717758396,
+          "share_of_indirect": 0.09851679683568058
+        },
+        {
+          "sector_code": "016",
+          "sector_label": "Rubber",
+          "contribution": 0.0006137527276948224,
+          "share_of_indirect": 0.07808769149755314
+        },
+        {
+          "sector_code": "135",
+          "sector_label": "Electricity",
+          "contribution": 0.0005284679418925627,
+          "share_of_indirect": 0.0672369176554967
+        }
+      ],
+      "direct_exposure": 0.00014068436319558713,
+      "indirect_exposure": 0.00785978834723337,
+      "total_exposure": 0.008000472710428957,
+      "price_stage": "raw_commodity_direct_purchase",
+      "world_bank_price_represents_purchased_stage": true,
+      "alignment_status": "broad_proxy_with_caution",
+      "evidence": "Direct coefficient 0.000141 is positive, so the industry purchases sector 107 (Non-ferrous metal) across the factory gate. The World Bank series prices that sector's output.",
+      "limitations": "The 2015 I/O structure is held time-invariant; coefficients describe 2015 purchasing patterns, not the evaluation period. The decomposition is an exact attribution of the Leontief identity, not a causal claim. Source sector 107 is shared with ['copper_usd_mt']. The coefficient cannot separate them, so the two series are NOT independent measurements and their exposures must never be summed.",
+      "additional_series_could_close_gap": true,
+      "shared_source_sector_warning": "Source sector 107 is shared with ['copper_usd_mt']. The coefficient cannot separate them, so the two series are NOT independent measurements and their exposures must never be summed.",
+      "proxy_fitness_status": null,
+      "diagnostics": {
+        "cumulative_share_top1": 0.25401626085000967,
+        "cumulative_share_top3": 0.47950998942493145,
+        "cumulative_share_top5": 0.6248345985779813,
+        "direct_is_observed_zero": false,
+        "indirect_material_despite_direct_zero": false
+      }
+    },
+    {
+      "commodity_series_id": "aluminum_usd_mt",
+      "industry_id": "IND-07",
+      "world_bank_series": "aluminum_usd_mt",
+      "mapped_raw_io_sector": "107",
+      "mapped_raw_io_sector_label": "Non-ferrous metal",
+      "leading_purchased_sectors": [
+        {
+          "sector_code": "115",
+          "sector_label": "Special industrial machinery",
+          "contribution": 0.0012843299835075621,
+          "share_of_indirect": 0.10474944091771517
+        },
+        {
+          "sector_code": "039",
+          "sector_label": "Limestone",
+          "contribution": 0.0012247954386188928,
+          "share_of_indirect": 0.09989382719502735
+        },
+        {
+          "sector_code": "040",
+          "sector_label": "Stone quarrying",
+          "contribution": 0.0011076875630227963,
+          "share_of_indirect": 0.09034255559561272
+        },
+        {
+          "sector_code": "041",
+          "sector_label": "Other mining and quarrying",
+          "contribution": 0.0009755213521902595,
+          "share_of_indirect": 0.0795631321836391
+        },
+        {
+          "sector_code": "102",
+          "sector_label": "Cement",
+          "contribution": 0.0008881253492486436,
+          "share_of_indirect": 0.07243514906081625
+        }
+      ],
+      "direct_exposure": 0.0003996369141863309,
+      "indirect_exposure": 0.012260972204295145,
+      "total_exposure": 0.012660609118481471,
+      "price_stage": "raw_commodity_direct_purchase",
+      "world_bank_price_represents_purchased_stage": true,
+      "alignment_status": "broad_proxy_with_caution",
+      "evidence": "Direct coefficient 0.000400 is positive, so the industry purchases sector 107 (Non-ferrous metal) across the factory gate. The World Bank series prices that sector's output.",
+      "limitations": "The 2015 I/O structure is held time-invariant; coefficients describe 2015 purchasing patterns, not the evaluation period. The decomposition is an exact attribution of the Leontief identity, not a causal claim. Source sector 107 is shared with ['copper_usd_mt']. The coefficient cannot separate them, so the two series are NOT independent measurements and their exposures must never be summed.",
+      "additional_series_could_close_gap": true,
+      "shared_source_sector_warning": "Source sector 107 is shared with ['copper_usd_mt']. The coefficient cannot separate them, so the two series are NOT independent measurements and their exposures must never be summed.",
+      "proxy_fitness_status": null,
+      "diagnostics": {
+        "cumulative_share_top1": 0.10474944091771517,
+        "cumulative_share_top3": 0.29498582370835524,
+        "cumulative_share_top5": 0.4469841049528106,
+        "direct_is_observed_zero": false,
+        "indirect_material_despite_direct_zero": false
+      }
+    },
+    {
+      "commodity_series_id": "aluminum_usd_mt",
+      "industry_id": "IND-08",
+      "world_bank_series": "aluminum_usd_mt",
+      "mapped_raw_io_sector": "107",
+      "mapped_raw_io_sector_label": "Non-ferrous metal",
+      "leading_purchased_sectors": [
+        {
+          "sector_code": "107",
+          "sector_label": "Non-ferrous metal",
+          "contribution": 0.03943872200097256,
+          "share_of_indirect": 0.6679122662066036
+        },
+        {
+          "sector_code": "106",
+          "sector_label": "Secondary steel products",
+          "contribution": 0.008496347807073668,
+          "share_of_indirect": 0.14388942213092348
+        },
+        {
+          "sector_code": "111",
+          "sector_label": "Other fabricated metal products",
+          "contribution": 0.0036021998707405894,
+          "share_of_indirect": 0.061004854034979905
+        },
+        {
+          "sector_code": "105",
+          "sector_label": "Iron and steel",
+          "contribution": 0.003030298007790676,
+          "share_of_indirect": 0.05131944208574799
+        },
+        {
+          "sector_code": "115",
+          "sector_label": "Special industrial machinery",
+          "contribution": 0.0007343591503202146,
+          "share_of_indirect": 0.012436698234994404
+        }
+      ],
+      "direct_exposure": 0.10280119322445583,
+      "indirect_exposure": 0.05904775821076638,
+      "total_exposure": 0.16184895143522227,
+      "price_stage": "raw_commodity_direct_purchase",
+      "world_bank_price_represents_purchased_stage": true,
+      "alignment_status": "broad_proxy_with_caution",
+      "evidence": "Direct coefficient 0.102801 is positive, so the industry purchases sector 107 (Non-ferrous metal) across the factory gate. The World Bank series prices that sector's output.",
+      "limitations": "The 2015 I/O structure is held time-invariant; coefficients describe 2015 purchasing patterns, not the evaluation period. The decomposition is an exact attribution of the Leontief identity, not a causal claim. Source sector 107 is shared with ['copper_usd_mt']. The coefficient cannot separate them, so the two series are NOT independent measurements and their exposures must never be summed.",
+      "additional_series_could_close_gap": true,
+      "shared_source_sector_warning": "Source sector 107 is shared with ['copper_usd_mt']. The coefficient cannot separate them, so the two series are NOT independent measurements and their exposures must never be summed.",
+      "proxy_fitness_status": null,
+      "diagnostics": {
+        "cumulative_share_top1": 0.6679122662066036,
+        "cumulative_share_top3": 0.872806542372507,
+        "cumulative_share_top5": 0.9365626826932494,
+        "direct_is_observed_zero": false,
+        "indirect_material_despite_direct_zero": false
+      }
+    },
+    {
+      "commodity_series_id": "aluminum_usd_mt",
+      "industry_id": "IND-09",
+      "world_bank_series": "aluminum_usd_mt",
+      "mapped_raw_io_sector": "107",
+      "mapped_raw_io_sector_label": "Non-ferrous metal",
+      "leading_purchased_sectors": [
+        {
+          "sector_code": "118",
+          "sector_label": "Radio, television and communication equipment and apparatus",
+          "contribution": 0.05935235756407686,
+          "share_of_indirect": 0.4850350213698534
+        },
+        {
+          "sector_code": "107",
+          "sector_label": "Non-ferrous metal",
+          "contribution": 0.029039565992353633,
+          "share_of_indirect": 0.2373150299289478
+        },
+        {
+          "sector_code": "122",
+          "sector_label": "Other electrical apparatus and supplies",
+          "contribution": 0.009608949687920981,
+          "share_of_indirect": 0.07852556003678417
+        },
+        {
+          "sector_code": "131",
+          "sector_label": "Watches and clocks",
+          "contribution": 0.0044313282621284665,
+          "share_of_indirect": 0.0362133786513514
+        },
+        {
+          "sector_code": "117",
+          "sector_label": "Electrical industrial machinery and appliances",
+          "contribution": 0.003946445323859656,
+          "share_of_indirect": 0.032250853555845574
+        }
+      ],
+      "direct_exposure": 0.07569469504261993,
+      "indirect_exposure": 0.12236715896607177,
+      "total_exposure": 0.1980618540086917,
+      "price_stage": "raw_commodity_direct_purchase",
+      "world_bank_price_represents_purchased_stage": true,
+      "alignment_status": "broad_proxy_with_caution",
+      "evidence": "Direct coefficient 0.075695 is positive, so the industry purchases sector 107 (Non-ferrous metal) across the factory gate. The World Bank series prices that sector's output.",
+      "limitations": "The 2015 I/O structure is held time-invariant; coefficients describe 2015 purchasing patterns, not the evaluation period. The decomposition is an exact attribution of the Leontief identity, not a causal claim. Source sector 107 is shared with ['copper_usd_mt']. The coefficient cannot separate them, so the two series are NOT independent measurements and their exposures must never be summed.",
+      "additional_series_could_close_gap": true,
+      "shared_source_sector_warning": "Source sector 107 is shared with ['copper_usd_mt']. The coefficient cannot separate them, so the two series are NOT independent measurements and their exposures must never be summed.",
+      "proxy_fitness_status": null,
+      "diagnostics": {
+        "cumulative_share_top1": 0.4850350213698534,
+        "cumulative_share_top3": 0.8008756113355854,
+        "cumulative_share_top5": 0.8693398435427823,
+        "direct_is_observed_zero": false,
+        "indirect_material_despite_direct_zero": false
+      }
+    },
+    {
+      "commodity_series_id": "aluminum_usd_mt",
+      "industry_id": "IND-10",
+      "world_bank_series": "aluminum_usd_mt",
+      "mapped_raw_io_sector": "107",
+      "mapped_raw_io_sector_label": "Non-ferrous metal",
+      "leading_purchased_sectors": [
+        {
+          "sector_code": "116",
+          "sector_label": "Office and household machinery and appliances",
+          "contribution": 0.0703524176190316,
+          "share_of_indirect": 0.5330381975731869
+        },
+        {
+          "sector_code": "107",
+          "sector_label": "Non-ferrous metal",
+          "contribution": 0.02334789266460094,
+          "share_of_indirect": 0.1768996580965319
+        },
+        {
+          "sector_code": "118",
+          "sector_label": "Radio, television and communication equipment and apparatus",
+          "contribution": 0.012726385336397562,
+          "share_of_indirect": 0.09642382921464937
+        },
+        {
+          "sector_code": "115",
+          "sector_label": "Special industrial machinery",
+          "contribution": 0.006431855477571479,
+          "share_of_indirect": 0.048732151173273675
+        },
+        {
+          "sector_code": "111",
+          "sector_label": "Other fabricated metal products",
+          "contribution": 0.003189557140899596,
+          "share_of_indirect": 0.024166273839349696
+        }
+      ],
+      "direct_exposure": 0.06085874753087353,
+      "indirect_exposure": 0.1319838201827405,
+      "total_exposure": 0.192842567713614,
+      "price_stage": "raw_commodity_direct_purchase",
+      "world_bank_price_represents_purchased_stage": true,
+      "alignment_status": "broad_proxy_with_caution",
+      "evidence": "Direct coefficient 0.060859 is positive, so the industry purchases sector 107 (Non-ferrous metal) across the factory gate. The World Bank series prices that sector's output.",
+      "limitations": "The 2015 I/O structure is held time-invariant; coefficients describe 2015 purchasing patterns, not the evaluation period. The decomposition is an exact attribution of the Leontief identity, not a causal claim. Source sector 107 is shared with ['copper_usd_mt']. The coefficient cannot separate them, so the two series are NOT independent measurements and their exposures must never be summed.",
+      "additional_series_could_close_gap": true,
+      "shared_source_sector_warning": "Source sector 107 is shared with ['copper_usd_mt']. The coefficient cannot separate them, so the two series are NOT independent measurements and their exposures must never be summed.",
+      "proxy_fitness_status": null,
+      "diagnostics": {
+        "cumulative_share_top1": 0.5330381975731869,
+        "cumulative_share_top3": 0.8063616848843682,
+        "cumulative_share_top5": 0.8792601098969915,
+        "direct_is_observed_zero": false,
+        "indirect_material_despite_direct_zero": false
+      }
+    },
+    {
+      "commodity_series_id": "aluminum_usd_mt",
+      "industry_id": "IND-11",
+      "world_bank_series": "aluminum_usd_mt",
+      "mapped_raw_io_sector": "107",
+      "mapped_raw_io_sector_label": "Non-ferrous metal",
+      "leading_purchased_sectors": [
+        {
+          "sector_code": "125",
+          "sector_label": "Motor vehicles",
+          "contribution": 0.019162893126064066,
+          "share_of_indirect": 0.287034662379396
+        },
+        {
+          "sector_code": "112",
+          "sector_label": "Engines and turbines",
+          "contribution": 0.007301912820728756,
+          "share_of_indirect": 0.10937294632045712
+        },
+        {
+          "sector_code": "107",
+          "sector_label": "Non-ferrous metal",
+          "contribution": 0.007233064965703221,
+          "share_of_indirect": 0.10834169698389837
+        },
+        {
+          "sector_code": "121",
+          "sector_label": "Electric accumulators and batteries",
+          "contribution": 0.006577350517761787,
+          "share_of_indirect": 0.09851996631181276
+        },
+        {
+          "sector_code": "120",
+          "sector_label": "Insulated wire and cable",
+          "contribution": 0.005740544206985972,
+          "share_of_indirect": 0.0859857202921556
+        }
+      ],
+      "direct_exposure": 0.018853747571383337,
+      "indirect_exposure": 0.06676159933860176,
+      "total_exposure": 0.08561534690998508,
+      "price_stage": "raw_commodity_direct_purchase",
+      "world_bank_price_represents_purchased_stage": true,
+      "alignment_status": "broad_proxy_with_caution",
+      "evidence": "Direct coefficient 0.018854 is positive, so the industry purchases sector 107 (Non-ferrous metal) across the factory gate. The World Bank series prices that sector's output.",
+      "limitations": "The 2015 I/O structure is held time-invariant; coefficients describe 2015 purchasing patterns, not the evaluation period. The decomposition is an exact attribution of the Leontief identity, not a causal claim. Source sector 107 is shared with ['copper_usd_mt']. The coefficient cannot separate them, so the two series are NOT independent measurements and their exposures must never be summed.",
+      "additional_series_could_close_gap": true,
+      "shared_source_sector_warning": "Source sector 107 is shared with ['copper_usd_mt']. The coefficient cannot separate them, so the two series are NOT independent measurements and their exposures must never be summed.",
+      "proxy_fitness_status": null,
+      "diagnostics": {
+        "cumulative_share_top1": 0.287034662379396,
+        "cumulative_share_top3": 0.5047493056837515,
+        "cumulative_share_top5": 0.6892549922877198,
+        "direct_is_observed_zero": false,
+        "indirect_material_despite_direct_zero": false
+      }
+    },
+    {
+      "commodity_series_id": "aluminum_usd_mt",
+      "industry_id": "IND-12",
+      "world_bank_series": "aluminum_usd_mt",
+      "mapped_raw_io_sector": "107",
+      "mapped_raw_io_sector_label": "Non-ferrous metal",
+      "leading_purchased_sectors": [
+        {
+          "sector_code": "132",
+          "sector_label": "Jewellery and related articles",
+          "contribution": 0.209702795443401,
+          "share_of_indirect": 0.7070637013568732
+        },
+        {
+          "sector_code": "107",
+          "sector_label": "Non-ferrous metal",
+          "contribution": 0.08042522306329808,
+          "share_of_indirect": 0.27117309419433006
+        },
+        {
+          "sector_code": "111",
+          "sector_label": "Other fabricated metal products",
+          "contribution": 0.001480326284938166,
+          "share_of_indirect": 0.004991278156455241
+        },
+        {
+          "sector_code": "134",
+          "sector_label": "Other manufactured goods",
+          "contribution": 0.0006758045251397926,
+          "share_of_indirect": 0.002278638431732468
+        },
+        {
+          "sector_code": "106",
+          "sector_label": "Secondary steel products",
+          "contribution": 0.0005818031566418004,
+          "share_of_indirect": 0.001961690079173474
+        }
+      ],
+      "direct_exposure": 0.20963683600209423,
+      "indirect_exposure": 0.296582606405867,
+      "total_exposure": 0.5062194424079614,
+      "price_stage": "raw_commodity_direct_purchase",
+      "world_bank_price_represents_purchased_stage": true,
+      "alignment_status": "broad_proxy_with_caution",
+      "evidence": "Direct coefficient 0.209637 is positive, so the industry purchases sector 107 (Non-ferrous metal) across the factory gate. The World Bank series prices that sector's output.",
+      "limitations": "The 2015 I/O structure is held time-invariant; coefficients describe 2015 purchasing patterns, not the evaluation period. The decomposition is an exact attribution of the Leontief identity, not a causal claim. Source sector 107 is shared with ['copper_usd_mt']. The coefficient cannot separate them, so the two series are NOT independent measurements and their exposures must never be summed.",
+      "additional_series_could_close_gap": true,
+      "shared_source_sector_warning": "Source sector 107 is shared with ['copper_usd_mt']. The coefficient cannot separate them, so the two series are NOT independent measurements and their exposures must never be summed.",
+      "proxy_fitness_status": null,
+      "diagnostics": {
+        "cumulative_share_top1": 0.7070637013568732,
+        "cumulative_share_top3": 0.9832280737076585,
+        "cumulative_share_top5": 0.9874684022185645,
+        "direct_is_observed_zero": false,
+        "indirect_material_despite_direct_zero": false
+      }
+    },
+    {
+      "commodity_series_id": "brent_crude_usd_bbl",
+      "industry_id": "IND-01",
+      "world_bank_series": "brent_crude_usd_bbl",
+      "mapped_raw_io_sector": "031",
+      "mapped_raw_io_sector_label": "Petroleum and natural gas",
+      "leading_purchased_sectors": [
+        {
+          "sector_code": "135",
+          "sector_label": "Electricity",
+          "contribution": 0.008733095848137647,
+          "share_of_indirect": 0.11992186670188477
+        },
+        {
+          "sector_code": "093",
+          "sector_label": "Petroleum refineries",
+          "contribution": 0.00763555990440021,
+          "share_of_indirect": 0.10485062948725188
+        },
+        {
+          "sector_code": "028",
+          "sector_label": "Ocean and coastal fishing",
+          "contribution": 0.007369599676570752,
+          "share_of_indirect": 0.10119849426002099
+        },
+        {
+          "sector_code": "001",
+          "sector_label": "Paddy",
+          "contribution": 0.006250228705750833,
+          "share_of_indirect": 0.08582742096746666
+        },
+        {
+          "sector_code": "111",
+          "sector_label": "Other fabricated metal products",
+          "contribution": 0.003067175240512407,
+          "share_of_indirect": 0.04211809726358254
+        }
+      ],
+      "direct_exposure": 0.0,
+      "indirect_exposure": 0.07282321471735723,
+      "total_exposure": 0.07282321471735721,
+      "price_stage": "electricity_purchase",
+      "world_bank_price_represents_purchased_stage": false,
+      "alignment_status": "stage_misaligned",
+      "evidence": "Direct coefficient is exactly zero: the industry buys no Petroleum and natural gas directly. Indirect exposure 0.072823 reaches it through Electricity (12.0% of indirect), so the purchased price stage is electricity_purchase, not the raw commodity.",
+      "limitations": "The 2015 I/O structure is held time-invariant; coefficients describe 2015 purchasing patterns, not the evaluation period. The decomposition is an exact attribution of the Leontief identity, not a causal claim.",
+      "additional_series_could_close_gap": true,
+      "shared_source_sector_warning": null,
+      "proxy_fitness_status": null,
+      "diagnostics": {
+        "cumulative_share_top1": 0.11992186670188477,
+        "cumulative_share_top3": 0.32597099044915767,
+        "cumulative_share_top5": 0.45391650868020683,
+        "direct_is_observed_zero": true,
+        "indirect_material_despite_direct_zero": true
+      }
+    },
+    {
+      "commodity_series_id": "brent_crude_usd_bbl",
+      "industry_id": "IND-02",
+      "world_bank_series": "brent_crude_usd_bbl",
+      "mapped_raw_io_sector": "031",
+      "mapped_raw_io_sector_label": "Petroleum and natural gas",
+      "leading_purchased_sectors": [
+        {
+          "sector_code": "068",
+          "sector_label": "Weaving",
+          "contribution": 0.030009261922716197,
+          "share_of_indirect": 0.23236126390938833
+        },
+        {
+          "sector_code": "067",
+          "sector_label": "Spinning",
+          "contribution": 0.024105433541476054,
+          "share_of_indirect": 0.18664800951139707
+        },
+        {
+          "sector_code": "135",
+          "sector_label": "Electricity",
+          "contribution": 0.02289368118960363,
+          "share_of_indirect": 0.17726542926829172
+        },
+        {
+          "sector_code": "086",
+          "sector_label": "Petrochemical products",
+          "contribution": 0.015620820467456718,
+          "share_of_indirect": 0.1209517780366441
+        },
+        {
+          "sector_code": "093",
+          "sector_label": "Petroleum refineries",
+          "contribution": 0.010168102874858018,
+          "share_of_indirect": 0.07873146769311959
+        }
+      ],
+      "direct_exposure": 0.0,
+      "indirect_exposure": 0.1291491594503403,
+      "total_exposure": 0.1291491594503403,
+      "price_stage": "processed_material_purchase",
+      "world_bank_price_represents_purchased_stage": false,
+      "alignment_status": "stage_misaligned",
+      "evidence": "Direct coefficient is exactly zero: the industry buys no Petroleum and natural gas directly. Indirect exposure 0.129149 reaches it through Weaving (23.2% of indirect), so the purchased price stage is processed_material_purchase, not the raw commodity.",
+      "limitations": "The 2015 I/O structure is held time-invariant; coefficients describe 2015 purchasing patterns, not the evaluation period. The decomposition is an exact attribution of the Leontief identity, not a causal claim.",
+      "additional_series_could_close_gap": true,
+      "shared_source_sector_warning": null,
+      "proxy_fitness_status": null,
+      "diagnostics": {
+        "cumulative_share_top1": 0.23236126390938833,
+        "cumulative_share_top3": 0.5962747026890771,
+        "cumulative_share_top5": 0.7959579484188408,
+        "direct_is_observed_zero": true,
+        "indirect_material_despite_direct_zero": true
+      }
+    },
+    {
+      "commodity_series_id": "brent_crude_usd_bbl",
+      "industry_id": "IND-03",
+      "world_bank_series": "brent_crude_usd_bbl",
+      "mapped_raw_io_sector": "031",
+      "mapped_raw_io_sector_label": "Petroleum and natural gas",
+      "leading_purchased_sectors": [
+        {
+          "sector_code": "081",
+          "sector_label": "Pulp, paper and paperboard",
+          "contribution": 0.022271095488975615,
+          "share_of_indirect": 0.28666236360974423
+        },
+        {
+          "sector_code": "135",
+          "sector_label": "Electricity",
+          "contribution": 0.012785863193108144,
+          "share_of_indirect": 0.1645732139912709
+        },
+        {
+          "sector_code": "093",
+          "sector_label": "Petroleum refineries",
+          "contribution": 0.008982752869097341,
+          "share_of_indirect": 0.11562148662387582
+        },
+        {
+          "sector_code": "078",
+          "sector_label": "Saw mills",
+          "contribution": 0.005530084193536438,
+          "share_of_indirect": 0.0711804682739905
+        },
+        {
+          "sector_code": "025",
+          "sector_label": "Logging",
+          "contribution": 0.0051239380320910015,
+          "share_of_indirect": 0.06595275872245066
+        }
+      ],
+      "direct_exposure": 0.0,
+      "indirect_exposure": 0.0776910341787839,
+      "total_exposure": 0.07769103417878388,
+      "price_stage": "processed_material_purchase",
+      "world_bank_price_represents_purchased_stage": false,
+      "alignment_status": "stage_misaligned",
+      "evidence": "Direct coefficient is exactly zero: the industry buys no Petroleum and natural gas directly. Indirect exposure 0.077691 reaches it through Pulp, paper and paperboard (28.7% of indirect), so the purchased price stage is processed_material_purchase, not the raw commodity.",
+      "limitations": "The 2015 I/O structure is held time-invariant; coefficients describe 2015 purchasing patterns, not the evaluation period. The decomposition is an exact attribution of the Leontief identity, not a causal claim.",
+      "additional_series_could_close_gap": true,
+      "shared_source_sector_warning": null,
+      "proxy_fitness_status": null,
+      "diagnostics": {
+        "cumulative_share_top1": 0.28666236360974423,
+        "cumulative_share_top3": 0.5668570642248909,
+        "cumulative_share_top5": 0.703990291221332,
+        "direct_is_observed_zero": true,
+        "indirect_material_despite_direct_zero": true
+      }
+    },
+    {
+      "commodity_series_id": "brent_crude_usd_bbl",
+      "industry_id": "IND-04",
+      "world_bank_series": "brent_crude_usd_bbl",
+      "mapped_raw_io_sector": "031",
+      "mapped_raw_io_sector_label": "Petroleum and natural gas",
+      "leading_purchased_sectors": [
+        {
+          "sector_code": "031",
+          "sector_label": "Petroleum and natural gas",
+          "contribution": 0.11611085627158427,
+          "share_of_indirect": 0.7906251267913855
+        },
+        {
+          "sector_code": "136",
+          "sector_label": "Pipe line and gas distribution",
+          "contribution": 0.010812408716520311,
+          "share_of_indirect": 0.07362414064386877
+        },
+        {
+          "sector_code": "093",
+          "sector_label": "Petroleum refineries",
+          "contribution": 0.008743036792611583,
+          "share_of_indirect": 0.059533318370609274
+        },
+        {
+          "sector_code": "084",
+          "sector_label": "Basic industrial chemicals",
+          "contribution": 0.005236387667802117,
+          "share_of_indirect": 0.035655750002405937
+        },
+        {
+          "sector_code": "094",
+          "sector_label": "Other petroleum products",
+          "contribution": 0.0026578823888542082,
+          "share_of_indirect": 0.01809812336384191
+        }
+      ],
+      "direct_exposure": 0.7102503906879029,
+      "indirect_exposure": 0.14685955750331384,
+      "total_exposure": 0.8571099481912168,
+      "price_stage": "raw_commodity_direct_purchase",
+      "world_bank_price_represents_purchased_stage": true,
+      "alignment_status": "stage_aligned",
+      "evidence": "Direct coefficient 0.710250 is positive, so the industry purchases sector 031 (Petroleum and natural gas) across the factory gate. The World Bank series prices that sector's output.",
+      "limitations": "The 2015 I/O structure is held time-invariant; coefficients describe 2015 purchasing patterns, not the evaluation period. The decomposition is an exact attribution of the Leontief identity, not a causal claim.",
+      "additional_series_could_close_gap": false,
+      "shared_source_sector_warning": null,
+      "proxy_fitness_status": null,
+      "diagnostics": {
+        "cumulative_share_top1": 0.7906251267913855,
+        "cumulative_share_top3": 0.9237825858058636,
+        "cumulative_share_top5": 0.9775364591721114,
+        "direct_is_observed_zero": false,
+        "indirect_material_despite_direct_zero": false
+      }
+    },
+    {
+      "commodity_series_id": "brent_crude_usd_bbl",
+      "industry_id": "IND-05",
+      "world_bank_series": "brent_crude_usd_bbl",
+      "mapped_raw_io_sector": "031",
+      "mapped_raw_io_sector_label": "Petroleum and natural gas",
+      "leading_purchased_sectors": [
+        {
+          "sector_code": "093",
+          "sector_label": "Petroleum refineries",
+          "contribution": 0.05725601807086515,
+          "share_of_indirect": 0.29570401915159106
+        },
+        {
+          "sector_code": "086",
+          "sector_label": "Petrochemical products",
+          "contribution": 0.04859403086857424,
+          "share_of_indirect": 0.2509683823424285
+        },
+        {
+          "sector_code": "136",
+          "sector_label": "Pipe line and gas distribution",
+          "contribution": 0.026295170337292253,
+          "share_of_indirect": 0.1358038476128266
+        },
+        {
+          "sector_code": "084",
+          "sector_label": "Basic industrial chemicals",
+          "contribution": 0.02568422320371607,
+          "share_of_indirect": 0.13264855444060458
+        },
+        {
+          "sector_code": "135",
+          "sector_label": "Electricity",
+          "contribution": 0.00929840088661115,
+          "share_of_indirect": 0.048022454346205425
+        }
+      ],
+      "direct_exposure": 0.006385377276959774,
+      "indirect_exposure": 0.19362610706184946,
+      "total_exposure": 0.20001148433880928,
+      "price_stage": "raw_commodity_direct_purchase",
+      "world_bank_price_represents_purchased_stage": true,
+      "alignment_status": "stage_aligned",
+      "evidence": "Direct coefficient 0.006385 is positive, so the industry purchases sector 031 (Petroleum and natural gas) across the factory gate. The World Bank series prices that sector's output.",
+      "limitations": "The 2015 I/O structure is held time-invariant; coefficients describe 2015 purchasing patterns, not the evaluation period. The decomposition is an exact attribution of the Leontief identity, not a causal claim.",
+      "additional_series_could_close_gap": false,
+      "shared_source_sector_warning": null,
+      "proxy_fitness_status": null,
+      "diagnostics": {
+        "cumulative_share_top1": 0.29570401915159106,
+        "cumulative_share_top3": 0.6824762491068461,
+        "cumulative_share_top5": 0.8631472578936562,
+        "direct_is_observed_zero": false,
+        "indirect_material_despite_direct_zero": false
+      }
+    },
+    {
+      "commodity_series_id": "brent_crude_usd_bbl",
+      "industry_id": "IND-06",
+      "world_bank_series": "brent_crude_usd_bbl",
+      "mapped_raw_io_sector": "031",
+      "mapped_raw_io_sector_label": "Petroleum and natural gas",
+      "leading_purchased_sectors": [
+        {
+          "sector_code": "086",
+          "sector_label": "Petrochemical products",
+          "contribution": 0.07930713364471233,
+          "share_of_indirect": 0.5490583933026983
+        },
+        {
+          "sector_code": "135",
+          "sector_label": "Electricity",
+          "contribution": 0.01701316277458431,
+          "share_of_indirect": 0.11778536669674922
+        },
+        {
+          "sector_code": "093",
+          "sector_label": "Petroleum refineries",
+          "contribution": 0.01278054959035243,
+          "share_of_indirect": 0.08848217935905983
+        },
+        {
+          "sector_code": "084",
+          "sector_label": "Basic industrial chemicals",
+          "contribution": 0.008059829821983552,
+          "share_of_indirect": 0.05579973716080095
+        },
+        {
+          "sector_code": "016",
+          "sector_label": "Rubber",
+          "contribution": 0.005128842656932675,
+          "share_of_indirect": 0.03550795469841761
+        }
+      ],
+      "direct_exposure": 0.0,
+      "indirect_exposure": 0.14444207503625203,
+      "total_exposure": 0.14444207503625198,
+      "price_stage": "processed_material_purchase",
+      "world_bank_price_represents_purchased_stage": false,
+      "alignment_status": "stage_misaligned",
+      "evidence": "Direct coefficient is exactly zero: the industry buys no Petroleum and natural gas directly. Indirect exposure 0.144442 reaches it through Petrochemical products (54.9% of indirect), so the purchased price stage is processed_material_purchase, not the raw commodity.",
+      "limitations": "The 2015 I/O structure is held time-invariant; coefficients describe 2015 purchasing patterns, not the evaluation period. The decomposition is an exact attribution of the Leontief identity, not a causal claim.",
+      "additional_series_could_close_gap": true,
+      "shared_source_sector_warning": null,
+      "proxy_fitness_status": null,
+      "diagnostics": {
+        "cumulative_share_top1": 0.5490583933026983,
+        "cumulative_share_top3": 0.7553259393585074,
+        "cumulative_share_top5": 0.846633631217726,
+        "direct_is_observed_zero": true,
+        "indirect_material_despite_direct_zero": true
+      }
+    },
+    {
+      "commodity_series_id": "brent_crude_usd_bbl",
+      "industry_id": "IND-07",
+      "world_bank_series": "brent_crude_usd_bbl",
+      "mapped_raw_io_sector": "031",
+      "mapped_raw_io_sector_label": "Petroleum and natural gas",
+      "leading_purchased_sectors": [
+        {
+          "sector_code": "093",
+          "sector_label": "Petroleum refineries",
+          "contribution": 0.03092189290657122,
+          "share_of_indirect": 0.21527610193780314
+        },
+        {
+          "sector_code": "135",
+          "sector_label": "Electricity",
+          "contribution": 0.021453373546630006,
+          "share_of_indirect": 0.14935691823551442
+        },
+        {
+          "sector_code": "102",
+          "sector_label": "Cement",
+          "contribution": 0.011484505618706703,
+          "share_of_indirect": 0.07995434204975788
+        },
+        {
+          "sector_code": "040",
+          "sector_label": "Stone quarrying",
+          "contribution": 0.010343335761148665,
+          "share_of_indirect": 0.07200959560987205
+        },
+        {
+          "sector_code": "136",
+          "sector_label": "Pipe line and gas distribution",
+          "contribution": 0.010279672180443108,
+          "share_of_indirect": 0.07156637411851302
+        }
+      ],
+      "direct_exposure": 0.0,
+      "indirect_exposure": 0.14363829811218465,
+      "total_exposure": 0.14363829811218462,
+      "price_stage": "refined_energy_purchase",
+      "world_bank_price_represents_purchased_stage": false,
+      "alignment_status": "stage_misaligned",
+      "evidence": "Direct coefficient is exactly zero: the industry buys no Petroleum and natural gas directly. Indirect exposure 0.143638 reaches it through Petroleum refineries (21.5% of indirect), so the purchased price stage is refined_energy_purchase, not the raw commodity.",
+      "limitations": "The 2015 I/O structure is held time-invariant; coefficients describe 2015 purchasing patterns, not the evaluation period. The decomposition is an exact attribution of the Leontief identity, not a causal claim.",
+      "additional_series_could_close_gap": true,
+      "shared_source_sector_warning": null,
+      "proxy_fitness_status": null,
+      "diagnostics": {
+        "cumulative_share_top1": 0.21527610193780314,
+        "cumulative_share_top3": 0.44458736222307543,
+        "cumulative_share_top5": 0.5881633319514605,
+        "direct_is_observed_zero": true,
+        "indirect_material_despite_direct_zero": true
+      }
+    },
+    {
+      "commodity_series_id": "brent_crude_usd_bbl",
+      "industry_id": "IND-08",
+      "world_bank_series": "brent_crude_usd_bbl",
+      "mapped_raw_io_sector": "031",
+      "mapped_raw_io_sector_label": "Petroleum and natural gas",
+      "leading_purchased_sectors": [
+        {
+          "sector_code": "106",
+          "sector_label": "Secondary steel products",
+          "contribution": 0.052377315991570916,
+          "share_of_indirect": 0.310421527973562
+        },
+        {
+          "sector_code": "105",
+          "sector_label": "Iron and steel",
+          "contribution": 0.039662005907813436,
+          "share_of_indirect": 0.2350624548684635
+        },
+        {
+          "sector_code": "093",
+          "sector_label": "Petroleum refineries",
+          "contribution": 0.02401262667507799,
+          "share_of_indirect": 0.142314208393878
+        },
+        {
+          "sector_code": "107",
+          "sector_label": "Non-ferrous metal",
+          "contribution": 0.014415802309899741,
+          "share_of_indirect": 0.08543727938873462
+        },
+        {
+          "sector_code": "135",
+          "sector_label": "Electricity",
+          "contribution": 0.013691158361476358,
+          "share_of_indirect": 0.08114257513656213
+        }
+      ],
+      "direct_exposure": 0.0,
+      "indirect_exposure": 0.16872965072200724,
+      "total_exposure": 0.16872965072200727,
+      "price_stage": "processed_material_purchase",
+      "world_bank_price_represents_purchased_stage": false,
+      "alignment_status": "stage_misaligned",
+      "evidence": "Direct coefficient is exactly zero: the industry buys no Petroleum and natural gas directly. Indirect exposure 0.168730 reaches it through Secondary steel products (31.0% of indirect), so the purchased price stage is processed_material_purchase, not the raw commodity.",
+      "limitations": "The 2015 I/O structure is held time-invariant; coefficients describe 2015 purchasing patterns, not the evaluation period. The decomposition is an exact attribution of the Leontief identity, not a causal claim.",
+      "additional_series_could_close_gap": true,
+      "shared_source_sector_warning": null,
+      "proxy_fitness_status": null,
+      "diagnostics": {
+        "cumulative_share_top1": 0.310421527973562,
+        "cumulative_share_top3": 0.6877981912359035,
+        "cumulative_share_top5": 0.8543780457612002,
+        "direct_is_observed_zero": true,
+        "indirect_material_despite_direct_zero": true
+      }
+    },
+    {
+      "commodity_series_id": "brent_crude_usd_bbl",
+      "industry_id": "IND-09",
+      "world_bank_series": "brent_crude_usd_bbl",
+      "mapped_raw_io_sector": "031",
+      "mapped_raw_io_sector_label": "Petroleum and natural gas",
+      "leading_purchased_sectors": [
+        {
+          "sector_code": "118",
+          "sector_label": "Radio, television and communication equipment and apparatus",
+          "contribution": 0.033908639195433216,
+          "share_of_indirect": 0.3338690451278056
+        },
+        {
+          "sector_code": "107",
+          "sector_label": "Non-ferrous metal",
+          "contribution": 0.010614660447180166,
+          "share_of_indirect": 0.10451338160256275
+        },
+        {
+          "sector_code": "122",
+          "sector_label": "Other electrical apparatus and supplies",
+          "contribution": 0.006761187063817232,
+          "share_of_indirect": 0.06657156177565358
+        },
+        {
+          "sector_code": "135",
+          "sector_label": "Electricity",
+          "contribution": 0.00656168868976631,
+          "share_of_indirect": 0.06460727381750098
+        },
+        {
+          "sector_code": "098",
+          "sector_label": "Plastic ware",
+          "contribution": 0.004814912558979052,
+          "share_of_indirect": 0.047408279912828775
+        }
+      ],
+      "direct_exposure": 0.0,
+      "indirect_exposure": 0.10156269258940413,
+      "total_exposure": 0.10156269258940412,
+      "price_stage": "processed_material_purchase",
+      "world_bank_price_represents_purchased_stage": false,
+      "alignment_status": "stage_misaligned",
+      "evidence": "Direct coefficient is exactly zero: the industry buys no Petroleum and natural gas directly. Indirect exposure 0.101563 reaches it through Radio, television and communication equipment and apparatus (33.4% of indirect), so the purchased price stage is processed_material_purchase, not the raw commodity.",
+      "limitations": "The 2015 I/O structure is held time-invariant; coefficients describe 2015 purchasing patterns, not the evaluation period. The decomposition is an exact attribution of the Leontief identity, not a causal claim.",
+      "additional_series_could_close_gap": true,
+      "shared_source_sector_warning": null,
+      "proxy_fitness_status": null,
+      "diagnostics": {
+        "cumulative_share_top1": 0.3338690451278056,
+        "cumulative_share_top3": 0.5049539885060219,
+        "cumulative_share_top5": 0.6169695422363517,
+        "direct_is_observed_zero": true,
+        "indirect_material_despite_direct_zero": true
+      }
+    },
+    {
+      "commodity_series_id": "brent_crude_usd_bbl",
+      "industry_id": "IND-10",
+      "world_bank_series": "brent_crude_usd_bbl",
+      "mapped_raw_io_sector": "031",
+      "mapped_raw_io_sector_label": "Petroleum and natural gas",
+      "leading_purchased_sectors": [
+        {
+          "sector_code": "116",
+          "sector_label": "Office and household machinery and appliances",
+          "contribution": 0.03412389762292251,
+          "share_of_indirect": 0.31570302597860994
+        },
+        {
+          "sector_code": "106",
+          "sector_label": "Secondary steel products",
+          "contribution": 0.012726549894008942,
+          "share_of_indirect": 0.11774183465805037
+        },
+        {
+          "sector_code": "107",
+          "sector_label": "Non-ferrous metal",
+          "contribution": 0.008534216828764011,
+          "share_of_indirect": 0.07895575432123295
+        },
+        {
+          "sector_code": "118",
+          "sector_label": "Radio, television and communication equipment and apparatus",
+          "contribution": 0.007270720597207482,
+          "share_of_indirect": 0.06726630465687176
+        },
+        {
+          "sector_code": "135",
+          "sector_label": "Electricity",
+          "contribution": 0.007241765563969526,
+          "share_of_indirect": 0.06699842225634571
+        }
+      ],
+      "direct_exposure": 0.0,
+      "indirect_exposure": 0.10808859850850633,
+      "total_exposure": 0.10808859850850634,
+      "price_stage": "processed_material_purchase",
+      "world_bank_price_represents_purchased_stage": false,
+      "alignment_status": "stage_misaligned",
+      "evidence": "Direct coefficient is exactly zero: the industry buys no Petroleum and natural gas directly. Indirect exposure 0.108089 reaches it through Office and household machinery and appliances (31.6% of indirect), so the purchased price stage is processed_material_purchase, not the raw commodity.",
+      "limitations": "The 2015 I/O structure is held time-invariant; coefficients describe 2015 purchasing patterns, not the evaluation period. The decomposition is an exact attribution of the Leontief identity, not a causal claim.",
+      "additional_series_could_close_gap": true,
+      "shared_source_sector_warning": null,
+      "proxy_fitness_status": null,
+      "diagnostics": {
+        "cumulative_share_top1": 0.31570302597860994,
+        "cumulative_share_top3": 0.5124006149578932,
+        "cumulative_share_top5": 0.6466653418711107,
+        "direct_is_observed_zero": true,
+        "indirect_material_despite_direct_zero": true
+      }
+    },
+    {
+      "commodity_series_id": "brent_crude_usd_bbl",
+      "industry_id": "IND-11",
+      "world_bank_series": "brent_crude_usd_bbl",
+      "mapped_raw_io_sector": "031",
+      "mapped_raw_io_sector_label": "Petroleum and natural gas",
+      "leading_purchased_sectors": [
+        {
+          "sector_code": "106",
+          "sector_label": "Secondary steel products",
+          "contribution": 0.026051741322722786,
+          "share_of_indirect": 0.22294255151616202
+        },
+        {
+          "sector_code": "125",
+          "sector_label": "Motor vehicles",
+          "contribution": 0.02575014087596148,
+          "share_of_indirect": 0.22036155041122887
+        },
+        {
+          "sector_code": "112",
+          "sector_label": "Engines and turbines",
+          "contribution": 0.008637071355818206,
+          "share_of_indirect": 0.07391332125709967
+        },
+        {
+          "sector_code": "135",
+          "sector_label": "Electricity",
+          "contribution": 0.008129060722916326,
+          "share_of_indirect": 0.06956592715036866
+        },
+        {
+          "sector_code": "093",
+          "sector_label": "Petroleum refineries",
+          "contribution": 0.007774290478157553,
+          "share_of_indirect": 0.06652991575332828
+        }
+      ],
+      "direct_exposure": 0.0,
+      "indirect_exposure": 0.1168540556549349,
+      "total_exposure": 0.11685405565493491,
+      "price_stage": "processed_material_purchase",
+      "world_bank_price_represents_purchased_stage": false,
+      "alignment_status": "stage_misaligned",
+      "evidence": "Direct coefficient is exactly zero: the industry buys no Petroleum and natural gas directly. Indirect exposure 0.116854 reaches it through Secondary steel products (22.3% of indirect), so the purchased price stage is processed_material_purchase, not the raw commodity.",
+      "limitations": "The 2015 I/O structure is held time-invariant; coefficients describe 2015 purchasing patterns, not the evaluation period. The decomposition is an exact attribution of the Leontief identity, not a causal claim.",
+      "additional_series_could_close_gap": true,
+      "shared_source_sector_warning": null,
+      "proxy_fitness_status": null,
+      "diagnostics": {
+        "cumulative_share_top1": 0.22294255151616202,
+        "cumulative_share_top3": 0.5172174231844906,
+        "cumulative_share_top5": 0.6533132660881875,
+        "direct_is_observed_zero": true,
+        "indirect_material_despite_direct_zero": true
+      }
+    },
+    {
+      "commodity_series_id": "brent_crude_usd_bbl",
+      "industry_id": "IND-12",
+      "world_bank_series": "brent_crude_usd_bbl",
+      "mapped_raw_io_sector": "031",
+      "mapped_raw_io_sector_label": "Petroleum and natural gas",
+      "leading_purchased_sectors": [
+        {
+          "sector_code": "132",
+          "sector_label": "Jewellery and related articles",
+          "contribution": 0.030643358213482342,
+          "share_of_indirect": 0.30738660904588455
+        },
+        {
+          "sector_code": "107",
+          "sector_label": "Non-ferrous metal",
+          "contribution": 0.02939735512680923,
+          "share_of_indirect": 0.29488782673211583
+        },
+        {
+          "sector_code": "135",
+          "sector_label": "Electricity",
+          "contribution": 0.005053147015200648,
+          "share_of_indirect": 0.05068862607001927
+        },
+        {
+          "sector_code": "093",
+          "sector_label": "Petroleum refineries",
+          "contribution": 0.0042376168143334995,
+          "share_of_indirect": 0.042507960580531
+        },
+        {
+          "sector_code": "106",
+          "sector_label": "Secondary steel products",
+          "contribution": 0.0035866337480853073,
+          "share_of_indirect": 0.035977883952301545
+        }
+      ],
+      "direct_exposure": 0.0,
+      "indirect_exposure": 0.09968995822101057,
+      "total_exposure": 0.0996899582210106,
+      "price_stage": "processed_material_purchase",
+      "world_bank_price_represents_purchased_stage": false,
+      "alignment_status": "stage_misaligned",
+      "evidence": "Direct coefficient is exactly zero: the industry buys no Petroleum and natural gas directly. Indirect exposure 0.099690 reaches it through Jewellery and related articles (30.7% of indirect), so the purchased price stage is processed_material_purchase, not the raw commodity.",
+      "limitations": "The 2015 I/O structure is held time-invariant; coefficients describe 2015 purchasing patterns, not the evaluation period. The decomposition is an exact attribution of the Leontief identity, not a causal claim.",
+      "additional_series_could_close_gap": true,
+      "shared_source_sector_warning": null,
+      "proxy_fitness_status": null,
+      "diagnostics": {
+        "cumulative_share_top1": 0.30738660904588455,
+        "cumulative_share_top3": 0.6529630618480197,
+        "cumulative_share_top5": 0.7314489063808522,
+        "direct_is_observed_zero": true,
+        "indirect_material_despite_direct_zero": true
+      }
+    },
+    {
+      "commodity_series_id": "copper_usd_mt",
+      "industry_id": "IND-01",
+      "world_bank_series": "copper_usd_mt",
+      "mapped_raw_io_sector": "107",
+      "mapped_raw_io_sector_label": "Non-ferrous metal",
+      "leading_purchased_sectors": [
+        {
+          "sector_code": "111",
+          "sector_label": "Other fabricated metal products",
+          "contribution": 0.0033959560191981287,
+          "share_of_indirect": 0.3275830863787743
+        },
+        {
+          "sector_code": "115",
+          "sector_label": "Special industrial machinery",
+          "contribution": 0.0007442285483702986,
+          "share_of_indirect": 0.07179029512399396
+        },
+        {
+          "sector_code": "001",
+          "sector_label": "Paddy",
+          "contribution": 0.0005358307452451317,
+          "share_of_indirect": 0.05168768037976118
+        },
+        {
+          "sector_code": "180",
+          "sector_label": "Unclassified",
+          "contribution": 0.00030524142715911167,
+          "share_of_indirect": 0.029444412187368155
+        },
+        {
+          "sector_code": "135",
+          "sector_label": "Electricity",
+          "contribution": 0.00027127003076172877,
+          "share_of_indirect": 0.026167439571250714
+        }
+      ],
+      "direct_exposure": 0.0002181634956282774,
+      "indirect_exposure": 0.010366701335952029,
+      "total_exposure": 0.010584864831580306,
+      "price_stage": "raw_commodity_direct_purchase",
+      "world_bank_price_represents_purchased_stage": true,
+      "alignment_status": "broad_proxy_with_caution",
+      "evidence": "Direct coefficient 0.000218 is positive, so the industry purchases sector 107 (Non-ferrous metal) across the factory gate. The World Bank series prices that sector's output.",
+      "limitations": "The 2015 I/O structure is held time-invariant; coefficients describe 2015 purchasing patterns, not the evaluation period. The decomposition is an exact attribution of the Leontief identity, not a causal claim. Source sector 107 is shared with ['aluminum_usd_mt']. The coefficient cannot separate them, so the two series are NOT independent measurements and their exposures must never be summed.",
+      "additional_series_could_close_gap": true,
+      "shared_source_sector_warning": "Source sector 107 is shared with ['aluminum_usd_mt']. The coefficient cannot separate them, so the two series are NOT independent measurements and their exposures must never be summed.",
+      "proxy_fitness_status": null,
+      "diagnostics": {
+        "cumulative_share_top1": 0.3275830863787743,
+        "cumulative_share_top3": 0.4510610618825295,
+        "cumulative_share_top5": 0.5066729136411483,
+        "direct_is_observed_zero": false,
+        "indirect_material_despite_direct_zero": false
+      }
+    },
+    {
+      "commodity_series_id": "copper_usd_mt",
+      "industry_id": "IND-02",
+      "world_bank_series": "copper_usd_mt",
+      "mapped_raw_io_sector": "107",
+      "mapped_raw_io_sector_label": "Non-ferrous metal",
+      "leading_purchased_sectors": [
+        {
+          "sector_code": "068",
+          "sector_label": "Weaving",
+          "contribution": 0.001824587399350615,
+          "share_of_indirect": 0.16941530141514163
+        },
+        {
+          "sector_code": "134",
+          "sector_label": "Other manufactured goods",
+          "contribution": 0.0017947397524972724,
+          "share_of_indirect": 0.16664390877591184
+        },
+        {
+          "sector_code": "067",
+          "sector_label": "Spinning",
+          "contribution": 0.0011483109128047982,
+          "share_of_indirect": 0.10662215440069361
+        },
+        {
+          "sector_code": "115",
+          "sector_label": "Special industrial machinery",
+          "contribution": 0.001071099967409287,
+          "share_of_indirect": 0.09945301819412763
+        },
+        {
+          "sector_code": "111",
+          "sector_label": "Other fabricated metal products",
+          "contribution": 0.0009278536960382136,
+          "share_of_indirect": 0.08615241650765167
+        }
+      ],
+      "direct_exposure": 5.810075949402196e-07,
+      "indirect_exposure": 0.010769909117474444,
+      "total_exposure": 0.010770490125069388,
+      "price_stage": "raw_commodity_direct_purchase",
+      "world_bank_price_represents_purchased_stage": true,
+      "alignment_status": "broad_proxy_with_caution",
+      "evidence": "Direct coefficient 0.000001 is positive, so the industry purchases sector 107 (Non-ferrous metal) across the factory gate. The World Bank series prices that sector's output.",
+      "limitations": "The 2015 I/O structure is held time-invariant; coefficients describe 2015 purchasing patterns, not the evaluation period. The decomposition is an exact attribution of the Leontief identity, not a causal claim. Source sector 107 is shared with ['aluminum_usd_mt']. The coefficient cannot separate them, so the two series are NOT independent measurements and their exposures must never be summed.",
+      "additional_series_could_close_gap": true,
+      "shared_source_sector_warning": "Source sector 107 is shared with ['aluminum_usd_mt']. The coefficient cannot separate them, so the two series are NOT independent measurements and their exposures must never be summed.",
+      "proxy_fitness_status": null,
+      "diagnostics": {
+        "cumulative_share_top1": 0.16941530141514163,
+        "cumulative_share_top3": 0.4426813645917471,
+        "cumulative_share_top5": 0.6282867992935264,
+        "direct_is_observed_zero": false,
+        "indirect_material_despite_direct_zero": false
+      }
+    },
+    {
+      "commodity_series_id": "copper_usd_mt",
+      "industry_id": "IND-03",
+      "world_bank_series": "copper_usd_mt",
+      "mapped_raw_io_sector": "107",
+      "mapped_raw_io_sector_label": "Non-ferrous metal",
+      "leading_purchased_sectors": [
+        {
+          "sector_code": "025",
+          "sector_label": "Logging",
+          "contribution": 0.002833265769064846,
+          "share_of_indirect": 0.21324196854051689
+        },
+        {
+          "sector_code": "081",
+          "sector_label": "Pulp, paper and paperboard",
+          "contribution": 0.002824963235047614,
+          "share_of_indirect": 0.21261708939326573
+        },
+        {
+          "sector_code": "078",
+          "sector_label": "Saw mills",
+          "contribution": 0.0013382493624089305,
+          "share_of_indirect": 0.10072155304102026
+        },
+        {
+          "sector_code": "115",
+          "sector_label": "Special industrial machinery",
+          "contribution": 0.0012636723638646283,
+          "share_of_indirect": 0.09510861473107865
+        },
+        {
+          "sector_code": "111",
+          "sector_label": "Other fabricated metal products",
+          "contribution": 0.001155732116320363,
+          "share_of_indirect": 0.08698463599163023
+        }
+      ],
+      "direct_exposure": 8.925964248937842e-05,
+      "indirect_exposure": 0.013286623587544462,
+      "total_exposure": 0.01337588323003384,
+      "price_stage": "raw_commodity_direct_purchase",
+      "world_bank_price_represents_purchased_stage": true,
+      "alignment_status": "broad_proxy_with_caution",
+      "evidence": "Direct coefficient 0.000089 is positive, so the industry purchases sector 107 (Non-ferrous metal) across the factory gate. The World Bank series prices that sector's output.",
+      "limitations": "The 2015 I/O structure is held time-invariant; coefficients describe 2015 purchasing patterns, not the evaluation period. The decomposition is an exact attribution of the Leontief identity, not a causal claim. Source sector 107 is shared with ['aluminum_usd_mt']. The coefficient cannot separate them, so the two series are NOT independent measurements and their exposures must never be summed.",
+      "additional_series_could_close_gap": true,
+      "shared_source_sector_warning": "Source sector 107 is shared with ['aluminum_usd_mt']. The coefficient cannot separate them, so the two series are NOT independent measurements and their exposures must never be summed.",
+      "proxy_fitness_status": null,
+      "diagnostics": {
+        "cumulative_share_top1": 0.21324196854051689,
+        "cumulative_share_top3": 0.5265806109748029,
+        "cumulative_share_top5": 0.7086738616975118,
+        "direct_is_observed_zero": false,
+        "indirect_material_despite_direct_zero": false
+      }
+    },
+    {
+      "commodity_series_id": "copper_usd_mt",
+      "industry_id": "IND-04",
+      "world_bank_series": "copper_usd_mt",
+      "mapped_raw_io_sector": "107",
+      "mapped_raw_io_sector_label": "Non-ferrous metal",
+      "leading_purchased_sectors": [
+        {
+          "sector_code": "031",
+          "sector_label": "Petroleum and natural gas",
+          "contribution": 0.0054084205111713125,
+          "share_of_indirect": 0.8068184222554933
+        },
+        {
+          "sector_code": "115",
+          "sector_label": "Special industrial machinery",
+          "contribution": 0.0004339257371694675,
+          "share_of_indirect": 0.06473225924574047
+        },
+        {
+          "sector_code": "084",
+          "sector_label": "Basic industrial chemicals",
+          "contribution": 0.0003422643519038319,
+          "share_of_indirect": 0.051058379027104035
+        },
+        {
+          "sector_code": "136",
+          "sector_label": "Pipe line and gas distribution",
+          "contribution": 0.00012448908317850681,
+          "share_of_indirect": 0.018571057015750285
+        },
+        {
+          "sector_code": "094",
+          "sector_label": "Other petroleum products",
+          "contribution": 7.496185055203259e-05,
+          "share_of_indirect": 0.011182673733822632
+        }
+      ],
+      "direct_exposure": 0.0,
+      "indirect_exposure": 0.006703392438724758,
+      "total_exposure": 0.00670339243872476,
+      "price_stage": "processed_material_purchase",
+      "world_bank_price_represents_purchased_stage": false,
+      "alignment_status": "broad_proxy_with_caution",
+      "evidence": "Direct coefficient is exactly zero: the industry buys no Non-ferrous metal directly. Indirect exposure 0.006703 reaches it through Petroleum and natural gas (80.7% of indirect), so the purchased price stage is processed_material_purchase, not the raw commodity.",
+      "limitations": "The 2015 I/O structure is held time-invariant; coefficients describe 2015 purchasing patterns, not the evaluation period. The decomposition is an exact attribution of the Leontief identity, not a causal claim. Source sector 107 is shared with ['aluminum_usd_mt']. The coefficient cannot separate them, so the two series are NOT independent measurements and their exposures must never be summed.",
+      "additional_series_could_close_gap": true,
+      "shared_source_sector_warning": "Source sector 107 is shared with ['aluminum_usd_mt']. The coefficient cannot separate them, so the two series are NOT independent measurements and their exposures must never be summed.",
+      "proxy_fitness_status": null,
+      "diagnostics": {
+        "cumulative_share_top1": 0.8068184222554933,
+        "cumulative_share_top3": 0.9226090605283378,
+        "cumulative_share_top5": 0.9523627912779107,
+        "direct_is_observed_zero": true,
+        "indirect_material_despite_direct_zero": false
+      }
+    },
+    {
+      "commodity_series_id": "copper_usd_mt",
+      "industry_id": "IND-05",
+      "world_bank_series": "copper_usd_mt",
+      "mapped_raw_io_sector": "107",
+      "mapped_raw_io_sector_label": "Non-ferrous metal",
+      "leading_purchased_sectors": [
+        {
+          "sector_code": "084",
+          "sector_label": "Basic industrial chemicals",
+          "contribution": 0.0016787897624590937,
+          "share_of_indirect": 0.18997678450959757
+        },
+        {
+          "sector_code": "115",
+          "sector_label": "Special industrial machinery",
+          "contribution": 0.0012323258958564641,
+          "share_of_indirect": 0.13945362093451819
+        },
+        {
+          "sector_code": "086",
+          "sector_label": "Petrochemical products",
+          "contribution": 0.0012233283536116292,
+          "share_of_indirect": 0.1384354326048138
+        },
+        {
+          "sector_code": "111",
+          "sector_label": "Other fabricated metal products",
+          "contribution": 0.0006557626609400553,
+          "share_of_indirect": 0.07420803039944959
+        },
+        {
+          "sector_code": "093",
+          "sector_label": "Petroleum refineries",
+          "contribution": 0.00043953026465820045,
+          "share_of_indirect": 0.04973853679695164
+        }
+      ],
+      "direct_exposure": 6.131119827745322e-05,
+      "indirect_exposure": 0.008836815334003517,
+      "total_exposure": 0.00889812653228097,
+      "price_stage": "raw_commodity_direct_purchase",
+      "world_bank_price_represents_purchased_stage": true,
+      "alignment_status": "broad_proxy_with_caution",
+      "evidence": "Direct coefficient 0.000061 is positive, so the industry purchases sector 107 (Non-ferrous metal) across the factory gate. The World Bank series prices that sector's output.",
+      "limitations": "The 2015 I/O structure is held time-invariant; coefficients describe 2015 purchasing patterns, not the evaluation period. The decomposition is an exact attribution of the Leontief identity, not a causal claim. Source sector 107 is shared with ['aluminum_usd_mt']. The coefficient cannot separate them, so the two series are NOT independent measurements and their exposures must never be summed.",
+      "additional_series_could_close_gap": true,
+      "shared_source_sector_warning": "Source sector 107 is shared with ['aluminum_usd_mt']. The coefficient cannot separate them, so the two series are NOT independent measurements and their exposures must never be summed.",
+      "proxy_fitness_status": null,
+      "diagnostics": {
+        "cumulative_share_top1": 0.18997678450959757,
+        "cumulative_share_top3": 0.46786583804892956,
+        "cumulative_share_top5": 0.5918124052453309,
+        "direct_is_observed_zero": false,
+        "indirect_material_despite_direct_zero": false
+      }
+    },
+    {
+      "commodity_series_id": "copper_usd_mt",
+      "industry_id": "IND-06",
+      "world_bank_series": "copper_usd_mt",
+      "mapped_raw_io_sector": "107",
+      "mapped_raw_io_sector_label": "Non-ferrous metal",
+      "leading_purchased_sectors": [
+        {
+          "sector_code": "086",
+          "sector_label": "Petrochemical products",
+          "contribution": 0.001996514047036698,
+          "share_of_indirect": 0.25401626085000967
+        },
+        {
+          "sector_code": "115",
+          "sector_label": "Special industrial machinery",
+          "contribution": 0.000998011808451535,
+          "share_of_indirect": 0.12697693173924118
+        },
+        {
+          "sector_code": "111",
+          "sector_label": "Other fabricated metal products",
+          "contribution": 0.0007743211717758396,
+          "share_of_indirect": 0.09851679683568058
+        },
+        {
+          "sector_code": "016",
+          "sector_label": "Rubber",
+          "contribution": 0.0006137527276948224,
+          "share_of_indirect": 0.07808769149755314
+        },
+        {
+          "sector_code": "135",
+          "sector_label": "Electricity",
+          "contribution": 0.0005284679418925627,
+          "share_of_indirect": 0.0672369176554967
+        }
+      ],
+      "direct_exposure": 0.00014068436319558713,
+      "indirect_exposure": 0.00785978834723337,
+      "total_exposure": 0.008000472710428957,
+      "price_stage": "raw_commodity_direct_purchase",
+      "world_bank_price_represents_purchased_stage": true,
+      "alignment_status": "broad_proxy_with_caution",
+      "evidence": "Direct coefficient 0.000141 is positive, so the industry purchases sector 107 (Non-ferrous metal) across the factory gate. The World Bank series prices that sector's output.",
+      "limitations": "The 2015 I/O structure is held time-invariant; coefficients describe 2015 purchasing patterns, not the evaluation period. The decomposition is an exact attribution of the Leontief identity, not a causal claim. Source sector 107 is shared with ['aluminum_usd_mt']. The coefficient cannot separate them, so the two series are NOT independent measurements and their exposures must never be summed.",
+      "additional_series_could_close_gap": true,
+      "shared_source_sector_warning": "Source sector 107 is shared with ['aluminum_usd_mt']. The coefficient cannot separate them, so the two series are NOT independent measurements and their exposures must never be summed.",
+      "proxy_fitness_status": null,
+      "diagnostics": {
+        "cumulative_share_top1": 0.25401626085000967,
+        "cumulative_share_top3": 0.47950998942493145,
+        "cumulative_share_top5": 0.6248345985779813,
+        "direct_is_observed_zero": false,
+        "indirect_material_despite_direct_zero": false
+      }
+    },
+    {
+      "commodity_series_id": "copper_usd_mt",
+      "industry_id": "IND-07",
+      "world_bank_series": "copper_usd_mt",
+      "mapped_raw_io_sector": "107",
+      "mapped_raw_io_sector_label": "Non-ferrous metal",
+      "leading_purchased_sectors": [
+        {
+          "sector_code": "115",
+          "sector_label": "Special industrial machinery",
+          "contribution": 0.0012843299835075621,
+          "share_of_indirect": 0.10474944091771517
+        },
+        {
+          "sector_code": "039",
+          "sector_label": "Limestone",
+          "contribution": 0.0012247954386188928,
+          "share_of_indirect": 0.09989382719502735
+        },
+        {
+          "sector_code": "040",
+          "sector_label": "Stone quarrying",
+          "contribution": 0.0011076875630227963,
+          "share_of_indirect": 0.09034255559561272
+        },
+        {
+          "sector_code": "041",
+          "sector_label": "Other mining and quarrying",
+          "contribution": 0.0009755213521902595,
+          "share_of_indirect": 0.0795631321836391
+        },
+        {
+          "sector_code": "102",
+          "sector_label": "Cement",
+          "contribution": 0.0008881253492486436,
+          "share_of_indirect": 0.07243514906081625
+        }
+      ],
+      "direct_exposure": 0.0003996369141863309,
+      "indirect_exposure": 0.012260972204295145,
+      "total_exposure": 0.012660609118481471,
+      "price_stage": "raw_commodity_direct_purchase",
+      "world_bank_price_represents_purchased_stage": true,
+      "alignment_status": "broad_proxy_with_caution",
+      "evidence": "Direct coefficient 0.000400 is positive, so the industry purchases sector 107 (Non-ferrous metal) across the factory gate. The World Bank series prices that sector's output.",
+      "limitations": "The 2015 I/O structure is held time-invariant; coefficients describe 2015 purchasing patterns, not the evaluation period. The decomposition is an exact attribution of the Leontief identity, not a causal claim. Source sector 107 is shared with ['aluminum_usd_mt']. The coefficient cannot separate them, so the two series are NOT independent measurements and their exposures must never be summed.",
+      "additional_series_could_close_gap": true,
+      "shared_source_sector_warning": "Source sector 107 is shared with ['aluminum_usd_mt']. The coefficient cannot separate them, so the two series are NOT independent measurements and their exposures must never be summed.",
+      "proxy_fitness_status": null,
+      "diagnostics": {
+        "cumulative_share_top1": 0.10474944091771517,
+        "cumulative_share_top3": 0.29498582370835524,
+        "cumulative_share_top5": 0.4469841049528106,
+        "direct_is_observed_zero": false,
+        "indirect_material_despite_direct_zero": false
+      }
+    },
+    {
+      "commodity_series_id": "copper_usd_mt",
+      "industry_id": "IND-08",
+      "world_bank_series": "copper_usd_mt",
+      "mapped_raw_io_sector": "107",
+      "mapped_raw_io_sector_label": "Non-ferrous metal",
+      "leading_purchased_sectors": [
+        {
+          "sector_code": "107",
+          "sector_label": "Non-ferrous metal",
+          "contribution": 0.03943872200097256,
+          "share_of_indirect": 0.6679122662066036
+        },
+        {
+          "sector_code": "106",
+          "sector_label": "Secondary steel products",
+          "contribution": 0.008496347807073668,
+          "share_of_indirect": 0.14388942213092348
+        },
+        {
+          "sector_code": "111",
+          "sector_label": "Other fabricated metal products",
+          "contribution": 0.0036021998707405894,
+          "share_of_indirect": 0.061004854034979905
+        },
+        {
+          "sector_code": "105",
+          "sector_label": "Iron and steel",
+          "contribution": 0.003030298007790676,
+          "share_of_indirect": 0.05131944208574799
+        },
+        {
+          "sector_code": "115",
+          "sector_label": "Special industrial machinery",
+          "contribution": 0.0007343591503202146,
+          "share_of_indirect": 0.012436698234994404
+        }
+      ],
+      "direct_exposure": 0.10280119322445583,
+      "indirect_exposure": 0.05904775821076638,
+      "total_exposure": 0.16184895143522227,
+      "price_stage": "raw_commodity_direct_purchase",
+      "world_bank_price_represents_purchased_stage": true,
+      "alignment_status": "broad_proxy_with_caution",
+      "evidence": "Direct coefficient 0.102801 is positive, so the industry purchases sector 107 (Non-ferrous metal) across the factory gate. The World Bank series prices that sector's output.",
+      "limitations": "The 2015 I/O structure is held time-invariant; coefficients describe 2015 purchasing patterns, not the evaluation period. The decomposition is an exact attribution of the Leontief identity, not a causal claim. Source sector 107 is shared with ['aluminum_usd_mt']. The coefficient cannot separate them, so the two series are NOT independent measurements and their exposures must never be summed.",
+      "additional_series_could_close_gap": true,
+      "shared_source_sector_warning": "Source sector 107 is shared with ['aluminum_usd_mt']. The coefficient cannot separate them, so the two series are NOT independent measurements and their exposures must never be summed.",
+      "proxy_fitness_status": null,
+      "diagnostics": {
+        "cumulative_share_top1": 0.6679122662066036,
+        "cumulative_share_top3": 0.872806542372507,
+        "cumulative_share_top5": 0.9365626826932494,
+        "direct_is_observed_zero": false,
+        "indirect_material_despite_direct_zero": false
+      }
+    },
+    {
+      "commodity_series_id": "copper_usd_mt",
+      "industry_id": "IND-09",
+      "world_bank_series": "copper_usd_mt",
+      "mapped_raw_io_sector": "107",
+      "mapped_raw_io_sector_label": "Non-ferrous metal",
+      "leading_purchased_sectors": [
+        {
+          "sector_code": "118",
+          "sector_label": "Radio, television and communication equipment and apparatus",
+          "contribution": 0.05935235756407686,
+          "share_of_indirect": 0.4850350213698534
+        },
+        {
+          "sector_code": "107",
+          "sector_label": "Non-ferrous metal",
+          "contribution": 0.029039565992353633,
+          "share_of_indirect": 0.2373150299289478
+        },
+        {
+          "sector_code": "122",
+          "sector_label": "Other electrical apparatus and supplies",
+          "contribution": 0.009608949687920981,
+          "share_of_indirect": 0.07852556003678417
+        },
+        {
+          "sector_code": "131",
+          "sector_label": "Watches and clocks",
+          "contribution": 0.0044313282621284665,
+          "share_of_indirect": 0.0362133786513514
+        },
+        {
+          "sector_code": "117",
+          "sector_label": "Electrical industrial machinery and appliances",
+          "contribution": 0.003946445323859656,
+          "share_of_indirect": 0.032250853555845574
+        }
+      ],
+      "direct_exposure": 0.07569469504261993,
+      "indirect_exposure": 0.12236715896607177,
+      "total_exposure": 0.1980618540086917,
+      "price_stage": "raw_commodity_direct_purchase",
+      "world_bank_price_represents_purchased_stage": true,
+      "alignment_status": "broad_proxy_with_caution",
+      "evidence": "Direct coefficient 0.075695 is positive, so the industry purchases sector 107 (Non-ferrous metal) across the factory gate. The World Bank series prices that sector's output.",
+      "limitations": "The 2015 I/O structure is held time-invariant; coefficients describe 2015 purchasing patterns, not the evaluation period. The decomposition is an exact attribution of the Leontief identity, not a causal claim. Source sector 107 is shared with ['aluminum_usd_mt']. The coefficient cannot separate them, so the two series are NOT independent measurements and their exposures must never be summed.",
+      "additional_series_could_close_gap": true,
+      "shared_source_sector_warning": "Source sector 107 is shared with ['aluminum_usd_mt']. The coefficient cannot separate them, so the two series are NOT independent measurements and their exposures must never be summed.",
+      "proxy_fitness_status": null,
+      "diagnostics": {
+        "cumulative_share_top1": 0.4850350213698534,
+        "cumulative_share_top3": 0.8008756113355854,
+        "cumulative_share_top5": 0.8693398435427823,
+        "direct_is_observed_zero": false,
+        "indirect_material_despite_direct_zero": false
+      }
+    },
+    {
+      "commodity_series_id": "copper_usd_mt",
+      "industry_id": "IND-10",
+      "world_bank_series": "copper_usd_mt",
+      "mapped_raw_io_sector": "107",
+      "mapped_raw_io_sector_label": "Non-ferrous metal",
+      "leading_purchased_sectors": [
+        {
+          "sector_code": "116",
+          "sector_label": "Office and household machinery and appliances",
+          "contribution": 0.0703524176190316,
+          "share_of_indirect": 0.5330381975731869
+        },
+        {
+          "sector_code": "107",
+          "sector_label": "Non-ferrous metal",
+          "contribution": 0.02334789266460094,
+          "share_of_indirect": 0.1768996580965319
+        },
+        {
+          "sector_code": "118",
+          "sector_label": "Radio, television and communication equipment and apparatus",
+          "contribution": 0.012726385336397562,
+          "share_of_indirect": 0.09642382921464937
+        },
+        {
+          "sector_code": "115",
+          "sector_label": "Special industrial machinery",
+          "contribution": 0.006431855477571479,
+          "share_of_indirect": 0.048732151173273675
+        },
+        {
+          "sector_code": "111",
+          "sector_label": "Other fabricated metal products",
+          "contribution": 0.003189557140899596,
+          "share_of_indirect": 0.024166273839349696
+        }
+      ],
+      "direct_exposure": 0.06085874753087353,
+      "indirect_exposure": 0.1319838201827405,
+      "total_exposure": 0.192842567713614,
+      "price_stage": "raw_commodity_direct_purchase",
+      "world_bank_price_represents_purchased_stage": true,
+      "alignment_status": "broad_proxy_with_caution",
+      "evidence": "Direct coefficient 0.060859 is positive, so the industry purchases sector 107 (Non-ferrous metal) across the factory gate. The World Bank series prices that sector's output.",
+      "limitations": "The 2015 I/O structure is held time-invariant; coefficients describe 2015 purchasing patterns, not the evaluation period. The decomposition is an exact attribution of the Leontief identity, not a causal claim. Source sector 107 is shared with ['aluminum_usd_mt']. The coefficient cannot separate them, so the two series are NOT independent measurements and their exposures must never be summed.",
+      "additional_series_could_close_gap": true,
+      "shared_source_sector_warning": "Source sector 107 is shared with ['aluminum_usd_mt']. The coefficient cannot separate them, so the two series are NOT independent measurements and their exposures must never be summed.",
+      "proxy_fitness_status": null,
+      "diagnostics": {
+        "cumulative_share_top1": 0.5330381975731869,
+        "cumulative_share_top3": 0.8063616848843682,
+        "cumulative_share_top5": 0.8792601098969915,
+        "direct_is_observed_zero": false,
+        "indirect_material_despite_direct_zero": false
+      }
+    },
+    {
+      "commodity_series_id": "copper_usd_mt",
+      "industry_id": "IND-11",
+      "world_bank_series": "copper_usd_mt",
+      "mapped_raw_io_sector": "107",
+      "mapped_raw_io_sector_label": "Non-ferrous metal",
+      "leading_purchased_sectors": [
+        {
+          "sector_code": "125",
+          "sector_label": "Motor vehicles",
+          "contribution": 0.019162893126064066,
+          "share_of_indirect": 0.287034662379396
+        },
+        {
+          "sector_code": "112",
+          "sector_label": "Engines and turbines",
+          "contribution": 0.007301912820728756,
+          "share_of_indirect": 0.10937294632045712
+        },
+        {
+          "sector_code": "107",
+          "sector_label": "Non-ferrous metal",
+          "contribution": 0.007233064965703221,
+          "share_of_indirect": 0.10834169698389837
+        },
+        {
+          "sector_code": "121",
+          "sector_label": "Electric accumulators and batteries",
+          "contribution": 0.006577350517761787,
+          "share_of_indirect": 0.09851996631181276
+        },
+        {
+          "sector_code": "120",
+          "sector_label": "Insulated wire and cable",
+          "contribution": 0.005740544206985972,
+          "share_of_indirect": 0.0859857202921556
+        }
+      ],
+      "direct_exposure": 0.018853747571383337,
+      "indirect_exposure": 0.06676159933860176,
+      "total_exposure": 0.08561534690998508,
+      "price_stage": "raw_commodity_direct_purchase",
+      "world_bank_price_represents_purchased_stage": true,
+      "alignment_status": "broad_proxy_with_caution",
+      "evidence": "Direct coefficient 0.018854 is positive, so the industry purchases sector 107 (Non-ferrous metal) across the factory gate. The World Bank series prices that sector's output.",
+      "limitations": "The 2015 I/O structure is held time-invariant; coefficients describe 2015 purchasing patterns, not the evaluation period. The decomposition is an exact attribution of the Leontief identity, not a causal claim. Source sector 107 is shared with ['aluminum_usd_mt']. The coefficient cannot separate them, so the two series are NOT independent measurements and their exposures must never be summed.",
+      "additional_series_could_close_gap": true,
+      "shared_source_sector_warning": "Source sector 107 is shared with ['aluminum_usd_mt']. The coefficient cannot separate them, so the two series are NOT independent measurements and their exposures must never be summed.",
+      "proxy_fitness_status": null,
+      "diagnostics": {
+        "cumulative_share_top1": 0.287034662379396,
+        "cumulative_share_top3": 0.5047493056837515,
+        "cumulative_share_top5": 0.6892549922877198,
+        "direct_is_observed_zero": false,
+        "indirect_material_despite_direct_zero": false
+      }
+    },
+    {
+      "commodity_series_id": "copper_usd_mt",
+      "industry_id": "IND-12",
+      "world_bank_series": "copper_usd_mt",
+      "mapped_raw_io_sector": "107",
+      "mapped_raw_io_sector_label": "Non-ferrous metal",
+      "leading_purchased_sectors": [
+        {
+          "sector_code": "132",
+          "sector_label": "Jewellery and related articles",
+          "contribution": 0.209702795443401,
+          "share_of_indirect": 0.7070637013568732
+        },
+        {
+          "sector_code": "107",
+          "sector_label": "Non-ferrous metal",
+          "contribution": 0.08042522306329808,
+          "share_of_indirect": 0.27117309419433006
+        },
+        {
+          "sector_code": "111",
+          "sector_label": "Other fabricated metal products",
+          "contribution": 0.001480326284938166,
+          "share_of_indirect": 0.004991278156455241
+        },
+        {
+          "sector_code": "134",
+          "sector_label": "Other manufactured goods",
+          "contribution": 0.0006758045251397926,
+          "share_of_indirect": 0.002278638431732468
+        },
+        {
+          "sector_code": "106",
+          "sector_label": "Secondary steel products",
+          "contribution": 0.0005818031566418004,
+          "share_of_indirect": 0.001961690079173474
+        }
+      ],
+      "direct_exposure": 0.20963683600209423,
+      "indirect_exposure": 0.296582606405867,
+      "total_exposure": 0.5062194424079614,
+      "price_stage": "raw_commodity_direct_purchase",
+      "world_bank_price_represents_purchased_stage": true,
+      "alignment_status": "broad_proxy_with_caution",
+      "evidence": "Direct coefficient 0.209637 is positive, so the industry purchases sector 107 (Non-ferrous metal) across the factory gate. The World Bank series prices that sector's output.",
+      "limitations": "The 2015 I/O structure is held time-invariant; coefficients describe 2015 purchasing patterns, not the evaluation period. The decomposition is an exact attribution of the Leontief identity, not a causal claim. Source sector 107 is shared with ['aluminum_usd_mt']. The coefficient cannot separate them, so the two series are NOT independent measurements and their exposures must never be summed.",
+      "additional_series_could_close_gap": true,
+      "shared_source_sector_warning": "Source sector 107 is shared with ['aluminum_usd_mt']. The coefficient cannot separate them, so the two series are NOT independent measurements and their exposures must never be summed.",
+      "proxy_fitness_status": null,
+      "diagnostics": {
+        "cumulative_share_top1": 0.7070637013568732,
+        "cumulative_share_top3": 0.9832280737076585,
+        "cumulative_share_top5": 0.9874684022185645,
+        "direct_is_observed_zero": false,
+        "indirect_material_despite_direct_zero": false
+      }
+    },
+    {
+      "commodity_series_id": "rubber_rss3_usd_kg",
+      "industry_id": "IND-01",
+      "world_bank_series": "rubber_rss3_usd_kg",
+      "mapped_raw_io_sector": "095",
+      "mapped_raw_io_sector_label": "Rubber sheet and block rubber",
+      "leading_purchased_sectors": [
+        {
+          "sector_code": "098",
+          "sector_label": "Plastic ware",
+          "contribution": 0.00020813009071386426,
+          "share_of_indirect": 0.2272808817513357
+        },
+        {
+          "sector_code": "180",
+          "sector_label": "Unclassified",
+          "contribution": 6.734672078852144e-05,
+          "share_of_indirect": 0.07354353246748735
+        },
+        {
+          "sector_code": "001",
+          "sector_label": "Paddy",
+          "contribution": 4.8785689600705215e-05,
+          "share_of_indirect": 0.05327463468287739
+        },
+        {
+          "sector_code": "115",
+          "sector_label": "Special industrial machinery",
+          "contribution": 3.405924049123851e-05,
+          "share_of_indirect": 0.03719315253300771
+        },
+        {
+          "sector_code": "044",
+          "sector_label": "Dairy products",
+          "contribution": 3.1901947083165255e-05,
+          "share_of_indirect": 0.034837358873851955
+        }
+      ],
+      "direct_exposure": 0.0,
+      "indirect_exposure": 0.0009157395426755516,
+      "total_exposure": 0.0009157395426755517,
+      "price_stage": "processed_material_purchase",
+      "world_bank_price_represents_purchased_stage": false,
+      "alignment_status": "stage_misaligned",
+      "evidence": "Direct coefficient is exactly zero: the industry buys no Rubber sheet and block rubber directly. Indirect exposure 0.000916 reaches it through Plastic ware (22.7% of indirect), so the purchased price stage is processed_material_purchase, not the raw commodity.",
+      "limitations": "The 2015 I/O structure is held time-invariant; coefficients describe 2015 purchasing patterns, not the evaluation period. The decomposition is an exact attribution of the Leontief identity, not a causal claim.",
+      "additional_series_could_close_gap": true,
+      "shared_source_sector_warning": null,
+      "proxy_fitness_status": null,
+      "diagnostics": {
+        "cumulative_share_top1": 0.2272808817513357,
+        "cumulative_share_top3": 0.35409904890170046,
+        "cumulative_share_top5": 0.4261295603085601,
+        "direct_is_observed_zero": true,
+        "indirect_material_despite_direct_zero": false
+      }
+    },
+    {
+      "commodity_series_id": "rubber_rss3_usd_kg",
+      "industry_id": "IND-02",
+      "world_bank_series": "rubber_rss3_usd_kg",
+      "mapped_raw_io_sector": "095",
+      "mapped_raw_io_sector_label": "Rubber sheet and block rubber",
+      "leading_purchased_sectors": [
+        {
+          "sector_code": "097",
+          "sector_label": "Other rubber products",
+          "contribution": 0.0027524347596422673,
+          "share_of_indirect": 0.6721020871088564
+        },
+        {
+          "sector_code": "134",
+          "sector_label": "Other manufactured goods",
+          "contribution": 0.00027355833649676825,
+          "share_of_indirect": 0.06679872366144689
+        },
+        {
+          "sector_code": "098",
+          "sector_label": "Plastic ware",
+          "contribution": 0.00021056237039284397,
+          "share_of_indirect": 0.051416081021303385
+        },
+        {
+          "sector_code": "068",
+          "sector_label": "Weaving",
+          "contribution": 0.00016526317032758284,
+          "share_of_indirect": 0.040354715515157596
+        },
+        {
+          "sector_code": "067",
+          "sector_label": "Spinning",
+          "contribution": 0.00012027563402772875,
+          "share_of_indirect": 0.02936945349029232
+        }
+      ],
+      "direct_exposure": 0.002723058734327207,
+      "indirect_exposure": 0.004095262925729423,
+      "total_exposure": 0.00681832166005663,
+      "price_stage": "raw_commodity_direct_purchase",
+      "world_bank_price_represents_purchased_stage": true,
+      "alignment_status": "stage_aligned",
+      "evidence": "Direct coefficient 0.002723 is positive, so the industry purchases sector 095 (Rubber sheet and block rubber) across the factory gate. The World Bank series prices that sector's output.",
+      "limitations": "The 2015 I/O structure is held time-invariant; coefficients describe 2015 purchasing patterns, not the evaluation period. The decomposition is an exact attribution of the Leontief identity, not a causal claim.",
+      "additional_series_could_close_gap": false,
+      "shared_source_sector_warning": null,
+      "proxy_fitness_status": null,
+      "diagnostics": {
+        "cumulative_share_top1": 0.6721020871088564,
+        "cumulative_share_top3": 0.7903168917916067,
+        "cumulative_share_top5": 0.8600410607970567,
+        "direct_is_observed_zero": false,
+        "indirect_material_despite_direct_zero": false
+      }
+    },
+    {
+      "commodity_series_id": "rubber_rss3_usd_kg",
+      "industry_id": "IND-03",
+      "world_bank_series": "rubber_rss3_usd_kg",
+      "mapped_raw_io_sector": "095",
+      "mapped_raw_io_sector_label": "Rubber sheet and block rubber",
+      "leading_purchased_sectors": [
+        {
+          "sector_code": "081",
+          "sector_label": "Pulp, paper and paperboard",
+          "contribution": 0.0002959170368973973,
+          "share_of_indirect": 0.26674748704886797
+        },
+        {
+          "sector_code": "098",
+          "sector_label": "Plastic ware",
+          "contribution": 0.0001184835632816955,
+          "share_of_indirect": 0.10680423504289888
+        },
+        {
+          "sector_code": "180",
+          "sector_label": "Unclassified",
+          "contribution": 0.00011525240870381617,
+          "share_of_indirect": 0.10389158637301306
+        },
+        {
+          "sector_code": "025",
+          "sector_label": "Logging",
+          "contribution": 8.886587988917973e-05,
+          "share_of_indirect": 0.08010606754299289
+        },
+        {
+          "sector_code": "078",
+          "sector_label": "Saw mills",
+          "contribution": 6.555709684695489e-05,
+          "share_of_indirect": 0.059094910605663374
+        }
+      ],
+      "direct_exposure": 0.0,
+      "indirect_exposure": 0.0011093526697148809,
+      "total_exposure": 0.001109352669714881,
+      "price_stage": "processed_material_purchase",
+      "world_bank_price_represents_purchased_stage": false,
+      "alignment_status": "stage_misaligned",
+      "evidence": "Direct coefficient is exactly zero: the industry buys no Rubber sheet and block rubber directly. Indirect exposure 0.001109 reaches it through Pulp, paper and paperboard (26.7% of indirect), so the purchased price stage is processed_material_purchase, not the raw commodity.",
+      "limitations": "The 2015 I/O structure is held time-invariant; coefficients describe 2015 purchasing patterns, not the evaluation period. The decomposition is an exact attribution of the Leontief identity, not a causal claim.",
+      "additional_series_could_close_gap": true,
+      "shared_source_sector_warning": null,
+      "proxy_fitness_status": null,
+      "diagnostics": {
+        "cumulative_share_top1": 0.26674748704886797,
+        "cumulative_share_top3": 0.4774433084647799,
+        "cumulative_share_top5": 0.6166442866134362,
+        "direct_is_observed_zero": true,
+        "indirect_material_despite_direct_zero": false
+      }
+    },
+    {
+      "commodity_series_id": "rubber_rss3_usd_kg",
+      "industry_id": "IND-04",
+      "world_bank_series": "rubber_rss3_usd_kg",
+      "mapped_raw_io_sector": "095",
+      "mapped_raw_io_sector_label": "Rubber sheet and block rubber",
+      "leading_purchased_sectors": [
+        {
+          "sector_code": "031",
+          "sector_label": "Petroleum and natural gas",
+          "contribution": 0.0006140847375100604,
+          "share_of_indirect": 0.8216361913780721
+        },
+        {
+          "sector_code": "084",
+          "sector_label": "Basic industrial chemicals",
+          "contribution": 4.006520589563483e-05,
+          "share_of_indirect": 0.05360664606703138
+        },
+        {
+          "sector_code": "115",
+          "sector_label": "Special industrial machinery",
+          "contribution": 1.985839036940479e-05,
+          "share_of_indirect": 0.026570229210019128
+        },
+        {
+          "sector_code": "094",
+          "sector_label": "Other petroleum products",
+          "contribution": 1.4342733583948858e-05,
+          "share_of_indirect": 0.019190362951616337
+        },
+        {
+          "sector_code": "136",
+          "sector_label": "Pipe line and gas distribution",
+          "contribution": 1.1066579906080201e-05,
+          "share_of_indirect": 0.014806918345636095
+        }
+      ],
+      "direct_exposure": 0.00023018707061236412,
+      "indirect_exposure": 0.0007473925125913692,
+      "total_exposure": 0.0009775795832037333,
+      "price_stage": "raw_commodity_direct_purchase",
+      "world_bank_price_represents_purchased_stage": true,
+      "alignment_status": "stage_aligned",
+      "evidence": "Direct coefficient 0.000230 is positive, so the industry purchases sector 095 (Rubber sheet and block rubber) across the factory gate. The World Bank series prices that sector's output.",
+      "limitations": "The 2015 I/O structure is held time-invariant; coefficients describe 2015 purchasing patterns, not the evaluation period. The decomposition is an exact attribution of the Leontief identity, not a causal claim.",
+      "additional_series_could_close_gap": false,
+      "shared_source_sector_warning": null,
+      "proxy_fitness_status": null,
+      "diagnostics": {
+        "cumulative_share_top1": 0.8216361913780721,
+        "cumulative_share_top3": 0.9018130666551226,
+        "cumulative_share_top5": 0.935810347952375,
+        "direct_is_observed_zero": false,
+        "indirect_material_despite_direct_zero": false
+      }
+    },
+    {
+      "commodity_series_id": "rubber_rss3_usd_kg",
+      "industry_id": "IND-05",
+      "world_bank_series": "rubber_rss3_usd_kg",
+      "mapped_raw_io_sector": "095",
+      "mapped_raw_io_sector_label": "Rubber sheet and block rubber",
+      "leading_purchased_sectors": [
+        {
+          "sector_code": "098",
+          "sector_label": "Plastic ware",
+          "contribution": 0.0002271576712734569,
+          "share_of_indirect": 0.19927797311749687
+        },
+        {
+          "sector_code": "084",
+          "sector_label": "Basic industrial chemicals",
+          "contribution": 0.0001965178585332375,
+          "share_of_indirect": 0.1723986705373069
+        },
+        {
+          "sector_code": "086",
+          "sector_label": "Petrochemical products",
+          "contribution": 0.00013498669369979566,
+          "share_of_indirect": 0.11841939815426732
+        },
+        {
+          "sector_code": "180",
+          "sector_label": "Unclassified",
+          "contribution": 7.678796639130436e-05,
+          "share_of_indirect": 0.06736356389149883
+        },
+        {
+          "sector_code": "093",
+          "sector_label": "Petroleum refineries",
+          "contribution": 6.357792429613478e-05,
+          "share_of_indirect": 0.055774827315866374
+        }
+      ],
+      "direct_exposure": 0.0,
+      "indirect_exposure": 0.0011399035614413932,
+      "total_exposure": 0.0011399035614413936,
+      "price_stage": "processed_material_purchase",
+      "world_bank_price_represents_purchased_stage": false,
+      "alignment_status": "stage_misaligned",
+      "evidence": "Direct coefficient is exactly zero: the industry buys no Rubber sheet and block rubber directly. Indirect exposure 0.001140 reaches it through Plastic ware (19.9% of indirect), so the purchased price stage is processed_material_purchase, not the raw commodity.",
+      "limitations": "The 2015 I/O structure is held time-invariant; coefficients describe 2015 purchasing patterns, not the evaluation period. The decomposition is an exact attribution of the Leontief identity, not a causal claim.",
+      "additional_series_could_close_gap": true,
+      "shared_source_sector_warning": null,
+      "proxy_fitness_status": null,
+      "diagnostics": {
+        "cumulative_share_top1": 0.19927797311749687,
+        "cumulative_share_top3": 0.49009604180907107,
+        "cumulative_share_top5": 0.6132344330164363,
+        "direct_is_observed_zero": true,
+        "indirect_material_despite_direct_zero": false
+      }
+    },
+    {
+      "commodity_series_id": "rubber_rss3_usd_kg",
+      "industry_id": "IND-06",
+      "world_bank_series": "rubber_rss3_usd_kg",
+      "mapped_raw_io_sector": "095",
+      "mapped_raw_io_sector_label": "Rubber sheet and block rubber",
+      "leading_purchased_sectors": [
+        {
+          "sector_code": "098",
+          "sector_label": "Plastic ware",
+          "contribution": 0.00038293544156612854,
+          "share_of_indirect": 0.30106417678998887
+        },
+        {
+          "sector_code": "086",
+          "sector_label": "Petrochemical products",
+          "contribution": 0.00022030293775095587,
+          "share_of_indirect": 0.17320236102239722
+        },
+        {
+          "sector_code": "097",
+          "sector_label": "Other rubber products",
+          "contribution": 0.00014924361549994433,
+          "share_of_indirect": 0.11733546014411711
+        },
+        {
+          "sector_code": "016",
+          "sector_label": "Rubber",
+          "contribution": 6.797885029022097e-05,
+          "share_of_indirect": 0.05344503114690425
+        },
+        {
+          "sector_code": "084",
+          "sector_label": "Basic industrial chemicals",
+          "contribution": 6.166822660727261e-05,
+          "share_of_indirect": 0.048483613325748715
+        }
+      ],
+      "direct_exposure": 0.08308758272904365,
+      "indirect_exposure": 0.0012719395766346855,
+      "total_exposure": 0.08435952230567836,
+      "price_stage": "raw_commodity_direct_purchase",
+      "world_bank_price_represents_purchased_stage": true,
+      "alignment_status": "stage_aligned",
+      "evidence": "Direct coefficient 0.083088 is positive, so the industry purchases sector 095 (Rubber sheet and block rubber) across the factory gate. The World Bank series prices that sector's output.",
+      "limitations": "The 2015 I/O structure is held time-invariant; coefficients describe 2015 purchasing patterns, not the evaluation period. The decomposition is an exact attribution of the Leontief identity, not a causal claim.",
+      "additional_series_could_close_gap": false,
+      "shared_source_sector_warning": null,
+      "proxy_fitness_status": null,
+      "diagnostics": {
+        "cumulative_share_top1": 0.30106417678998887,
+        "cumulative_share_top3": 0.5916019979565033,
+        "cumulative_share_top5": 0.6935306424291562,
+        "direct_is_observed_zero": false,
+        "indirect_material_despite_direct_zero": false
+      }
+    },
+    {
+      "commodity_series_id": "rubber_rss3_usd_kg",
+      "industry_id": "IND-07",
+      "world_bank_series": "rubber_rss3_usd_kg",
+      "mapped_raw_io_sector": "095",
+      "mapped_raw_io_sector_label": "Rubber sheet and block rubber",
+      "leading_purchased_sectors": [
+        {
+          "sector_code": "040",
+          "sector_label": "Stone quarrying",
+          "contribution": 0.0003927307969898937,
+          "share_of_indirect": 0.23110596964426272
+        },
+        {
+          "sector_code": "041",
+          "sector_label": "Other mining and quarrying",
+          "contribution": 0.00016905690879553823,
+          "share_of_indirect": 0.09948305845049364
+        },
+        {
+          "sector_code": "180",
+          "sector_label": "Unclassified",
+          "contribution": 0.00014327129260600444,
+          "share_of_indirect": 0.08430928069221319
+        },
+        {
+          "sector_code": "102",
+          "sector_label": "Cement",
+          "contribution": 0.00011525674294275,
+          "share_of_indirect": 0.06782386698466436
+        },
+        {
+          "sector_code": "039",
+          "sector_label": "Limestone",
+          "contribution": 0.00010848774663279207,
+          "share_of_indirect": 0.06384059022684106
+        }
+      ],
+      "direct_exposure": 0.0,
+      "indirect_exposure": 0.0016993537535807371,
+      "total_exposure": 0.0016993537535807378,
+      "price_stage": "processed_material_purchase",
+      "world_bank_price_represents_purchased_stage": false,
+      "alignment_status": "stage_misaligned",
+      "evidence": "Direct coefficient is exactly zero: the industry buys no Rubber sheet and block rubber directly. Indirect exposure 0.001699 reaches it through Stone quarrying (23.1% of indirect), so the purchased price stage is processed_material_purchase, not the raw commodity.",
+      "limitations": "The 2015 I/O structure is held time-invariant; coefficients describe 2015 purchasing patterns, not the evaluation period. The decomposition is an exact attribution of the Leontief identity, not a causal claim.",
+      "additional_series_could_close_gap": true,
+      "shared_source_sector_warning": null,
+      "proxy_fitness_status": null,
+      "diagnostics": {
+        "cumulative_share_top1": 0.23110596964426272,
+        "cumulative_share_top3": 0.41489830878696954,
+        "cumulative_share_top5": 0.546562765998475,
+        "direct_is_observed_zero": true,
+        "indirect_material_despite_direct_zero": false
+      }
+    },
+    {
+      "commodity_series_id": "rubber_rss3_usd_kg",
+      "industry_id": "IND-08",
+      "world_bank_series": "rubber_rss3_usd_kg",
+      "mapped_raw_io_sector": "095",
+      "mapped_raw_io_sector_label": "Rubber sheet and block rubber",
+      "leading_purchased_sectors": [
+        {
+          "sector_code": "106",
+          "sector_label": "Secondary steel products",
+          "contribution": 0.00028663016211124843,
+          "share_of_indirect": 0.2361511566068429
+        },
+        {
+          "sector_code": "105",
+          "sector_label": "Iron and steel",
+          "contribution": 0.00018755597712124782,
+          "share_of_indirect": 0.15452512254630957
+        },
+        {
+          "sector_code": "107",
+          "sector_label": "Non-ferrous metal",
+          "contribution": 0.00014548231263316393,
+          "share_of_indirect": 0.11986113443575981
+        },
+        {
+          "sector_code": "098",
+          "sector_label": "Plastic ware",
+          "contribution": 0.00011780276668261322,
+          "share_of_indirect": 0.09705628814035214
+        },
+        {
+          "sector_code": "035",
+          "sector_label": "Other non-ferrous metals",
+          "contribution": 5.435878104725269e-05,
+          "share_of_indirect": 0.044785548462497576
+        }
+      ],
+      "direct_exposure": 0.00010489923779720626,
+      "indirect_exposure": 0.001213757180907844,
+      "total_exposure": 0.0013186564187050503,
+      "price_stage": "raw_commodity_direct_purchase",
+      "world_bank_price_represents_purchased_stage": true,
+      "alignment_status": "stage_aligned",
+      "evidence": "Direct coefficient 0.000105 is positive, so the industry purchases sector 095 (Rubber sheet and block rubber) across the factory gate. The World Bank series prices that sector's output.",
+      "limitations": "The 2015 I/O structure is held time-invariant; coefficients describe 2015 purchasing patterns, not the evaluation period. The decomposition is an exact attribution of the Leontief identity, not a causal claim.",
+      "additional_series_could_close_gap": false,
+      "shared_source_sector_warning": null,
+      "proxy_fitness_status": null,
+      "diagnostics": {
+        "cumulative_share_top1": 0.2361511566068429,
+        "cumulative_share_top3": 0.5105374135889122,
+        "cumulative_share_top5": 0.652379250191762,
+        "direct_is_observed_zero": false,
+        "indirect_material_despite_direct_zero": false
+      }
+    },
+    {
+      "commodity_series_id": "rubber_rss3_usd_kg",
+      "industry_id": "IND-09",
+      "world_bank_series": "rubber_rss3_usd_kg",
+      "mapped_raw_io_sector": "095",
+      "mapped_raw_io_sector_label": "Rubber sheet and block rubber",
+      "leading_purchased_sectors": [
+        {
+          "sector_code": "118",
+          "sector_label": "Radio, television and communication equipment and apparatus",
+          "contribution": 0.0007884472602468253,
+          "share_of_indirect": 0.27791546702744846
+        },
+        {
+          "sector_code": "097",
+          "sector_label": "Other rubber products",
+          "contribution": 0.0006835518084387512,
+          "share_of_indirect": 0.24094144232328493
+        },
+        {
+          "sector_code": "098",
+          "sector_label": "Plastic ware",
+          "contribution": 0.0003826324922376568,
+          "share_of_indirect": 0.13487203664936967
+        },
+        {
+          "sector_code": "131",
+          "sector_label": "Watches and clocks",
+          "contribution": 0.00018263660814678815,
+          "share_of_indirect": 0.06437658015773173
+        },
+        {
+          "sector_code": "122",
+          "sector_label": "Other electrical apparatus and supplies",
+          "contribution": 0.0001122584162462177,
+          "share_of_indirect": 0.039569355810891625
+        }
+      ],
+      "direct_exposure": 0.0005182424428244444,
+      "indirect_exposure": 0.0028370038871170637,
+      "total_exposure": 0.0033552463299415087,
+      "price_stage": "raw_commodity_direct_purchase",
+      "world_bank_price_represents_purchased_stage": true,
+      "alignment_status": "stage_aligned",
+      "evidence": "Direct coefficient 0.000518 is positive, so the industry purchases sector 095 (Rubber sheet and block rubber) across the factory gate. The World Bank series prices that sector's output.",
+      "limitations": "The 2015 I/O structure is held time-invariant; coefficients describe 2015 purchasing patterns, not the evaluation period. The decomposition is an exact attribution of the Leontief identity, not a causal claim.",
+      "additional_series_could_close_gap": false,
+      "shared_source_sector_warning": null,
+      "proxy_fitness_status": null,
+      "diagnostics": {
+        "cumulative_share_top1": 0.27791546702744846,
+        "cumulative_share_top3": 0.653728946000103,
+        "cumulative_share_top5": 0.7576748819687265,
+        "direct_is_observed_zero": false,
+        "indirect_material_despite_direct_zero": false
+      }
+    },
+    {
+      "commodity_series_id": "rubber_rss3_usd_kg",
+      "industry_id": "IND-10",
+      "world_bank_series": "rubber_rss3_usd_kg",
+      "mapped_raw_io_sector": "095",
+      "mapped_raw_io_sector_label": "Rubber sheet and block rubber",
+      "leading_purchased_sectors": [
+        {
+          "sector_code": "116",
+          "sector_label": "Office and household machinery and appliances",
+          "contribution": 0.0009161124840616898,
+          "share_of_indirect": 0.28879714945356255
+        },
+        {
+          "sector_code": "097",
+          "sector_label": "Other rubber products",
+          "contribution": 0.0008129360541955721,
+          "share_of_indirect": 0.256271603350292
+        },
+        {
+          "sector_code": "098",
+          "sector_label": "Plastic ware",
+          "contribution": 0.0002968965893405922,
+          "share_of_indirect": 0.09359428037035043
+        },
+        {
+          "sector_code": "115",
+          "sector_label": "Special industrial machinery",
+          "contribution": 0.0002943505902792902,
+          "share_of_indirect": 0.09279167448492955
+        },
+        {
+          "sector_code": "118",
+          "sector_label": "Radio, television and communication equipment and apparatus",
+          "contribution": 0.00016905956331212668,
+          "share_of_indirect": 0.05329467813378092
+        }
+      ],
+      "direct_exposure": 0.0,
+      "indirect_exposure": 0.003172165950374095,
+      "total_exposure": 0.0031721659503740965,
+      "price_stage": "processed_material_purchase",
+      "world_bank_price_represents_purchased_stage": false,
+      "alignment_status": "stage_misaligned",
+      "evidence": "Direct coefficient is exactly zero: the industry buys no Rubber sheet and block rubber directly. Indirect exposure 0.003172 reaches it through Office and household machinery and appliances (28.9% of indirect), so the purchased price stage is processed_material_purchase, not the raw commodity.",
+      "limitations": "The 2015 I/O structure is held time-invariant; coefficients describe 2015 purchasing patterns, not the evaluation period. The decomposition is an exact attribution of the Leontief identity, not a causal claim.",
+      "additional_series_could_close_gap": true,
+      "shared_source_sector_warning": null,
+      "proxy_fitness_status": null,
+      "diagnostics": {
+        "cumulative_share_top1": 0.28879714945356255,
+        "cumulative_share_top3": 0.6386630331742049,
+        "cumulative_share_top5": 0.7847493857929154,
+        "direct_is_observed_zero": true,
+        "indirect_material_despite_direct_zero": false
+      }
+    },
+    {
+      "commodity_series_id": "rubber_rss3_usd_kg",
+      "industry_id": "IND-11",
+      "world_bank_series": "rubber_rss3_usd_kg",
+      "mapped_raw_io_sector": "095",
+      "mapped_raw_io_sector_label": "Rubber sheet and block rubber",
+      "leading_purchased_sectors": [
+        {
+          "sector_code": "096",
+          "sector_label": "Tyres and tubes",
+          "contribution": 0.0063811486024315765,
+          "share_of_indirect": 0.5104620944361166
+        },
+        {
+          "sector_code": "125",
+          "sector_label": "Motor vehicles",
+          "contribution": 0.002958883392130814,
+          "share_of_indirect": 0.23669685626249015
+        },
+        {
+          "sector_code": "097",
+          "sector_label": "Other rubber products",
+          "contribution": 0.0012002254361178457,
+          "share_of_indirect": 0.09601243100384081
+        },
+        {
+          "sector_code": "121",
+          "sector_label": "Electric accumulators and batteries",
+          "contribution": 0.0005570735430918469,
+          "share_of_indirect": 0.04456328245564653
+        },
+        {
+          "sector_code": "098",
+          "sector_label": "Plastic ware",
+          "contribution": 0.0003483395686324657,
+          "share_of_indirect": 0.02786553908356634
+        }
+      ],
+      "direct_exposure": 0.0,
+      "indirect_exposure": 0.012500729578129656,
+      "total_exposure": 0.012500729578129659,
+      "price_stage": "processed_material_purchase",
+      "world_bank_price_represents_purchased_stage": false,
+      "alignment_status": "stage_misaligned",
+      "evidence": "Direct coefficient is exactly zero: the industry buys no Rubber sheet and block rubber directly. Indirect exposure 0.012501 reaches it through Tyres and tubes (51.0% of indirect), so the purchased price stage is processed_material_purchase, not the raw commodity.",
+      "limitations": "The 2015 I/O structure is held time-invariant; coefficients describe 2015 purchasing patterns, not the evaluation period. The decomposition is an exact attribution of the Leontief identity, not a causal claim.",
+      "additional_series_could_close_gap": true,
+      "shared_source_sector_warning": null,
+      "proxy_fitness_status": null,
+      "diagnostics": {
+        "cumulative_share_top1": 0.5104620944361166,
+        "cumulative_share_top3": 0.8431713817024475,
+        "cumulative_share_top5": 0.9156002032416604,
+        "direct_is_observed_zero": true,
+        "indirect_material_despite_direct_zero": true
+      }
+    },
+    {
+      "commodity_series_id": "rubber_rss3_usd_kg",
+      "industry_id": "IND-12",
+      "world_bank_series": "rubber_rss3_usd_kg",
+      "mapped_raw_io_sector": "095",
+      "mapped_raw_io_sector_label": "Rubber sheet and block rubber",
+      "leading_purchased_sectors": [
+        {
+          "sector_code": "132",
+          "sector_label": "Jewellery and related articles",
+          "contribution": 0.0003651460903558641,
+          "share_of_indirect": 0.20600712922090822
+        },
+        {
+          "sector_code": "097",
+          "sector_label": "Other rubber products",
+          "contribution": 0.00034941806626256205,
+          "share_of_indirect": 0.19713373531815354
+        },
+        {
+          "sector_code": "107",
+          "sector_label": "Non-ferrous metal",
+          "contribution": 0.000296674102294647,
+          "share_of_indirect": 0.16737678902257147
+        },
+        {
+          "sector_code": "098",
+          "sector_label": "Plastic ware",
+          "contribution": 0.0002446913825268255,
+          "share_of_indirect": 0.138049319411635
+        },
+        {
+          "sector_code": "134",
+          "sector_label": "Other manufactured goods",
+          "contribution": 0.00010300767085422376,
+          "share_of_indirect": 0.05811458788927456
+        }
+      ],
+      "direct_exposure": 0.0025933636473634827,
+      "indirect_exposure": 0.0017724924944918093,
+      "total_exposure": 0.004365856141855292,
+      "price_stage": "raw_commodity_direct_purchase",
+      "world_bank_price_represents_purchased_stage": true,
+      "alignment_status": "stage_aligned",
+      "evidence": "Direct coefficient 0.002593 is positive, so the industry purchases sector 095 (Rubber sheet and block rubber) across the factory gate. The World Bank series prices that sector's output.",
+      "limitations": "The 2015 I/O structure is held time-invariant; coefficients describe 2015 purchasing patterns, not the evaluation period. The decomposition is an exact attribution of the Leontief identity, not a causal claim.",
+      "additional_series_could_close_gap": false,
+      "shared_source_sector_warning": null,
+      "proxy_fitness_status": null,
+      "diagnostics": {
+        "cumulative_share_top1": 0.20600712922090822,
+        "cumulative_share_top3": 0.5705176535616332,
+        "cumulative_share_top5": 0.7666815608625428,
+        "direct_is_observed_zero": false,
+        "indirect_material_despite_direct_zero": false
+      }
+    }
+  ]
+}

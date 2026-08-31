@@ -1,0 +1,134 @@
+# Schema for the D2 monthly OIE MPI release inventory.
+# Describes what the code ACTUALLY writes
+# (thai_supply_chain_ews.data.oie_mpi_release_inventory.ReleaseRecord),
+# verified by tests/test_d2_oie_mpi_timing.py.
+#
+# EVIDENCE ONLY. No feature, no target join, no model input.
+
+schema_version: 1
+task: D2
+written_by: scripts/audit_d2_oie_mpi_timing.py
+output: docs/d2_oie_mpi_source_audit.json  # release_inventory.records[]
+
+release_record:
+  grain: [reference_month]
+  columns:
+    - name: reference_month
+      type: string
+      nullable: true
+      format: "YYYY-MM"
+      note: >-
+        Parsed from the Buddhist-Era month name in the entry title. July appears
+        in TWO spellings in the live archive (กรกฎาคม and the variant กรกฏาคม);
+        both are accepted. Null means the title could not be parsed, which is
+        distinct from the month being absent from the archive.
+
+    - name: id_content
+      type: string
+      nullable: false
+      note: "Archive entry id; the detail page is addressed by it, not by a guessed hash."
+
+    - name: title
+      type: string
+      nullable: true
+
+    - name: detail_url
+      type: string
+      nullable: false
+
+    - name: attachment_filename
+      type: string
+      nullable: true
+      note: >-
+        Null means no attachment was found on the detail page. That is a
+        distinct state from "an attachment exists but carries no timestamp".
+
+    - name: attachment_url
+      type: string
+      nullable: true
+
+    - name: attachment_last_modified_utc
+      type: datetime
+      nullable: true
+      note: "HTTP Last-Modified of the attachment. Supporting metadata, not a stated publication date."
+
+    - name: attachment_filename_timestamp_utc
+      type: datetime
+      nullable: true
+      note: >-
+        Upload stamp encoded in the attachment filename (YYYYMMDDhhmmss.pdf),
+        recorded Bangkok local and converted to UTC using
+        attachment_filename_timezone_offset_hours.
+
+    - name: attachment_content_length
+      type: integer
+      nullable: true
+
+    - name: listing_timestamp_utc
+      type: datetime
+      nullable: true
+      note: >-
+        Content-management timestamp shown in the archive listing. It MOVES when
+        a page is edited or migrated and is therefore the weakest evidence here.
+
+    - name: listing_batch_size
+      type: integer
+      nullable: false
+      minimum: 1
+      note: "How many entries share this listing date. >= migration_batch_min_entries indicates a bulk migration."
+
+    - name: timestamps_agree
+      type: boolean
+      nullable: true
+      note: >-
+        True when the attachment filename stamp and its Last-Modified agree
+        within attachment_timestamp_agreement_seconds — two independent
+        mechanisms corroborating one date. Null when one of them is absent.
+
+    - name: first_publication_estimate_utc
+      type: datetime
+      nullable: true
+      note: >-
+        Best available estimate, preferring attachment evidence over the listing
+        timestamp. An ESTIMATE derived from supporting metadata. It is never a
+        publication date stated by OIE, because OIE states none in this archive.
+
+    - name: publication_lag_days
+      type: integer
+      nullable: true
+      note: "Days from the end of reference_month to first_publication_estimate_utc."
+
+    - name: timing_evidence_class
+      type: string
+      nullable: false
+      enum:
+        - directly_observed_release
+        - attachment_corroborated
+        - attachment_last_modified_only
+        - rehosted_listing_later_than_attachment
+        - listing_timestamp_only
+        - migration_batch_contaminated
+        - no_timing_evidence
+      note: >-
+        Mutually exclusive, assigned most-specific-first. These are DISTINCT
+        STATES, not degrees of confidence on one scale: a month with no
+        attachment (listing_timestamp_only) is not the same as a month whose
+        date is implausible (migration_batch_contaminated).
+
+    - name: first_publication_is_credible
+      type: boolean
+      nullable: false
+      note: "True only for the four attachment-backed or directly observed classes."
+
+    - name: evidence_note
+      type: string
+      nullable: true
+
+invariants:
+  - "reference_month is unique across records where it is non-null."
+  - "timing_evidence_class is always one of the enum values; never null."
+  - "first_publication_is_credible is false whenever timing_evidence_class is
+     migration_batch_contaminated, listing_timestamp_only or no_timing_evidence."
+  - "A record with attachment_filename null must not be classified
+     attachment_corroborated or attachment_last_modified_only."
+  - "publication_lag_days is null whenever first_publication_estimate_utc is null."

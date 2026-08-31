@@ -1,0 +1,123 @@
+# Bridge approval criteria — oie_overlap_bridge_v2
+#
+# WRITTEN BEFORE v2 METRICS WERE COMPUTED. scripts/validate_oie_overlap_v2.py
+# loads this file and applies it mechanically; no threshold in it was chosen
+# or adjusted after seeing a v2 result.
+#
+# Relationship to v1: the MoM 2.0 / YoY 3.0 thresholds are UNCHANGED in value
+# from oie_overlap_bridge_v1. What changed is the statistic they are applied
+# to. v1's apply_approval_criteria() gated on abs(mean_signed_diff), which
+# lets positive and negative monthly errors cancel; the documented intent was
+# a mean ABSOLUTE error. v2 applies them to mean_abs_error and reports
+# mean_signed_bias separately as its own, non-gating diagnostic.
+#
+# The linked_level block is genuinely new: v1 had no magnitude criterion on
+# levels at all — it rebased each edition to its own first month (forcing both
+# to 100) and then gated only on correlation, which is why IND-01 MPI passed
+# v1 with a rebased mean absolute error of 8.88 index points.
+
+schema_version: 1
+bridge_version: oie_overlap_bridge_v2
+
+# --- component-specific transformations and link methods --------------------
+# MPI is an index-number series -> ratio growth, multiplicative link.
+# Capacity Utilization is a rate already expressed in percent -> percentage-
+# point differences, additive alignment. A multiplicative median-ratio link is
+# NOT applied to a percent rate by default.
+
+mpi:
+  series_type: index_number
+  link_method: multiplicative_median_ratio
+  mom_definition: "100 * (x_t / x_{t-1} - 1)"
+  yoy_definition: "100 * (x_t / x_{t-12} - 1)"
+  linked_level:
+    # metrics computed between current_MPI and (older_MPI * link_factor),
+    # NOT between two independently rebased series.
+    min_pearson: 0.90
+    min_spearman: 0.85
+    # scale-free: mean absolute error as a fraction of the current series' own
+    # interquartile range. 0.25 = typical linked-level error stays inside a
+    # quarter of the series' ordinary spread.
+    max_normalized_mae_iqr: 0.25
+    # a systematic offset should be smaller than the typical error
+    max_abs_normalized_bias_iqr: 0.15
+  mom_growth:
+    min_pearson: 0.70
+    max_mae_pp: 2.0
+  yoy_growth:
+    min_pearson: 0.85
+    max_mae_pp: 3.0
+
+capacity_utilization:
+  series_type: percent_rate
+  link_method: additive_median_offset
+  # Pre-stated selection rule (written before v2 metrics existed): the additive
+  # offset is adopted only if it STRICTLY reduces linked-level mean absolute
+  # error versus leaving the older series unaligned. If it does not, the
+  # simpler no-alignment option is reported as sufficient. This is how the
+  # "compare additive alignment against no alignment" requirement is resolved
+  # mechanically instead of by preference.
+  alignment_selection_rule: adopt_additive_only_if_it_reduces_linked_level_mae
+  mom_definition: "x_t - x_{t-1}  (percentage points)"
+  yoy_definition: "x_t - x_{t-12}  (percentage points)"
+  linked_level:
+    min_pearson: 0.90
+    min_spearman: 0.85
+    max_normalized_mae_iqr: 0.25
+    max_abs_normalized_bias_iqr: 0.15
+  mom_change:
+    min_pearson: 0.70
+    max_mae_pp: 2.0
+  yoy_change:
+    min_pearson: 0.85
+    max_mae_pp: 3.0
+
+# --- stability across the three overlap years -------------------------------
+stability:
+  min_year_linked_level_pearson: 0.75
+
+# --- discontinuity detection ------------------------------------------------
+# A flagged discontinuity is a TRIGGER FOR INVESTIGATION, not by itself proof
+# of rejection. v1 hard-rejected on any flag while letting large persistent
+# errors pass; v2 routes an unexplained flag to "Needs source review" and lets
+# the magnitude criteria above handle persistent error.
+discontinuity:
+  multiplier: 4.0
+  abs_floor_linked_level: 1.0
+  abs_floor_pct: 1.0
+
+# --- candidate splice checks ------------------------------------------------
+splice:
+  history_start: 2016-01-01
+  history_end: 2026-06-01
+  expected_months: 126
+  level_switch_month: 2021-01-01
+  # The boundary jump is the month-over-month change spanning the switch
+  # (2020-12 linked-older -> 2021-01 native-current). It is compared with the
+  # distribution of ordinary monthly changes elsewhere in the same series.
+  # A jump above this multiple of the 99th percentile of ordinary |changes|
+  # is a hard fail: it means the splice itself manufactures a shock.
+  max_boundary_jump_vs_p99: 1.0
+
+# --- evidence sufficiency ---------------------------------------------------
+evidence:
+  min_valid_pairs: 30 # of 36 overlap months
+
+# --- hard-fail (Rejected) boundaries ----------------------------------------
+# Everything else that misses a criterion is Conditional, or Needs source
+# review when an unexplained discontinuity is present.
+hard_fail:
+  linked_level_min_pearson: 0.50
+  # 2x the max_normalized_mae_iqr bar above = gross misfit, not a near miss
+  normalized_mae_iqr_multiple: 2.0
+
+# --- status precedence (highest wins) ---------------------------------------
+# Documented so the resolution of a pair that trips several rules at once is
+# mechanical rather than discretionary.
+status_precedence:
+  - Excluded due to composition change
+  - Insufficient evidence
+  - Rejected
+  - Needs source review
+  - Conditional
+  - Approved

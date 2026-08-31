@@ -1,0 +1,140 @@
+# Schema for the C9 Phase-A structural decision table (sector-093 exposure).
+# Describes what the code ACTUALLY writes into
+# docs/c9_sector093_exposure_decision.json, verified by
+# tests/test_c9_fuel_oil_conditioning.py.
+#
+# PHASE A ONLY. Derived from the NESDC I/O matrix, the sector definitions, the
+# C3 crosswalk and C5 structural findings. No C8 numeric value, MPI value,
+# target, prediction or evaluation metric is read, and the table is hashed and
+# frozen before Phase B opens the C8 file.
+
+schema_version: 1
+task: C9
+phase: A
+written_by: scripts/run_c9_fuel_oil_conditioning.py
+output: docs/c9_sector093_exposure_decision.json
+phase_a_version: c9_phase_a_structural_decision_v1
+
+sector:
+  io_sector_code: "093"
+  io_sector_label: "Petroleum refineries"
+  official_basket:
+    [gasoline, jet oil, LPG, asphalt, paraffin, sulfur, kerosene, diesel, fuel oil]
+  basket_note: >-
+    Fuel oil is ONE of nine named products. A positive coefficient proves
+    purchase from the refinery-products sector, never purchase of FO 600 or
+    FO 1500 specifically.
+  crude_sector_not_reused: "031"
+  total_requirement_used: false
+
+exposure_formula:
+  direct: "A[093,j] = Z[093,j] / X_j"
+  weighted_aggregate: "E[093,g] = sum_j (X_j / sum_l X_l) * A[093,j]"
+  exact_aggregate: "E[093,g] = sum_j Z[093,j] / sum_j X_j"
+  both_calculated_independently: true
+  reconciliation_tolerance: 1.0e-12
+  valuation_basis: purchasers_prices
+  import_treatment: import_inclusive
+  measure: purchaser
+  normalised_across_industries: false
+
+observation:
+  grain: [industry_id, channel_id]
+  ordering: [industry_id, channel_id]
+  rows: 24
+  columns:
+    - {name: industry_id, type: string, nullable: false}
+    - {name: industry_name, type: string, nullable: false}
+    - {name: channel_id, type: string, nullable: false,
+       enum: [eppo_fo600_channel, eppo_fo1500_channel]}
+    - {name: variant_id, type: string, nullable: false,
+       enum: [fo600_direct_sector093, fo1500_direct_sector093]}
+    - {name: io_sector_code, type: string, nullable: false, const: "093"}
+    - {name: io_sector_label, type: string, nullable: false,
+       const: "Petroleum refineries"}
+    - name: direct_exposure
+      type: float
+      nullable: false
+      note: "Baht of sector-093 output per baht of industry gross output. Not normalised."
+    - {name: exposure_weighted_mean_form, type: float, nullable: false}
+    - {name: exposure_summed_flow_form, type: float, nullable: false}
+    - name: exposure_reconciliation_residual
+      type: float
+      nullable: false
+      note: "Must be at most 1e-12; the two forms are algebraically identical."
+    - name: observed_zero
+      type: boolean
+      nullable: false
+      note: "A measured zero. Distinct from unresolved and from ineligible."
+    - {name: industry_contains_the_producer_sector, type: boolean, nullable: false}
+    - {name: component_sector_codes, type: list_of_string, nullable: false}
+    - {name: gross_output_weights, type: map_string_float, nullable: false}
+    - name: proxy_fit
+      type: string
+      nullable: false
+      enum:
+        - fit_for_structural_use
+        - broad_proxy_use_with_caution
+        - not_fit_for_product_specific_use
+        - unresolved
+    - name: confidence
+      type: string
+      nullable: false
+      enum: [high, medium, low, unresolved]
+      note: "Never `high` without product-specific consumption evidence."
+    - {name: product_specific_evidence_available, type: boolean, nullable: false}
+    - {name: proxy_reason, type: string, nullable: false}
+    - name: direction_channel
+      type: string
+      nullable: false
+      enum: [cost_pressure, mixed_or_ambiguous, unresolved]
+    - name: direction_multiplier
+      type: integer
+      nullable: true
+      note: >-
+        +1 for a consuming industry; NULL where the industry contains sector 093
+        itself, because a higher refinery-product price is then both revenue and
+        input cost. Never forced to +1.
+    - {name: direction_interpretation_level, type: string, nullable: false}
+    - name: direction_interpretation_volatility
+      type: string
+      nullable: false
+      const: disruption_magnitude_nonnegative
+      note: "Volatility is a disruption magnitude, never a price increase."
+    - {name: eligible, type: boolean, nullable: false}
+    - name: exclusion_reason
+      type: string
+      nullable: true
+      enum:
+        - direction_ambiguous_industry_contains_producer_sector
+        - proxy_not_fit_for_product_specific_use
+        - structural_exposure_unresolved
+        - negative_or_nonfinite_exposure
+    - {name: quality_flag, type: string, nullable: false,
+       enum: [ok, observed_zero_direct_exposure]}
+    - name: valuation_basis_alignment
+      type: string
+      nullable: false
+      const: partial_mismatch_purchasers_price_coefficient_x_ex_refinery_price
+    - {name: structural_source_checksum, type: string, nullable: false}
+    - {name: exposure_row_checksum, type: string, nullable: false}
+    - {name: phase_a_decision_checksum, type: string, nullable: false}
+    - {name: target_outcomes_used, type: boolean, nullable: false, const: false}
+
+freeze:
+  structural_decision_checksum_required: true
+  frozen_before_phase_b: true
+  reasserted_before_loading_c8_values: true
+  reasserted_after_conditioning: true
+  eligibility_change_after_loading_values: raises
+
+invariants:
+  - "Exactly 24 rows, unique on (industry_id, channel_id)."
+  - "Both channels carry identical structural decisions for an industry."
+  - "Sector 093 appears exactly once in the coefficient ordering."
+  - "Every exposure is finite and non-negative."
+  - "Both aggregation forms agree within 1e-12 for every industry."
+  - "Gross-output weights sum to one for every industry."
+  - "An industry containing sector 093 has a NULL direction multiplier."
+  - "No row has confidence `high` without product-specific evidence."
+  - "Ineligible rows are retained, never deleted."

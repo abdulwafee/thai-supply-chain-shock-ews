@@ -1,0 +1,325 @@
+{
+ "artifact_count": 23,
+ "artifacts": [
+  {
+   "checksum": "0746ba65b6bba49a9dfb6a1f1a6c4044a2e6a26031249df0d5c8da43a0bd8cbb",
+   "checksum_kind": "byte_sha256",
+   "exists": true,
+   "generated": false,
+   "path": "configs/e1_evidence_synthesis.yaml",
+   "status": "current",
+   "task": "E1",
+   "version_controlled": true
+  },
+  {
+   "checksum": "e7d3d2cb6e376891550c5c528d34b2daef3356bc6df299fc486f8271aa128a6c",
+   "checksum_kind": "content_checksum_timestamps_excluded",
+   "exists": true,
+   "generated": false,
+   "path": "docs/d1_development_results.json",
+   "status": "superseded",
+   "superseded_by": "D3/D4",
+   "task": "D1",
+   "version_controlled": true
+  },
+  {
+   "checksum": "ba039d79b528792d1eb473866ee611b51977575110c4889ea2b0b89fb9f4d886",
+   "checksum_kind": "byte_sha256",
+   "exists": true,
+   "generated": false,
+   "path": "docs/d1_development_results.errata.md",
+   "status": "current",
+   "task": "D1",
+   "version_controlled": true
+  },
+  {
+   "checksum": "b5d70211e302c0e5d8da6f8fb6d01fcc688873d6c7655376472b1d48ba88b197",
+   "checksum_kind": "content_checksum_timestamps_excluded",
+   "exists": true,
+   "generated": false,
+   "path": "docs/d3_operational_baseline_results.json",
+   "status": "current",
+   "task": "D3",
+   "version_controlled": true
+  },
+  {
+   "checksum": "f568d82a5251a2aaf015b2ddc03cd133fbe4b2bde01e7ddfe115bc6e7216097a",
+   "checksum_kind": "byte_sha256",
+   "exists": true,
+   "generated": false,
+   "path": "docs/d3_locked_test_manifest.json",
+   "status": "current",
+   "task": "D3",
+   "version_controlled": true
+  },
+  {
+   "checksum": "31e360d2da34564de66780729817bfb034f5b6d27dd8d7454e33c8eaf4653f57",
+   "checksum_kind": "byte_sha256",
+   "exists": true,
+   "generated": false,
+   "path": "docs/d3r1_benchmark_interpretation.json",
+   "status": "current",
+   "task": "D3-R1",
+   "version_controlled": true
+  },
+  {
+   "checksum": "6d9d32d7164d4d6aa25ad634271b1747d75727d068b94b58b8a1b4f9d2fdf3ae",
+   "checksum_kind": "content_checksum_timestamps_excluded",
+   "exists": true,
+   "generated": false,
+   "path": "docs/d4_operational_model_results.json",
+   "status": "current",
+   "task": "D4",
+   "version_controlled": true
+  },
+  {
+   "checksum": "50e63b0139c9bd6e112be96d3bc532baddb88e1b4724c9f4782e82b0df6a2358",
+   "checksum_kind": "content_checksum_timestamps_excluded",
+   "exists": true,
+   "generated": false,
+   "path": "docs/c3_commodity_exposure_matrix.json",
+   "status": "current",
+   "task": "C3",
+   "version_controlled": true
+  },
+  {
+   "checksum": "79f8d35579c14e8d16eea868a837e12d21f6c42162cf09d41057865648953a7d",
+   "checksum_kind": "content_checksum_timestamps_excluded",
+   "exists": true,
+   "generated": false,
+   "path": "docs/c7_eppo_full_archive_audit.json",
+   "status": "current",
+   "task": "C7",
+   "version_controlled": true
+  },
+  {
+   "checksum": "8b36fd6e9ce7798905cb2b903b263908489a5632fdf54f41ba12b0a12b6bd24a",
+   "checksum_kind": "content_checksum_timestamps_excluded",
+   "exists": true,
+   "generated": false,
+   "path": "docs/c7_5_eppo_semantic_decision.json",
+   "status": "current",
+   "task": "C7.5",
+   "version_controlled": true
+  },
+  {
+   "checksum": "89195c01ba56b0b30c6bcd68eb9af069bf80da49da1192b03b899445379c46fe",
+   "checksum_kind": "content_checksum_timestamps_excluded",
+   "exists": true,
+   "generated": false,
+   "path": "docs/c8_eppo_transformation_audit.json",
+   "status": "current",
+   "task": "C8",
+   "version_controlled": true
+  },
+  {
+   "checksum": "8cb4209b8c93f9d1f478452791dfda25bfbc9b73ec148aee2d6773de431373e1",
+   "checksum_kind": "content_checksum_timestamps_excluded",
+   "exists": true,
+   "generated": false,
+   "path": "docs/c9_sector093_exposure_decision.json",
+   "status": "current",
+   "task": "C9",
+   "version_controlled": true
+  },
+  {
+   "checksum": "711461e78ff83048b13ed4852211fccd6008f87dfd4276312a2b26754064527e",
+   "checksum_kind": "content_checksum_timestamps_excluded",
+   "exists": true,
+   "generated": false,
+   "path": "docs/c9_fuel_oil_conditioning_audit.json",
+   "status": "current",
+   "task": "C9",
+   "version_controlled": true
+  },
+  {
+   "checksum": "bb520f9e74f49afbf6f50d934dea6630c81ea366c24f78b548d03f4a95c24d1c",
+   "checksum_kind": "content_checksum_timestamps_excluded",
+   "exists": true,
+   "generated": false,
+   "path": "docs/c10_design_matrix_audit.json",
+   "status": "current",
+   "task": "C10",
+   "version_controlled": true
+  },
+  {
+   "checksum": "6d525648f0e7e30860dc065c17a896426a0cf008f7ef62096974d4954c9f6d77",
+   "checksum_kind": "content_checksum_timestamps_excluded",
+   "exists": true,
+   "generated": false,
+   "path": "docs/c11_architecture_decision.json",
+   "status": "superseded",
+   "superseded_by": "C11-R1",
+   "task": "C11",
+   "version_controlled": true
+  },
+  {
+   "checksum": "a536dbb85444add1051e589e170bcc10756ff335ba1283723ac1644b4d36dbca",
+   "checksum_kind": "content_checksum_timestamps_excluded",
+   "exists": true,
+   "generated": false,
+   "path": "docs/c11r1_governance_decision.json",
+   "status": "current",
+   "task": "C11-R1",
+   "version_controlled": true
+  },
+  {
+   "checksum": "0eb3d613d34fdde2274a56c2bcd97695b652991da663ce6390b70d9e53deaf0e",
+   "checksum_kind": "content_checksum_timestamps_excluded",
+   "exists": true,
+   "generated": false,
+   "path": "docs/d5_development_results.json",
+   "status": "current",
+   "task": "D5",
+   "version_controlled": true
+  },
+  {
+   "checksum": "77877c1dac708cb8d573aabd43253887b8295d4227c8f34f34e48e83f5258396",
+   "checksum_kind": "content_checksum_timestamps_excluded",
+   "exists": true,
+   "generated": false,
+   "path": "docs/d5_assembly_audit.json",
+   "status": "current",
+   "task": "D5",
+   "version_controlled": true
+  },
+  {
+   "checksum": "22e37b46693d4934432aa19da80888b9fe7304a2f7ecf39f3639601768113198",
+   "checksum_kind": "byte_sha256",
+   "exists": true,
+   "generated": false,
+   "path": "docs/d5_frozen_protocol.json",
+   "status": "current",
+   "task": "D5",
+   "version_controlled": true
+  },
+  {
+   "checksum": "ee26a8552d595544c72340aa1ad78987582ad3d266f0e5acc4240d09124f8320",
+   "checksum_kind": "content_checksum_timestamps_excluded",
+   "exists": true,
+   "generated": false,
+   "path": "docs/c12_channel_closure.json",
+   "status": "current",
+   "task": "C12",
+   "version_controlled": true
+  },
+  {
+   "checksum": "7d6ca77a7c1c35634a06ed116c8b2938b65bf3f7ee57075f28a3150cc7d76076",
+   "checksum_kind": "byte_sha256",
+   "exists": true,
+   "generated": true,
+   "path": "data/features/c8_eppo_fuel_oil_transformations.parquet",
+   "status": "current",
+   "task": "C8",
+   "version_controlled": false
+  },
+  {
+   "checksum": "6e1b78c3758c70315b2c5c67978ed88ae3fa18c4b7a20198195a2eeb3c576985",
+   "checksum_kind": "byte_sha256",
+   "exists": true,
+   "generated": true,
+   "path": "data/features/c9_fuel_oil_conditioned.parquet",
+   "status": "current",
+   "task": "C9",
+   "version_controlled": false
+  },
+  {
+   "checksum": "930f348d0b66b293ee9f3a892c22d58d7307f2c9ea6f8a07730cf825826184ed",
+   "checksum_kind": "byte_sha256",
+   "exists": true,
+   "generated": true,
+   "path": "data/model_input/d5_fuel_oil_predictions.parquet",
+   "status": "current",
+   "task": "D5",
+   "version_controlled": false
+  }
+ ],
+ "commands": {
+  "lint": "python -m ruff check .",
+  "synthesis": "python scripts/run_e1_evidence_synthesis.py",
+  "tests": "python -m pytest -q"
+ },
+ "environment": {
+  "dependency_file": "pyproject.toml",
+  "python": "3.14",
+  "virtualenv": ".venv"
+ },
+ "generated_artifacts": 3,
+ "generated_at_utc": "2026-08-30T08:45:05.449684+00:00",
+ "locked_test": {
+  "locked_path_recorded": false,
+  "manifest_is_key_only": true,
+  "outcomes_read": false,
+  "status": "sealed_unopened"
+ },
+ "manifest_checksum": "29c4ef0ac18cb2064ae1474838747d8cc9ce18f69ba3d1dbdea6db1e1b340e08",
+ "manifest_version": "e1_reproducibility_manifest_v1",
+ "referenced_raw_manifests": [
+  {
+   "duplicated_here": false,
+   "lines": 1336,
+   "path": "data/raw/_manifests/EPPO_PRICE_STRUCTURE_manifest.jsonl"
+  },
+  {
+   "duplicated_here": false,
+   "lines": 1,
+   "path": "data/raw/_manifests/OIE_MPI_manifest.jsonl"
+  }
+ ],
+ "superseded_artifacts": [
+  {
+   "path": "docs/d1_development_results.json",
+   "superseded_by": "D3/D4"
+  },
+  {
+   "path": "docs/c11_architecture_decision.json",
+   "superseded_by": "C11-R1"
+  }
+ ],
+ "supersession_graph": {
+  "acyclic": true,
+  "edges": 4,
+  "nodes": [
+   "C11",
+   "C11R1",
+   "D1",
+   "D3",
+   "D3R1",
+   "D4"
+  ],
+  "superseded_tasks": [
+   "C11",
+   "D1",
+   "D3"
+  ]
+ },
+ "task": "E1",
+ "test_count_copied": false,
+ "test_count_source": "measured_from_an_actual_pytest_run",
+ "verification": {
+  "config_and_schema_parse": {
+   "all_parsed": true,
+   "configs_parsed": 33,
+   "documents_parsed": 45,
+   "schemas_parsed": 37
+  },
+  "ruff": {
+   "command": "python -m ruff check .",
+   "exit_code": 0,
+   "measured": true,
+   "measured_at_utc": "2026-08-30T08:46:27.658795+00:00",
+   "passing": true,
+   "summary": "All checks passed!"
+  },
+  "tests": {
+   "all_passing": true,
+   "command": "python -m pytest -q",
+   "exit_code": 0,
+   "measured": true,
+   "measured_at_utc": "2026-08-30T08:46:27.515939+00:00",
+   "tests_failed": 0,
+   "tests_passed": 1794
+  }
+ },
+ "version_controlled_artifacts": 20
+}

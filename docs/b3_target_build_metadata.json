@@ -1,0 +1,80 @@
+{
+  "task": "B3",
+  "target_name": "industry_production_stress_score",
+  "target_name_th": "คะแนนความเครียดด้านการผลิตของอุตสาหกรรม",
+  "target_definition_version": "production_stress_target_v1",
+  "primary_component": "mpi_adverse_yoy",
+  "primary_component_count": 1,
+  "b1_invariants": {
+    "industry_count": 12,
+    "month_count": 66,
+    "first_month": "2021-01-01",
+    "last_month": "2026-06-01",
+    "panel_rows": 792,
+    "model_eligible_rows": 780,
+    "preliminary_rows": 12,
+    "preliminary_months": [
+      "2026-06-01"
+    ],
+    "non_preliminary_months": 65,
+    "editions": [
+      "2021_based"
+    ],
+    "duplicate_keys": 0,
+    "mpi_nulls": 0,
+    "capu_nulls": 0,
+    "non_positive_mpi": 0,
+    "all_invariants_reproduced": true,
+    "failures": []
+  },
+  "monthly_raw_stress": {
+    "rows": 636,
+    "industries": 12,
+    "months_per_industry": 53,
+    "first_month": "2022-01-01",
+    "last_month": "2026-05-01"
+  },
+  "forecast_labels": {
+    "combined_rows": 1224,
+    "by_horizon": {
+      "1": {
+        "rows": 624,
+        "first_origin": "2022-01-01",
+        "last_origin": "2026-04-01",
+        "origins_per_industry": 52
+      },
+      "3": {
+        "rows": 600,
+        "first_origin": "2022-01-01",
+        "last_origin": "2026-02-01",
+        "origins_per_industry": 50
+      }
+    }
+  },
+  "excluded_target_months": [
+    "2026-06-01"
+  ],
+  "example_fold": {
+    "purpose": "Demonstrates the fit/transform workflow only. Not a project-wide train/test split decision.",
+    "training_cutoff_month": "2024-12-01",
+    "calibrator_version": "industry_stress_calibrator_v1",
+    "min_reference_observations": 24,
+    "fitted_industries": 12,
+    "excluded_industries": {},
+    "holdout_label_rows_scored": 360,
+    "risk_level_counts": {
+      "High": 19,
+      "Normal": 263,
+      "Severe": 26,
+      "Watch": 52
+    },
+    "calibrator_artifact": "docs/b3_example_calibrator.json",
+    "calibrator_sha256": "c611a34069ac4c9e23be7cbd7ec1a1f5bad77c028268225ff889fa0824ad83ec"
+  },
+  "calibrated_scores_persisted_as_production_output": false,
+  "latest_vintage_only": true,
+  "point_in_time_backtest_supported": false,
+  "b1_panel_sha256_before": "60e9b9496e01a003cab005d408c52592eb6cb9b3f8b72fd4cc366f782eadc52f",
+  "b1_panel_sha256_after": "60e9b9496e01a003cab005d408c52592eb6cb9b3f8b72fd4cc366f782eadc52f",
+  "b1_panel_unmodified": true
+}

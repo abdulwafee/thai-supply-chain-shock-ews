@@ -1,0 +1,144 @@
+# Schema definition (documentation-level, not yet enforced by code) for the
+# Task E2 release-candidate manifest:
+#
+#   docs/e2_release_candidate_manifest.json
+#
+# What a stranger needs in order to check that the files they received are the
+# files this preparation reviewed: one row per released file, its digest, its
+# category, its redistribution status, whether it reached the built package and
+# which reproduction tier it belongs to.
+#
+# THE MANIFEST DOES NOT LIST ITSELF, and it does not list the readiness report.
+# Both documents quote the manifest checksum, so a manifest covering them could
+# never reach a fixed point: its checksum would change on every run whether or
+# not anything else did. A SHA256SUMS file omits itself for the same reason.
+#
+# NO TIMESTAMP ENTERS THE CHECKSUM. Acquisition times, generation times and
+# archive build clocks are excluded by construction, so the checksum is a
+# statement about content and not about when the tree was assembled.
+
+schema_version: 1
+task: E2
+document: docs/e2_release_candidate_manifest.json
+manifest_version: e2_release_contract_v1
+
+# ---------------------------------------------------------------------------
+top_level_fields:
+  - name: release_contract_version
+    type: string
+    note: The frozen E2 contract this manifest was produced under.
+  - name: release_candidate_version
+    type: string
+    note: >-
+      The candidate version. This is a candidate, not a release: nothing was
+      committed, tagged, pushed, uploaded or published.
+  - name: file_count
+    type: int
+    note: Rows in this manifest.
+  - name: release_file_count
+    type: int
+    rule: "release_file_count == file_count + len(self_referential_exclusions)"
+  - name: total_bytes
+    type: int
+  - name: acquisition_timestamps_in_checksum
+    type: bool
+    fixed_value: false
+  - name: generation_timestamps_in_checksum
+    type: bool
+    fixed_value: false
+  - name: self_referential_exclusions
+    type: list[string]
+    note: >-
+      Documents that ship with the release but are not rows in it, because they
+      record this manifest's own checksum.
+  - name: self_referential_exclusion_reason
+    type: string
+  - name: files
+    type: list[record]
+
+# ---------------------------------------------------------------------------
+files:
+  ordering: lexicographic by path, so two runs emit identical bytes
+  per_record_fields:
+    - name: path
+      type: string
+      note: Repository-relative, forward slashes on every platform.
+    - name: sha256
+      type: string
+      pattern: "^[0-9a-f]{64}$"
+    - name: size_bytes
+      type: int
+    - name: category
+      type: string
+      note: >-
+        From the frozen inventory taxonomy. Every file has one; a path matching
+        no category is reported as unclassified rather than assumed harmless.
+    - name: redistribution_status
+      type: string
+      allowed_values:
+        - project_owned
+        - project_owned_hand_curated
+        - project_generated_metadata_about_third_party_files
+        - third_party_source_terms_unresolved_raw_bytes_excluded
+      note: >-
+        `unresolved` is a real state and is not a synonym for `permitted`.
+        Public download access does not grant redistribution rights, so where
+        terms are unresolved the raw bytes are excluded and only the acquisition
+        code, URLs and checksums are published.
+    - name: generated
+      type: bool
+      note: >-
+        True for outputs a runner rebuilds. Generated tables are git-ignored and
+        do not appear in the release at all, so this is false on every row of a
+        well-formed manifest.
+    - name: tracked
+      type: bool
+      note: >-
+        Whether git currently tracks the path. The repository has no commits, so
+        this is false everywhere; it is measured rather than assumed.
+    - name: package_included
+      type: bool
+      note: Whether the path appears as a member of the built wheel.
+    - name: ci_included
+      type: bool
+      note: Whether the hermetic CI job exercises this category.
+    - name: locked_test_dependency
+      type: bool
+      fixed_value: false
+      note: >-
+        No released file depends on a locked-test outcome. Locked paths are
+        identified by name, never opened, hashed, scanned, packaged or copied.
+    - name: license_status
+      type: string
+      note: >-
+        `project_code_license_undecided` while no LICENSE file exists. A licence
+        may be recommended but is never chosen on the owner's behalf.
+    - name: reproduction_tier
+      type: string
+      allowed_values:
+        - tier_1_code_verification
+        - tier_2_source_audit_reproduction
+        - tier_3_full_historical_reproduction
+
+# ---------------------------------------------------------------------------
+checksum_rule:
+  algorithm: sha256
+  over: >-
+    A JSON serialisation of the contract version and the ordered rows, with each
+    row reduced to its eleven fields in a fixed order. Separators are fixed and
+    keys are not re-sorted, so the same content always produces the same bytes.
+  excludes: [acquisition timestamps, generation timestamps, archive build clocks]
+  verified_by: >-
+    Building the manifest twice within one run and comparing, and by running the
+    whole preparation twice and comparing the written document byte for byte.
+
+invariants:
+  - "No row's path matches a locked-outcome path fragment."
+  - "No row's path lies under data/raw/, data/interim/, data/processed/,
+     data/features/, data/targets/, data/model_input/ or models/, except the
+     literally enumerated retrieval manifests and directory READMEs."
+  - "No row has a .parquet, .xls, .xlsx, .pdf, .zip, .pkl, .joblib or .pyc
+     suffix."
+  - "Every row's category is a member of the frozen taxonomy."
+  - "file_count equals the number of files the fail-closed allowlist admitted,
+     less the self-referential exclusions."

@@ -1,0 +1,98 @@
+# Schema for the C6 canonical ex-refinery source observations.
+# Describes what the code ACTUALLY writes
+# (data/interim/c6_eppo_source_observations.parquet, git-ignored), verified by
+# tests/test_c6_eppo_archive.py.
+#
+# SOURCE-LEVEL TABLE, NOT A FEATURE TABLE. No return, lag, volatility or shock
+# column exists here, and nothing is joined to a target.
+
+schema_version: 1
+task: C6
+written_by: scripts/audit_c6_eppo_archive.py
+output: data/interim/c6_eppo_source_observations.parquet
+
+status:
+  is_partial_audit_table: true
+  label: >-
+    Built from the retrieved and validated subset of the archive, not the whole
+    archive. It must never be described as a complete production table.
+  feature_semantics_approved: false
+  model_feature_approved: false
+
+price_stage: ex_refinery
+stage_note: >-
+  The ex-refinery column is the producer price BEFORE excise tax, municipal tax,
+  oil fund, conservation fund and wholesale margin. Substituting the wholesale
+  or retail column would silently change which price stage the series measures.
+
+audited_series:
+  eppo_ex_refinery_hsd:
+    normalized_label: "H-DIESEL"
+    unit: BAHT/LITRE
+    note: >-
+      The plain H-DIESEL definition. B7, B10 and B20 are DIFFERENT products with
+      different blend ratios and are never substituted for it. Where a document
+      publishes only blends and no plain H-DIESEL row, the series has a gap.
+  eppo_ex_refinery_fo600_2s:
+    normalized_label: "FO 600 (1) 2%S"
+    unit: BAHT/LITRE
+    note: "A 2% sulphur grade. Another sulphur grade is a different product."
+  eppo_ex_refinery_fo1500_2s:
+    normalized_label: "FO 1500 (2) 2%S"
+    unit: BAHT/LITRE
+
+observation:
+  grain: [series_id, effective_date, semantic_regime_id]
+  ordering: [series_id, effective_date, semantic_regime_id]
+  columns:
+    - {name: series_id, type: string, nullable: false}
+    - name: source_product_label
+      type: string
+      nullable: false
+      note: "The EXACT displayed label, preserved verbatim including spacing."
+    - name: semantic_regime_id
+      type: string
+      nullable: false
+      note: >-
+        series | layout regime | normalized label. Regimes are never spliced
+        silently; a definition or layout change starts a new regime.
+    - {name: reference_date, type: date, nullable: false}
+    - {name: effective_date, type: date, nullable: false}
+    - name: value
+      type: float
+      nullable: true
+      note: "Ex-refinery price. No rounding, imputation, interpolation or clipping."
+    - {name: unit, type: string, nullable: false, enum: [BAHT/LITRE]}
+    - {name: price_stage, type: string, nullable: false, const: ex_refinery}
+    - {name: source_name, type: string, nullable: false}
+    - {name: detail_page_url, type: string, nullable: true}
+    - {name: attachment_url, type: string, nullable: false}
+    - {name: discovery_method, type: string, nullable: false}
+    - name: available_as_of
+      type: date
+      nullable: true
+      note: "Null when availability is not evidenced. Never the download time."
+    - {name: availability_evidence_status, type: string, nullable: false}
+    - {name: point_in_time_supported, type: boolean, nullable: false}
+    - {name: raw_file_sha256, type: string, nullable: false}
+    - {name: source_document_sha256, type: string, nullable: false}
+    - {name: quality_flag, type: string, nullable: false}
+    - {name: downloaded_at_utc, type: datetime, nullable: false}
+
+prohibited_columns:
+  - any return or log-change column
+  - any lagged column
+  - any realized-volatility column
+  - any shock or z-score column
+  - any industry or MPI target column
+transformations_present: false
+target_joined: false
+
+invariants:
+  - "Keys are unique on (series_id, effective_date, semantic_regime_id)."
+  - "unit is BAHT/LITRE for every audited series; LPG (BAHT/KILOGRAM) is excluded."
+  - "value is the ex-refinery column, never wholesale, VAT or retail."
+  - "No imputation, interpolation, forward-fill, rounding or winsorization."
+  - "available_as_of is null wherever point_in_time_supported is false."
+  - "Ordering is deterministic on the declared key."
+  - "Full lineage: every row carries its source document checksum and URL."

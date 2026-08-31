@@ -1,0 +1,314 @@
+# Task C8 — EPPO fuel-oil source-level transformations.
+#
+# PREREGISTERED. The formulas, the input windows, the status vocabulary, the
+# status precedence and the EXPECTED FINITE/NULL COUNTS below were written
+# before C8 was run. The counts are also derived independently from the declared
+# input lags at run time; the runner fails if the two disagree, so a stale
+# constant cannot quietly outlive a changed definition.
+#
+# SOURCE-LEVEL TRANSFORMATION ONLY. No industry exposure multiplication, no
+# industry-conditioned matrix, no MPI join, no target association, no model, no
+# locked test. C7 and C7.5 artifacts are IMMUTABLE here.
+
+schema_version: 1
+task: C8
+config_version: eppo_fuel_oil_transformations_v1
+transformation_formula_version: c8_eppo_fuel_oil_transformations_v1
+
+# ---------------------------------------------------------------------------
+# Authorizations granted by C7.5. Restated, NOT re-decided.
+# ---------------------------------------------------------------------------
+authorizations:
+  c8_fo600_transformation_authorized: true
+  c8_fo1500_transformation_authorized: true
+  c8_hsd_transformation_authorized: false
+  c8_industry_conditioning_authorized: false
+  c8_target_join_authorized: false
+  c8_modeling_authorized: false
+  c8_imputation_authorized: false
+  c8_outcome_based_channel_selection_authorized: false
+  c8_simultaneous_additive_fuel_oil_use_authorized: false
+  c8_locked_test_evaluation_authorized: false
+
+timing_policy:
+  latest_vintage_values_used: true
+  historical_release_timing_verified: false
+  point_in_time_values_supported: false
+  fully_real_time_backtest: false
+  minimum_verified_publication_lag_months: null
+  operational_policy_lag_months: 2
+  operational_lag_is_measured: false
+  availability_basis: conservative_policy_not_historical_measurement
+  availability_policy_version: c6_5_conservative_policy_lag_2_v1
+
+provenance:
+  target_joined: false
+  target_association_computed: false
+  industry_conditioned_features_created: false
+  model_trained: false
+  locked_test_accessed: false
+  model_feature_approved: false
+
+preserved_decisions:
+  c7_raw_workbooks_changed: false
+  c7_exact_displayed_labels_changed: false
+  c7_canonical_daily_table_changed: false
+  c7_monthly_audit_table_changed: false
+  c7_5_semantic_equivalence_mapping_changed: false
+  c7_5_monthly_semantic_view_changed: false
+  c6_5_latest_vintage_policy_changed: false
+  c5_structural_findings_changed: false
+  c3_or_c3r1_exposure_changed: false
+  c4_variants_changed: false
+  d3_contract_changed: false
+  d4_results_changed: false
+  b3_targets_changed: false
+
+# ---------------------------------------------------------------------------
+# Input. Only the strict monthly value of the two approved series.
+# ---------------------------------------------------------------------------
+input:
+  dataset: data/interim/c7_5_eppo_monthly_semantic.parquet
+  dataset_task: C7.5
+  value_field: monthly_value_strict
+  required_gate_field: approved_transformation_input
+  required_unit: "BAHT/LITRE"
+  reference_month_start: "2021-01"
+  reference_month_end: "2026-05"
+  reference_months: 65
+  series:
+    eppo_ex_refinery_fo600_2s:
+      channel_id: eppo_fo600_channel
+      exact_labels: ["FO 600 (1) 2%S", "FO 600 2%S"]
+    eppo_ex_refinery_fo1500_2s:
+      channel_id: eppo_fo1500_channel
+      exact_labels: ["FO 1500 (2) 2%S", "FO 1500 2%S"]
+  never_use:
+    - monthly_value_descriptive
+    - eppo_ex_refinery_hsd
+    - blend_diesel
+    - wholesale_price
+    - retail_price
+    - incomplete_source_month
+    - imputed_or_interpolated_value
+
+# ---------------------------------------------------------------------------
+# The five transformations. Input lags are the contract; the required-input
+# months, the lineage window and the availability all derive from them.
+# ---------------------------------------------------------------------------
+transformations:
+  price_level:
+    formula: "x_m = p_m"
+    input_lags: [0]
+    required_input_count: 1
+    unit: baht_per_litre
+  log_change_1m_pct:
+    formula: "r_m = 100 * (ln p_m - ln p_{m-1})"
+    input_lags: [1, 0]
+    required_input_count: 2
+    unit: percentage_point_log_change
+  log_change_3m_pct:
+    formula: "c3_m = 100 * (ln p_m - ln p_{m-3})"
+    input_lags: [3, 0]
+    required_input_count: 2
+    unit: percentage_point_log_change
+    endpoint_definition: true
+    sum_of_rounded_monthly_changes: false
+  log_change_12m_pct:
+    formula: "c12_m = 100 * (ln p_m - ln p_{m-12})"
+    input_lags: [12, 0]
+    required_input_count: 2
+    unit: percentage_point_log_change
+    endpoint_definition: true
+  realized_volatility_3m_pct:
+    formula: "v3_m = std_ddof0(r_{m-2}, r_{m-1}, r_m)"
+    input_lags: [3, 2, 1, 0]
+    required_input_count: 4
+    unit: percentage_point_log_change_volatility
+    note: >-
+      FOUR price levels, not three. r_{m-2} is itself a change from m-3, so
+      declaring three would understate both the lineage and the availability
+      requirement.
+
+numerical_rules:
+  logarithm: natural
+  scaled_by: 100
+  volatility_ddof: 0
+  rounding: none
+  clipping: false
+  winsorization: false
+  normalization: false
+  imputation: false
+  interpolation: false
+  forward_fill: false
+  backward_fill: false
+  substitution_from_the_other_fuel_oil: false
+  input_price_must_be_finite_and_positive: true
+  raise_explicitly_for:
+    - zero_input
+    - negative_input
+    - infinite_input
+    - nonnumeric_input
+    - duplicate_series_month_source_key
+    - inconsistent_unit
+    - unauthorized_product
+
+# ---------------------------------------------------------------------------
+# Missingness. Precedence is total and fixed, so two runs cannot disagree about
+# which kind of absence a cell has.
+# ---------------------------------------------------------------------------
+missingness:
+  status_precedence:
+    - unauthorized_source_series
+    - source_unit_mismatch
+    - insufficient_feature_history
+    - current_month_source_gap
+    - input_window_source_gap
+    - nonpositive_source_value
+    - available_numeric
+  partial_input_window_permitted: false
+  insufficient_prehistory_labelled_as_source_gap: false
+  worked_examples:
+    - {transformation: price_level, reference_month: "2026-04",
+       status: current_month_source_gap}
+    - {transformation: log_change_1m_pct, reference_month: "2026-05",
+       status: input_window_source_gap, missing: ["2026-04"]}
+    - {transformation: realized_volatility_3m_pct, reference_month: "2026-05",
+       status: input_window_source_gap, missing: ["2026-04"]}
+    - {transformation: log_change_1m_pct, reference_month: "2021-01",
+       status: insufficient_feature_history}
+
+# ---------------------------------------------------------------------------
+# PREREGISTERED COUNTS. Written before the run; also derived from the lags at
+# run time. The runner fails on any disagreement.
+# ---------------------------------------------------------------------------
+expected_counts:
+  known_strict_source_gaps: ["2026-04"]
+  # `null_rows`, not `null`: YAML reads a bare `null:` key as the None object.
+  per_series:
+    price_level: {finite: 64, null_rows: 1}
+    log_change_1m_pct: {finite: 62, null_rows: 3}
+    log_change_3m_pct: {finite: 61, null_rows: 4}
+    log_change_12m_pct: {finite: 52, null_rows: 13}
+    realized_volatility_3m_pct: {finite: 60, null_rows: 5}
+    total: {finite: 299, null_rows: 26}
+  both_series:
+    feature_grid_rows: 650
+    finite_feature_rows: 598
+    null_feature_rows: 52
+  counts_altered_after_observing_output: false
+
+# ---------------------------------------------------------------------------
+# Availability. The policy month is the maximum over the declared window, and
+# the equality with reference + 2 is VERIFIED rather than hard-coded.
+# ---------------------------------------------------------------------------
+availability:
+  policy_available_month_rule: max_policy_month_over_required_source_inputs
+  expected_equality: "policy_available_month == reference_month + 2 months"
+  equality_verified_not_hard_coded: true
+  source_available_as_of: null
+  availability_basis: conservative_policy_not_historical_measurement
+  latest_vintage_used: true
+  point_in_time_supported: false
+  operational_lag_is_measured: false
+  minimum_verified_publication_lag_months: null
+  policy_month_translated_into_a_release_date: false
+  selector: select_source_transformations_available_at_issue
+  selector_rules:
+    - policy_available_month <= issue_month
+    - exactly_one_fuel_oil_channel
+    - null_transformation_rows_rejected
+    - reference_month_t_and_t_minus_1_rejected
+    - target_values_never_read
+  examples:
+    - {issue_month: "2024-01", latest_permitted_reference_month: "2023-11"}
+    - {issue_month: "2025-03", latest_permitted_reference_month: "2025-01"}
+    - {issue_month: "2026-04", latest_permitted_reference_month: "2026-02"}
+
+# ---------------------------------------------------------------------------
+# Operational issue-key audit. Issue-month RANGES only; no target values.
+# ---------------------------------------------------------------------------
+issue_key_audit:
+  splits_config: configs/operational_evaluation.yaml
+  reads:
+    - development_issue_months
+    - purge_issue_months
+    - locked_issue_month_keys
+  never_reads:
+    - target_values
+    - risk_levels
+    - target_distributions
+    - model_predictions
+    - locked_test_outcomes
+  april_2026_gap_removed_because_operationally_unused: false
+
+# ---------------------------------------------------------------------------
+# Shared I/O sector 093. Both channels, never combined.
+# ---------------------------------------------------------------------------
+channels:
+  eppo_fo600_channel:
+    series_id: eppo_ex_refinery_fo600_2s
+  eppo_fo1500_channel:
+    series_id: eppo_ex_refinery_fo1500_2s
+shared_price_stage_group: io_sector_093_fuel_oil
+channel_restrictions:
+  additive_aggregation_allowed: false
+  simple_average_allowed: false
+  automatic_composite_index_allowed: false
+  simultaneous_model_entry_approved: false
+  outcome_based_channel_selection_allowed: false
+  prohibited_constructions:
+    - combined_fuel_oil_index
+    - mean_of_fo600_and_fo1500
+    - sum_of_their_features
+    - weighted_average
+    - pca
+    - model_ready_matrix_with_both_as_simultaneously_approved_predictors
+  both_channels_in_one_source_audit_table_allowed: true
+  reason: >-
+    The channel ID is part of the table key, so keeping both variants in one
+    source-level audit table does not combine them. Combining would double-count
+    the single I/O sector 093 coefficient they share.
+
+# ---------------------------------------------------------------------------
+# C2 reconciliation. Same arithmetic, different evidence.
+# ---------------------------------------------------------------------------
+c2_reconciliation:
+  formula_compatible_with_c2: true
+  source_timing_contract_differs_from_c2: true
+  shared_production_implementation:
+    - thai_supply_chain_ews.features.commodity_features.log_change_pct
+    - thai_supply_chain_ews.features.commodity_features.realized_volatility_pct
+    - thai_supply_chain_ews.features.commodity_features.FEATURE_DEFINITIONS
+  divergent_logic_copied_into_c8: false
+  timing_differences:
+    c2_values: archived_first_release
+    c8_values: latest_vintage
+    c2_publication_timing: measured
+    c8_operational_lag: policy_based
+    c2_point_in_time_supported: true
+    c8_point_in_time_supported: false
+  equivalent_timing_quality_implied: false
+
+# ---------------------------------------------------------------------------
+# Readiness. Structural conditioning is a later decision, not this one.
+# ---------------------------------------------------------------------------
+readiness:
+  source_transformations_created: true
+  industry_conditioned_features_created: false
+  feature_semantics_approved: false
+  model_feature_approved: false
+  structural_conditioning_requires:
+    - all_formula_tests_pass
+    - exact_count_reconciliation_passes
+    - lineage_complete
+    - policy_availability_enforced
+    - gaps_remain_explicit
+    - no_forbidden_aggregation
+
+outputs:
+  source_feature_table: data/features/c8_eppo_fuel_oil_transformations.parquet
+  protocol_markdown: docs/c8_eppo_transformation_protocol.md
+  audit_markdown: docs/c8_eppo_transformation_audit.md
+  audit_json: docs/c8_eppo_transformation_audit.json
+  generated_parquet_git_ignored: true

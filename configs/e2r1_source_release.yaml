@@ -1,0 +1,691 @@
+# Task E2-R1 — owner decision application and source-release closure.
+#
+# FROZEN BEFORE THE RELEASE TREE IS REBUILT. The supersession rules, the E2
+# pins, the licence scope, the Python contract, the source-checkout scope, the
+# allowlist, the consistency checks and the readiness vocabulary are hashed
+# first.
+#
+# E2-R1 SUPERSEDES E2's RELEASE DECISION. It does not rewrite E2's findings.
+# E2 recorded, correctly and on the evidence available then, that the candidate
+# was blocked on a licence decision and that the resolved dependency set was
+# incompatible with the Python 3.11 floor. Both records stand exactly as
+# written and are pinned by checksum below. What changed is not the evidence:
+# the owner made three decisions afterwards.
+#
+# E2-R1 PUBLISHES NOTHING. No commit, no tag, no push, no PyPI upload, no
+# GitHub repository, no GitHub release. Those are Task E3's, and only after the
+# owner confirms the details E3 must ask for.
+
+schema_version: 1
+task: E2-R1
+config_version: e2r1_source_release_v1
+release_contract_version: e2r1_source_release_contract_v1
+release_candidate_version: "0.1.0"
+
+# ---------------------------------------------------------------------------
+# 1. Supersession. E2's record is preserved, pinned and never edited.
+# ---------------------------------------------------------------------------
+supersession:
+  supersedes_release_decision: E2
+  e2_original_readiness_preserved: true
+  owner_decision_received_after_e2: true
+  historical_findings_rewritten: false
+  method: >-
+    A new decision document, not an edit. Every E2 artifact that records a
+    finding is pinned by sha256 below and re-checked before this task does
+    anything; if one has moved, E2-R1 stops. Editing a superseded finding to
+    match a later decision is how a record stops being a record.
+
+  e2_original_findings:
+    readiness_status: release_candidate_blocked
+    blockers: [missing_owner_license_decision]
+    missing_license_finding: >-
+      No LICENSE file existed and packaging metadata carried the placeholder
+      "Unlicensed - student portfolio project", so owner_license_decision_
+      required was true and no licence was chosen on the owner's behalf.
+    original_python_expectation: "3.11"
+    post_observation_python_correction: >-
+      The frozen ci_python 3.11 was found incompatible with the resolved set
+      because numpy 2.5.2 declares Requires-Python >=3.12. The frozen value was
+      preserved and a correction block recorded changed_after_observation true.
+    installed_distribution_resource_resolution_limitation: >-
+      Fifteen modules resolve repository resources through paths relative to
+      the source tree, so a wheel installs and imports but cannot reach
+      configs, docs or mapping tables. No refactor was performed.
+    public_release_manifest_checksum:
+      aca7b79229065778c7ae9de22903c42b5c7586b434410751cd162f9299975908
+    security_result: 0 credential findings, 0 unreviewed, 0 dependency advisories
+    dependency_result: 19 runtime pins, 9 development pins, reconciled
+    clean_tree_result: 1608 passed, 271 skipped, 0 failed; tree unchanged
+
+  # Re-checked before anything else happens. These files are history.
+  pinned_artifact_checksums:
+    configs/e2_release_preparation.yaml:
+      3d4ba9b7da990169684d196ab2a10c5ed7f5495b5a60f9d09d062930761aeda9
+    docs/e2_release_readiness.json:
+      969b7dd2b8fbc37f92c5d206d687a6030feb8c98cea2fbe99269b868478f4b00
+    docs/e2_release_readiness.md:
+      43694091ac408cad908dfe25a52161e1c80ea558e5bd258a50027054c085f1b6
+    docs/e2_release_candidate_manifest.json:
+      d533fada90e29596b6eb2c39ed4fc8b3bd09612d734b75256380de68efec3b9b
+    docs/e2_release_checklist.md:
+      7ebae1e36fa7cb9874c1b9f24b8acaa9da016d29c8e366313a86cde73c3bd67a
+    schemas/e2_release_manifest.schema.yaml:
+      ec63d67ee771dd5d7af7cb4733de9416e3f9b1d424d5ef2dfb4495fe68493bf0
+    schemas/e2_release_readiness.schema.yaml:
+      18aaa0cf0e42f947aea65c7f3b753b20181d894552b7053580b3bdb135b816a5
+  pinned_artifact_note: >-
+    docs/e2_reproducibility_guide.md and docs/e2_data_license_review.md are NOT
+    pinned. They carry no readiness verdict and no finding; they are operating
+    instructions and a licence position, and instructions that have become
+    wrong are a hazard rather than a record. Both are revised here, each with
+    an explicit note of what E2 said and what changed.
+
+# ---------------------------------------------------------------------------
+# 2. The three owner decisions this task applies.
+# ---------------------------------------------------------------------------
+owner_decisions:
+  received_after_e2: true
+  code_license: MIT
+  release_distribution_scope: github_source_checkout
+  minimum_supported_python: "3.12"
+  decisions_inferred_by_the_task: none
+  decisions_invented_by_the_task: none
+
+# ---------------------------------------------------------------------------
+# 3. Licence. The MIT grant covers this project's own work and nothing else.
+# ---------------------------------------------------------------------------
+license:
+  code_license: MIT
+  spdx_identifier: MIT
+  license_file: LICENSE
+  copyright_line: "Copyright (c) 2026 Thai Supply Chain Shock EWS contributors"
+  owner_license_decision_required: false
+  license_blocker_cleared: true
+  unlicensed_placeholder_removed: true
+  license_file_in_release_manifest: true
+  declaration_form: pep_639_spdx_expression_and_license_files
+  osi_classifier_used: false
+  osi_classifier_reason: >-
+    Under PEP 639 an SPDX license expression supersedes the deprecated
+    "License :: OSI Approved :: MIT License" classifier, and setuptools 77+
+    rejects a build that declares both. The classifier is therefore omitted
+    deliberately, not forgotten.
+
+  # What the grant does and does not reach.
+  covers:
+    - src/
+    - scripts/
+    - tests/
+    - configs/
+    - schemas/
+    - docs/
+    - data/mapping/
+    - data/raw/_manifests/
+  does_not_cover:
+    - World Bank documents and datasets
+    - NESDC workbooks and publications
+    - OIE documents, index workbooks and the target data derived from them
+    - EPPO price-structure workbooks
+    - any other third-party dataset or publication
+  relicensing_of_third_party_material: false
+  third_party_raw_bytes_in_release: false
+  # Quoted so the guards can publish the rules they enforce: every guard
+  # strips quoted spans before matching, which is what lets a prohibition list
+  # name the thing it prohibits.
+  prohibited_claims:
+    - "the MIT licence applies to World Bank data"
+    - "the MIT licence applies to NESDC data"
+    - "the MIT licence applies to OIE data"
+    - "the MIT licence applies to EPPO data"
+    - "this project relicenses third-party data"
+    - "public download access grants redistribution rights"
+
+# ---------------------------------------------------------------------------
+# 4. Citation. Deferred, and deferral is not a blocker.
+# ---------------------------------------------------------------------------
+citation:
+  citation_file_created: false
+  citation_file_required_for_source_release: false
+  author_metadata_invented: false
+  citation_metadata_deferred_until_owner_identity_provided: true
+  blocking: false
+  reason: >-
+    CITATION.cff requires a verified personal author. None is available, and a
+    citation file naming a person who has not approved it would be worse than
+    none. The packaging metadata uses a collective attribution rather than a
+    fabricated individual.
+
+# ---------------------------------------------------------------------------
+# 5. The Python contract. 3.12, everywhere, consistently.
+# ---------------------------------------------------------------------------
+python_contract:
+  minimum_supported_python: "3.12"
+  tested_python_versions: ["3.12"]
+  python_311_supported: false
+  python_311_compatibility_claim_withdrawn: true
+  python_floor_changed_after_e2_observation: true
+  dependency_lock_python_compatible: true
+  later_versions_tested: false
+  later_versions_note: >-
+    Metadata permits 3.13 and later to install. Nothing here has been run on
+    them, so nothing here claims they work. Permitted is not tested.
+  # Every place the version must agree. A disagreement blocks readiness.
+  consistency_sites:
+    pyproject_requires_python: ">=3.12"
+    pyproject_ruff_target_version: "py312"
+    runtime_lock_header: "CPython 3.12"
+    development_lock_header: "CPython 3.12"
+    ci_setup_python: "3.12"
+    readme_setup: "3.12"
+    reproducibility_guide: "3.12"
+  active_311_claim_permitted: false
+  historical_311_record_permitted: true
+  historical_311_record_note: >-
+    Text that reports what E2 expected, and that it was found incompatible, is
+    a record and is allowed. Text that tells a reader 3.11 is supported is a
+    claim and is not.
+
+# ---------------------------------------------------------------------------
+# 6. Release scope. A source checkout, not a distributable package.
+# ---------------------------------------------------------------------------
+release_scope:
+  release_distribution_scope: github_source_checkout
+  supported_install_mode: editable_source_checkout
+  wheel_runtime_supported: false
+  sdist_runtime_supported: false
+  pypi_publication_supported: false
+  pypi_publication_authorized: false
+  standalone_installed_distribution_supported: false
+  supported_install_sequence:
+    - clone the repository
+    - create a Python 3.12 virtual environment
+    - install the locked runtime and development dependencies
+    - install the project from the repository in editable mode without
+      independently resolving dependencies
+    - run the hermetic verification command
+  prohibited_claims:
+    - "installing the wheel outside the repository produces a functional runtime"
+    - "the package can be installed from PyPI"
+    - "this is a production package"
+    - "this is a deployable service"
+  build_artifacts:
+    built_for: content_inspection_only
+    label: diagnostic_artifact
+    supported_deliverable: false
+    excluded_from_public_release_manifest: true
+
+# ---------------------------------------------------------------------------
+# 7. The packaging limitation, preserved from E2.
+# ---------------------------------------------------------------------------
+packaging_limitation:
+  installed_distribution_resource_resolution_complete: false
+  packaging_limitation_documented: true
+  packaging_limitation_blocking_for_source_checkout_release: false
+  packaging_limitation_blocking_for_pypi_release: true
+  resource_resolution_refactor_authorized: false
+  modules_resolving_repository_paths: 15
+  statement: >-
+    Fifteen modules resolve repository resources through paths relative to the
+    source tree. A wheel installs and imports, but repository-level configs,
+    docs and mapping tables are unavailable in an isolated installed
+    distribution. No refactor was performed and none is authorised here. The
+    limitation sits outside the chosen source-checkout scope, and it is the
+    reason PyPI publication is not supported.
+
+# ---------------------------------------------------------------------------
+# 8. Inventory taxonomy. From the FILESYSTEM and git, never from documentation.
+# ---------------------------------------------------------------------------
+inventory:
+  source: filesystem_and_git
+  inferred_from_documentation: false
+  skip_directories: [".git", ".venv", "__pycache__", ".pytest_cache",
+                     ".ruff_cache", ".mypy_cache", "node_modules"]
+  large_file_threshold_bytes: 1048576
+  categories:
+    # Narrow roots before broad ones: the first matching rule wins.
+    build_metadata: {roots: ["src/thai_supply_chain_ews.egg-info/"], suffixes: []}
+    source_code: {roots: ["src/"], suffixes: [".py"]}
+    tests_and_fixtures:
+      roots: ["tests/"]
+      suffixes: [".py", ".csv", ".json", ".yaml", ".txt"]
+    configuration: {roots: ["configs/"], suffixes: [".yaml", ".yml"]}
+    schemas: {roots: ["schemas/"], suffixes: [".yaml", ".yml"]}
+    documentation:
+      roots: ["docs/", "app/", "notebooks/"]
+      suffixes: [".md", ".json", ".png", ".ipynb"]
+    scripts: {roots: ["scripts/"], suffixes: [".py"]}
+    release_review_record:
+      roots: ["docs/e2_release_", "docs/e2r1_"]
+      suffixes: [".json", ".md"]
+    generated_logs: {roots: ["docs/"], suffixes: [".txt"]}
+    mapping_reference_data:
+      roots: ["data/mapping/"]
+      suffixes: [".csv", ".yaml", ".md"]
+    retrieval_manifests:
+      roots: ["data/raw/_manifests/"]
+      suffixes: [".jsonl", ".json"]
+    http_response_artifacts: {roots: ["data/raw/"], suffixes: [".txt"]}
+    data_directory_readmes: {roots: ["data/"], suffixes: [".md"]}
+    raw_third_party_documents:
+      roots: ["data/raw/"]
+      suffixes: [".xls", ".xlsx", ".pdf", ".zip", ".htm", ".html"]
+    cached_downloads:
+      roots: ["data/interim/"]
+      suffixes: [".json", ".jsonl", ".html"]
+    generated_tables:
+      roots: ["data/features/", "data/processed/", "data/targets/",
+              "data/interim/"]
+      suffixes: [".parquet", ".csv"]
+    model_and_prediction_tables:
+      roots: ["data/model_input/", "models/"]
+      suffixes: [".parquet", ".pkl", ".joblib", ".bin"]
+    diagnostic_build_artifacts:
+      roots: ["dist/", "build/"]
+      suffixes: []
+    license_file: {roots: ["LICENSE"], suffixes: []}
+    packaging_and_ci:
+      roots: [".github/", ""]
+      suffixes: [".toml", ".cfg", ".yml", ".txt"]
+    project_documentation: {roots: [""], suffixes: [".md"]}
+    version_control_config: {roots: [".gitignore", ".gitattributes"], suffixes: []}
+    environment_template: {roots: [".env.example"], suffixes: []}
+    local_environment: {roots: [".venv/", ".env", ".idea/", ".vscode/"], suffixes: []}
+    temporary: {roots: [], suffixes: [".tmp", ".bak", ".swp", ".orig"]}
+
+# ---------------------------------------------------------------------------
+# 9. The source-release allowlist. Fail-closed: unmatched means EXCLUDED.
+# ---------------------------------------------------------------------------
+allowlist:
+  fail_closed: true
+  unknown_path_admitted_by_default: false
+  include_globs:
+    - "LICENSE"
+    - "src/**/*.py"
+    - "tests/**/*.py"
+    - "tests/data_backed_tests.txt"
+    - "scripts/**/*.py"
+    - "configs/*.yaml"
+    - "schemas/*.yaml"
+    - "docs/**/*.md"
+    - "docs/**/*.json"
+    - "docs/**/*.png"
+    - "data/mapping/**"
+    - "data/raw/_manifests/*.jsonl"
+    - "data/*/README.md"
+    - "app/**/*.md"
+    - "notebooks/**/*.md"
+    - "README.md"
+    - "pyproject.toml"
+    - ".gitignore"
+    - ".env.example"
+    - "requirements.lock.txt"
+    - "requirements-dev.lock.txt"
+    - ".github/workflows/*.yml"
+    - "THIRD_PARTY_NOTICES.md"
+    - "DATA_SOURCES.md"
+  exclude_globs:
+    - "**/__pycache__/**"
+    - "**/*.pyc"
+    - ".venv/**"
+    - ".env"
+    - "**/*.local.yaml"
+    - "data/raw/**"
+    - "data/interim/**"
+    - "data/processed/**"
+    - "data/features/**"
+    - "data/targets/**"
+    - "data/model_input/**"
+    - "models/**"
+    - "dist/**"          # diagnostic build artifacts, never a deliverable
+    - "build/**"
+    - "**/*.whl"
+    - "**/*.tar.gz"
+    - "**/*.parquet"
+    - "**/*.xls"
+    - "**/*.xlsx"
+    - "**/*.pdf"
+    - "**/*.zip"
+    - "**/*.pkl"
+    - "**/*.joblib"
+    - "data/**/*.png"
+    - "**/*.ipynb"
+    - ".pytest_cache/**"
+    - ".ruff_cache/**"
+    - "**/*.egg-info/**"
+    - "docs/*.txt"       # raw A1 console logs; the content is in the A1 audits
+    # Locked-outcome paths, refused by the allowlist as well as by the inventory
+    # and by the tree builder. Three independent gates on the same question is
+    # deliberate: a mistake in one is caught by the others.
+    - "**/locked_test/**"
+    - "**/*locked_outcome*"
+    - "**/*locked_target*"
+    - "**/*locked_prediction*"
+    - "**/*locked_score*"
+    - "**/*final_test_outcome*"
+  exclude_overrides_include: true
+
+  # Literal paths only. No wildcards, so an exemption cannot widen by accident,
+  # and each must ALSO match an include glob: two independent decisions.
+  exclude_exemptions:
+    - data/raw/_manifests/EPPO_PRICE_STRUCTURE_manifest.jsonl
+    - data/raw/_manifests/NESDC_IO_manifest.jsonl
+    - data/raw/_manifests/OIE_CAPU_manifest.jsonl
+    - data/raw/_manifests/OIE_MPI_HIST_2554_2011_manifest.jsonl
+    - data/raw/_manifests/OIE_MPI_HIST_2559_2016_manifest.jsonl
+    - data/raw/_manifests/OIE_MPI_manifest.jsonl
+    - data/raw/_manifests/WB_PINKSHEET_manifest.jsonl
+    - data/raw/_manifests/WB_PINKSHEET_VINTAGES_manifest.jsonl
+    - data/raw/README.md
+    - data/interim/README.md
+    - data/processed/README.md
+    - data/features/README.md
+    - data/targets/README.md
+    - data/model_input/README.md
+  exemptions_are_literal_paths: true
+  exemption_requires_matching_include_glob: true
+
+  # These ship but are not rows in the manifest: each quotes the manifest
+  # checksum, so a manifest covering them could never reach a fixed point.
+  self_referential_outputs:
+    - docs/e2r1_release_manifest.json
+    - docs/e2r1_source_release_decision.json
+    - docs/e2r1_source_release_decision.md
+
+  required_present:
+    - LICENSE
+    - README.md
+    - pyproject.toml
+    - requirements.lock.txt
+    - requirements-dev.lock.txt
+    - THIRD_PARTY_NOTICES.md
+    - DATA_SOURCES.md
+    - .github/workflows/ci.yml
+    - docs/e2r1_reproducibility_guide.md
+    - docs/e2r1_release_checklist.md
+  # Written BY this run, so checked after it writes them rather than before.
+  required_outputs:
+    - docs/e2r1_release_manifest.json
+    - docs/e2r1_source_release_decision.md
+    - docs/e2r1_source_release_decision.json
+  prohibited_in_release:
+    - wheel_and_sdist_files
+    - raw_third_party_documents
+    - generated_parquet
+    - predictions_and_fitted_models
+    - cached_http_responses
+    - cookies_headers_sessions_or_waf_artifacts
+    - local_virtual_environments
+    - ide_files
+    - absolute_local_paths
+    - locked_test_target_outcomes
+    - credentials_and_secrets
+    - files_whose_redistribution_status_is_unresolved
+
+# ---------------------------------------------------------------------------
+# 10. Locked-test protection. Unchanged from E2 and re-asserted.
+# ---------------------------------------------------------------------------
+locked_test:
+  contracts:
+    - docs/d3_locked_test_manifest.json
+    - docs/b4_locked_test_manifest.json
+  manifests_are_key_only: true
+  outcome_path_fragments:
+    - "locked_test/"
+    - "locked_outcome"
+    - "locked_target"
+    - "locked_prediction"
+    - "locked_score"
+    - "final_test_outcome"
+  prohibited_operations:
+    - open_locked_outcome_contents
+    - hash_locked_outcome_contents
+    - pass_locked_outcomes_to_a_secret_scanner
+    - include_locked_outcomes_in_a_package_build
+    - copy_locked_outcomes_into_the_release_tree
+    - infer_locked_values_from_size_or_serialization_metadata
+  required_fields:
+    locked_test_status: sealed_unopened
+    locked_paths_opened: 0
+    locked_paths_hashed: 0
+    locked_paths_packaged: 0
+    locked_paths_secret_scanned: 0
+    locked_test_release_excluded: true
+
+# ---------------------------------------------------------------------------
+# 11. Dependency contract and the cross-file consistency check.
+# ---------------------------------------------------------------------------
+dependencies:
+  existing_package_manager: pip_with_setuptools
+  build_backend: setuptools.build_meta
+  second_dependency_manager_introduced: false
+  lock_mechanism: pip_requirements_lock
+  runtime_lock: requirements.lock.txt
+  development_lock: requirements-dev.lock.txt
+  runtime_and_development_separated: true
+  resolver_recorded: true
+  regenerated_under_python: "3.12"
+  cross_platform_lock_guaranteed: false
+  justified_dependencies:
+    pyarrow: >-
+      Used through pandas via engine="pyarrow" for typed Parquet output; it is
+      an engine rather than a direct import, which is why no import statement
+      names it.
+    xlrd: >-
+      Required to read EPPO's legacy .xls price-structure workbooks
+      (2021-01..2023-01). openpyxl cannot read the old BIFF format.
+  undeclared_runtime_import_is_a_failure: true
+  unused_declared_dependency_is_a_failure_unless_documented: true
+  install_must_use_lock_contract_only: true
+  independent_resolution_during_project_install_is_a_failure: true
+  editable_install_flags: ["--no-deps", "-e"]
+
+consistency:
+  # A disagreement between any two of these blocks readiness. Version drift
+  # between the metadata, the locks, CI and the setup instructions is the
+  # defect that makes a reproduction guide untrue without anyone noticing.
+  must_agree_on_python:
+    - {name: pyproject_requires_python, path: pyproject.toml}
+    - {name: ruff_target_version, path: pyproject.toml}
+    - {name: runtime_lock, path: requirements.lock.txt}
+    - {name: development_lock, path: requirements-dev.lock.txt}
+    - {name: ci_workflow, path: .github/workflows/ci.yml}
+    - {name: readme_setup, path: README.md}
+    - {name: reproducibility_guide, path: docs/e2r1_reproducibility_guide.md}
+  expected_python: "3.12"
+  disagreement_blocks_readiness: true
+
+# ---------------------------------------------------------------------------
+# 12. Clean source-checkout verification.
+# ---------------------------------------------------------------------------
+verification:
+  interpreter: "3.12"
+  steps:
+    - create_fresh_environment
+    - install_runtime_lock
+    - install_development_lock
+    - install_source_checkout_editable_no_deps
+    - import_all_public_modules
+    - hermetic_test_suite
+    - ruff
+    - parse_every_config_and_schema
+    - public_cli_smoke_checks
+    - verify_release_documentation_links
+    - confirm_tree_unchanged
+  measured_fields:
+    - collected_tests
+    - passed_tests
+    - skipped_data_backed_tests
+    - failed_tests
+    - installation_duration_seconds
+    - test_duration_seconds
+    - tree_checksum_before
+    - tree_checksum_after
+  tree_checksum_must_match: true
+  counts_measured_from_command_output: true
+  counts_copied_from_prior_totals: false
+  cli_smoke_scripts:
+    - scripts/run_e2r1_source_release.py
+  cli_smoke_mode: import_only
+  cli_smoke_note: >-
+    The task runners take no arguments by design and execute their whole
+    pipeline when run, so a smoke check runs them as an import rather than as a
+    command. Importing proves the module and its dependencies resolve in the
+    clean tree, which is what the check is for; running them would be a
+    reproduction, not a smoke test.
+
+# ---------------------------------------------------------------------------
+# 13. Continuous integration.
+# ---------------------------------------------------------------------------
+ci:
+  workflow: .github/workflows/ci.yml
+  permissions: {contents: read}
+  python_version: "3.12"
+  active_python_311_reference_permitted: false
+  install_from_regenerated_locks: true
+  install_mode: editable_source_checkout
+  actions_pinned_to_commit_sha: true
+  mutable_major_version_tags_used: false
+  uses_repository_secrets: false
+  downloads_official_datasets: false
+  accesses_purge_or_locked_artifacts: false
+  publishes_packages: false
+  explicit_timeouts: true
+  cache_keyed_by_lock_checksum: true
+  reports_data_backed_tests_separately: true
+  steps:
+    - install_from_lock
+    - install_editable_source_checkout
+    - ruff
+    - hermetic_test_suite
+    - report_data_backed_tier_separately
+    - parse_configs_and_schemas
+    - build_diagnostic_artifacts_and_inspect
+    - confirm_worktree_clean
+
+# ---------------------------------------------------------------------------
+# 14. Security, privacy and licence re-verification.
+# ---------------------------------------------------------------------------
+security:
+  secret_scanner: detect-secrets
+  scan_scope: source_release_allowlist
+  locked_paths_excluded_before_scanning: true
+  secret_values_printed: false
+  report_redacted_fingerprints_only: true
+  discovered_credential_is_a_release_blocker: true
+  absolute_path_scan: true
+  dependency_audit:
+    tool: pip-audit
+    scope: both_locks
+    silent_upgrade_permitted: false
+    clean_audit_is_a_permanent_guarantee: false
+  license_checks:
+    - license_file_present_and_unaltered
+    - spdx_identifier_matches_license_file
+    - no_unlicensed_placeholder_in_active_metadata
+    - mit_not_attributed_to_third_party_data
+    - third_party_notice_covers_every_pinned_distribution
+  reviewed_non_credential_findings:
+    - path: configs/e2_release_preparation.yaml
+      family: Secret Keyword
+      fingerprint: 3c2ae4bf3ee0
+      reason: >-
+        The scanner matched the secret-scanner setting in the pinned E2
+        contract, whose value is the scanner's own name. A configuration line
+        naming the tool that enforces it is not a credential.
+    - path: configs/e2r1_source_release.yaml
+      family: Secret Keyword
+      fingerprint: 3c2ae4bf3ee0
+      reason: >-
+        The same setting, repeated in this contract for the same reason.
+    - path: docs/c6_eppo_archive_audit.json
+      family: Hex High Entropy String
+      fingerprint: a1e2a7d41430
+      reason: >-
+        An EPPO media identifier from the publisher's public REST index,
+        recorded so a download can be traced back to the record that produced
+        it. A public document id, not a secret.
+  unreviewed_finding_is_reported_not_suppressed: true
+
+# ---------------------------------------------------------------------------
+# 15. Readiness.
+# ---------------------------------------------------------------------------
+readiness:
+  statuses:
+    - release_candidate_ready
+    - release_candidate_ready_with_documented_nonblocking_limitations
+    - release_candidate_blocked
+  blockers:
+    - secret_or_credential_exposure
+    - locked_outcome_present_in_intended_release_or_history
+    - missing_owner_license_decision
+    - license_inconsistent_with_metadata
+    - mit_attributed_to_third_party_data
+    - python_version_inconsistency
+    - dependency_lock_rejects_supported_python
+    - clean_installation_failure
+    - hermetic_ci_failure
+    - build_artifact_in_public_release_manifest
+    - package_includes_prohibited_files
+    - unresolved_redistribution_of_included_raw_data
+    - dependency_vulnerability_without_accepted_resolution
+    - tests_mutate_the_release_worktree
+    - e2_historical_record_modified
+  required_nonblocking_limitations:
+    - citation_metadata_deferred
+    - standalone_distribution_not_supported
+    - python_311_not_supported
+    - data_backed_reproduction_requires_external_official_files
+    - unresolved_third_party_redistribution_terms
+  ready_because_working_directory_passes_tests: false
+  cleared_fields:
+    owner_license_decision_required: false
+    code_license: MIT
+    license_blocker_cleared: true
+    python_contract_blocker_cleared: true
+    source_checkout_contract_verified: true
+    clean_install_verified: true
+    hermetic_ci_verified: true
+    secret_findings: 0
+    dependency_vulnerability_blockers: 0
+    locked_test_release_excluded: true
+
+prohibited_actions:
+  - commit
+  - tag
+  - push
+  - create_a_github_repository
+  - publish_to_pypi
+  - create_a_github_release
+  - reopen_modeling
+  - read_locked_outcomes
+  - modify_scientific_result_artifacts
+  - modify_e2_historical_findings
+  - invent_owner_identity
+  - create_citation_metadata_without_verified_identity
+
+next_task:
+  id: E3
+  name: Owner-Approved Public GitHub Repository Release
+  requires_owner_confirmation_of:
+    - github_account_or_organization
+    - repository_name
+    - public_visibility
+    - initial_release_version
+    - commit_and_tag_authorization
+    - author_identity_used_by_git
+    - final_public_release_manifest_checksum
+  may_act_only_after_all_confirmations: true
+
+outputs:
+  release_manifest: docs/e2r1_release_manifest.json
+  decision_json: docs/e2r1_source_release_decision.json
+  decision_markdown: docs/e2r1_source_release_decision.md
+  release_checklist: docs/e2r1_release_checklist.md
+  reproducibility_guide: docs/e2r1_reproducibility_guide.md
+  data_license_review: docs/e2_data_license_review.md
+  third_party_notices: THIRD_PARTY_NOTICES.md
+  license_file: LICENSE
+  ci_workflow: .github/workflows/ci.yml
+  runtime_lock: requirements.lock.txt
+  development_lock: requirements-dev.lock.txt

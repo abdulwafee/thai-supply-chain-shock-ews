@@ -1,0 +1,3740 @@
+{
+  "task": "D1",
+  "model_version": "d1_residual_ridge_v1",
+  "generated_at": "2026-08-27T16:58:08Z",
+  "split": "development",
+  "development_origins": [
+    "2024-01-01",
+    "2024-02-01",
+    "2024-03-01",
+    "2024-04-01",
+    "2024-05-01",
+    "2024-06-01",
+    "2024-07-01",
+    "2024-08-01",
+    "2024-09-01",
+    "2024-10-01",
+    "2024-11-01",
+    "2024-12-01",
+    "2025-01-01",
+    "2025-02-01",
+    "2025-03-01"
+  ],
+  "purge_origins_excluded": [
+    "2025-04-01",
+    "2025-05-01",
+    "2025-06-01"
+  ],
+  "locked_test_origins_reserved": 10,
+  "locked_test_outcomes_read": false,
+  "approved_for_locked_test": false,
+  "prediction_counts": {
+    "primary|h1": 180,
+    "timing_sensitivity|h1": 180,
+    "structural_sensitivity|h1": 180,
+    "primary|h3": 180,
+    "timing_sensitivity|h3": 180,
+    "structural_sensitivity|h3": 180
+  },
+  "total_model_predictions": 1080,
+  "selections": {
+    "h1|2024-01-01": {
+      "forecast_origin_month": "2024-01-01",
+      "horizon_months": 1,
+      "selected_alpha": 100.0,
+      "selected_non_ferrous_channel": "none",
+      "selection_reason": "insufficient_inner_history_conservative_fallback",
+      "selected_inner_macro_mae": null,
+      "inner_origins_considered": 1,
+      "inner_origins_covered": 0,
+      "earliest_inner_origin": "2023-12-01",
+      "candidates": []
+    },
+    "h1|2024-02-01": {
+      "forecast_origin_month": "2024-02-01",
+      "horizon_months": 1,
+      "selected_alpha": 100.0,
+      "selected_non_ferrous_channel": "none",
+      "selection_reason": "insufficient_inner_history_conservative_fallback",
+      "selected_inner_macro_mae": null,
+      "inner_origins_considered": 2,
+      "inner_origins_covered": 0,
+      "earliest_inner_origin": "2023-12-01",
+      "candidates": []
+    },
+    "h1|2024-03-01": {
+      "forecast_origin_month": "2024-03-01",
+      "horizon_months": 1,
+      "selected_alpha": 10.0,
+      "selected_non_ferrous_channel": "none",
+      "selection_reason": "lowest_inner_macro_mae",
+      "selected_inner_macro_mae": 11.258779160405226,
+      "inner_origins_considered": 3,
+      "inner_origins_covered": 3,
+      "earliest_inner_origin": "2023-12-01",
+      "candidates": [
+        {
+          "configuration_id": "alpha=0.1|metal=none",
+          "alpha": 0.1,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 12.865556762959853,
+          "inner_origins_covered": 3,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=none",
+          "alpha": 1.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 12.090396733820901,
+          "inner_origins_covered": 3,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=none",
+          "alpha": 10.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 11.258779160405226,
+          "inner_origins_covered": 3,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=none",
+          "alpha": 100.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 12.143168921329293,
+          "inner_origins_covered": 3,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=0.1|metal=aluminum",
+          "alpha": 0.1,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 12.891598578025073,
+          "inner_origins_covered": 3,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=aluminum",
+          "alpha": 1.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 12.632110386423465,
+          "inner_origins_covered": 3,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=aluminum",
+          "alpha": 10.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 12.674034669665588,
+          "inner_origins_covered": 3,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=aluminum",
+          "alpha": 100.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 13.43975392869539,
+          "inner_origins_covered": 3,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=0.1|metal=copper",
+          "alpha": 0.1,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 13.653329871168316,
+          "inner_origins_covered": 3,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=copper",
+          "alpha": 1.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 13.477231804694467,
+          "inner_origins_covered": 3,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=copper",
+          "alpha": 10.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 13.22778710317565,
+          "inner_origins_covered": 3,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=copper",
+          "alpha": 100.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 13.667980089851502,
+          "inner_origins_covered": 3,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        }
+      ]
+    },
+    "h1|2024-04-01": {
+      "forecast_origin_month": "2024-04-01",
+      "horizon_months": 1,
+      "selected_alpha": 10.0,
+      "selected_non_ferrous_channel": "none",
+      "selection_reason": "lowest_inner_macro_mae",
+      "selected_inner_macro_mae": 11.709285686472114,
+      "inner_origins_considered": 4,
+      "inner_origins_covered": 4,
+      "earliest_inner_origin": "2023-12-01",
+      "candidates": [
+        {
+          "configuration_id": "alpha=0.1|metal=none",
+          "alpha": 0.1,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 13.09673421529977,
+          "inner_origins_covered": 4,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=none",
+          "alpha": 1.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 12.486729055950214,
+          "inner_origins_covered": 4,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=none",
+          "alpha": 10.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 11.709285686472114,
+          "inner_origins_covered": 4,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=none",
+          "alpha": 100.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 12.1982518173092,
+          "inner_origins_covered": 4,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=0.1|metal=aluminum",
+          "alpha": 0.1,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 15.003130361511275,
+          "inner_origins_covered": 4,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=aluminum",
+          "alpha": 1.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 14.44789023937672,
+          "inner_origins_covered": 4,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=aluminum",
+          "alpha": 10.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 13.856368526305745,
+          "inner_origins_covered": 4,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=aluminum",
+          "alpha": 100.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 14.044779578509191,
+          "inner_origins_covered": 4,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=0.1|metal=copper",
+          "alpha": 0.1,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 14.434110232730346,
+          "inner_origins_covered": 4,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=copper",
+          "alpha": 1.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 14.308227396983154,
+          "inner_origins_covered": 4,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=copper",
+          "alpha": 10.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 13.930954330096531,
+          "inner_origins_covered": 4,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=copper",
+          "alpha": 100.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 14.098901236959954,
+          "inner_origins_covered": 4,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        }
+      ]
+    },
+    "h1|2024-05-01": {
+      "forecast_origin_month": "2024-05-01",
+      "horizon_months": 1,
+      "selected_alpha": 10.0,
+      "selected_non_ferrous_channel": "none",
+      "selection_reason": "lowest_inner_macro_mae",
+      "selected_inner_macro_mae": 12.915962083962874,
+      "inner_origins_considered": 5,
+      "inner_origins_covered": 5,
+      "earliest_inner_origin": "2023-12-01",
+      "candidates": [
+        {
+          "configuration_id": "alpha=0.1|metal=none",
+          "alpha": 0.1,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 14.440309741352152,
+          "inner_origins_covered": 5,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=none",
+          "alpha": 1.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 13.886675999127727,
+          "inner_origins_covered": 5,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=none",
+          "alpha": 10.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 12.915962083962874,
+          "inner_origins_covered": 5,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=none",
+          "alpha": 100.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 13.023747287228028,
+          "inner_origins_covered": 5,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=0.1|metal=aluminum",
+          "alpha": 0.1,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 15.29536524591444,
+          "inner_origins_covered": 5,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=aluminum",
+          "alpha": 1.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 14.461211919019632,
+          "inner_origins_covered": 5,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=aluminum",
+          "alpha": 10.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 13.654641112297675,
+          "inner_origins_covered": 5,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=aluminum",
+          "alpha": 100.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 13.833800047206458,
+          "inner_origins_covered": 5,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=0.1|metal=copper",
+          "alpha": 0.1,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 14.717250306947692,
+          "inner_origins_covered": 5,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=copper",
+          "alpha": 1.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 14.523666676221259,
+          "inner_origins_covered": 5,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=copper",
+          "alpha": 10.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 13.990409638996617,
+          "inner_origins_covered": 5,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=copper",
+          "alpha": 100.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 14.015842238395313,
+          "inner_origins_covered": 5,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        }
+      ]
+    },
+    "h1|2024-06-01": {
+      "forecast_origin_month": "2024-06-01",
+      "horizon_months": 1,
+      "selected_alpha": 100.0,
+      "selected_non_ferrous_channel": "none",
+      "selection_reason": "lowest_inner_macro_mae",
+      "selected_inner_macro_mae": 12.35767842047288,
+      "inner_origins_considered": 6,
+      "inner_origins_covered": 6,
+      "earliest_inner_origin": "2023-12-01",
+      "candidates": [
+        {
+          "configuration_id": "alpha=0.1|metal=none",
+          "alpha": 0.1,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 13.919080289228225,
+          "inner_origins_covered": 6,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=none",
+          "alpha": 1.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 13.452422191740952,
+          "inner_origins_covered": 6,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=none",
+          "alpha": 10.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 12.610282203577553,
+          "inner_origins_covered": 6,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=none",
+          "alpha": 100.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 12.35767842047288,
+          "inner_origins_covered": 6,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=0.1|metal=aluminum",
+          "alpha": 0.1,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 14.670421087878282,
+          "inner_origins_covered": 6,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=aluminum",
+          "alpha": 1.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 13.827886196044643,
+          "inner_origins_covered": 6,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=aluminum",
+          "alpha": 10.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 13.053105308095331,
+          "inner_origins_covered": 6,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=aluminum",
+          "alpha": 100.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 13.06360704424039,
+          "inner_origins_covered": 6,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=0.1|metal=copper",
+          "alpha": 0.1,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 14.367742910762933,
+          "inner_origins_covered": 6,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=copper",
+          "alpha": 1.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 14.185772994483104,
+          "inner_origins_covered": 6,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=copper",
+          "alpha": 10.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 13.597639763079313,
+          "inner_origins_covered": 6,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=copper",
+          "alpha": 100.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 13.319598716139888,
+          "inner_origins_covered": 6,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        }
+      ]
+    },
+    "h1|2024-07-01": {
+      "forecast_origin_month": "2024-07-01",
+      "horizon_months": 1,
+      "selected_alpha": 100.0,
+      "selected_non_ferrous_channel": "none",
+      "selection_reason": "lowest_inner_macro_mae",
+      "selected_inner_macro_mae": 13.099906907107565,
+      "inner_origins_considered": 7,
+      "inner_origins_covered": 7,
+      "earliest_inner_origin": "2023-12-01",
+      "candidates": [
+        {
+          "configuration_id": "alpha=0.1|metal=none",
+          "alpha": 0.1,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 16.28734604008884,
+          "inner_origins_covered": 7,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=none",
+          "alpha": 1.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 15.819195587945257,
+          "inner_origins_covered": 7,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=none",
+          "alpha": 10.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 14.518372315681185,
+          "inner_origins_covered": 7,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=none",
+          "alpha": 100.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 13.099906907107565,
+          "inner_origins_covered": 7,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=0.1|metal=aluminum",
+          "alpha": 0.1,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 15.369080322558105,
+          "inner_origins_covered": 7,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=aluminum",
+          "alpha": 1.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 14.632330928837623,
+          "inner_origins_covered": 7,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=aluminum",
+          "alpha": 10.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 13.987172387396024,
+          "inner_origins_covered": 7,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=aluminum",
+          "alpha": 100.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 13.56812978726334,
+          "inner_origins_covered": 7,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=0.1|metal=copper",
+          "alpha": 0.1,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 14.770200927022929,
+          "inner_origins_covered": 7,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=copper",
+          "alpha": 1.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 14.600449368282343,
+          "inner_origins_covered": 7,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=copper",
+          "alpha": 10.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 14.097509606864628,
+          "inner_origins_covered": 7,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=copper",
+          "alpha": 100.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 13.62920248323457,
+          "inner_origins_covered": 7,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        }
+      ]
+    },
+    "h1|2024-08-01": {
+      "forecast_origin_month": "2024-08-01",
+      "horizon_months": 1,
+      "selected_alpha": 100.0,
+      "selected_non_ferrous_channel": "copper",
+      "selection_reason": "lowest_inner_macro_mae",
+      "selected_inner_macro_mae": 13.59268787460996,
+      "inner_origins_considered": 8,
+      "inner_origins_covered": 8,
+      "earliest_inner_origin": "2023-12-01",
+      "candidates": [
+        {
+          "configuration_id": "alpha=0.1|metal=none",
+          "alpha": 0.1,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 16.498062060534206,
+          "inner_origins_covered": 8,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=none",
+          "alpha": 1.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 16.09284909918451,
+          "inner_origins_covered": 8,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=none",
+          "alpha": 10.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 14.961854731340024,
+          "inner_origins_covered": 8,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=none",
+          "alpha": 100.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 13.612356922546562,
+          "inner_origins_covered": 8,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=0.1|metal=aluminum",
+          "alpha": 0.1,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 15.658600844025711,
+          "inner_origins_covered": 8,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=aluminum",
+          "alpha": 1.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 14.91616639188947,
+          "inner_origins_covered": 8,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=aluminum",
+          "alpha": 10.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 14.210243891951107,
+          "inner_origins_covered": 8,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=aluminum",
+          "alpha": 100.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 13.599397134069067,
+          "inner_origins_covered": 8,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=0.1|metal=copper",
+          "alpha": 0.1,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 14.92958628807885,
+          "inner_origins_covered": 8,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=copper",
+          "alpha": 1.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 14.755490859258066,
+          "inner_origins_covered": 8,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=copper",
+          "alpha": 10.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 14.169534063455673,
+          "inner_origins_covered": 8,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=copper",
+          "alpha": 100.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 13.59268787460996,
+          "inner_origins_covered": 8,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        }
+      ]
+    },
+    "h1|2024-09-01": {
+      "forecast_origin_month": "2024-09-01",
+      "horizon_months": 1,
+      "selected_alpha": 100.0,
+      "selected_non_ferrous_channel": "copper",
+      "selection_reason": "lowest_inner_macro_mae",
+      "selected_inner_macro_mae": 13.904765481005478,
+      "inner_origins_considered": 9,
+      "inner_origins_covered": 9,
+      "earliest_inner_origin": "2023-12-01",
+      "candidates": [
+        {
+          "configuration_id": "alpha=0.1|metal=none",
+          "alpha": 0.1,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 17.178965810162442,
+          "inner_origins_covered": 9,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=none",
+          "alpha": 1.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 16.71963171316082,
+          "inner_origins_covered": 9,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=none",
+          "alpha": 10.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 15.67171229704052,
+          "inner_origins_covered": 9,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=none",
+          "alpha": 100.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 14.260481731758489,
+          "inner_origins_covered": 9,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=0.1|metal=aluminum",
+          "alpha": 0.1,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 16.13680544129534,
+          "inner_origins_covered": 9,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=aluminum",
+          "alpha": 1.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 15.460254318182274,
+          "inner_origins_covered": 9,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=aluminum",
+          "alpha": 10.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 14.73602178006133,
+          "inner_origins_covered": 9,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=aluminum",
+          "alpha": 100.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 13.955234167820954,
+          "inner_origins_covered": 9,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=0.1|metal=copper",
+          "alpha": 0.1,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 15.221853880592649,
+          "inner_origins_covered": 9,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=copper",
+          "alpha": 1.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 14.958740766684032,
+          "inner_origins_covered": 9,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=copper",
+          "alpha": 10.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 14.469671986096955,
+          "inner_origins_covered": 9,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=copper",
+          "alpha": 100.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 13.904765481005478,
+          "inner_origins_covered": 9,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        }
+      ]
+    },
+    "h1|2024-10-01": {
+      "forecast_origin_month": "2024-10-01",
+      "horizon_months": 1,
+      "selected_alpha": 100.0,
+      "selected_non_ferrous_channel": "copper",
+      "selection_reason": "lowest_inner_macro_mae",
+      "selected_inner_macro_mae": 14.589615805464007,
+      "inner_origins_considered": 10,
+      "inner_origins_covered": 10,
+      "earliest_inner_origin": "2023-12-01",
+      "candidates": [
+        {
+          "configuration_id": "alpha=0.1|metal=none",
+          "alpha": 0.1,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 18.969414481918445,
+          "inner_origins_covered": 10,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=none",
+          "alpha": 1.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 18.49710096523351,
+          "inner_origins_covered": 10,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=none",
+          "alpha": 10.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 17.20163831083823,
+          "inner_origins_covered": 10,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=none",
+          "alpha": 100.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 15.479210122496886,
+          "inner_origins_covered": 10,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=0.1|metal=aluminum",
+          "alpha": 0.1,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 17.249942083794817,
+          "inner_origins_covered": 10,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=aluminum",
+          "alpha": 1.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 16.600659953529128,
+          "inner_origins_covered": 10,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=aluminum",
+          "alpha": 10.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 15.694227051524573,
+          "inner_origins_covered": 10,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=aluminum",
+          "alpha": 100.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 14.65843883238592,
+          "inner_origins_covered": 10,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=0.1|metal=copper",
+          "alpha": 0.1,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 16.390072732204555,
+          "inner_origins_covered": 10,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=copper",
+          "alpha": 1.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 16.069691295409804,
+          "inner_origins_covered": 10,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=copper",
+          "alpha": 10.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 15.383846295366068,
+          "inner_origins_covered": 10,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=copper",
+          "alpha": 100.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 14.589615805464007,
+          "inner_origins_covered": 10,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        }
+      ]
+    },
+    "h1|2024-11-01": {
+      "forecast_origin_month": "2024-11-01",
+      "horizon_months": 1,
+      "selected_alpha": 100.0,
+      "selected_non_ferrous_channel": "copper",
+      "selection_reason": "lowest_inner_macro_mae",
+      "selected_inner_macro_mae": 14.797238188034681,
+      "inner_origins_considered": 11,
+      "inner_origins_covered": 11,
+      "earliest_inner_origin": "2023-12-01",
+      "candidates": [
+        {
+          "configuration_id": "alpha=0.1|metal=none",
+          "alpha": 0.1,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 18.440557771975502,
+          "inner_origins_covered": 11,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=none",
+          "alpha": 1.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 18.073189580750086,
+          "inner_origins_covered": 11,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=none",
+          "alpha": 10.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 17.116741053708783,
+          "inner_origins_covered": 11,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=none",
+          "alpha": 100.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 15.583723811508042,
+          "inner_origins_covered": 11,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=0.1|metal=aluminum",
+          "alpha": 0.1,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 17.281067146238655,
+          "inner_origins_covered": 11,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=aluminum",
+          "alpha": 1.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 16.647200032470124,
+          "inner_origins_covered": 11,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=aluminum",
+          "alpha": 10.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 15.738069265989507,
+          "inner_origins_covered": 11,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=aluminum",
+          "alpha": 100.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 14.828124492377311,
+          "inner_origins_covered": 11,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=0.1|metal=copper",
+          "alpha": 0.1,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 16.722475156567892,
+          "inner_origins_covered": 11,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=copper",
+          "alpha": 1.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 16.32452066134893,
+          "inner_origins_covered": 11,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=copper",
+          "alpha": 10.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 15.50062184435375,
+          "inner_origins_covered": 11,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=copper",
+          "alpha": 100.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 14.797238188034681,
+          "inner_origins_covered": 11,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        }
+      ]
+    },
+    "h1|2024-12-01": {
+      "forecast_origin_month": "2024-12-01",
+      "horizon_months": 1,
+      "selected_alpha": 100.0,
+      "selected_non_ferrous_channel": "copper",
+      "selection_reason": "lowest_inner_macro_mae",
+      "selected_inner_macro_mae": 14.763532018450809,
+      "inner_origins_considered": 12,
+      "inner_origins_covered": 12,
+      "earliest_inner_origin": "2023-12-01",
+      "candidates": [
+        {
+          "configuration_id": "alpha=0.1|metal=none",
+          "alpha": 0.1,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 18.696116108539183,
+          "inner_origins_covered": 12,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=none",
+          "alpha": 1.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 18.284361774806683,
+          "inner_origins_covered": 12,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=none",
+          "alpha": 10.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 17.204461682979275,
+          "inner_origins_covered": 12,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=none",
+          "alpha": 100.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 15.903220355007809,
+          "inner_origins_covered": 12,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=0.1|metal=aluminum",
+          "alpha": 0.1,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 17.175930007409217,
+          "inner_origins_covered": 12,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=aluminum",
+          "alpha": 1.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 16.567745997418697,
+          "inner_origins_covered": 12,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=aluminum",
+          "alpha": 10.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 15.604349714021884,
+          "inner_origins_covered": 12,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=aluminum",
+          "alpha": 100.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 14.781555393213445,
+          "inner_origins_covered": 12,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=0.1|metal=copper",
+          "alpha": 0.1,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 16.74542680216292,
+          "inner_origins_covered": 12,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=copper",
+          "alpha": 1.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 16.347725622136206,
+          "inner_origins_covered": 12,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=copper",
+          "alpha": 10.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 15.442580662894143,
+          "inner_origins_covered": 12,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=copper",
+          "alpha": 100.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 14.763532018450809,
+          "inner_origins_covered": 12,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        }
+      ]
+    },
+    "h1|2025-01-01": {
+      "forecast_origin_month": "2025-01-01",
+      "horizon_months": 1,
+      "selected_alpha": 100.0,
+      "selected_non_ferrous_channel": "copper",
+      "selection_reason": "lowest_inner_macro_mae",
+      "selected_inner_macro_mae": 15.148619764154319,
+      "inner_origins_considered": 13,
+      "inner_origins_covered": 13,
+      "earliest_inner_origin": "2023-12-01",
+      "candidates": [
+        {
+          "configuration_id": "alpha=0.1|metal=none",
+          "alpha": 0.1,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 18.434411095535165,
+          "inner_origins_covered": 13,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=none",
+          "alpha": 1.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 18.075506929881655,
+          "inner_origins_covered": 13,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=none",
+          "alpha": 10.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 17.11072026272652,
+          "inner_origins_covered": 13,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=none",
+          "alpha": 100.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 15.87790695354647,
+          "inner_origins_covered": 13,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=0.1|metal=aluminum",
+          "alpha": 0.1,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 17.34151999606023,
+          "inner_origins_covered": 13,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=aluminum",
+          "alpha": 1.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 16.81063517080774,
+          "inner_origins_covered": 13,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=aluminum",
+          "alpha": 10.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 15.982254061739548,
+          "inner_origins_covered": 13,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=aluminum",
+          "alpha": 100.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 15.18763546050318,
+          "inner_origins_covered": 13,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=0.1|metal=copper",
+          "alpha": 0.1,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 16.95156860994719,
+          "inner_origins_covered": 13,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=copper",
+          "alpha": 1.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 16.612077004049592,
+          "inner_origins_covered": 13,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=copper",
+          "alpha": 10.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 15.79107572808869,
+          "inner_origins_covered": 13,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=copper",
+          "alpha": 100.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 15.148619764154319,
+          "inner_origins_covered": 13,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        }
+      ]
+    },
+    "h1|2025-02-01": {
+      "forecast_origin_month": "2025-02-01",
+      "horizon_months": 1,
+      "selected_alpha": 100.0,
+      "selected_non_ferrous_channel": "copper",
+      "selection_reason": "lowest_inner_macro_mae",
+      "selected_inner_macro_mae": 15.558825521701756,
+      "inner_origins_considered": 14,
+      "inner_origins_covered": 14,
+      "earliest_inner_origin": "2023-12-01",
+      "candidates": [
+        {
+          "configuration_id": "alpha=0.1|metal=none",
+          "alpha": 0.1,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 19.292668393435918,
+          "inner_origins_covered": 14,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=none",
+          "alpha": 1.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 18.953245209484738,
+          "inner_origins_covered": 14,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=none",
+          "alpha": 10.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 18.010148993379786,
+          "inner_origins_covered": 14,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=none",
+          "alpha": 100.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 16.76612431968134,
+          "inner_origins_covered": 14,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=0.1|metal=aluminum",
+          "alpha": 0.1,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 17.830442748259287,
+          "inner_origins_covered": 14,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=aluminum",
+          "alpha": 1.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 17.314490280453885,
+          "inner_origins_covered": 14,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=aluminum",
+          "alpha": 10.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 16.46376619113682,
+          "inner_origins_covered": 14,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=aluminum",
+          "alpha": 100.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 15.598269110914103,
+          "inner_origins_covered": 14,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=0.1|metal=copper",
+          "alpha": 0.1,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 17.442050208402513,
+          "inner_origins_covered": 14,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=copper",
+          "alpha": 1.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 17.128326634255288,
+          "inner_origins_covered": 14,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=copper",
+          "alpha": 10.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 16.287298341787327,
+          "inner_origins_covered": 14,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=copper",
+          "alpha": 100.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 15.558825521701756,
+          "inner_origins_covered": 14,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        }
+      ]
+    },
+    "h1|2025-03-01": {
+      "forecast_origin_month": "2025-03-01",
+      "horizon_months": 1,
+      "selected_alpha": 100.0,
+      "selected_non_ferrous_channel": "copper",
+      "selection_reason": "lowest_inner_macro_mae",
+      "selected_inner_macro_mae": 15.55345699973221,
+      "inner_origins_considered": 15,
+      "inner_origins_covered": 15,
+      "earliest_inner_origin": "2023-12-01",
+      "candidates": [
+        {
+          "configuration_id": "alpha=0.1|metal=none",
+          "alpha": 0.1,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 19.43811080338019,
+          "inner_origins_covered": 15,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=none",
+          "alpha": 1.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 19.085795886675324,
+          "inner_origins_covered": 15,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=none",
+          "alpha": 10.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 18.034648479177797,
+          "inner_origins_covered": 15,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=none",
+          "alpha": 100.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 16.66203734078598,
+          "inner_origins_covered": 15,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=0.1|metal=aluminum",
+          "alpha": 0.1,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 17.932083865952002,
+          "inner_origins_covered": 15,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=aluminum",
+          "alpha": 1.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 17.40894364786212,
+          "inner_origins_covered": 15,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=aluminum",
+          "alpha": 10.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 16.492606303952197,
+          "inner_origins_covered": 15,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=aluminum",
+          "alpha": 100.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 15.57061242932798,
+          "inner_origins_covered": 15,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=0.1|metal=copper",
+          "alpha": 0.1,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 17.548764644832417,
+          "inner_origins_covered": 15,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=copper",
+          "alpha": 1.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 17.217405407720086,
+          "inner_origins_covered": 15,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=copper",
+          "alpha": 10.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 16.34937098231144,
+          "inner_origins_covered": 15,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=copper",
+          "alpha": 100.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 15.55345699973221,
+          "inner_origins_covered": 15,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        }
+      ]
+    },
+    "h3|2024-01-01": {
+      "forecast_origin_month": "2024-01-01",
+      "horizon_months": 3,
+      "selected_alpha": 100.0,
+      "selected_non_ferrous_channel": "none",
+      "selection_reason": "insufficient_inner_history_conservative_fallback",
+      "selected_inner_macro_mae": null,
+      "inner_origins_considered": 0,
+      "inner_origins_covered": 0,
+      "earliest_inner_origin": null,
+      "candidates": []
+    },
+    "h3|2024-02-01": {
+      "forecast_origin_month": "2024-02-01",
+      "horizon_months": 3,
+      "selected_alpha": 100.0,
+      "selected_non_ferrous_channel": "none",
+      "selection_reason": "insufficient_inner_history_conservative_fallback",
+      "selected_inner_macro_mae": null,
+      "inner_origins_considered": 0,
+      "inner_origins_covered": 0,
+      "earliest_inner_origin": null,
+      "candidates": []
+    },
+    "h3|2024-03-01": {
+      "forecast_origin_month": "2024-03-01",
+      "horizon_months": 3,
+      "selected_alpha": 100.0,
+      "selected_non_ferrous_channel": "none",
+      "selection_reason": "insufficient_inner_history_conservative_fallback",
+      "selected_inner_macro_mae": null,
+      "inner_origins_considered": 1,
+      "inner_origins_covered": 0,
+      "earliest_inner_origin": "2023-12-01",
+      "candidates": []
+    },
+    "h3|2024-04-01": {
+      "forecast_origin_month": "2024-04-01",
+      "horizon_months": 3,
+      "selected_alpha": 100.0,
+      "selected_non_ferrous_channel": "none",
+      "selection_reason": "insufficient_inner_history_conservative_fallback",
+      "selected_inner_macro_mae": null,
+      "inner_origins_considered": 2,
+      "inner_origins_covered": 0,
+      "earliest_inner_origin": "2023-12-01",
+      "candidates": []
+    },
+    "h3|2024-05-01": {
+      "forecast_origin_month": "2024-05-01",
+      "horizon_months": 3,
+      "selected_alpha": 100.0,
+      "selected_non_ferrous_channel": "copper",
+      "selection_reason": "lowest_inner_macro_mae",
+      "selected_inner_macro_mae": 23.836146599601395,
+      "inner_origins_considered": 3,
+      "inner_origins_covered": 3,
+      "earliest_inner_origin": "2023-12-01",
+      "candidates": [
+        {
+          "configuration_id": "alpha=0.1|metal=none",
+          "alpha": 0.1,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 28.498368584385148,
+          "inner_origins_covered": 3,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=none",
+          "alpha": 1.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 26.782151110333185,
+          "inner_origins_covered": 3,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=none",
+          "alpha": 10.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 27.085934774633,
+          "inner_origins_covered": 3,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=none",
+          "alpha": 100.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 25.385975674242534,
+          "inner_origins_covered": 3,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=0.1|metal=aluminum",
+          "alpha": 0.1,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 25.959708487394902,
+          "inner_origins_covered": 3,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=aluminum",
+          "alpha": 1.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 25.992209577242388,
+          "inner_origins_covered": 3,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=aluminum",
+          "alpha": 10.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 25.232936558673625,
+          "inner_origins_covered": 3,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=aluminum",
+          "alpha": 100.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 23.997796454503447,
+          "inner_origins_covered": 3,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=0.1|metal=copper",
+          "alpha": 0.1,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 29.577080576343025,
+          "inner_origins_covered": 3,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=copper",
+          "alpha": 1.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 28.191568717004817,
+          "inner_origins_covered": 3,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=copper",
+          "alpha": 10.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 25.90908169310916,
+          "inner_origins_covered": 3,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=copper",
+          "alpha": 100.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 23.836146599601395,
+          "inner_origins_covered": 3,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        }
+      ]
+    },
+    "h3|2024-06-01": {
+      "forecast_origin_month": "2024-06-01",
+      "horizon_months": 3,
+      "selected_alpha": 100.0,
+      "selected_non_ferrous_channel": "copper",
+      "selection_reason": "lowest_inner_macro_mae",
+      "selected_inner_macro_mae": 21.218383522502567,
+      "inner_origins_considered": 4,
+      "inner_origins_covered": 4,
+      "earliest_inner_origin": "2023-12-01",
+      "candidates": [
+        {
+          "configuration_id": "alpha=0.1|metal=none",
+          "alpha": 0.1,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 24.564221161164102,
+          "inner_origins_covered": 4,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=none",
+          "alpha": 1.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 23.323908484483074,
+          "inner_origins_covered": 4,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=none",
+          "alpha": 10.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 23.758277948688775,
+          "inner_origins_covered": 4,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=none",
+          "alpha": 100.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 23.275397284480913,
+          "inner_origins_covered": 4,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=0.1|metal=aluminum",
+          "alpha": 0.1,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 22.818150959977626,
+          "inner_origins_covered": 4,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=aluminum",
+          "alpha": 1.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 22.711181384900087,
+          "inner_origins_covered": 4,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=aluminum",
+          "alpha": 10.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 22.044632972626115,
+          "inner_origins_covered": 4,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=aluminum",
+          "alpha": 100.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 21.348772449051108,
+          "inner_origins_covered": 4,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=0.1|metal=copper",
+          "alpha": 0.1,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 25.773390477567343,
+          "inner_origins_covered": 4,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=copper",
+          "alpha": 1.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 24.583129220120245,
+          "inner_origins_covered": 4,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=copper",
+          "alpha": 10.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 22.697782248008323,
+          "inner_origins_covered": 4,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=copper",
+          "alpha": 100.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 21.218383522502567,
+          "inner_origins_covered": 4,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        }
+      ]
+    },
+    "h3|2024-07-01": {
+      "forecast_origin_month": "2024-07-01",
+      "horizon_months": 3,
+      "selected_alpha": 100.0,
+      "selected_non_ferrous_channel": "copper",
+      "selection_reason": "lowest_inner_macro_mae",
+      "selected_inner_macro_mae": 19.880154501401957,
+      "inner_origins_considered": 5,
+      "inner_origins_covered": 5,
+      "earliest_inner_origin": "2023-12-01",
+      "candidates": [
+        {
+          "configuration_id": "alpha=0.1|metal=none",
+          "alpha": 0.1,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 23.909639247559678,
+          "inner_origins_covered": 5,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=none",
+          "alpha": 1.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 22.8643258797518,
+          "inner_origins_covered": 5,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=none",
+          "alpha": 10.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 22.818164240698724,
+          "inner_origins_covered": 5,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=none",
+          "alpha": 100.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 22.277748414540444,
+          "inner_origins_covered": 5,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=0.1|metal=aluminum",
+          "alpha": 0.1,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 21.96615594677121,
+          "inner_origins_covered": 5,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=aluminum",
+          "alpha": 1.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 21.42426102186444,
+          "inner_origins_covered": 5,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=aluminum",
+          "alpha": 10.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 20.499982073949298,
+          "inner_origins_covered": 5,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=aluminum",
+          "alpha": 100.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 19.96854008425856,
+          "inner_origins_covered": 5,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=0.1|metal=copper",
+          "alpha": 0.1,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 24.39681057688203,
+          "inner_origins_covered": 5,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=copper",
+          "alpha": 1.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 23.257893997886686,
+          "inner_origins_covered": 5,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=copper",
+          "alpha": 10.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 21.21027919994757,
+          "inner_origins_covered": 5,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=copper",
+          "alpha": 100.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 19.880154501401957,
+          "inner_origins_covered": 5,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        }
+      ]
+    },
+    "h3|2024-08-01": {
+      "forecast_origin_month": "2024-08-01",
+      "horizon_months": 3,
+      "selected_alpha": 100.0,
+      "selected_non_ferrous_channel": "copper",
+      "selection_reason": "lowest_inner_macro_mae",
+      "selected_inner_macro_mae": 18.37376923767305,
+      "inner_origins_considered": 6,
+      "inner_origins_covered": 6,
+      "earliest_inner_origin": "2023-12-01",
+      "candidates": [
+        {
+          "configuration_id": "alpha=0.1|metal=none",
+          "alpha": 0.1,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 23.667817308795904,
+          "inner_origins_covered": 6,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=none",
+          "alpha": 1.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 22.682022515397335,
+          "inner_origins_covered": 6,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=none",
+          "alpha": 10.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 22.158624692820364,
+          "inner_origins_covered": 6,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=none",
+          "alpha": 100.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 20.882461178844807,
+          "inner_origins_covered": 6,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=0.1|metal=aluminum",
+          "alpha": 0.1,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 21.258816303555694,
+          "inner_origins_covered": 6,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=aluminum",
+          "alpha": 1.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 20.11922730233744,
+          "inner_origins_covered": 6,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=aluminum",
+          "alpha": 10.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 19.11320967754303,
+          "inner_origins_covered": 6,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=aluminum",
+          "alpha": 100.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 18.505014814770753,
+          "inner_origins_covered": 6,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=0.1|metal=copper",
+          "alpha": 0.1,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 22.95895521580573,
+          "inner_origins_covered": 6,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=copper",
+          "alpha": 1.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 21.799501478623615,
+          "inner_origins_covered": 6,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=copper",
+          "alpha": 10.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 19.784639193588273,
+          "inner_origins_covered": 6,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=copper",
+          "alpha": 100.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 18.37376923767305,
+          "inner_origins_covered": 6,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        }
+      ]
+    },
+    "h3|2024-09-01": {
+      "forecast_origin_month": "2024-09-01",
+      "horizon_months": 3,
+      "selected_alpha": 100.0,
+      "selected_non_ferrous_channel": "copper",
+      "selection_reason": "lowest_inner_macro_mae",
+      "selected_inner_macro_mae": 18.174216190738974,
+      "inner_origins_considered": 7,
+      "inner_origins_covered": 7,
+      "earliest_inner_origin": "2023-12-01",
+      "candidates": [
+        {
+          "configuration_id": "alpha=0.1|metal=none",
+          "alpha": 0.1,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 24.854066605300734,
+          "inner_origins_covered": 7,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=none",
+          "alpha": 1.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 23.988491272575185,
+          "inner_origins_covered": 7,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=none",
+          "alpha": 10.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 22.955591875614985,
+          "inner_origins_covered": 7,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=none",
+          "alpha": 100.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 20.301399003768214,
+          "inner_origins_covered": 7,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=0.1|metal=aluminum",
+          "alpha": 0.1,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 22.03864401767194,
+          "inner_origins_covered": 7,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=aluminum",
+          "alpha": 1.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 20.581764162699958,
+          "inner_origins_covered": 7,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=aluminum",
+          "alpha": 10.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 19.375610859641217,
+          "inner_origins_covered": 7,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=aluminum",
+          "alpha": 100.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 18.29672008709741,
+          "inner_origins_covered": 7,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=0.1|metal=copper",
+          "alpha": 0.1,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 23.038415121829143,
+          "inner_origins_covered": 7,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=copper",
+          "alpha": 1.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 21.94240701969567,
+          "inner_origins_covered": 7,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=copper",
+          "alpha": 10.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 20.001858149547363,
+          "inner_origins_covered": 7,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=copper",
+          "alpha": 100.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 18.174216190738974,
+          "inner_origins_covered": 7,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        }
+      ]
+    },
+    "h3|2024-10-01": {
+      "forecast_origin_month": "2024-10-01",
+      "horizon_months": 3,
+      "selected_alpha": 100.0,
+      "selected_non_ferrous_channel": "copper",
+      "selection_reason": "lowest_inner_macro_mae",
+      "selected_inner_macro_mae": 17.973404567774498,
+      "inner_origins_considered": 8,
+      "inner_origins_covered": 8,
+      "earliest_inner_origin": "2023-12-01",
+      "candidates": [
+        {
+          "configuration_id": "alpha=0.1|metal=none",
+          "alpha": 0.1,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 25.592128831856638,
+          "inner_origins_covered": 8,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=none",
+          "alpha": 1.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 24.815272795815655,
+          "inner_origins_covered": 8,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=none",
+          "alpha": 10.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 23.410743566762566,
+          "inner_origins_covered": 8,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=none",
+          "alpha": 100.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 19.93546792754253,
+          "inner_origins_covered": 8,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=0.1|metal=aluminum",
+          "alpha": 0.1,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 22.281350948510596,
+          "inner_origins_covered": 8,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=aluminum",
+          "alpha": 1.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 20.8091194380492,
+          "inner_origins_covered": 8,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=aluminum",
+          "alpha": 10.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 19.47905155261752,
+          "inner_origins_covered": 8,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=aluminum",
+          "alpha": 100.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 18.110866508027968,
+          "inner_origins_covered": 8,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=0.1|metal=copper",
+          "alpha": 0.1,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 23.07701094850464,
+          "inner_origins_covered": 8,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=copper",
+          "alpha": 1.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 22.107168768568826,
+          "inner_origins_covered": 8,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=copper",
+          "alpha": 10.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 20.109962912560345,
+          "inner_origins_covered": 8,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=copper",
+          "alpha": 100.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 17.973404567774498,
+          "inner_origins_covered": 8,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        }
+      ]
+    },
+    "h3|2024-11-01": {
+      "forecast_origin_month": "2024-11-01",
+      "horizon_months": 3,
+      "selected_alpha": 100.0,
+      "selected_non_ferrous_channel": "copper",
+      "selection_reason": "lowest_inner_macro_mae",
+      "selected_inner_macro_mae": 17.57305711583748,
+      "inner_origins_considered": 9,
+      "inner_origins_covered": 9,
+      "earliest_inner_origin": "2023-12-01",
+      "candidates": [
+        {
+          "configuration_id": "alpha=0.1|metal=none",
+          "alpha": 0.1,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 25.936929528010637,
+          "inner_origins_covered": 9,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=none",
+          "alpha": 1.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 24.98033150000626,
+          "inner_origins_covered": 9,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=none",
+          "alpha": 10.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 22.886017693555587,
+          "inner_origins_covered": 9,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=none",
+          "alpha": 100.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 19.157912184324342,
+          "inner_origins_covered": 9,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=0.1|metal=aluminum",
+          "alpha": 0.1,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 22.2474096196233,
+          "inner_origins_covered": 9,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=aluminum",
+          "alpha": 1.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 20.626268672621055,
+          "inner_origins_covered": 9,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=aluminum",
+          "alpha": 10.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 19.132917034012696,
+          "inner_origins_covered": 9,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=aluminum",
+          "alpha": 100.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 17.703288299938595,
+          "inner_origins_covered": 9,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=0.1|metal=copper",
+          "alpha": 0.1,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 23.01276292849853,
+          "inner_origins_covered": 9,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=copper",
+          "alpha": 1.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 21.99329862352566,
+          "inner_origins_covered": 9,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=copper",
+          "alpha": 10.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 19.811376372786114,
+          "inner_origins_covered": 9,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=copper",
+          "alpha": 100.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 17.57305711583748,
+          "inner_origins_covered": 9,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        }
+      ]
+    },
+    "h3|2024-12-01": {
+      "forecast_origin_month": "2024-12-01",
+      "horizon_months": 3,
+      "selected_alpha": 100.0,
+      "selected_non_ferrous_channel": "copper",
+      "selection_reason": "lowest_inner_macro_mae",
+      "selected_inner_macro_mae": 16.638968772358705,
+      "inner_origins_considered": 10,
+      "inner_origins_covered": 10,
+      "earliest_inner_origin": "2023-12-01",
+      "candidates": [
+        {
+          "configuration_id": "alpha=0.1|metal=none",
+          "alpha": 0.1,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 25.270961365604325,
+          "inner_origins_covered": 10,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=none",
+          "alpha": 1.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 24.21135830703173,
+          "inner_origins_covered": 10,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=none",
+          "alpha": 10.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 21.70061842806715,
+          "inner_origins_covered": 10,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=none",
+          "alpha": 100.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 17.899960394297555,
+          "inner_origins_covered": 10,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=0.1|metal=aluminum",
+          "alpha": 0.1,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 21.453140828908374,
+          "inner_origins_covered": 10,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=aluminum",
+          "alpha": 1.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 19.877985236668184,
+          "inner_origins_covered": 10,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=aluminum",
+          "alpha": 10.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 18.251197139652685,
+          "inner_origins_covered": 10,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=aluminum",
+          "alpha": 100.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 16.707974210470653,
+          "inner_origins_covered": 10,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=0.1|metal=copper",
+          "alpha": 0.1,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 22.177056201071128,
+          "inner_origins_covered": 10,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=copper",
+          "alpha": 1.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 21.19310836446115,
+          "inner_origins_covered": 10,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=copper",
+          "alpha": 10.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 18.984231965196965,
+          "inner_origins_covered": 10,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=copper",
+          "alpha": 100.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 16.638968772358705,
+          "inner_origins_covered": 10,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        }
+      ]
+    },
+    "h3|2025-01-01": {
+      "forecast_origin_month": "2025-01-01",
+      "horizon_months": 3,
+      "selected_alpha": 100.0,
+      "selected_non_ferrous_channel": "copper",
+      "selection_reason": "lowest_inner_macro_mae",
+      "selected_inner_macro_mae": 16.12068767861106,
+      "inner_origins_considered": 11,
+      "inner_origins_covered": 11,
+      "earliest_inner_origin": "2023-12-01",
+      "candidates": [
+        {
+          "configuration_id": "alpha=0.1|metal=none",
+          "alpha": 0.1,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 23.7781297838966,
+          "inner_origins_covered": 11,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=none",
+          "alpha": 1.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 22.756762691156126,
+          "inner_origins_covered": 11,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=none",
+          "alpha": 10.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 20.27103395907514,
+          "inner_origins_covered": 11,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=none",
+          "alpha": 100.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 16.92584365442754,
+          "inner_origins_covered": 11,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=0.1|metal=aluminum",
+          "alpha": 0.1,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 20.67845257043356,
+          "inner_origins_covered": 11,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=aluminum",
+          "alpha": 1.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 19.174927055108224,
+          "inner_origins_covered": 11,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=aluminum",
+          "alpha": 10.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 17.589421186480756,
+          "inner_origins_covered": 11,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=aluminum",
+          "alpha": 100.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 16.20050284799852,
+          "inner_origins_covered": 11,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=0.1|metal=copper",
+          "alpha": 0.1,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 21.477413554014806,
+          "inner_origins_covered": 11,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=copper",
+          "alpha": 1.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 20.530594807409482,
+          "inner_origins_covered": 11,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=copper",
+          "alpha": 10.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 18.209029974793825,
+          "inner_origins_covered": 11,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=copper",
+          "alpha": 100.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 16.12068767861106,
+          "inner_origins_covered": 11,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        }
+      ]
+    },
+    "h3|2025-02-01": {
+      "forecast_origin_month": "2025-02-01",
+      "horizon_months": 3,
+      "selected_alpha": 100.0,
+      "selected_non_ferrous_channel": "copper",
+      "selection_reason": "lowest_inner_macro_mae",
+      "selected_inner_macro_mae": 16.02137741921286,
+      "inner_origins_considered": 12,
+      "inner_origins_covered": 12,
+      "earliest_inner_origin": "2023-12-01",
+      "candidates": [
+        {
+          "configuration_id": "alpha=0.1|metal=none",
+          "alpha": 0.1,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 22.388407562364765,
+          "inner_origins_covered": 12,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=none",
+          "alpha": 1.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 21.41464616680959,
+          "inner_origins_covered": 12,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=none",
+          "alpha": 10.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 19.36032254720446,
+          "inner_origins_covered": 12,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=none",
+          "alpha": 100.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 16.355313093070716,
+          "inner_origins_covered": 12,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=0.1|metal=aluminum",
+          "alpha": 0.1,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 20.236198756144383,
+          "inner_origins_covered": 12,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=aluminum",
+          "alpha": 1.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 18.777202635939418,
+          "inner_origins_covered": 12,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=aluminum",
+          "alpha": 10.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 17.289815525746466,
+          "inner_origins_covered": 12,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=aluminum",
+          "alpha": 100.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 16.075197414590377,
+          "inner_origins_covered": 12,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=0.1|metal=copper",
+          "alpha": 0.1,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 21.097727805030114,
+          "inner_origins_covered": 12,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=copper",
+          "alpha": 1.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 20.142466586001458,
+          "inner_origins_covered": 12,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=copper",
+          "alpha": 10.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 17.851392632487542,
+          "inner_origins_covered": 12,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=copper",
+          "alpha": 100.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 16.02137741921286,
+          "inner_origins_covered": 12,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        }
+      ]
+    },
+    "h3|2025-03-01": {
+      "forecast_origin_month": "2025-03-01",
+      "horizon_months": 3,
+      "selected_alpha": 100.0,
+      "selected_non_ferrous_channel": "none",
+      "selection_reason": "lowest_inner_macro_mae",
+      "selected_inner_macro_mae": 16.165397575571294,
+      "inner_origins_considered": 13,
+      "inner_origins_covered": 13,
+      "earliest_inner_origin": "2023-12-01",
+      "candidates": [
+        {
+          "configuration_id": "alpha=0.1|metal=none",
+          "alpha": 0.1,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 22.124769570152505,
+          "inner_origins_covered": 13,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=none",
+          "alpha": 1.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 21.25521182675106,
+          "inner_origins_covered": 13,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=none",
+          "alpha": 10.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 19.321409485413827,
+          "inner_origins_covered": 13,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=none",
+          "alpha": 100.0,
+          "non_ferrous_channel": "none",
+          "inner_macro_mae": 16.165397575571294,
+          "inner_origins_covered": 13,
+          "industries_scored": 6,
+          "mean_predictor_count": 10
+        },
+        {
+          "configuration_id": "alpha=0.1|metal=aluminum",
+          "alpha": 0.1,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 20.533177018205524,
+          "inner_origins_covered": 13,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=aluminum",
+          "alpha": 1.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 19.222432536912752,
+          "inner_origins_covered": 13,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=aluminum",
+          "alpha": 10.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 17.826317581773516,
+          "inner_origins_covered": 13,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=aluminum",
+          "alpha": 100.0,
+          "non_ferrous_channel": "aluminum",
+          "inner_macro_mae": 16.48268163102919,
+          "inner_origins_covered": 13,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=0.1|metal=copper",
+          "alpha": 0.1,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 21.295510656618433,
+          "inner_origins_covered": 13,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=1.0|metal=copper",
+          "alpha": 1.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 20.398116044023045,
+          "inner_origins_covered": 13,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=10.0|metal=copper",
+          "alpha": 10.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 18.201796484939962,
+          "inner_origins_covered": 13,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        },
+        {
+          "configuration_id": "alpha=100.0|metal=copper",
+          "alpha": 100.0,
+          "non_ferrous_channel": "copper",
+          "inner_macro_mae": 16.382081268022123,
+          "inner_origins_covered": 13,
+          "industries_scored": 12,
+          "mean_predictor_count": 15
+        }
+      ]
+    }
+  },
+  "results": {
+    "h1": {
+      "horizon_months": 1,
+      "benchmark_name": "persistence_current_month",
+      "model": {
+        "rows": 180,
+        "macro_industry_mae": 15.307285929078239,
+        "pooled_mae": 15.307285929078242,
+        "macro_industry_rmse": 19.347723758751005,
+        "pooled_rmse": 20.492435823233574,
+        "median_absolute_error": 10.436449659752508,
+        "pooled_spearman": 0.7247020265676971,
+        "per_industry_mae": {
+          "IND-01": 16.68701800328017,
+          "IND-02": 13.025558490470015,
+          "IND-03": 11.895478820646986,
+          "IND-04": 21.330994027437374,
+          "IND-05": 27.528345997975276,
+          "IND-06": 20.56447275910553,
+          "IND-07": 13.098666964330016,
+          "IND-08": 13.956806074038592,
+          "IND-09": 7.790616995598379,
+          "IND-10": 8.294528337114906,
+          "IND-11": 12.682031358321574,
+          "IND-12": 16.832913320620047
+        },
+        "by_block": {
+          "DEV-1": {
+            "rows": 60,
+            "macro_industry_mae": 12.973728300020882,
+            "pooled_mae": 12.973728300020884
+          },
+          "DEV-2": {
+            "rows": 60,
+            "macro_industry_mae": 16.64290906851266,
+            "pooled_mae": 16.64290906851266
+          },
+          "DEV-3": {
+            "rows": 60,
+            "macro_industry_mae": 16.305220418701175,
+            "pooled_mae": 16.305220418701175
+          }
+        },
+        "clipped_predictions": 5
+      },
+      "benchmark": {
+        "rows": 180,
+        "macro_industry_mae": 14.528671173147524,
+        "pooled_mae": 14.52867117314752,
+        "macro_industry_rmse": 18.43147596754079,
+        "pooled_rmse": 19.59676284028411,
+        "median_absolute_error": 10.0,
+        "pooled_spearman": 0.7383584680587763,
+        "per_industry_mae": {
+          "IND-01": 16.282441274393587,
+          "IND-02": 11.05809103036433,
+          "IND-03": 11.783436218201985,
+          "IND-04": 19.23361740969034,
+          "IND-05": 27.313834053708213,
+          "IND-06": 20.223096160364534,
+          "IND-07": 12.71672119694167,
+          "IND-08": 12.67230940723712,
+          "IND-09": 7.195825921737853,
+          "IND-10": 7.972048909480865,
+          "IND-11": 12.507069454458438,
+          "IND-12": 15.385563041191343
+        },
+        "by_block": {
+          "DEV-1": {
+            "rows": 60,
+            "macro_industry_mae": 12.167827787368019,
+            "pooled_mae": 12.167827787368022
+          },
+          "DEV-2": {
+            "rows": 60,
+            "macro_industry_mae": 15.675306791827195,
+            "pooled_mae": 15.675306791827191
+          },
+          "DEV-3": {
+            "rows": 60,
+            "macro_industry_mae": 15.74287894024736,
+            "pooled_mae": 15.742878940247358
+          }
+        },
+        "clipped_predictions": 5
+      },
+      "model_high_stress": {
+        "threshold": 85.0,
+        "threshold_tuned": false,
+        "observed_event_count": 20,
+        "predicted_event_count": 27,
+        "true_positive": 14,
+        "false_positive": 13,
+        "false_negative": 6,
+        "precision": 0.5185185185185185,
+        "recall": 0.7,
+        "f1": 0.5957446808510639,
+        "pr_auc": 0.48687895188034797,
+        "severe_threshold": 95.0,
+        "severe_observed_count": 11,
+        "severe_predicted_count": 11
+      },
+      "benchmark_high_stress": {
+        "threshold": 85.0,
+        "threshold_tuned": false,
+        "observed_event_count": 20,
+        "predicted_event_count": 21,
+        "true_positive": 13,
+        "false_positive": 8,
+        "false_negative": 7,
+        "precision": 0.6190476190476191,
+        "recall": 0.65,
+        "f1": 0.6341463414634146,
+        "pr_auc": 0.5675260852067066,
+        "severe_threshold": 95.0,
+        "severe_observed_count": 11,
+        "severe_predicted_count": 9
+      },
+      "paired_origin_differences": {
+        "by_origin": {
+          "2024-01-01": {
+            "model_macro_mae": 14.56192184211188,
+            "benchmark_macro_mae": 14.0,
+            "difference": 0.5619218421118806
+          },
+          "2024-02-01": {
+            "model_macro_mae": 10.14993852204031,
+            "benchmark_macro_mae": 9.935897435897438,
+            "difference": 0.21404108614287232
+          },
+          "2024-03-01": {
+            "model_macro_mae": 15.78966189159565,
+            "benchmark_macro_mae": 16.049382716049386,
+            "difference": -0.259720824453737
+          },
+          "2024-04-01": {
+            "model_macro_mae": 14.228476694105808,
+            "benchmark_macro_mae": 13.095238095238095,
+            "difference": 1.1332385988677132
+          },
+          "2024-05-01": {
+            "model_macro_mae": 10.138642550250763,
+            "benchmark_macro_mae": 7.758620689655172,
+            "difference": 2.3800218605955914
+          },
+          "2024-06-01": {
+            "model_macro_mae": 16.554416691235616,
+            "benchmark_macro_mae": 15.833333333333336,
+            "difference": 0.7210833579022804
+          },
+          "2024-07-01": {
+            "model_macro_mae": 12.632011579825894,
+            "benchmark_macro_mae": 11.290322580645162,
+            "difference": 1.3416889991807324
+          },
+          "2024-08-01": {
+            "model_macro_mae": 16.401386332169622,
+            "benchmark_macro_mae": 15.364583333333334,
+            "difference": 1.0368029988362881
+          },
+          "2024-09-01": {
+            "model_macro_mae": 20.753268725590754,
+            "benchmark_macro_mae": 20.202020202020197,
+            "difference": 0.5512485235705569
+          },
+          "2024-10-01": {
+            "model_macro_mae": 16.87346201374142,
+            "benchmark_macro_mae": 15.686274509803923,
+            "difference": 1.1871875039374977
+          },
+          "2024-11-01": {
+            "model_macro_mae": 14.39276415302824,
+            "benchmark_macro_mae": 14.761904761904761,
+            "difference": -0.36914060887652056
+          },
+          "2024-12-01": {
+            "model_macro_mae": 19.769672712596435,
+            "benchmark_macro_mae": 18.75,
+            "difference": 1.019672712596435
+          },
+          "2025-01-01": {
+            "model_macro_mae": 20.891500369818427,
+            "benchmark_macro_mae": 20.045045045045043,
+            "difference": 0.8464553247733839
+          },
+          "2025-02-01": {
+            "model_macro_mae": 15.47829769215859,
+            "benchmark_macro_mae": 14.473684210526313,
+            "difference": 1.0046134816322763
+          },
+          "2025-03-01": {
+            "model_macro_mae": 10.993867165904177,
+            "benchmark_macro_mae": 10.683760683760683,
+            "difference": 0.31010648214349423
+          }
+        },
+        "origins": 15,
+        "mean_difference": 0.7786147559307164,
+        "origins_favouring_model": 2,
+        "origins_favouring_benchmark": 13
+      },
+      "bootstrap": {
+        "replications": 1000,
+        "block_length_months": 3,
+        "seed": 20260827,
+        "confidence_level": 0.95,
+        "clustered_by": "forecast_origin_month",
+        "industries_kept_together": true,
+        "model_macro_mae_ci": {
+          "point_estimate": 15.307285929078239,
+          "ci_low": 13.995874530556028,
+          "ci_high": 17.419088227190365,
+          "replications": 1000,
+          "block_length_months": 3,
+          "seed": 20260827,
+          "cluster_unit": "forecast_origin_month",
+          "n_month_clusters": 15,
+          "keeps_all_industries_together": true
+        },
+        "paired_macro_mae_difference_ci": {
+          "point_estimate": 0.7786147559307146,
+          "ci_low": 0.4932472381720776,
+          "ci_high": 1.1677530301896175,
+          "replications": 1000,
+          "block_length_months": 3,
+          "seed": 20260827,
+          "cluster_unit": "forecast_origin_month",
+          "paired": true,
+          "verdict": "excludes_zero",
+          "conclusive": true
+        }
+      },
+      "evidence": {
+        "evidence_status": "incremental_signal_not_supported",
+        "reason": "Model macro MAE 15.3073 is not lower than the benchmark's 14.5287.",
+        "model_macro_mae": 15.307285929078239,
+        "benchmark_macro_mae": 14.528671173147524,
+        "mae_skill": -0.05359160150652875,
+        "paired_ci_low": 0.4932472381720776,
+        "paired_ci_high": 1.1677530301896175,
+        "approved_for_locked_test": false,
+        "high_stress_or_sensitivity_may_override": false
+      },
+      "sensitivity": {
+        "timing_sensitivity": {
+          "rows": 180,
+          "metrics": {
+            "rows": 180,
+            "macro_industry_mae": 15.600674364398207,
+            "pooled_mae": 15.600674364398204,
+            "macro_industry_rmse": 19.649620944285164,
+            "pooled_rmse": 20.768869478329993,
+            "median_absolute_error": 11.178702882233416,
+            "pooled_spearman": 0.7138292827435065,
+            "per_industry_mae": {
+              "IND-01": 16.385771624647795,
+              "IND-02": 11.881841890928202,
+              "IND-03": 11.747888636452918,
+              "IND-04": 21.304436541057417,
+              "IND-05": 27.275148216368414,
+              "IND-06": 20.09554701362581,
+              "IND-07": 12.977859587138731,
+              "IND-08": 15.273466752162046,
+              "IND-09": 9.803892554253553,
+              "IND-10": 8.597870378667908,
+              "IND-11": 12.564443180914177,
+              "IND-12": 19.299925996561505
+            },
+            "by_block": {
+              "DEV-1": {
+                "rows": 60,
+                "macro_industry_mae": 14.23117811839908,
+                "pooled_mae": 14.231178118399084
+              },
+              "DEV-2": {
+                "rows": 60,
+                "macro_industry_mae": 16.395435848477145,
+                "pooled_mae": 16.395435848477153
+              },
+              "DEV-3": {
+                "rows": 60,
+                "macro_industry_mae": 16.17540912631839,
+                "pooled_mae": 16.17540912631839
+              }
+            },
+            "clipped_predictions": 8
+          },
+          "reused_primary_hyperparameters": true,
+          "may_change_primary_status": false
+        },
+        "structural_sensitivity": {
+          "rows": 180,
+          "metrics": {
+            "rows": 180,
+            "macro_industry_mae": 15.716961658057409,
+            "pooled_mae": 15.71696165805741,
+            "macro_industry_rmse": 19.824858230712604,
+            "pooled_rmse": 21.00973522463324,
+            "median_absolute_error": 10.808433558881422,
+            "pooled_spearman": 0.7241459160362792,
+            "per_industry_mae": {
+              "IND-01": 18.6384625766148,
+              "IND-02": 12.989465020848389,
+              "IND-03": 11.896067610275278,
+              "IND-04": 21.64453387291336,
+              "IND-05": 28.75839413658091,
+              "IND-06": 20.329565737322774,
+              "IND-07": 13.068128666925096,
+              "IND-08": 14.239869646024964,
+              "IND-09": 8.352348918994524,
+              "IND-10": 9.085965584143109,
+              "IND-11": 12.535960856062331,
+              "IND-12": 17.06477726998339
+            },
+            "by_block": {
+              "DEV-1": {
+                "rows": 60,
+                "macro_industry_mae": 13.672768354661144,
+                "pooled_mae": 13.672768354661146
+              },
+              "DEV-2": {
+                "rows": 60,
+                "macro_industry_mae": 17.030239461795976,
+                "pooled_mae": 17.030239461795976
+              },
+              "DEV-3": {
+                "rows": 60,
+                "macro_industry_mae": 16.447877157715112,
+                "pooled_mae": 16.44787715771511
+              }
+            },
+            "clipped_predictions": 19
+          },
+          "reused_primary_hyperparameters": true,
+          "may_change_primary_status": false
+        }
+      }
+    },
+    "h3": {
+      "horizon_months": 3,
+      "benchmark_name": "persistence_trailing_3m_max",
+      "model": {
+        "rows": 180,
+        "macro_industry_mae": 16.107219840958955,
+        "pooled_mae": 16.107219840958958,
+        "macro_industry_rmse": 20.16692544799483,
+        "pooled_rmse": 21.256973257707884,
+        "median_absolute_error": 13.006249307742154,
+        "pooled_spearman": 0.720894874311777,
+        "per_industry_mae": {
+          "IND-01": 30.23028852947651,
+          "IND-02": 14.00128379853159,
+          "IND-03": 8.40168541703593,
+          "IND-04": 12.134452629143693,
+          "IND-05": 19.807715251687547,
+          "IND-06": 16.088865695016775,
+          "IND-07": 11.975134663167308,
+          "IND-08": 16.5600981911838,
+          "IND-09": 14.24826773019996,
+          "IND-10": 25.53788903436296,
+          "IND-11": 12.122920912882277,
+          "IND-12": 12.178036238819129
+        },
+        "by_block": {
+          "DEV-1": {
+            "rows": 60,
+            "macro_industry_mae": 16.533245907174702,
+            "pooled_mae": 16.533245907174702
+          },
+          "DEV-2": {
+            "rows": 60,
+            "macro_industry_mae": 13.416989807736671,
+            "pooled_mae": 13.416989807736668
+          },
+          "DEV-3": {
+            "rows": 60,
+            "macro_industry_mae": 18.3714238079655,
+            "pooled_mae": 18.371423807965495
+          }
+        },
+        "clipped_predictions": 10
+      },
+      "benchmark": {
+        "rows": 180,
+        "macro_industry_mae": 14.698493624422762,
+        "pooled_mae": 14.698493624422765,
+        "macro_industry_rmse": 18.71628589689863,
+        "pooled_rmse": 19.813757842366584,
+        "median_absolute_error": 10.771780303030305,
+        "pooled_spearman": 0.7381397267069177,
+        "per_industry_mae": {
+          "IND-01": 27.18023158019715,
+          "IND-02": 12.176302666727398,
+          "IND-03": 8.480333176038114,
+          "IND-04": 9.006214479565976,
+          "IND-05": 19.114456108313423,
+          "IND-06": 17.2658938108934,
+          "IND-07": 10.305911894427442,
+          "IND-08": 14.88451004303122,
+          "IND-09": 11.594215204843987,
+          "IND-10": 23.560298760192016,
+          "IND-11": 11.480013572411572,
+          "IND-12": 11.33354219643146
+        },
+        "by_block": {
+          "DEV-1": {
+            "rows": 60,
+            "macro_industry_mae": 14.831610364943698,
+            "pooled_mae": 14.831610364943698
+          },
+          "DEV-2": {
+            "rows": 60,
+            "macro_industry_mae": 12.211901390566,
+            "pooled_mae": 12.211901390566002
+          },
+          "DEV-3": {
+            "rows": 60,
+            "macro_industry_mae": 17.051969117758592,
+            "pooled_mae": 17.051969117758592
+          }
+        },
+        "clipped_predictions": 10
+      },
+      "model_high_stress": {
+        "threshold": 85.0,
+        "threshold_tuned": false,
+        "observed_event_count": 29,
+        "predicted_event_count": 42,
+        "true_positive": 26,
+        "false_positive": 16,
+        "false_negative": 3,
+        "precision": 0.6190476190476191,
+        "recall": 0.896551724137931,
+        "f1": 0.732394366197183,
+        "pr_auc": 0.6288640378684774,
+        "severe_threshold": 95.0,
+        "severe_observed_count": 21,
+        "severe_predicted_count": 31
+      },
+      "benchmark_high_stress": {
+        "threshold": 85.0,
+        "threshold_tuned": false,
+        "observed_event_count": 29,
+        "predicted_event_count": 37,
+        "true_positive": 24,
+        "false_positive": 13,
+        "false_negative": 5,
+        "precision": 0.6486486486486487,
+        "recall": 0.8275862068965517,
+        "f1": 0.7272727272727273,
+        "pr_auc": 0.6373247257985317,
+        "severe_threshold": 95.0,
+        "severe_observed_count": 21,
+        "severe_predicted_count": 27
+      },
+      "paired_origin_differences": {
+        "by_origin": {
+          "2024-01-01": {
+            "model_macro_mae": 25.89687128836876,
+            "benchmark_macro_mae": 22.333333333333332,
+            "difference": 3.5635379550354287
+          },
+          "2024-02-01": {
+            "model_macro_mae": 17.399409390790513,
+            "benchmark_macro_mae": 14.743589743589743,
+            "difference": 2.6558196472007705
+          },
+          "2024-03-01": {
+            "model_macro_mae": 14.027386613153572,
+            "benchmark_macro_mae": 13.271604938271603,
+            "difference": 0.7557816748819697
+          },
+          "2024-04-01": {
+            "model_macro_mae": 14.500719324532149,
+            "benchmark_macro_mae": 15.476190476190476,
+            "difference": -0.9754711516583274
+          },
+          "2024-05-01": {
+            "model_macro_mae": 10.841842919028503,
+            "benchmark_macro_mae": 8.333333333333334,
+            "difference": 2.508509585695169
+          },
+          "2024-06-01": {
+            "model_macro_mae": 16.976897909134518,
+            "benchmark_macro_mae": 14.444444444444445,
+            "difference": 2.5324534646900734
+          },
+          "2024-07-01": {
+            "model_macro_mae": 16.567723207023192,
+            "benchmark_macro_mae": 13.978494623655914,
+            "difference": 2.5892285833672783
+          },
+          "2024-08-01": {
+            "model_macro_mae": 14.370277500341274,
+            "benchmark_macro_mae": 13.28125,
+            "difference": 1.089027500341274
+          },
+          "2024-09-01": {
+            "model_macro_mae": 8.23217368104976,
+            "benchmark_macro_mae": 8.080808080808081,
+            "difference": 0.15136560024167878
+          },
+          "2024-10-01": {
+            "model_macro_mae": 10.937876741134614,
+            "benchmark_macro_mae": 11.274509803921568,
+            "difference": -0.3366330627869534
+          },
+          "2024-11-01": {
+            "model_macro_mae": 14.92896456583268,
+            "benchmark_macro_mae": 13.809523809523808,
+            "difference": 1.1194407563088724
+          },
+          "2024-12-01": {
+            "model_macro_mae": 20.710527453733246,
+            "benchmark_macro_mae": 19.212962962962962,
+            "difference": 1.4975644907702836
+          },
+          "2025-01-01": {
+            "model_macro_mae": 18.13150856189538,
+            "benchmark_macro_mae": 16.216216216216218,
+            "difference": 1.9152923456791626
+          },
+          "2025-02-01": {
+            "model_macro_mae": 22.669996654484848,
+            "benchmark_macro_mae": 21.491228070175435,
+            "difference": 1.1787685843094131
+          },
+          "2025-03-01": {
+            "model_macro_mae": 15.416121803881344,
+            "benchmark_macro_mae": 14.52991452991453,
+            "difference": 0.8862072739668143
+          }
+        },
+        "origins": 15,
+        "mean_difference": 1.408726216536194,
+        "origins_favouring_model": 2,
+        "origins_favouring_benchmark": 13
+      },
+      "bootstrap": {
+        "replications": 1000,
+        "block_length_months": 3,
+        "seed": 20260827,
+        "confidence_level": 0.95,
+        "clustered_by": "forecast_origin_month",
+        "industries_kept_together": true,
+        "model_macro_mae_ci": {
+          "point_estimate": 16.107219840958955,
+          "ci_low": 13.184890006322911,
+          "ci_high": 17.867949305100105,
+          "replications": 1000,
+          "block_length_months": 3,
+          "seed": 20260827,
+          "cluster_unit": "forecast_origin_month",
+          "n_month_clusters": 15,
+          "keeps_all_industries_together": true
+        },
+        "paired_macro_mae_difference_ci": {
+          "point_estimate": 1.4087262165361931,
+          "ci_low": 0.7318831287349828,
+          "ci_high": 1.9405013433116167,
+          "replications": 1000,
+          "block_length_months": 3,
+          "seed": 20260827,
+          "cluster_unit": "forecast_origin_month",
+          "paired": true,
+          "verdict": "excludes_zero",
+          "conclusive": true
+        }
+      },
+      "evidence": {
+        "evidence_status": "incremental_signal_not_supported",
+        "reason": "Model macro MAE 16.1072 is not lower than the benchmark's 14.6985.",
+        "model_macro_mae": 16.107219840958955,
+        "benchmark_macro_mae": 14.698493624422762,
+        "mae_skill": -0.09584153672696627,
+        "paired_ci_low": 0.7318831287349828,
+        "paired_ci_high": 1.9405013433116167,
+        "approved_for_locked_test": false,
+        "high_stress_or_sensitivity_may_override": false
+      },
+      "sensitivity": {
+        "timing_sensitivity": {
+          "rows": 180,
+          "metrics": {
+            "rows": 180,
+            "macro_industry_mae": 16.132915024001534,
+            "pooled_mae": 16.132915024001537,
+            "macro_industry_rmse": 20.35477636663597,
+            "pooled_rmse": 21.405932887181432,
+            "median_absolute_error": 12.285732162586783,
+            "pooled_spearman": 0.721069948905629,
+            "per_industry_mae": {
+              "IND-01": 29.680445572545022,
+              "IND-02": 12.427014262471566,
+              "IND-03": 8.850130500679814,
+              "IND-04": 11.381324189159603,
+              "IND-05": 19.62560550203852,
+              "IND-06": 16.618795564127222,
+              "IND-07": 11.996669824499508,
+              "IND-08": 18.7193367470432,
+              "IND-09": 14.213379408746984,
+              "IND-10": 26.461115895341646,
+              "IND-11": 11.376205685555226,
+              "IND-12": 12.244957135810129
+            },
+            "by_block": {
+              "DEV-1": {
+                "rows": 60,
+                "macro_industry_mae": 16.78558287137167,
+                "pooled_mae": 16.78558287137167
+              },
+              "DEV-2": {
+                "rows": 60,
+                "macro_industry_mae": 13.459217802061126,
+                "pooled_mae": 13.459217802061124
+              },
+              "DEV-3": {
+                "rows": 60,
+                "macro_industry_mae": 18.153944398571813,
+                "pooled_mae": 18.153944398571817
+              }
+            },
+            "clipped_predictions": 12
+          },
+          "reused_primary_hyperparameters": true,
+          "may_change_primary_status": false
+        },
+        "structural_sensitivity": {
+          "rows": 180,
+          "metrics": {
+            "rows": 180,
+            "macro_industry_mae": 16.119617681656944,
+            "pooled_mae": 16.119617681656944,
+            "macro_industry_rmse": 19.91855991625523,
+            "pooled_rmse": 21.43802837366771,
+            "median_absolute_error": 11.750574417954729,
+            "pooled_spearman": 0.7382047023516743,
+            "per_industry_mae": {
+              "IND-01": 30.854619119424584,
+              "IND-02": 15.054803169492876,
+              "IND-03": 5.643540165024441,
+              "IND-04": 11.36502237832557,
+              "IND-05": 19.727266589649496,
+              "IND-06": 15.843587170090641,
+              "IND-07": 11.31509508292274,
+              "IND-08": 15.364640736608322,
+              "IND-09": 12.911645454474304,
+              "IND-10": 29.58370450990996,
+              "IND-11": 13.048484428683432,
+              "IND-12": 12.723003375277
+            },
+            "by_block": {
+              "DEV-1": {
+                "rows": 60,
+                "macro_industry_mae": 16.501306029636382,
+                "pooled_mae": 16.501306029636382
+              },
+              "DEV-2": {
+                "rows": 60,
+                "macro_industry_mae": 13.58056910181343,
+                "pooled_mae": 13.58056910181343
+              },
+              "DEV-3": {
+                "rows": 60,
+                "macro_industry_mae": 18.276977913521034,
+                "pooled_mae": 18.276977913521034
+              }
+            },
+            "clipped_predictions": 21
+          },
+          "reused_primary_hyperparameters": true,
+          "may_change_primary_status": false
+        }
+      }
+    }
+  },
+  "upstream_invariants_reproduced": {
+    "b3": {
+      "monthly_rows": 636,
+      "monthly_industries": 12,
+      "monthly_months_per_industry": [
+        53
+      ],
+      "monthly_first": "2022-01-01",
+      "monthly_last": "2026-05-01",
+      "horizons": {
+        "1": {
+          "rows": 624,
+          "per_industry": [
+            52
+          ],
+          "first": "2022-01-01",
+          "last": "2026-04-01"
+        },
+        "3": {
+          "rows": 600,
+          "per_industry": [
+            50
+          ],
+          "first": "2022-01-01",
+          "last": "2026-02-01"
+        }
+      },
+      "combined_rows": 1224,
+      "uses_2026_06": [],
+      "duplicate_keys": 0,
+      "target_definition_versions": [
+        "production_stress_target_v1"
+      ],
+      "primary_component_count": 1,
+      "primary_component": "mpi_adverse_yoy",
+      "all_invariants_reproduced": true,
+      "failures": []
+    },
+    "b4_origins": 15,
+    "c4_rows": 39474
+  },
+  "outputs": {
+    "predictions_parquet": "data/model_input/d1_development_predictions.parquet",
+    "predictions_sha256": "5f8d25e38dc1bf911280ae68ed61212b81332ecac167b79f9f7216acb412ddca"
+  },
+  "content_checksum": "e7d3d2cb6e376891550c5c528d34b2daef3356bc6df299fc486f8271aa128a6c"
+}

@@ -1,0 +1,132 @@
+# Schema for the C7 canonical DAILY EPPO ex-refinery source table.
+# Describes what the code ACTUALLY writes
+# (data/interim/c7_eppo_daily_prices.parquet, git-ignored), verified by
+# tests/test_c7_eppo_full_ingestion.py.
+#
+# SOURCE-LEVEL TABLE, NOT A FEATURE TABLE. No return, lag, volatility, shock or
+# exposure column exists here, and nothing is joined to a target.
+
+schema_version: 1
+task: C7
+written_by: scripts/run_c7_eppo_full_ingestion.py
+output: data/interim/c7_eppo_daily_prices.parquet
+supersedes:
+  table: data/interim/c6_eppo_source_observations.parquet
+  reason: >-
+    The C6 table was a 722-row PARTIAL AUDIT table built from a 254-document
+    sample. This table is built from the full retrieved window. The C6 table and
+    its audit JSON are left unchanged.
+
+price_stage: ex_refinery
+stage_note: >-
+  The ex-refinery column is the producer price BEFORE excise tax, municipal tax,
+  oil fund, conservation fund and wholesale margin. Every other stage is parsed
+  into its own field during discovery and none of them is ever written into
+  `value`.
+
+audited_series:
+  eppo_ex_refinery_hsd:
+    exact_label: "H-DIESEL"
+    unit: BAHT/LITRE
+    note: >-
+      Ordinary H-DIESEL. B7, B10 and B20 are different products published in
+      adjacent rows of the same table and are never substituted for it.
+  eppo_ex_refinery_fo600_2s:
+    exact_label: "FO 600 (1) 2%S"
+    unit: BAHT/LITRE
+  eppo_ex_refinery_fo1500_2s:
+    exact_label: "FO 1500 (2) 2%S"
+    unit: BAHT/LITRE
+
+observation:
+  grain: [series_id, effective_date, semantic_regime_id]
+  ordering: [series_id, effective_date, semantic_regime_id]
+  columns:
+    - {name: series_id, type: string, nullable: false}
+    - name: source_product_label
+      type: string
+      nullable: true
+      note: >-
+        The EXACT displayed label, preserved verbatim including spacing. Null
+        only on a same_date_conflicting_value row, where no document was chosen.
+    - name: semantic_regime_id
+      type: string
+      nullable: true
+      note: "series | layout regime | normalized label. Never spliced silently."
+    - {name: effective_date, type: date, nullable: false}
+    - name: value
+      type: float
+      nullable: true
+      note: >-
+        Ex-refinery price. Null where the series-date is unresolved. No rounding,
+        imputation, interpolation, forward-fill, clipping or winsorization.
+    - {name: unit, type: string, nullable: false, enum: [BAHT/LITRE]}
+    - {name: price_stage, type: string, nullable: false, const: ex_refinery}
+    - {name: source_name, type: string, nullable: false}
+    - {name: media_id, type: integer, nullable: true}
+    - {name: source_url, type: string, nullable: true}
+    - {name: raw_filename, type: string, nullable: true}
+    - {name: raw_file_sha256, type: string, nullable: true}
+    - {name: source_document_sha256, type: string, nullable: true}
+    - {name: discovery_method, type: string, nullable: false}
+    - name: source_available_as_of
+      type: date
+      nullable: true
+      const: null
+      note: >-
+        ALWAYS null. EPPO historical release timing was never measured, so no
+        observation carries an evidenced availability date. A policy-derived
+        month written here would present an assumption as provenance.
+    - name: candidate_monthly_policy_available_month
+      type: string
+      nullable: false
+      note: >-
+        reference month of the effective date plus the two-month conservative
+        POLICY lag. Deliberately NOT named policy_available_month: the policy is
+        defined for a monthly observation, and reusing the monthly name at daily
+        granularity would read as a measured daily availability date.
+    - name: availability_basis
+      type: string
+      nullable: false
+      const: conservative_policy_not_historical_measurement
+    - {name: latest_vintage_used, type: boolean, nullable: false, const: true}
+    - {name: point_in_time_supported, type: boolean, nullable: false, const: false}
+    - name: quality_flag
+      type: string
+      nullable: false
+      enum:
+        - ok
+        - duplicate_document
+        - content_equivalent_duplicate
+        - same_date_conflicting_value
+    - name: daily_lineage_checksum
+      type: string
+      nullable: false
+      note: >-
+        SHA-256 over series, effective date, exact label, value, unit, price
+        stage, semantic regime, media ID and document checksum. Acquisition
+        timestamps are excluded by construction.
+    - name: downloaded_at_utc
+      type: datetime
+      nullable: true
+      note: "Acquisition provenance only. Never availability, never in a checksum."
+
+prohibited_columns:
+  - any return or log-change column
+  - any percentage-change column
+  - any lagged column
+  - any realized-volatility column
+  - any z-score or shock column
+  - any industry exposure or MPI target column
+transformations_present: false
+target_joined: false
+
+invariants:
+  - "Keys are unique on (series_id, effective_date, semantic_regime_id)."
+  - "unit is BAHT/LITRE for every row; LPG (BAHT/KILOGRAM) is excluded entirely."
+  - "value is the EX-REFIN. column, never wholesale, excise tax, VAT or retail."
+  - "source_available_as_of is null in every row."
+  - "No imputation, interpolation, forward-fill, rounding or winsorization."
+  - "A conflicting series-date keeps a row with a null value, never a chosen one."
+  - "Ordering is deterministic on the declared key."
+  - "Every valued row carries its media ID, source URL and document checksum."

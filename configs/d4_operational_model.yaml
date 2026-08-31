@@ -1,0 +1,235 @@
+# Task D4 — frozen-specification operational commodity model.
+#
+# ONE model, fully frozen before it is run. No hyperparameter search, no inner
+# validation, no feature selection, no model averaging.
+#
+# HONESTY NOTE, recorded first because it governs how every number below may be
+# read: this specification was chosen AFTER D1's development results were
+# observed. It is therefore an EXPLORATORY development evaluation, not a
+# confirmatory test, and no outcome here can make the model locked-test
+# eligible. The specification is reused from D1's registered fallback precisely
+# to avoid inventing a new tuning process that 15 origins cannot support.
+
+schema_version: 1
+task: D4
+model_version: operational_fixed_ridge_residual_v1
+
+evidence_framing:
+  specification_frozen_after_d1_results: true
+  confirmatory_evaluation: false
+  exploratory_development_evaluation: true
+  nested_model_selection_performed: false
+  locked_test_eligible: false
+  preregistered_before_all_development_outcomes: false
+  note: >-
+    The alpha and channel come from D1's preregistered conservative fallback,
+    but D1's development metrics were already seen when D4 froze them. Calling
+    this preregistered would be false.
+
+# ---------------------------------------------------------------------------
+# Frozen model specification. Every field here is a constant, not a search space.
+# ---------------------------------------------------------------------------
+model:
+  name: operational_fixed_ridge_residual
+  alpha: 100.0
+  fit_intercept: true
+  nonferrous_channel: none
+  per_industry: true
+  per_horizon: true
+  refit_every_outer_origin: true
+  pooled_across_industries: false
+  hyperparameter_search: false
+  inner_cross_validation: false
+  outcome_based_feature_selection: false
+  model_averaging: false
+  clip_floor: 0.0
+  clip_ceiling: 100.0
+  clipping_tuned: false
+
+# Aluminum and Copper are excluded outright. They read the SAME I/O sector 107
+# coefficient, so admitting either invites three separate errors: using one
+# shared exposure twice, choosing between them on outcomes, and reporting them
+# as independent measurements. Excluding both removes the choice entirely.
+commodities:
+  allowed:
+    - brent_crude_usd_bbl
+    - rubber_rss3_usd_kg
+  excluded:
+    - aluminum_usd_mt
+    - copper_usd_mt
+  excluded_reason: shared_io_sector_107_and_outcome_based_channel_choice
+  aluminum_predictors_present: false
+  copper_predictors_present: false
+  shared_io_sector_107_used: false
+  excluded_predictors_zero_filled: false   # omitted, never zero-filled
+
+transformations:
+  - price_level
+  - log_change_1m_pct
+  - log_change_3m_pct
+  - log_change_12m_pct
+  - realized_volatility_3m_pct
+all_transformations_retained_where_eligible: true
+
+expected_predictor_sets:
+  most_industries: {brent: 5, rubber: 5, max_before_zero_variance: 10}
+  IND-06: {brent: 5, rubber: 0, reason: rubber_directionally_ineligible_c3r1}
+
+# ---------------------------------------------------------------------------
+# Upstream contracts D4 reproduces rather than restates.
+# ---------------------------------------------------------------------------
+d3_contract:
+  operational_contract_version: operational_contract_v1
+  development_start: "2024-01"
+  development_end: "2025-03"
+  expected_issue_months: 15
+  latest_observable_stress_month: t-1
+  calibration_reference_end: t-1
+  label_rule: target_available_month <= t
+  benchmarks:
+    1: operational_persistence_latest_published
+    3: operational_persistence_trailing_3m_max
+  secondary_comparator: operational_no_contraction
+  locked_test_evaluated: false
+
+c4_contract:
+  primary_variant: primary_direct_lag2
+  timing_sensitivity_variant: timing_sensitivity_direct_lag1
+  structural_sensitivity_variant: structural_sensitivity_total_lag2
+  eligible_pairs: 43
+  ineligible_pairs: 5
+  forbidden_variant: lag1_plus_total_requirement
+  feature_availability_complete: true
+  lineage_complete: true
+
+# ---------------------------------------------------------------------------
+# History ceiling, recorded from D2/D3. NOT re-tested here.
+# ---------------------------------------------------------------------------
+history_ceiling:
+  raw_stress_begins: "2022-01"
+  first_origin_with_24_observations: "2024-01"
+  compatible_pre_2022_history_available: false
+  cross_base_splicing_permitted: false
+  development_origin_extension_supported: false
+  development_origin_count_ceiling: 15
+  source: D2 AD-R64/AD-R65
+  new_feasibility_test_performed: false
+
+# ---------------------------------------------------------------------------
+# Feature-history gate. The lag-2 registered set first completes at 2022-03.
+# ---------------------------------------------------------------------------
+feature_history:
+  primary_first_complete_origin: "2022-03"
+  excluded_reason_label: insufficient_registered_feature_history
+  excluded_origins: ["2022-01", "2022-02"]
+  excluded_rows_per_horizon: 24     # 2 origins x 12 industries
+  imputation_permitted: false
+  forward_fill_permitted: false
+  interpolation_permitted: false
+  pca_permitted: false
+  composite_index_permitted: false
+  cross_commodity_normalization_permitted: false
+
+expected_training_counts:
+  - {horizon: 1, outer_origin: "2024-01", label_permitted: 276, feature_usable: 252}
+  - {horizon: 1, outer_origin: "2025-03", label_permitted: 444, feature_usable: 420}
+  - {horizon: 3, outer_origin: "2024-01", label_permitted: 252, feature_usable: 228}
+  - {horizon: 3, outer_origin: "2025-03", label_permitted: 420, feature_usable: 396}
+
+# ---------------------------------------------------------------------------
+# Variants. Exactly three; sensitivities are reported, never promoted.
+# ---------------------------------------------------------------------------
+variants:
+  primary: primary_direct_lag2
+  sensitivities:
+    - timing_sensitivity_direct_lag1
+    - structural_sensitivity_total_lag2
+  sensitivity_may_change_primary_status: false
+  sensitivity_may_select_model_or_lag_or_exposure: false
+  forbidden_combination: lag1_plus_total_requirement
+
+timing_sensitivity_day_check:
+  required: true
+  source: docs/c1_5_commodity_timing_audit.json
+  rule: commodity_first_seen_issue_date <= d3_forecast_issue_date
+  unverified_action: mark_prediction_unavailable
+  impute_unavailable: false
+  substitute_primary_values: false
+
+expected_prediction_counts:
+  per_variant_per_horizon: 180
+  primary_total: 360
+  structural_total: 360
+  timing_total_if_fully_available: 360
+  maximum_total: 1080
+
+# ---------------------------------------------------------------------------
+# Metrics, uncertainty, and the two separate decisions.
+# ---------------------------------------------------------------------------
+metrics:
+  primary: macro_industry_mae
+  secondary:
+    - pooled_mae
+    - macro_industry_rmse
+    - pooled_rmse
+    - median_absolute_error
+    - pooled_spearman
+    - per_industry_mae
+    - by_development_block
+    - clipped_prediction_count
+  high_stress:
+    threshold: 85
+    threshold_tuned: false
+    severe_threshold: 95
+    severe_reporting: descriptive_only
+
+bootstrap:
+  method: moving_block
+  cluster_by: issue_month
+  preserve_all_industries: true
+  block_length_months: 3
+  replications: 1000
+  confidence_level: 0.95
+  random_seed: 20260828
+  rows_treated_as_independent: false
+  report_intervals_for:
+    - model_macro_mae
+    - paired_difference_vs_operational_persistence
+    - mae_skill_vs_operational_persistence
+    - paired_difference_vs_no_contraction
+  sign_convention: negative_paired_difference_means_model_is_better
+
+# Two SEPARATE statuses. A model that is more accurate on average but misses
+# more high-stress events has not earned advancement, and merging these into one
+# verdict would hide exactly that trade-off.
+evidence_statuses:
+  mae:
+    - incremental_signal_supported        # lower MAE AND entire paired CI < 0
+    - incremental_signal_inconclusive     # lower point estimate, CI includes 0
+    - incremental_signal_not_supported    # point estimate equal or worse
+  event_safety:
+    - event_safety_passed                 # model FN <= persistence FN
+    - event_safety_failed                 # model FN > persistence FN
+
+advancement_gate:
+  development_candidate_supported_requires:
+    - mae_status == incremental_signal_supported
+    - event_safety == event_safety_passed
+  sensitivity_may_rescue_failed_primary: false
+
+# Unconditional, whatever the result.
+safety:
+  approved_for_locked_test: false
+  production_model_approved: false
+  confirmatory_result: false
+  upstream_feature_eligibility_modified: false
+  locked_test_accessed: false
+
+immutability:
+  may_tune_hyperparameters: false
+  may_search_feature_subsets: false
+  may_change_target_definitions: false
+  may_splice_incompatible_regimes: false
+  may_evaluate_purge_period: false
+  may_evaluate_locked_test: false
+  may_overwrite_d1_or_d3_artifacts: false

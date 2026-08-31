@@ -1,0 +1,33 @@
+{
+  "task": "D3-R1",
+  "purpose": "Records how the two generated D1 documents were restored, and states precisely what that evidence does and does not prove.",
+  "original_pre_d2_checksum_available": false,
+  "restoration_method": "inverse_of_known_inserted_block",
+  "inserted_block_absent_after_restoration": true,
+  "original_text_retained_after_inverse_patch": true,
+  "exact_pre_d2_byte_identity_proven": false,
+  "post_restoration_checksum_pinned": true,
+  "post_restoration_results_checksum": "54a66c41cf31b9070eebbe5e0a3d238efb513d8896ae3eb84d96312b72895364",
+  "post_restoration_protocol_checksum": "80761aabc44c4dec70162382a87032232497648c5e9761b706d6ff2b4c6c7d56",
+  "inserted_block_sizes": {
+    "docs/d1_development_results.md": {
+      "bytes_removed": 872,
+      "lines_removed": 13
+    },
+    "docs/d1_modeling_protocol.md": {
+      "bytes_removed": 592,
+      "lines_removed": 9
+    }
+  },
+  "with_d2_correction_checksums": {
+    "docs/d1_development_results.md": "3efcd74462078810f6a43d16a69722f58c7dc053d13637e85f92ae3be6e299d1",
+    "docs/d1_modeling_protocol.md": "d69020511393dd889469cd3c770b07d44f4c655e06e91c6ae3854aea207776c8"
+  },
+  "meaning_of_pinned_digests": "Forward integrity baseline only. These digests were computed AFTER restoration and are not evidence of the unknown historical pre-D2 checksum. Any future drift from them is detectable; agreement with the true pre-D2 files is asserted nowhere.",
+  "approved_wording": "Restored by reversing the known D2 insertion; the original pre-D2 digest was unavailable, so exact historical byte identity cannot be independently proven. The resulting files are pinned from D3 onward.",
+  "why_original_was_unavailable": "The .d2_before.json snapshot recording pre-D2 digests was deleted during D2 cleanup.",
+  "restored": {
+    "docs/d1_development_results.md": "54a66c41cf31b9070eebbe5e0a3d238efb513d8896ae3eb84d96312b72895364",
+    "docs/d1_modeling_protocol.md": "80761aabc44c4dec70162382a87032232497648c5e9761b706d6ff2b4c6c7d56"
+  }
+}

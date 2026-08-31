@@ -1,0 +1,729 @@
+# Commodity–industry structural exposure — Task C3.
+#
+# A STRUCTURAL PRIOR from official national accounts. Not a causal estimate, not
+# a current cost share, not evidence of predictive value. Every crosswalk below
+# was written from the official NESDC classification document BEFORE any
+# coefficient was read, and no entry may be revised on the basis of how it
+# performs against the target — no such comparison exists in C3.
+#
+# Approval concepts, still strictly separate:
+#   source_verified               (C1)
+#   timing_approved               (C1.5)
+#   feature_construction_approved (C2)
+#   structural_exposure_approved  (C3, this file)
+#   feature_semantics_approved    (later)
+#   model_feature_approved        (later)
+# C3 must not set model_feature_approved: true.
+
+schema_version: 1
+crosswalk_version: c3_industry_exposure_v1
+task: C3
+
+# --- official structural source ----------------------------------------------
+io_source:
+  publisher: National Economic and Social Development Council (NESDC), Thailand
+  table: Input-Output Table of Thailand 2015 (Final)
+  structural_reference_year: 2015
+  sector_count: 180
+  discovery_method: official_sitemap_then_download_page_then_ddl_redirect
+  discovery_note: >-
+    NESDC migrated their website during this project's lifetime. The historical
+    I/O page (main.php?filename=io_page) now serves an unrelated WordPress page
+    with no I/O links on it. URLs are therefore discovered by walking NESDC's
+    own sitemap index to the official download pages, and resolving each page's
+    `?p=<post>&ddl=<file>` redirect. No opaque file URL is hard-coded.
+  landing_pages:
+    - https://www.nesdc.go.th/download/i-o-table-of-thailand-2015/
+    - https://www.nesdc.go.th/en/download/i-o-table-of-thailand-2015/
+    - https://www.nesdc.go.th/download/input-output-classification/
+  sitemap_index: https://www.nesdc.go.th/sitemap.xml
+  waf_note: >-
+    www.nesdc.go.th sits behind a WAF that answers a first request with a
+    cookie and a self-redirect. Acquisition carries a cookie jar; the retry is
+    a transport detail and is recorded, not hidden.
+
+# SUPERSEDED BY C3-R1. C3 stated the 58-sector workbook "does not exist on the
+# official page". It does exist — in the WordPress MEDIA LIBRARY, which C3's
+# download-page-only discovery never queried. See `source_discovery_defect`.
+expected_vs_actual:
+  expected_by_brief: 58_sector_workbook
+  c3_claim: 58_sector_workbook_not_published_officially
+  c3_claim_status: FALSE_superseded_by_c3_r1
+  actually_published:
+    - 180_sector_long_format_workbook # primary structural source
+    - 58_sector_long_format_workbook # aggregation validation source
+    - 26_sector_and_16_sector_workbooks # published, not used
+  resolution: >-
+    The 180-sector table REMAINS primary because its finer resolution is what
+    makes the 12-industry crosswalk possible. The 58-sector table is acquired and
+    used as an independent aggregation check, not as a replacement.
+
+# --- newer table: audited, NOT silently substituted --------------------------
+newer_table_audit:
+  table: I/O TABLE OF THAILAND 2021 (180 Sectors)
+  landing_page: https://www.nesdc.go.th/download/i-o-table-of-thailand-2021-180-sectors/
+  published: 2025-02-25
+  status_used_in_c3: audited_not_used
+  rationale: >-
+    A newer official table exists and is downloaded, checksummed and inspected
+    by scripts/audit_c3_io_sources.py. It is NOT substituted for 2015 in this
+    task: the brief designates 2015 as the primary source, and swapping the
+    structural reference year is a decision that belongs to an explicit task,
+    not to a silent default. The audit reports whether it is final, complete
+    and structurally compatible.
+
+# --- workbook layout (validated, not assumed) --------------------------------
+workbook_layout:
+  format: sparse_long_one_row_per_cell
+  columns: [ROW, COLUMN, PURCHASER, WHOLESALE, RETAIL, TRANSPORT, IMPORT]
+  production_sector_codes: 001-180
+  value_added_rows: [201, 202, 203, 204]
+  total_value_added_row: 209
+  total_intermediate_code: 190
+  total_input_row: 210
+  final_demand_columns: [301, 302, 303, 304, 305, 306]
+  import_columns: [401, 402, 403, 404]
+  stock_change_columns: [501, 502, 503]
+  gross_output_column: 600
+  subtotal_columns_never_summed_with_components: [190, 309, 409, 509, 310, 700]
+  subtotal_trap_note: >-
+    309, 409 and 509 are SUBTOTALS of their preceding components, and 190/600/
+    700 are grand totals. Summing them alongside their components double-counts;
+    folding any of them into the intermediate block would put totals, final
+    demand or value added inside the technical coefficients.
+
+valuation_basis:
+  price_basis: purchasers_prices
+  import_treatment: import_inclusive
+  import_specific_coefficients_available: true
+  margins_itemised: [wholesale, retail, transport]
+  producers_price_derivable: true
+  domestic_only_derivable: true
+  primary_measure_used: PURCHASER
+  primary_measure_rationale: >-
+    Cost pressure from a WORLD commodity price reaches a producer whether the
+    input was imported or bought domestically, so the import-INCLUSIVE total is
+    the right base for this purpose. Thailand imports most crude oil, aluminum
+    and copper; a domestic-only matrix would report near-zero crude exposure and
+    understate precisely the channel C3 exists to describe.
+  leontief_caveat: >-
+    Inverting an import-inclusive A measures total requirements in a TECHNOLOGY
+    sense, including rounds embodied in imports. It is therefore NOT a domestic
+    output multiplier, and must not be reported as one.
+
+# --- technical coefficients ---------------------------------------------------
+coefficients:
+  formula: A[i][j] = Z[i][j] / X[j]
+  z_block: intermediate_transactions_sectors_001_180_only
+  x_vector: gross_output_column_600
+  zero_output_sector_policy: exclude_never_divide
+  zero_output_rationale: >-
+    A sector with zero gross output has an UNDEFINED coefficient column.
+    Substituting zero would assert it requires nothing, which the table does not
+    say. Such sectors are excluded and named.
+  validated:
+    - finite_values
+    - positive_gross_output
+    - no_duplicate_sector_codes
+    - compatible_row_and_column_sectors
+    - column_identity_z_plus_value_added_equals_gross_output
+    - gross_output_equals_total_input_row
+    - column_sums_below_one
+    - deterministic_ordering
+  leontief:
+    formula: L = (I - A)^-1
+    total_requirement: T = L - I
+    identity_term_removed: true
+    identity_term_rationale: >-
+      A sector's own unit of output is not one of its own input requirements.
+    condition_number_limit: 1.0e12
+    reconstruction_tolerance: 1.0e-8
+    on_ill_conditioned: stop_and_report_never_regularize
+  not_a_price_elasticity: true
+  interpretation_guard: >-
+    These are structural accounting ratios from one benchmark year under fixed
+    proportions and no substitution. They are not price pass-through
+    elasticities, not causal effects, and not forecasts.
+
+# --- preregistered confidence rules ------------------------------------------
+# Deterministic, evaluated from classification evidence only. Confidence is
+# NEVER a function of target performance — no target is read in C3.
+confidence_rules:
+  high:
+    - exact_official_one_to_one_code_correspondence
+    - compatible_definitions
+    - no_material_scope_mismatch
+  medium:
+    - official_broader_aggregate
+    - transparent_many_to_one_mapping
+    - scope_difference_documented
+  low:
+    - qualitative_evidence_only
+    - no_defensible_quantitative_crosswalk
+  unresolved:
+    - conflicting_definitions
+    - missing_aggregation_weights
+    - ambiguous_sector_identity
+  based_on_target_performance: false
+  low_or_unresolved_converted_to_zero: false
+  low_or_unresolved_policy: >-
+    An unresolved numeric exposure stays NULL. A zero is written only when the
+    I/O matrix provides an OBSERVED zero under a verified crosswalk. Missing,
+    unresolved and zero are three different states and are never merged.
+
+# --- commodity -> I/O sector crosswalk ---------------------------------------
+# Evidence: NESDC "Input-Output Description" classification document.
+commodity_crosswalk:
+  brent_crude_usd_bbl:
+    io_sector_code: "031"
+    io_sector_label: Petroleum and natural gas
+    mapping_type: official_broader_aggregate
+    confidence: medium
+    semantic_scope: crude_petroleum_and_natural_gas_extraction
+    broader_than_commodity: true
+    scope_difference: >-
+      FLAGGED. The official category covers crude petroleum AND natural gas
+      extraction. Brent is crude oil alone, so the coefficient embeds natural
+      gas use that Brent does not price. C3 does not claim an exact mapping.
+    definition_excerpt: >-
+      "This sector covers the exploration activities for crude petroleum and
+      natural gas, the drilling, completing and equipping of wells carried out
+      on an own-account basis, and the operation of oil and natural gas wells."
+    alternatives_considered:
+      "093": Petroleum refineries - a DOWNSTREAM processor of crude, not crude itself
+    shared_io_source_sector: false
+
+  aluminum_usd_mt:
+    io_sector_code: "107"
+    io_sector_label: Non-ferrous metal
+    mapping_type: official_broader_aggregate
+    confidence: medium
+    semantic_scope: primary_non_ferrous_metal_manufacture_all_metals_combined
+    broader_than_commodity: true
+    scope_difference: >-
+      FLAGGED. The official category combines ALL primary non-ferrous metals.
+      Aluminum cannot be separated from copper, zinc, lead or tin within it.
+    definition_excerpt: >-
+      "This sector covers the activities relating to the manufacture of primary
+      non-ferrous metal products consisting of primary and secondary smelting,
+      alloying, refining, rolling and drawing, founding and casting."
+    alternatives_considered:
+      "035": Other non-ferrous metals - ORE EXTRACTION, not refined metal
+    shared_io_source_sector: true
+    shares_sector_with: [copper_usd_mt]
+
+  copper_usd_mt:
+    io_sector_code: "107"
+    io_sector_label: Non-ferrous metal
+    mapping_type: official_broader_aggregate
+    confidence: medium
+    semantic_scope: primary_non_ferrous_metal_manufacture_all_metals_combined
+    broader_than_commodity: true
+    scope_difference: >-
+      FLAGGED. Same official category as Aluminum. See shared_sector_policy.
+    definition_excerpt: >-
+      "This sector covers the activities relating to the manufacture of primary
+      non-ferrous metal products consisting of primary and secondary smelting,
+      alloying, refining, rolling and drawing, founding and casting."
+    alternatives_considered:
+      "035": >-
+        Other non-ferrous metals - ore extraction; its definition names copper
+        ore explicitly, but it is mining rather than the refined metal an LME
+        price quotes.
+    shared_io_source_sector: true
+    shares_sector_with: [aluminum_usd_mt]
+
+  rubber_rss3_usd_kg:
+    io_sector_code: "095"
+    io_sector_label: Rubber sheet and block rubber
+    mapping_type: official_broader_aggregate
+    confidence: medium
+    semantic_scope: processed_natural_rubber_sheet_block_and_crepe
+    broader_than_commodity: true
+    scope_difference: >-
+      RSS3 (ribbed smoked sheet, grade 3) is ONE grade within a category that
+      also covers block rubber and crepe. The distinction that matters is
+      preserved: this is processed natural rubber, NOT fabricated rubber goods.
+    definition_excerpt: >-
+      "This sector covers rubber sheets, block rubber, crepe rubber and other
+      processed rubber."
+    alternatives_considered:
+      "016": Rubber - the agricultural latex sector, upstream of RSS3
+      "097": Other rubber products - FABRICATED goods (gloves, hoses, mats)
+      "096": Tyres and tubes - fabricated goods
+    distinguished_from_fabricated_rubber: true
+    shared_io_source_sector: false
+
+# The overlap must stay visible in every downstream artifact.
+shared_sector_policy:
+  pairs:
+    - [aluminum_usd_mt, copper_usd_mt]
+  rule: >-
+    Aluminum and Copper resolve to the SAME official I/O sector (107). Their
+    coefficients are therefore IDENTICAL BY CONSTRUCTION and are one aggregate
+    exposure reported twice, not two independently measured commodity-specific
+    cost shares. Every affected row carries `shared_io_source_sector: true`, and
+    a test asserts the flag is present wherever the coefficients coincide.
+  must_not_be_treated_as_independent_evidence: true
+
+# --- project industry -> I/O sector crosswalk --------------------------------
+# Built from B1's TSIC 2009 division assignments (configs/industry_mapping.yaml)
+# and the official NESDC sector definitions. Aggregation across component I/O
+# sectors uses OFFICIAL GROSS OUTPUT from the same table.
+industry_crosswalk_aggregation:
+  weight_source: official_io_gross_output_column_600
+  method: output_weighted_exact_aggregate
+  direct_formula: A[c][IND] = sum_j Z[c][j] / sum_j X[j]
+  total_formula: T[c][IND] = sum_j (T[c][j] * X[j]) / sum_j X[j]
+  equal_weights_used: false
+  rationale: >-
+    Output weighting is not a manufactured average: summing the numerator and
+    the denominator over an industry's component sectors IS the exact aggregate
+    technical coefficient for that industry. The weights come from the same
+    official table as the coefficients, so no weight is invented. Equal
+    weighting is never applied, because the project's aggregation definition
+    does not support it.
+
+industry_crosswalk:
+  IND-01:
+    name_en: Food, Beverages and Tobacco
+    tsic_divisions: [10, 11, 12]
+    io_sectors: ["042", "043", "044", "045", "046", "047", "048", "049", "050",
+                 "051", "052", "053", "054", "055", "056", "057", "058", "059",
+                 "060", "061", "062", "063", "064", "065", "066"]
+    mapping_relationship: many_to_one
+    confidence: high
+  IND-02:
+    name_en: Textiles, Apparel and Leather
+    tsic_divisions: [13, 14, 15]
+    io_sectors: ["067", "068", "069", "070", "071", "072", "073", "074", "075",
+                 "076", "077"]
+    mapping_relationship: many_to_one
+    confidence: high
+  IND-03:
+    name_en: Wood and Paper
+    tsic_divisions: [16, 17]
+    io_sectors: ["078", "079", "081", "082"]
+    mapping_relationship: many_to_one
+    confidence: high
+    scope_note: >-
+      080 (Wooden furniture) belongs to TSIC 31 and is assigned to IND-12, not
+      here. 083 (Printing and publishing) is TSIC 18, which B1 excludes from the
+      taxonomy entirely.
+  IND-04:
+    name_en: Refined Petroleum Products
+    tsic_divisions: [19]
+    io_sectors: ["093", "094"]
+    mapping_relationship: many_to_one
+    confidence: high
+  IND-05:
+    name_en: Chemicals and Pharmaceuticals
+    tsic_divisions: [20, 21]
+    io_sectors: ["084", "085", "086", "087", "088", "089", "090", "091", "092"]
+    mapping_relationship: many_to_one
+    confidence: high
+  IND-06:
+    name_en: Rubber and Plastics
+    tsic_divisions: [22]
+    io_sectors: ["095", "096", "097", "098"]
+    mapping_relationship: many_to_one
+    confidence: high
+    scope_note: >-
+      Includes 095, which is also the I/O sector Rubber RSS3 maps to. This
+      industry therefore both PRODUCES and CONSUMES the commodity; see
+      direction semantics.
+  IND-07:
+    name_en: Non-metallic Mineral Products
+    tsic_divisions: [23]
+    io_sectors: ["099", "100", "101", "102", "103", "104"]
+    mapping_relationship: many_to_one
+    confidence: high
+  IND-08:
+    name_en: Basic and Fabricated Metals
+    tsic_divisions: [24, 25]
+    io_sectors: ["105", "106", "107", "108", "110", "111"]
+    mapping_relationship: many_to_one
+    confidence: high
+    scope_note: >-
+      Includes 107, the sector Aluminum and Copper map to, so this industry both
+      produces and consumes those metals. 109 (Metal furniture) belongs to TSIC
+      31 and is assigned to IND-12.
+  IND-09:
+    name_en: Computer, Electronics and Electrical Equipment
+    tsic_divisions: [26, 27]
+    io_sectors: ["117", "118", "119", "120", "121", "122", "129", "130", "131"]
+    mapping_relationship: many_to_one
+    confidence: medium
+    scope_note: >-
+      Scope difference documented: 116 (Office and household machinery and
+      appliances) straddles TSIC 26 office machinery and TSIC 27/28 household
+      appliances. The official label does not permit a clean split, so 116 is
+      assigned to IND-10 and NOT double-counted here.
+  IND-10:
+    name_en: Machinery and Equipment
+    tsic_divisions: [28]
+    io_sectors: ["112", "113", "114", "115", "116"]
+    mapping_relationship: many_to_one
+    confidence: medium
+    scope_note: >-
+      Carries 116, whose official label spans office and household machinery.
+      Assigned here rather than split, and the ambiguity is recorded rather than
+      resolved by assertion.
+  IND-11:
+    name_en: Motor Vehicles and Other Transport Equipment
+    tsic_divisions: [29, 30]
+    io_sectors: ["123", "124", "125", "126", "128"]
+    mapping_relationship: many_to_one
+    confidence: high
+    scope_note: >-
+      127 (Repair of motor vehicles) is TSIC 45 trade-and-repair, not
+      manufacturing, and is excluded. 125 and 126 carry the same official label
+      ("Motor vehicles") under distinct codes; both are included.
+  IND-12:
+    name_en: Furniture and Other Manufacturing
+    tsic_divisions: [31, 32]
+    io_sectors: ["080", "109", "132", "133", "134"]
+    mapping_relationship: many_to_one
+    confidence: high
+    scope_note: >-
+      Furniture is split across materials in the I/O classification: 080
+      (wooden) and 109 (metal) both belong to TSIC 31 and are collected here
+      rather than left with wood or metals.
+
+io_sectors_deliberately_unassigned:
+  "083": Printing and publishing - TSIC 18, excluded from the B1 taxonomy
+  "127": Repair of motor vehicles - TSIC 45, not manufacturing
+  "179": zero gross output in the 2015 table; coefficient column undefined
+
+# --- direction semantics -----------------------------------------------------
+# A DOMAIN direction for cost pressure, not an empirically estimated target
+# sign. Nothing here was fitted, and no target was consulted.
+direction_semantics:
+  channels:
+    - cost_pressure
+    - producer_revenue
+    - mixed_or_ambiguous
+    - no_verified_channel
+    - unresolved
+  cost_pressure_rule: >-
+    Where the commodity's I/O sector is an INTERMEDIATE INPUT to the industry's
+    sectors, a higher commodity price is greater input-cost pressure:
+    price_increase_to_stress_sign = +1.
+  producer_revenue_rule: >-
+    Assigned only where separate official evidence establishes that the project
+    industry PRODUCES the commodity and the revenue channel is in scope. C3
+    establishes production from the I/O classification itself.
+  mixed_rule: >-
+    Where an industry both produces and consumes the commodity's sector, the
+    sign is NOT forced. Such pairs are `mixed_or_ambiguous` with a null sign.
+  mixed_pairs_expected:
+    - [IND-06, rubber_rss3_usd_kg] # IND-06 contains sector 095
+    - [IND-08, aluminum_usd_mt] # IND-08 contains sector 107
+    - [IND-08, copper_usd_mt] # IND-08 contains sector 107
+  sign_is_empirically_estimated: false
+
+# --- normalization ------------------------------------------------------------
+normalization:
+  across_commodities: none
+  rationale: >-
+    The four exposures are ABSOLUTE technical coefficients and are left
+    absolute. Normalizing them to sum to one would turn "how much crude does
+    this industry use" into "what share of these four commodities is crude",
+    inventing a comparability the I/O table does not provide and destroying the
+    magnitude information that makes the coefficient meaningful.
+  absolute_coefficient_preserved: true
+
+# --- matrix variants ----------------------------------------------------------
+matrix_variants:
+  primary:
+    name: direct_technical_coefficients
+    definition: A[c][j]
+    status: primary
+  secondary:
+    name: total_requirement_coefficients
+    definition: T[c][j] = (L - I)[c][j]
+    status: structural_sensitivity_view
+    must_not_silently_replace_primary: true
+  selection_based_on_target_outcomes: false
+
+# --- canonical table ----------------------------------------------------------
+canonical:
+  rows: 48 # 12 industries x 4 commodities
+  key: [industry_id, commodity_series_id]
+  ordering: [industry_id, commodity_series_id]
+  unresolved_numeric_exposure: null
+  observed_zero: numeric_zero
+  identity: total_requirement_exposure = direct_exposure + indirect_exposure
+
+# --- scope guards -------------------------------------------------------------
+not_computed_in_c3:
+  - exposure_matrix_joined_to_mpi_targets
+  - target_association
+  - exposure_weights_tuned_on_outcomes
+  - predictive_interactions
+  - model_training
+  - b4_baseline_comparison
+  - locked_final_test_access
+  - industry_conditioned_feature_matrix
+
+approval_state:
+  source_verified: unchanged_from_c1
+  timing_approved: unchanged_from_c1_5_r3
+  feature_construction_approved: unchanged_from_c2
+  structural_exposure_approved: true
+  feature_semantics_approved: false
+  model_feature_approved: false # C3 must not set this true
+
+outputs:
+  canonical_json: docs/c3_commodity_exposure_matrix.json
+  audit_markdown: docs/c3_commodity_exposure_matrix.md
+  crosswalk_markdown: docs/c3_industry_crosswalk.md
+  source_audit_markdown: docs/c3_io_source_audit.md
+  parquet: data/features/c3_commodity_exposure.parquet
+  parquet_git_ignored: true
+  raw_files_git_ignored: true
+
+# =============================================================================
+# C3-R1 — corrections and additions
+# =============================================================================
+c3_r1:
+  task: C3-R1
+  supersedes: >-
+    C3's statement that no official NESDC 2015 58-sector workbook exists. It
+    does exist and is now acquired, validated and manifest-tracked.
+
+# --- why the 58-sector workbook was missed -----------------------------------
+# Recorded, not quietly fixed. The operative failure is the same class as
+# C1.5-R1's February 2025 verdict: a negative result from ONE discovery
+# mechanism was reported as a fact about the publisher.
+source_discovery_defect:
+  claim_made_by_c3: "No official 58-sector workbook exists; NESDC publishes 180 sectors for 2015."
+  claim_status: "FALSE"
+  root_cause_primary: >-
+    Discovery was scoped to a SINGLE mechanism — sitemap -> /download/ pages ->
+    each page's ?p=&ddl= redirect. The aggregated workbooks (x58, x26, x16) live
+    in the WordPress MEDIA LIBRARY and are not linked from any /download/ page.
+    The 2015 download page carries exactly ONE ddl link, the 180-sector file, so
+    no amount of retrying that path could ever have found the 58-sector table.
+  contributing_causes:
+    - >-
+      `_DOWNLOAD_SLUG` matched only sitemap <loc> entries under /download/ whose
+      slug contained "i-o-table" or "input-output". Media-library uploads never
+      appear in the downloads sitemap at all.
+    - >-
+      `resolve_download_url` returned every ddl link but the caller took
+      `matching[0]` — the FIRST Excel link per page. A latent defect: not the
+      operative cause here (only one link exists) but it would have hidden a
+      second workbook on any page listing two.
+    - >-
+      No filename-pattern search was performed for the published aggregation
+      suffixes (x58 / x26 / x16), and the WordPress media REST API was never
+      queried.
+    - >-
+      The report then converted "not found by my one mechanism" into "does not
+      exist officially" — an unwarranted negative claim.
+  causes_ruled_out:
+    waf_cookie_handling: >-
+      NOT a cause. The bounded cookie-aware retry worked correctly; the
+      58-sector file downloads on the first attempt (waf_attempts = 1).
+    same_url_redirect_handling: NOT a cause; handled correctly.
+    http_404_with_content_handling: >-
+      NOT a cause. HTML pages answering 404-with-body were parsed correctly, and
+      restricting that leniency to HTML (never to file downloads) was and
+      remains correct.
+    download_candidate_ranking: >-
+      Not the operative cause — there was only one candidate to rank — but the
+      first-match selection is fixed regardless.
+  fix:
+    - query_the_official_wordpress_media_rest_api
+    - search_published_aggregation_filename_patterns
+    - retain_all_ddl_candidates_not_only_the_first
+    - validate_workbook_identity_before_accepting_a_file
+
+# --- the official 58-sector workbook -----------------------------------------
+aggregation_validation_source:
+  role: official_aggregation_validation_source
+  is_primary_structural_source: false
+  filename: DataIO2015x58.xlsx
+  url: https://www.nesdc.go.th/wordpress/wp-content/uploads/2025/06/DataIO2015x58.xlsx
+  discovery: official_wordpress_media_rest_api
+  discovery_evidence: >-
+    NESDC's own media API (/wp-json/wp/v2/media?search=DataIO2015x58) returns the
+    file, alongside DataIO2015x26, DataIO2015x16 and the official publication
+    Book_IO2015_EN.pdf. First-party publisher evidence, not a guessed URL.
+  sheet: DataIO2015x58
+  internal_title: INPUT - OUTPUT TABLE OF THAILAND 2015 (58 Sectors)
+  sector_count: 58
+  layout: sparse_long_one_row_per_cell # identical to the 180-sector file
+  valuation_basis: purchasers_prices
+  import_treatment: import_inclusive
+  unit: thousand_baht
+  unit_evidence: >-
+    Book_IO2015_EN.pdf states "Table of Input Structure (180 Sectors) (in
+    Thousand Baht)". C3 could not resolve the unit from the data sheet alone and
+    recorded it as unresolved; C3-R1 resolves it from the official publication.
+
+# --- 180-sector table remains primary ----------------------------------------
+primary_source_decision:
+  primary_remains: 180_sector_2015_final
+  rationale: >-
+    Finer resolution is what makes the 12-industry crosswalk possible: 58 sectors
+    are too coarse to separate, for example, wooden from metal furniture or
+    refineries from other petroleum products. The 58-sector table is an
+    INDEPENDENT CHECK, not a replacement.
+  replaced_automatically: false
+
+# --- 180-to-58 reconciliation ------------------------------------------------
+sector_aggregation_reconciliation:
+  tolerance: 0.5
+  tolerance_preregistered: true
+  tolerance_basis: >-
+    Values are published as whole numbers in thousand Baht, so 0.5 is half the
+    last published digit. Fixed BEFORE any comparison was run, not chosen after
+    seeing discrepancies.
+  partition_invariant_checks_executed: true
+  sector_level_status: not_executed_official_crosswalk_unavailable
+  crosswalk_status: not_established
+  crosswalk_search_performed:
+    - input_output_description_pdf # 0 mentions of "58"
+    - book_io2015_en_pdf # 455 pages; no classification or concordance section
+    - wordpress_media_library # data files x58/x26/x16 only, no mapping document
+    - contiguous_partition_hypothesis # FAILS: 58:003 == 180:004, skipping 180:003
+  crosswalk_refusal_rationale: >-
+    No official NESDC 180-to-58 concordance could be found. C3-R1 refuses to
+    infer one from row order, label similarity, numeric proximity or subset-sum
+    fitting over gross output: none of those is evidence, and a subset-sum fit is
+    not unique. NOT EXECUTED is recorded as a third state, distinct from passed
+    and from failed.
+
+# --- proxy fitness gate ------------------------------------------------------
+# A valid coefficient can still be a poor proxy. These two questions are now
+# answered separately, and `medium` crosswalk confidence never implies
+# eligibility on its own.
+commodity_proxy_fitness:
+  statuses:
+    - fit_for_structural_use
+    - broad_proxy_use_with_caution
+    - not_fit_for_commodity_specific_use
+    - unresolved
+  determined_from:
+    - official_io_sector_definitions
+    - official_input_composition_from_the_io_table
+    - existing_b1_industry_scope
+  determined_from_target_information: false
+  medium_confidence_implies_eligibility: false
+  ineligible_pair_keeps_its_coefficient: true
+  ineligible_pair_converted_to_zero: false
+  ineligible_pair_removed_from_audit_table: false
+
+  rules:
+    brent_crude_usd_bbl:
+      displacement_terms: []
+      displacement_dominance_threshold: 0.5
+      broad_scope: petroleum_and_natural_gas_aggregate
+      fit_scope: crude_petroleum_specific
+      no_direct_purchase_status: broad_proxy_use_with_caution
+      high_fit_components:
+        "093": >-
+          Crude petroleum is the defining input of petroleum refining, so for
+          this industry the aggregate is dominated by crude rather than by
+          natural gas, and Brent is a commodity-specific proxy.
+      note: >-
+        Sector 031 combines crude petroleum AND natural gas extraction. Only
+        refining is evidenced as crude-dominated; every other industry gets a
+        broad hydrocarbon proxy at best.
+
+    aluminum_usd_mt:
+      displacement_terms: [precious metal, gold, silver, platinum]
+      displacement_dominance_threshold: 0.5
+      displaced_scope: aggregate_dominated_by_precious_metals
+      broad_scope: all_primary_non_ferrous_metals_aggregate
+      high_fit_components: {}
+      note: >-
+        Sector 107 combines ALL primary non-ferrous metals. No official material
+        separates aluminum within it, so no pair can reach fit_for_structural_use
+        on aluminum alone.
+
+    copper_usd_mt:
+      displacement_terms: [precious metal, gold, silver, platinum]
+      displacement_dominance_threshold: 0.5
+      displaced_scope: aggregate_dominated_by_precious_metals
+      broad_scope: all_primary_non_ferrous_metals_aggregate
+      high_fit_components: {}
+      note: Same aggregate as aluminum; see shared_sector_policy.
+
+    rubber_rss3_usd_kg:
+      displacement_terms: []
+      displacement_dominance_threshold: 0.5
+      broad_scope: processed_natural_rubber_aggregate
+      fit_scope: processed_natural_rubber_specific
+      no_direct_purchase_status: broad_proxy_use_with_caution
+      high_fit_components:
+        "096": >-
+          Tyres and tubes are manufactured principally from natural rubber, so
+          processed natural rubber dominates this industry's use of the
+          aggregate.
+      note: >-
+        The raw/sheet versus fabricated distinction is preserved: 095 is
+        processed natural rubber, separate from 096 tyres, 097 other rubber
+        products and 016 latex.
+
+# --- required treatment of known proxy risks ---------------------------------
+known_proxy_risks:
+  ind_12_non_ferrous:
+    finding: >-
+      95.7% of IND-12's purchases from sector 107 are made by sector 132
+      (Jewellery and related articles), whose official definition reads
+      "manufacturing of jewellery using precious metals, precious and
+      semi-precious stones and pearls, silverware and plotted ware using silver,
+      gold and other precious metal plating".
+    verdict: not_fit_for_commodity_specific_use
+    applies_to: ["IND-12 x aluminum_usd_mt", "IND-12 x copper_usd_mt"]
+    coefficient_preserved: true
+    converted_to_zero: false
+  aluminum_copper_shared_sector:
+    coefficients_independently_measured: false
+    must_not_be_summed: true
+    must_not_be_averaged: true
+    double_counting_risk: shared_io_sector_must_not_be_summed_or_averaged
+    proxy_fitness_evaluated_separately_per_industry: true
+  brent_broader_scope_flag_retained: true
+  rubber_raw_versus_fabricated_distinction_retained: true
+
+# --- preregistered C4 policy (C4 is NOT built in this task) ------------------
+c4_policy:
+  c4_matrix_created_in_this_task: false
+  primary_structural_matrix: direct_exposure
+  sensitivity_matrix: total_requirement_exposure
+  sensitivity_is_default: false
+  default_matrix_membership: industry_pair_feature_eligible_true_only
+  ineligible_or_unresolved_pairs: documented_but_generate_no_default_feature
+  ambiguous_direction_stays_null: true
+  forced_conversions_prohibited:
+    - mixed_or_ambiguous_into_cost_pressure
+    - missing_proxy_fitness_into_sign_zero
+    - producer_channel_into_consumer_cost_channel
+  aluminum_copper_aggregate_shock_index_rule: >-
+    The shared-sector exposure must not be double-counted. An aggregate shock
+    index may include the sector-107 exposure at most ONCE, however many of the
+    two series it draws on.
+
+# --- 2021 workbook status ----------------------------------------------------
+newer_table_status_audit:
+  table: I/O TABLE OF THAILAND 2021 (180 Sectors)
+  internal_title: INPUT - OUTPUT TABLE OF THAILAND 2021
+  sheet: DataIO2021
+  status: unresolved
+  status_evidence: >-
+    The 2015 workbook marks its own status in two places — internal title
+    "INPUT - OUTPUT TABLE OF THAILAND 2015 (Final)" and sheet name
+    "Data IO2015 Final". The 2021 workbook carries NO status marker in either
+    place. No official NESDC metadata located in this task states whether it is
+    final, preliminary, revised or experimental.
+  finality_inferred_from_structural_compatibility: false
+  finality_inference_prohibited: >-
+    Structural compatibility means the two files share a layout and code
+    universe. It says nothing about whether the figures are final, and must never
+    be used as evidence that they are.
+  retained_as: audit_only
+  replaces_2015_production_source: false

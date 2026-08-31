@@ -1,0 +1,185 @@
+{
+  "task": "D3-R1",
+  "generated_from": "actual worktree enumeration, not prose counting",
+  "created": {
+    "by_d3": [
+      "configs/operational_evaluation.yaml",
+      "docs/d1_development_results.errata.md",
+      "docs/d3_locked_test_manifest.json",
+      "docs/d3_operational_baseline_results.json",
+      "docs/d3_operational_baseline_results.md",
+      "docs/d3_operational_evaluation_protocol.md",
+      "docs/d3_restored_d1_checksums.json",
+      "schemas/operational_prediction.schema.yaml",
+      "scripts/run_d3_operational_baselines.py",
+      "src/thai_supply_chain_ews/evaluation/operational_availability.py",
+      "src/thai_supply_chain_ews/evaluation/operational_baselines.py",
+      "src/thai_supply_chain_ews/evaluation/operational_contract.py",
+      "src/thai_supply_chain_ews/evaluation/operational_walk_forward.py",
+      "tests/test_d3_operational_baselines.py"
+    ],
+    "by_d3r1": [
+      "docs/d3r1_artifact_inventory.json",
+      "tests/test_d3r1_verification_closure.py"
+    ],
+    "count_d3": 14,
+    "count_d3r1": 2,
+    "count_total": 16
+  },
+  "modified": {
+    "by_d3": [
+      "README.md",
+      "configs/sources.yaml",
+      "docs/architecture/decision_log.md",
+      "docs/methodology.md"
+    ],
+    "by_d3r1": [
+      "README.md",
+      "docs/architecture/decision_log.md",
+      "docs/d1_development_results.errata.md",
+      "docs/d3_restored_d1_checksums.json",
+      "docs/methodology.md",
+      "scripts/audit_d2_oie_mpi_timing.py",
+      "src/thai_supply_chain_ews/data/oie_mpi_discovery.py",
+      "src/thai_supply_chain_ews/data/oie_mpi_history.py",
+      "src/thai_supply_chain_ews/data/oie_mpi_release_inventory.py",
+      "src/thai_supply_chain_ews/data/oie_mpi_vintages.py",
+      "src/thai_supply_chain_ews/data/target_timing_contract.py",
+      "tests/test_d2_oie_mpi_timing.py"
+    ],
+    "count_d3": 4,
+    "count_d3r1": 12,
+    "count_union": 13
+  },
+  "restored_by_inverse_patch": {
+    "paths": [
+      "docs/d1_development_results.md",
+      "docs/d1_modeling_protocol.md"
+    ],
+    "count": 2,
+    "method": "inverse_of_known_inserted_block",
+    "exact_pre_d2_byte_identity_proven": false
+  },
+  "regenerated_by_rerun": {
+    "paths": [
+      "docs/d2_oie_mpi_source_audit.json",
+      "docs/d2_oie_mpi_source_audit.md",
+      "docs/d2_target_timing_decision.json",
+      "docs/d2_target_timing_decision.md"
+    ],
+    "count": 4,
+    "reason": "D2 source modules were lint-corrected, so D2 was rerun. Semantic content is identical; only acquisition timestamps and the newly generator-emitted erratum Follow-up section differ."
+  },
+  "deleted": {
+    "paths": [
+      ".d2_before.json"
+    ],
+    "count": 1,
+    "deleted_by": "D2 cleanup",
+    "consequence": "The pre-D2 checksum snapshot was lost, which is why exact historical byte identity of the restored D1 documents cannot be proven."
+  },
+  "generated_gitignored": {
+    "paths": [
+      "data/interim/d2_release_crawl.json",
+      "data/model_input/d3_operational_predictions.parquet"
+    ],
+    "count": 2
+  },
+  "unchanged_verified": {
+    "paths": [
+      "data/targets/forecast_target_raw.parquet",
+      "data/targets/production_stress_month.parquet",
+      "docs/b3_target_build_metadata.json",
+      "docs/b4_baseline_results.json",
+      "docs/b4_baseline_results.md",
+      "docs/b4_locked_test_manifest.json",
+      "docs/c4_industry_conditioned_feature_audit.json",
+      "docs/d1_development_results.json",
+      "docs/d1_feature_target_assembly_audit.json"
+    ],
+    "count": 9
+  },
+  "expected_shared_files": {
+    "paths": [
+      "README.md",
+      "docs/architecture/decision_log.md",
+      "docs/methodology.md"
+    ],
+    "count": 3,
+    "note": "Shared project documentation and configuration that both D3 and D3-R1 registered changes to. Counting these once per task is what made the D3 prose say '6 files' while listing 7 paths."
+  },
+  "d3_prose_count_correction": {
+    "d3_reported": "modified 6 files",
+    "d3_actually_listed": 7,
+    "resolution": "The D3 sentence counted the two restored D1 documents as one category rather than two paths. The true D3 figures are 4 modified paths plus 2 restored paths plus 14 created paths.",
+    "corrected_d3_modified_paths": 4,
+    "corrected_d3_restored_paths": 2,
+    "corrected_d3_created_paths": 14
+  },
+  "b1_to_d2_statement": "B1-D2 production artifacts unchanged, with explicitly documented D1/D2 documentation exceptions",
+  "documentation_exceptions": {
+    "d1": {
+      "paths": [
+        "docs/d1_development_results.md",
+        "docs/d1_modeling_protocol.md"
+      ],
+      "reason": "intentionally restored through an inverse patch (D3)"
+    },
+    "d2": {
+      "paths": [
+        "docs/d2_oie_mpi_source_audit.json",
+        "docs/d2_oie_mpi_source_audit.md",
+        "docs/d2_target_timing_decision.json",
+        "docs/d2_target_timing_decision.md"
+      ],
+      "reason": "intentionally regenerated after lint correction; the decision document additionally now emits the erratum link from the generator so regeneration cannot erase it"
+    }
+  },
+  "checksums": {
+    "configs/operational_evaluation.yaml": "14e0301fb9bac157d3cc6da0235451a55522c2ba454d31cf34af323ffedbe66f",
+    "schemas/operational_prediction.schema.yaml": "8587a3290aca4a1002cf9eaeef8ea5df8b8016fae2304d6ea6575ea0c556109d",
+    "scripts/run_d3_operational_baselines.py": "a41a41a8361e876b123304b3db9af6c55cb3ce3efabe9cc53bd591f77c82f96e",
+    "src/thai_supply_chain_ews/evaluation/operational_availability.py": "c41eddbd87e7edda49d26a8cf5a59b473627743f91fac97c90d13e42c02c05dd",
+    "src/thai_supply_chain_ews/evaluation/operational_baselines.py": "0812027b3bbb73f42ea8d04a5899bbad0311939428c9aed00c1f2f2f05882a50",
+    "src/thai_supply_chain_ews/evaluation/operational_contract.py": "e361ed2e3f78f5689f052be9e8a4812f9bfac5df09d1683866448924f94e2e06",
+    "src/thai_supply_chain_ews/evaluation/operational_walk_forward.py": "94c7860f9e391e5c28d44c088a86e7d1206ad6658737ea9021a4bc51dccb174a",
+    "tests/test_d3_operational_baselines.py": "15798a60723f256fabfdfdc834a67e3ed93daac69d9558590c46e183297bc132",
+    "docs/d1_development_results.errata.md": "ba039d79b528792d1eb473866ee611b51977575110c4889ea2b0b89fb9f4d886",
+    "docs/d3_operational_evaluation_protocol.md": "fe286292bba72527eeacc5755904f90903d5947454a375b6f36055138c82f3ca",
+    "docs/d3_operational_baseline_results.md": "afa390938fd6d56f445bd4fd3fd34d7d9214cb8a2626c7524e1e900a4c3cd411",
+    "docs/d3_operational_baseline_results.json": "d37cb517b8f01358290e8e81f7341be705d085aa9546750d08a119dec617b0cf",
+    "docs/d3_locked_test_manifest.json": "f568d82a5251a2aaf015b2ddc03cd133fbe4b2bde01e7ddfe115bc6e7216097a",
+    "docs/d3_restored_d1_checksums.json": "aae2249db29a5a96037de27df2602882be6715eef8fd29f8d5e82b2fc5b97df0",
+    "docs/d3r1_artifact_inventory.json": "d6a99495b811bb99d6b82af96f9a754447d745fe3edd8df550eca3d866e1b07c",
+    "tests/test_d3r1_verification_closure.py": "89224d3a26320e64e9d08ddd6b9cd6c91b60f20b929a76790f566711ab0c0b98",
+    "README.md": "a03bae6d24f35b948563a010dabda537b1a974f083f5294c14d2bcd49df67b92",
+    "docs/methodology.md": "1e971c7dba25e9c53dda9a8dc480173b87a4167dbde8383b950f85021f92f796",
+    "docs/architecture/decision_log.md": "102d26a74682ef362917d9e81824bc59f4a8d25ae67abb27147f301d55e08256",
+    "scripts/audit_d2_oie_mpi_timing.py": "e0f90c99346976fce7e334c32609ff1dc3510e629b08962038d90f53fe2cceee",
+    "src/thai_supply_chain_ews/data/oie_mpi_discovery.py": "5f248b3b17ee1b17493f5ede430346e6174a81fae8b0d1475c6d00a4468506ca",
+    "src/thai_supply_chain_ews/data/oie_mpi_history.py": "b0c9a157e99f9dfa38b7b10e0186cb75d5c0ebc14be6f69d43103d7e4d00db09",
+    "src/thai_supply_chain_ews/data/oie_mpi_release_inventory.py": "7b046d0854b880fb6e57e9e8937ce06dac25efa9b8b2a0a560ce0f8a7c1a0002",
+    "src/thai_supply_chain_ews/data/oie_mpi_vintages.py": "aaa95a54b734b9b2843cd8c58172d8e10b9fb76ee23ac5676d5c56bcc410731b",
+    "src/thai_supply_chain_ews/data/target_timing_contract.py": "e89750c0feaf7c2f3c5ce6e396ef7499c4191c108ac80d9f4fe3670c9a0bde1a",
+    "tests/test_d2_oie_mpi_timing.py": "f2e0e3e68d4e8752914e975949dc08dabdf0387f8ccddfb1011adf60847a15b8",
+    "docs/d1_development_results.md": "54a66c41cf31b9070eebbe5e0a3d238efb513d8896ae3eb84d96312b72895364",
+    "docs/d1_modeling_protocol.md": "80761aabc44c4dec70162382a87032232497648c5e9761b706d6ff2b4c6c7d56",
+    "docs/d2_oie_mpi_source_audit.json": "74998f41e95526356d2b076376f73ff7ff3f2a71cd2a9942f7ccdce1700fa5e6",
+    "docs/d2_oie_mpi_source_audit.md": "c9168d0ebb8cfdce0e7f01f15a7c79cd1b25a832852d23708463c3aa83e1a413",
+    "docs/d2_target_timing_decision.json": "ff23ab2f97ebce16291c4d19f15eda60edabf645321a5bd20b45c148a327c7fc",
+    "docs/d2_target_timing_decision.md": "2a07a2f4a4f37e286d89ed7fff508eb781bf2423d953ead56c10797dea569d30",
+    "docs/b4_baseline_results.json": "190ffbb0272414dd91f8817166d53fdcb1b230bd8096fc4b3edf7188c11d8072",
+    "docs/b4_baseline_results.md": "18c47807df2137ab30f0f5a6386469304ad769335577f0fc447da1069109605c",
+    "docs/b4_locked_test_manifest.json": "dcff2bf19dfe4c763b744203822bf670cc2cd2c7a0141d2363623a3d67bd2807",
+    "docs/d1_development_results.json": "6a879de7ce7cc213f6d26c3020bda6c8a697088dfa5b6b72eb475fb05c5d89c6",
+    "docs/d1_feature_target_assembly_audit.json": "8cd53ba5cf37ab6ba3327d829db974c192c7b9406c9c7bef2c205a61ae1333f3",
+    "docs/b3_target_build_metadata.json": "b6ebff8e1fe97c9cf1d4068733b6088129b54ca996507d7a4f8833918c37d667",
+    "data/targets/forecast_target_raw.parquet": "39b8c2fb69a38bbc562f762e368f2200930b41678e438c2fbdea603054aa267f",
+    "data/targets/production_stress_month.parquet": "f4daf662c24372f870784c4e6dba506e16443521ebfdd79d2b5c5529972f7ca5",
+    "docs/c4_industry_conditioned_feature_audit.json": "6788c28aa2feceaf127777b95900e7523324e32978f127034dfb73ca3a3ebf59",
+    "data/model_input/d3_operational_predictions.parquet": "64c2d02d4641152a56c4378fdcc5f4d537935146481dd21bc8839dff5128d523",
+    "data/interim/d2_release_crawl.json": "bff08ed71e4f385c0e9b5538fb6e3b40df880ac2f350ad0a9725058056549355"
+  },
+  "missing_paths": [],
+  "all_listed_paths_exist": true
+}

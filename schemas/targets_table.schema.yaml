@@ -1,0 +1,61 @@
+# Schema definition (documentation-level, not yet enforced by code) for
+# targets/industry_month_targets.parquet.
+#
+# schema_version 2 changes vs. 1: `threshold_manifest_ref` renamed to
+# `calibration_version` (it now points to the full frozen normalizer +
+# global-calibration + threshold bundle from docs/target_definition.md §8, not
+# only risk thresholds), and the `horizon` foreign-key reference is corrected
+# to match configs/model.yaml's current dict-keyed `horizons` shape (it used
+# to be a list with a `horizon_id` field; that changed when
+# docs/modeling_strategy.md introduced the two-horizon architecture, and this
+# file's reference was not updated at the time — fixed here).
+
+schema_version: 2
+table: targets/industry_month_targets
+grain: [industry_id, prediction_date, horizon]
+primary_key: [industry_id, prediction_date, horizon]
+foreign_keys:
+  - column: industry_id
+    references: mapping/industry_map.csv#industry_id
+  - column: horizon
+    references: "configs/model.yaml#horizons (dict keys \"1m\"/\"3m\")"
+
+columns:
+  - name: industry_id
+    type: string
+    nullable: false
+  - name: prediction_date
+    type: date
+    nullable: false
+  - name: horizon
+    type: string
+    nullable: false
+    allowed_values: ["1m", "3m"]
+  - name: stress_score
+    type: float64
+    nullable: false
+    range: [0, 100]
+  - name: risk_level
+    type: string
+    nullable: true
+    allowed_values: [Normal, Watch, High, Severe]
+    rule: "populated only after train-only threshold fitting (data_architecture.md §8); null before that"
+  - name: contributing_periods
+    type: string
+    nullable: false
+    note: "JSON array; one element for horizon=1m, one-or-more for horizon=3m (which month(s) achieved the max)"
+  - name: calibration_version
+    type: string
+    nullable: true
+    note: >
+      pointer to the frozen calibration_version bundle (per-industry normalizer
+      params, blend weights, logistic (c,s), risk thresholds + floor-gate
+      params — docs/target_definition.md §8) used to compute this row's
+      stress_score and risk_level. Null only before risk_level is populated.
+      Frozen permanently once set: a later fold's recalibration must NOT
+      change an already-computed row's calibration_version or its
+      stress_score/risk_level (docs/target_definition.md §8, "freeze once
+      computed").
+  - name: built_at
+    type: timestamp
+    nullable: false

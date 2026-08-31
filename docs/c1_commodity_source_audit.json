@@ -1,0 +1,433 @@
+{
+  "task": "C1",
+  "audit_version": "c1_commodity_source_audit_v1",
+  "discovery": {
+    "landing_page": "https://www.worldbank.org/en/research/commodity-markets",
+    "landing_page_http_status": 200,
+    "method": "extract_href_from_landing_page_html",
+    "candidate_urls_found": [
+      "https://thedocs.worldbank.org/en/doc/74e8be41ceb20fa0da750cda2f6b9e4e-0050012026/related/CMO-Historical-Data-Monthly.xlsx"
+    ],
+    "pink_sheet_vintage_label_on_page": "July-2026"
+  },
+  "provenance": {
+    "source_url": "https://thedocs.worldbank.org/en/doc/74e8be41ceb20fa0da750cda2f6b9e4e-0050012026/related/CMO-Historical-Data-Monthly.xlsx",
+    "downloaded_at_utc": "2026-08-27T04:01:23Z",
+    "sha256": "7902a77505ebdc5d202ce65f666c2ee1b04b626f042d7738ed3e6f7d112c8433",
+    "source_vintage": "July-2026",
+    "updated_on_in_workbook": "Updated on August 04, 2026"
+  },
+  "manifest_line_appended": false,
+  "workbook": {
+    "file": "data/raw/WB_PINKSHEET/2026-08-27/CMO-Historical-Data-Monthly.xlsx",
+    "sheets_inspected": [
+      "AFOSHEET",
+      "Monthly Prices",
+      "Monthly Indices",
+      "Description",
+      "Index Weights"
+    ],
+    "data_sheet": "Monthly Prices",
+    "description_sheet": "Description",
+    "labelled_series_columns": 71,
+    "observation_rows": 799,
+    "first_month": "1960-01-01",
+    "last_month": "2026-07-01",
+    "updated_on": "Updated on August 04, 2026",
+    "description_entries": 103
+  },
+  "candidates": [
+    {
+      "candidate_id": "brent_crude_usd_bbl",
+      "intended_source_series": "Crude oil, Brent",
+      "resolved_source_label": "Crude oil, Brent",
+      "found": true,
+      "unit": "$/bbl",
+      "currency": "USD",
+      "expected_unit": "($/bbl)",
+      "unit_matches_expected": true,
+      "first_observation": "1960-01-01",
+      "last_observation": "2026-07-01",
+      "total_observations": 799,
+      "required_window_rows": 77,
+      "required_window_expected": 77,
+      "missing_in_required_window": 0,
+      "missingness_pct": 0.0,
+      "duplicate_months": 0,
+      "minimum": 1.2,
+      "maximum": 133.9,
+      "median": 24.1,
+      "non_positive_count": 0,
+      "largest_one_month_pct_move": 217.07317073170734,
+      "largest_move_month": "1974-01-01",
+      "definition_notes": [
+        "* Crude oil, average spot price of Brent, Dubai and West Texas  Intermediate, equally weighed World Bank.",
+        "Crude oil, UK Brent 38` API. Bloomberg Finance L.P. Finance L.P.; Energy Intelligence Group (EIG); Organization of Petroleum Exporting Countries (OPEC); World Bank."
+      ],
+      "definition_break_months": [],
+      "definition_break_in_window": false,
+      "criteria": {
+        "found_in_official_workbook": true,
+        "exact_label_and_unit_documented": true,
+        "dates_parse_to_unambiguous_gregorian_months": true,
+        "no_duplicate_month": true,
+        "covers_required_window": true,
+        "missingness_within_limit": true,
+        "all_values_finite": true,
+        "no_unexplained_unit_change": true,
+        "no_unresolved_definition_break_in_window": true,
+        "provenance_recorded": true,
+        "deterministically_reproducible": true
+      },
+      "status": "source_verified",
+      "reasons": [
+        "All preregistered eligibility criteria met."
+      ],
+      "flags": [
+        "large_one_month_move_flagged_not_removed"
+      ],
+      "source_verified": true,
+      "feature_semantics_approved": false,
+      "model_feature_approved": false
+    },
+    {
+      "candidate_id": "coal_australia_usd_mt",
+      "intended_source_series": "Coal, Australia",
+      "resolved_source_label": "Coal, Australian",
+      "found": true,
+      "unit": "$/mt",
+      "currency": "USD",
+      "expected_unit": "($/mt)",
+      "unit_matches_expected": true,
+      "first_observation": "1970-01-01",
+      "last_observation": "2026-07-01",
+      "total_observations": 679,
+      "required_window_rows": 77,
+      "required_window_expected": 77,
+      "missing_in_required_window": 0,
+      "missingness_pct": 0.0,
+      "duplicate_months": 0,
+      "minimum": 7.8,
+      "maximum": 430.8,
+      "median": 39.5,
+      "non_positive_count": 0,
+      "largest_one_month_pct_move": 58.579881656804744,
+      "largest_move_month": "1975-01-01",
+      "definition_notes": [
+        "* Coal (Australia), from February 2022, port thermal, f.o.b. Newcastle, 6000 kcal/kg futures price. From 2015 to January 2022, port thermal, f.o.b. Newcastle, 6000 kcal/kg spot price. 2002-2014, thermal GAR, f.o.b. piers, Newcastle/Port Kembla , 6,300 kcal/kg (11,340 btu/lb), less than 0.8%, sulfur 13% ash; previously 6,667 kcal/kg (12,000 btu/lb), less than 1.0% sulfur, 14%  ash Bloomberg Finance L.P. Finance L.P. Finance L.P.; Coal Week International; Coal Week; IHS McCloskey Coal Report; International Coal Report World Bank."
+      ],
+      "definition_break_months": [
+        "2022-01-01",
+        "2022-02-01"
+      ],
+      "definition_break_in_window": true,
+      "criteria": {
+        "found_in_official_workbook": true,
+        "exact_label_and_unit_documented": true,
+        "dates_parse_to_unambiguous_gregorian_months": true,
+        "no_duplicate_month": true,
+        "covers_required_window": true,
+        "missingness_within_limit": true,
+        "all_values_finite": true,
+        "no_unexplained_unit_change": true,
+        "no_unresolved_definition_break_in_window": false,
+        "provenance_recorded": true,
+        "deterministically_reproducible": true
+      },
+      "status": "conditional",
+      "reasons": [
+        "definition/benchmark change dated inside 2021-01..2026-05: ['2022-01-01', '2022-02-01']"
+      ],
+      "flags": [
+        "large_one_month_move_flagged_not_removed"
+      ],
+      "source_verified": false,
+      "feature_semantics_approved": false,
+      "model_feature_approved": false
+    },
+    {
+      "candidate_id": "lng_japan_usd_mmbtu",
+      "intended_source_series": "Liquefied natural gas, Japan",
+      "resolved_source_label": "Liquefied natural gas, Japan",
+      "found": true,
+      "unit": "$/mmbtu",
+      "currency": "USD",
+      "expected_unit": "($/mmbtu)",
+      "unit_matches_expected": true,
+      "first_observation": "1977-01-01",
+      "last_observation": "2026-07-01",
+      "total_observations": 595,
+      "required_window_rows": 77,
+      "required_window_expected": 77,
+      "missing_in_required_window": 0,
+      "missingness_pct": 0.0,
+      "duplicate_months": 0,
+      "minimum": 2.72,
+      "maximum": 23.73,
+      "median": 5.55,
+      "non_positive_count": 0,
+      "largest_one_month_pct_move": 54.47154471544715,
+      "largest_move_month": "1980-01-01",
+      "definition_notes": [
+        "* Liquefied natural gas (Japan), LNG, import price, cif; recent two months' averages are estimates. Official Statistics of Japan; World Gas Intelligence; World Bank."
+      ],
+      "definition_break_months": [],
+      "definition_break_in_window": false,
+      "criteria": {
+        "found_in_official_workbook": true,
+        "exact_label_and_unit_documented": true,
+        "dates_parse_to_unambiguous_gregorian_months": true,
+        "no_duplicate_month": true,
+        "covers_required_window": true,
+        "missingness_within_limit": true,
+        "all_values_finite": true,
+        "no_unexplained_unit_change": true,
+        "no_unresolved_definition_break_in_window": true,
+        "provenance_recorded": true,
+        "deterministically_reproducible": true
+      },
+      "status": "source_verified",
+      "reasons": [
+        "All preregistered eligibility criteria met."
+      ],
+      "flags": [
+        "large_one_month_move_flagged_not_removed",
+        "source_states_recent_months_are_estimates"
+      ],
+      "source_verified": true,
+      "feature_semantics_approved": false,
+      "model_feature_approved": false
+    },
+    {
+      "candidate_id": "aluminum_usd_mt",
+      "intended_source_series": "Aluminum",
+      "resolved_source_label": "Aluminum",
+      "found": true,
+      "unit": "$/mt",
+      "currency": "USD",
+      "expected_unit": "($/mt)",
+      "unit_matches_expected": true,
+      "first_observation": "1960-01-01",
+      "last_observation": "2026-07-01",
+      "total_observations": 799,
+      "required_window_rows": 77,
+      "required_window_expected": 77,
+      "missing_in_required_window": 0,
+      "missingness_pct": 0.0,
+      "duplicate_months": 0,
+      "minimum": 496.0,
+      "maximum": 3666.0,
+      "median": 1466.0,
+      "non_positive_count": 0,
+      "largest_one_month_pct_move": 27.83678032420347,
+      "largest_move_month": "1988-07-01",
+      "definition_notes": [
+        "* Aluminum (LME) London Metal Exchange, unalloyed primary ingots, high grade, minimum 99.7% purity, settlement price beginning 2005; previously cash price Bloomberg Finance L.P.; Engineering and Mining Journal; Platts Metals Week; Thomson Reuters Datastream; World Bank."
+      ],
+      "definition_break_months": [],
+      "definition_break_in_window": false,
+      "criteria": {
+        "found_in_official_workbook": true,
+        "exact_label_and_unit_documented": true,
+        "dates_parse_to_unambiguous_gregorian_months": true,
+        "no_duplicate_month": true,
+        "covers_required_window": true,
+        "missingness_within_limit": true,
+        "all_values_finite": true,
+        "no_unexplained_unit_change": true,
+        "no_unresolved_definition_break_in_window": true,
+        "provenance_recorded": true,
+        "deterministically_reproducible": true
+      },
+      "status": "source_verified",
+      "reasons": [
+        "All preregistered eligibility criteria met."
+      ],
+      "flags": [],
+      "source_verified": true,
+      "feature_semantics_approved": false,
+      "model_feature_approved": false
+    },
+    {
+      "candidate_id": "copper_usd_mt",
+      "intended_source_series": "Copper",
+      "resolved_source_label": "Copper",
+      "found": true,
+      "unit": "$/mt",
+      "currency": "USD",
+      "expected_unit": "($/mt)",
+      "unit_matches_expected": true,
+      "first_observation": "1960-01-01",
+      "last_observation": "2026-07-01",
+      "total_observations": 799,
+      "required_window_rows": 77,
+      "required_window_expected": 77,
+      "missing_in_required_window": 0,
+      "missingness_pct": 0.0,
+      "duplicate_months": 0,
+      "minimum": 607.0,
+      "maximum": 13552.0,
+      "median": 2037.0,
+      "non_positive_count": 0,
+      "largest_one_month_pct_move": 29.53797739951366,
+      "largest_move_month": "2008-10-01",
+      "definition_notes": [
+        "* Copper (LME), grade A, minimum 99.9935% purity, cathodes and wire bar shapes, settlement price Bloomberg Finance L.P.; Engineering and Mining Journal; Platts Metals Week; Thomson Reuters Datastream; World Bank."
+      ],
+      "definition_break_months": [],
+      "definition_break_in_window": false,
+      "criteria": {
+        "found_in_official_workbook": true,
+        "exact_label_and_unit_documented": true,
+        "dates_parse_to_unambiguous_gregorian_months": true,
+        "no_duplicate_month": true,
+        "covers_required_window": true,
+        "missingness_within_limit": true,
+        "all_values_finite": true,
+        "no_unexplained_unit_change": true,
+        "no_unresolved_definition_break_in_window": true,
+        "provenance_recorded": true,
+        "deterministically_reproducible": true
+      },
+      "status": "source_verified",
+      "reasons": [
+        "All preregistered eligibility criteria met."
+      ],
+      "flags": [],
+      "source_verified": true,
+      "feature_semantics_approved": false,
+      "model_feature_approved": false
+    },
+    {
+      "candidate_id": "rubber_rss3_usd_kg",
+      "intended_source_series": "Rubber, RSS3",
+      "resolved_source_label": "Rubber, RSS3",
+      "found": true,
+      "unit": "$/kg",
+      "currency": "USD",
+      "expected_unit": "($/kg)",
+      "unit_matches_expected": true,
+      "first_observation": "1960-01-01",
+      "last_observation": "2026-07-01",
+      "total_observations": 799,
+      "required_window_rows": 77,
+      "required_window_expected": 77,
+      "missing_in_required_window": 0,
+      "missingness_pct": 0.0,
+      "duplicate_months": 0,
+      "minimum": 0.29,
+      "maximum": 6.26,
+      "median": 0.98,
+      "non_positive_count": 0,
+      "largest_one_month_pct_move": 32.15547703180213,
+      "largest_move_month": "2008-10-01",
+      "definition_notes": [
+        "Rubber (Asia), RSS3 grade, Singapore Commodity Exchange Ltd (SICOM) nearby contract beginning 2004; during 2000 to 2003, Singapore RSS1; previously Malaysia RSS1 Asian Wall Street Journal; Bloomberg Finance L.P.; International Rubber Study Group; Rubber Association of Singapore Commodity Exchange (RASCE); Singapore Exchange Ltd (SGX previously SICOM); World Bank.",
+        "** Rubber TSR20 replaces Rubber RSS3 in Other Raw Materials index from 2018"
+      ],
+      "definition_break_months": [],
+      "definition_break_in_window": false,
+      "criteria": {
+        "found_in_official_workbook": true,
+        "exact_label_and_unit_documented": true,
+        "dates_parse_to_unambiguous_gregorian_months": true,
+        "no_duplicate_month": true,
+        "covers_required_window": true,
+        "missingness_within_limit": true,
+        "all_values_finite": true,
+        "no_unexplained_unit_change": true,
+        "no_unresolved_definition_break_in_window": true,
+        "provenance_recorded": true,
+        "deterministically_reproducible": true
+      },
+      "status": "source_verified",
+      "reasons": [
+        "All preregistered eligibility criteria met."
+      ],
+      "flags": [],
+      "source_verified": true,
+      "feature_semantics_approved": false,
+      "model_feature_approved": false
+    },
+    {
+      "candidate_id": "palm_oil_usd_mt",
+      "intended_source_series": "Palm oil",
+      "resolved_source_label": "Palm oil",
+      "found": true,
+      "unit": "$/mt",
+      "currency": "USD",
+      "expected_unit": "($/mt)",
+      "unit_matches_expected": true,
+      "first_observation": "1960-01-01",
+      "last_observation": "2026-07-01",
+      "total_observations": 799,
+      "required_window_rows": 77,
+      "required_window_expected": 77,
+      "missing_in_required_window": 0,
+      "missingness_pct": 0.0,
+      "duplicate_months": 0,
+      "minimum": 142.0,
+      "maximum": 1777.0,
+      "median": 500.0,
+      "non_positive_count": 0,
+      "largest_one_month_pct_move": 31.529411764705873,
+      "largest_move_month": "1983-08-01",
+      "definition_notes": [
+        "* Palm oil (Malaysia), from February 2025, Crude, DAP; November 2024-January 2025, 5% Bulk, CIF North West Europe; January 2021 to October 2024, RBD, FOB Malaysia Ports; December 2001 to December 2020, RBD, CIF Rotterdam; previously Malaysia 5%,  c.i.f. N.W. Europe, bulk, nearest forward . S&P Global (formerly Markit Group Limited and earlier IHS Markit Agribusiness UK Ltd); Bloomberg Finance L.P.; ISTA Mielke GmbH, Oil World; US Department of Agriculture; World Bank."
+      ],
+      "definition_break_months": [
+        "2001-12-01",
+        "2020-12-01",
+        "2021-01-01",
+        "2024-10-01",
+        "2024-11-01",
+        "2025-01-01",
+        "2025-02-01"
+      ],
+      "definition_break_in_window": true,
+      "criteria": {
+        "found_in_official_workbook": true,
+        "exact_label_and_unit_documented": true,
+        "dates_parse_to_unambiguous_gregorian_months": true,
+        "no_duplicate_month": true,
+        "covers_required_window": true,
+        "missingness_within_limit": true,
+        "all_values_finite": true,
+        "no_unexplained_unit_change": true,
+        "no_unresolved_definition_break_in_window": false,
+        "provenance_recorded": true,
+        "deterministically_reproducible": true
+      },
+      "status": "conditional",
+      "reasons": [
+        "definition/benchmark change dated inside 2021-01..2026-05: ['2021-01-01', '2024-10-01', '2024-11-01', '2025-01-01', '2025-02-01']"
+      ],
+      "flags": [],
+      "source_verified": false,
+      "feature_semantics_approved": false,
+      "model_feature_approved": false
+    }
+  ],
+  "status_counts": {
+    "source_verified": 5,
+    "conditional": 2,
+    "rejected": 0
+  },
+  "timing": {
+    "latest_vintage_only": true,
+    "point_in_time_backtest_supported": false,
+    "same_month_availability_verified": false,
+    "minimum_safe_lag_months": null,
+    "timing_status": "unresolved",
+    "c2_default_policy": "C2 must default to LAGGED use unless stronger publication evidence is found. The lag is deliberately NOT chosen in C1 — that requires a separate timing and transformation decision."
+  },
+  "not_in_scope_for_c1": [
+    "feature_engineering",
+    "mom_yoy_lag_volatility_zscore_or_shock_flags",
+    "unit_conversion",
+    "joining_commodity_data_to_the_target",
+    "target_correlation_or_feature_importance",
+    "model_training_or_baseline_evaluation",
+    "locked_test_access"
+  ]
+}

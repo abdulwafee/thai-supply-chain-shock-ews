@@ -1,0 +1,9 @@
+country_code,country_name,role
+THA,Thailand,domestic
+CHN,China,trading_partner
+USA,United States,trading_partner
+JPN,Japan,trading_partner
+PHL,Philippines,trading_partner
+IDN,Indonesia,trading_partner
+VNM,Vietnam,trading_partner
+MYS,Malaysia,trading_partner

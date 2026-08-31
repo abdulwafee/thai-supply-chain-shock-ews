@@ -1,0 +1,3367 @@
+{
+ "c8_numeric_values_read": false,
+ "config_version": "fuel_oil_industry_conditioning_v1",
+ "content_checksum": "8cb4209b8c93f9d1f478452791dfda25bfbc9b73ec148aee2d6773de431373e1",
+ "decisions": [
+  {
+   "channel_id": "eppo_fo1500_channel",
+   "component_sector_codes": [
+    "064",
+    "042",
+    "046",
+    "063",
+    "050",
+    "055",
+    "043",
+    "059",
+    "062",
+    "049",
+    "054",
+    "060",
+    "053",
+    "045",
+    "044",
+    "047",
+    "058",
+    "057",
+    "052",
+    "061",
+    "056",
+    "048",
+    "066",
+    "065",
+    "051"
+   ],
+   "confidence": "medium",
+   "contributions": [
+    {
+     "contribution_share": 0.14769297603564957,
+     "direct_coefficient": 0.020152637631665533,
+     "gross_output": 174773152.0,
+     "io_sector_code": "064",
+     "io_sector_label": "Soft drinks and carbonated water",
+     "output_weight": 0.06270247096230244,
+     "weighted_contribution": 0.0012636201759133115
+    },
+    {
+     "contribution_share": 0.1047441652166675,
+     "direct_coefficient": 0.005918508321966346,
+     "gross_output": 422050433.0,
+     "io_sector_code": "042",
+     "io_sector_label": "Slaughtering",
+     "output_weight": 0.15141687791846697,
+     "weighted_contribution": 0.000896162052046609
+    },
+    {
+     "contribution_share": 0.1030504599706932,
+     "direct_coefficient": 0.012113273513538846,
+     "gross_output": 202878107.0,
+     "io_sector_code": "046",
+     "io_sector_label": "Canning and preservation of fish and other sea foods",
+     "output_weight": 0.07278554210119405,
+     "weighted_contribution": 0.0008816711793029604
+    },
+    {
+     "contribution_share": 0.08529588683863422,
+     "direct_coefficient": 0.006534902906167039,
+     "gross_output": 311268894.0,
+     "io_sector_code": "063",
+     "io_sector_label": "Breweries",
+     "output_weight": 0.11167235106856112,
+     "weighted_contribution": 0.0007297679715364459
+    },
+    {
+     "contribution_share": 0.06839661577639619,
+     "direct_coefficient": 0.013587781505476439,
+     "gross_output": 120041892.0,
+     "io_sector_code": "050",
+     "io_sector_label": "Tapioca milling",
+     "output_weight": 0.04306681639174102,
+     "weighted_contribution": 0.0005851824912674482
+    },
+    {
+     "contribution_share": 0.06727109913884832,
+     "direct_coefficient": 0.00914142816103506,
+     "gross_output": 175493585.0,
+     "io_sector_code": "055",
+     "io_sector_label": "Sugar",
+     "output_weight": 0.06296093702957795,
+     "weighted_contribution": 0.000575552882807339
+    },
+    {
+     "contribution_share": 0.06373725952360636,
+     "direct_coefficient": 0.01838953623256017,
+     "gross_output": 82655048.0,
+     "io_sector_code": "043",
+     "io_sector_label": "Canning and preserving of meat",
+     "output_weight": 0.029653729350304983,
+     "weighted_contribution": 0.0005453183303179665
+    },
+    {
+     "contribution_share": 0.03767878809353433,
+     "direct_coefficient": 0.026216674437840138,
+     "gross_output": 34274103.0,
+     "io_sector_code": "059",
+     "io_sector_label": "Coffee and tea",
+     "output_weight": 0.012296344853450162,
+     "weighted_contribution": 0.000322369269798314
+    },
+    {
+     "contribution_share": 0.03609872056924531,
+     "direct_coefficient": 0.009433525904133258,
+     "gross_output": 91256653.0,
+     "io_sector_code": "062",
+     "io_sector_label": "Distilling and spirits blending",
+     "output_weight": 0.03273968323721374,
+     "weighted_contribution": 0.0003088506499113732
+    },
+    {
+     "contribution_share": 0.03400912833787221,
+     "direct_coefficient": 0.0020763490153144436,
+     "gross_output": 390608705.0,
+     "io_sector_code": "049",
+     "io_sector_label": "Rice milling",
+     "output_weight": 0.14013668977535554,
+     "weighted_contribution": 0.00029097267782448514
+    },
+    {
+     "contribution_share": 0.03213972491704132,
+     "direct_coefficient": 0.020437939270874513,
+     "gross_output": 37501775.0,
+     "io_sector_code": "054",
+     "io_sector_label": "Noodles and similar products",
+     "output_weight": 0.013454320249212531,
+     "weighted_contribution": 0.00027497858018430294
+    },
+    {
+     "contribution_share": 0.031144199769244138,
+     "direct_coefficient": 0.007859977726334464,
+     "gross_output": 94493652.0,
+     "io_sector_code": "060",
+     "io_sector_label": "Other food products",
+     "output_weight": 0.03390100483312169,
+     "weighted_contribution": 0.00026646114288869345
+    },
+    {
+     "contribution_share": 0.03053391069123394,
+     "direct_coefficient": 0.010987756058910805,
+     "gross_output": 66270492.0,
+     "io_sector_code": "053",
+     "io_sector_label": "Bakery products",
+     "output_weight": 0.023775525890197918,
+     "weighted_contribution": 0.00026123967865381286
+    },
+    {
+     "contribution_share": 0.030355612686582344,
+     "direct_coefficient": 0.006302923567726808,
+     "gross_output": 114853368.0,
+     "io_sector_code": "045",
+     "io_sector_label": "Canning and preservation of fruit and vegetables",
+     "output_weight": 0.04120535614041358,
+     "weighted_contribution": 0.0002597142103339893
+    },
+    {
+     "contribution_share": 0.02593669875709266,
+     "direct_coefficient": 0.005223283194129328,
+     "gross_output": 118418048.0,
+     "io_sector_code": "044",
+     "io_sector_label": "Dairy products",
+     "output_weight": 0.04248423817482296,
+     "weighted_contribution": 0.0002219072072739404
+    },
+    {
+     "contribution_share": 0.025932589348706996,
+     "direct_coefficient": 0.008299825337187912,
+     "gross_output": 74511568.0,
+     "io_sector_code": "047",
+     "io_sector_label": "Coconut and palm oil",
+     "output_weight": 0.026732134629440244,
+     "weighted_contribution": 0.00022187204831454653
+    },
+    {
+     "contribution_share": 0.021396473414748544,
+     "direct_coefficient": 0.02690290564794041,
+     "gross_output": 18966613.0,
+     "io_sector_code": "058",
+     "io_sector_label": "Monosodium glutamate",
+     "output_weight": 0.006804554860266684,
+     "weighted_contribution": 0.00018306229738198896
+    },
+    {
+     "contribution_share": 0.019486227506492763,
+     "direct_coefficient": 0.01425370591691576,
+     "gross_output": 32602188.0,
+     "io_sector_code": "057",
+     "io_sector_label": "Ice",
+     "output_weight": 0.011696520449419628,
+     "weighted_contribution": 0.00016671876273721876
+    },
+    {
+     "contribution_share": 0.011374884344265267,
+     "direct_coefficient": 0.007727941586202707,
+     "gross_output": 35101844.0,
+     "io_sector_code": "052",
+     "io_sector_label": "Flour and other grain milling",
+     "output_weight": 0.012593309263732167,
+     "weighted_contribution": 9.73203583671076e-05
+    },
+    {
+     "contribution_share": 0.007868175210916435,
+     "direct_coefficient": 0.0032617375696253415,
+     "gross_output": 57527007.0,
+     "io_sector_code": "061",
+     "io_sector_label": "Animal feed",
+     "output_weight": 0.020638670440444245,
+     "weighted_contribution": 6.731792676271299e-05
+    },
+    {
+     "contribution_share": 0.007034300770535039,
+     "direct_coefficient": 0.011874335284051594,
+     "gross_output": 14127275.0,
+     "io_sector_code": "056",
+     "io_sector_label": "Confectionery",
+     "output_weight": 0.005068370286438281,
+     "weighted_contribution": 6.0183528124892766e-05
+    },
+    {
+     "contribution_share": 0.005111600838906369,
+     "direct_coefficient": 0.004848483305725351,
+     "gross_output": 25141883.0,
+     "io_sector_code": "048",
+     "io_sector_label": "Animal oil, animal fat, vegetable oil and by-products",
+     "output_weight": 0.009020024933492675,
+     "weighted_contribution": 4.3733440307265653e-05
+    },
+    {
+     "contribution_share": 0.0031264211267201074,
+     "direct_coefficient": 0.0008410853983816027,
+     "gross_output": 88644982.0,
+     "io_sector_code": "066",
+     "io_sector_label": "Tobacco products",
+     "output_weight": 0.03180270737354913,
+     "weighted_contribution": 2.6748792800895102e-05
+    },
+    {
+     "contribution_share": 0.0004604634028878658,
+     "direct_coefficient": 0.0030845315000862356,
+     "gross_output": 3560022.0,
+     "io_sector_code": "065",
+     "io_sector_label": "Tobacco processing",
+     "output_weight": 0.0012772109075434987,
+     "weighted_contribution": 3.93959727657165e-06
+    },
+    {
+     "contribution_share": 0.00012361771347904821,
+     "direct_coefficient": 0.009228245694215756,
+     "gross_output": 319454.0,
+     "io_sector_code": "051",
+     "io_sector_label": "Grinding of maize",
+     "output_weight": 0.00011460887973681085,
+     "weighted_contribution": 1.0576389009501161e-06
+    }
+   ],
+   "direct_exposure": 0.008555722891035141,
+   "direction_channel": "cost_pressure",
+   "direction_interpretation_level": "the industry purchases refinery products as inputs and does not produce them, so a higher price is a cost increase",
+   "direction_interpretation_volatility": "disruption_magnitude_nonnegative",
+   "direction_multiplier": 1,
+   "eligible": true,
+   "exclusion_reason": null,
+   "exposure_reconciliation_residual": 0.0,
+   "exposure_row_checksum": "c5c9655eac09f1b341b84ee2c55c81684d8d6985129182cadba50c7d3450ca98",
+   "exposure_summed_flow_form": 0.008555722891035141,
+   "exposure_weighted_mean_form": 0.008555722891035141,
+   "gross_output_weights": {
+    "042": 0.15141687791846697,
+    "043": 0.029653729350304983,
+    "044": 0.04248423817482296,
+    "045": 0.04120535614041358,
+    "046": 0.07278554210119405,
+    "047": 0.026732134629440244,
+    "048": 0.009020024933492675,
+    "049": 0.14013668977535554,
+    "050": 0.04306681639174102,
+    "051": 0.00011460887973681085,
+    "052": 0.012593309263732167,
+    "053": 0.023775525890197918,
+    "054": 0.013454320249212531,
+    "055": 0.06296093702957795,
+    "056": 0.005068370286438281,
+    "057": 0.011696520449419628,
+    "058": 0.006804554860266684,
+    "059": 0.012296344853450162,
+    "060": 0.03390100483312169,
+    "061": 0.020638670440444245,
+    "062": 0.03273968323721374,
+    "063": 0.11167235106856112,
+    "064": 0.06270247096230244,
+    "065": 0.0012772109075434987,
+    "066": 0.03180270737354913
+   },
+   "industry_contains_the_producer_sector": false,
+   "industry_id": "IND-01",
+   "industry_name": "Food, Beverages and Tobacco",
+   "io_sector_code": "093",
+   "io_sector_label": "Petroleum refineries",
+   "observed_zero": false,
+   "phase_a_decision_checksum": "d528aba4aedcb8b8051ad618d66d49c71239267fb26fd2ead292ee90b12c9703",
+   "product_specific_evidence_available": false,
+   "proxy_fit": "broad_proxy_use_with_caution",
+   "proxy_reason": "The industry buys from sector 093, whose official basket is gasoline, jet oil, LPG, asphalt, paraffin, sulfur, kerosene, diesel, fuel oil. No source Phase A may read identifies which of those products it buys, so FO 600 / FO 1500 stand in for the whole basket and the conditioned value is a structural interaction, not a fuel-oil cost.",
+   "quality_flag": "ok",
+   "structural_source_checksum": "7da4b4dca118af760844abd6c78ae01a83f313c8898321ac69e72be730e93c81",
+   "target_outcomes_used": false,
+   "valuation_basis_alignment": "partial_mismatch_purchasers_price_coefficient_x_ex_refinery_price",
+   "variant_id": "fo1500_direct_sector093"
+  },
+  {
+   "channel_id": "eppo_fo600_channel",
+   "component_sector_codes": [
+    "064",
+    "042",
+    "046",
+    "063",
+    "050",
+    "055",
+    "043",
+    "059",
+    "062",
+    "049",
+    "054",
+    "060",
+    "053",
+    "045",
+    "044",
+    "047",
+    "058",
+    "057",
+    "052",
+    "061",
+    "056",
+    "048",
+    "066",
+    "065",
+    "051"
+   ],
+   "confidence": "medium",
+   "contributions": [
+    {
+     "contribution_share": 0.14769297603564957,
+     "direct_coefficient": 0.020152637631665533,
+     "gross_output": 174773152.0,
+     "io_sector_code": "064",
+     "io_sector_label": "Soft drinks and carbonated water",
+     "output_weight": 0.06270247096230244,
+     "weighted_contribution": 0.0012636201759133115
+    },
+    {
+     "contribution_share": 0.1047441652166675,
+     "direct_coefficient": 0.005918508321966346,
+     "gross_output": 422050433.0,
+     "io_sector_code": "042",
+     "io_sector_label": "Slaughtering",
+     "output_weight": 0.15141687791846697,
+     "weighted_contribution": 0.000896162052046609
+    },
+    {
+     "contribution_share": 0.1030504599706932,
+     "direct_coefficient": 0.012113273513538846,
+     "gross_output": 202878107.0,
+     "io_sector_code": "046",
+     "io_sector_label": "Canning and preservation of fish and other sea foods",
+     "output_weight": 0.07278554210119405,
+     "weighted_contribution": 0.0008816711793029604
+    },
+    {
+     "contribution_share": 0.08529588683863422,
+     "direct_coefficient": 0.006534902906167039,
+     "gross_output": 311268894.0,
+     "io_sector_code": "063",
+     "io_sector_label": "Breweries",
+     "output_weight": 0.11167235106856112,
+     "weighted_contribution": 0.0007297679715364459
+    },
+    {
+     "contribution_share": 0.06839661577639619,
+     "direct_coefficient": 0.013587781505476439,
+     "gross_output": 120041892.0,
+     "io_sector_code": "050",
+     "io_sector_label": "Tapioca milling",
+     "output_weight": 0.04306681639174102,
+     "weighted_contribution": 0.0005851824912674482
+    },
+    {
+     "contribution_share": 0.06727109913884832,
+     "direct_coefficient": 0.00914142816103506,
+     "gross_output": 175493585.0,
+     "io_sector_code": "055",
+     "io_sector_label": "Sugar",
+     "output_weight": 0.06296093702957795,
+     "weighted_contribution": 0.000575552882807339
+    },
+    {
+     "contribution_share": 0.06373725952360636,
+     "direct_coefficient": 0.01838953623256017,
+     "gross_output": 82655048.0,
+     "io_sector_code": "043",
+     "io_sector_label": "Canning and preserving of meat",
+     "output_weight": 0.029653729350304983,
+     "weighted_contribution": 0.0005453183303179665
+    },
+    {
+     "contribution_share": 0.03767878809353433,
+     "direct_coefficient": 0.026216674437840138,
+     "gross_output": 34274103.0,
+     "io_sector_code": "059",
+     "io_sector_label": "Coffee and tea",
+     "output_weight": 0.012296344853450162,
+     "weighted_contribution": 0.000322369269798314
+    },
+    {
+     "contribution_share": 0.03609872056924531,
+     "direct_coefficient": 0.009433525904133258,
+     "gross_output": 91256653.0,
+     "io_sector_code": "062",
+     "io_sector_label": "Distilling and spirits blending",
+     "output_weight": 0.03273968323721374,
+     "weighted_contribution": 0.0003088506499113732
+    },
+    {
+     "contribution_share": 0.03400912833787221,
+     "direct_coefficient": 0.0020763490153144436,
+     "gross_output": 390608705.0,
+     "io_sector_code": "049",
+     "io_sector_label": "Rice milling",
+     "output_weight": 0.14013668977535554,
+     "weighted_contribution": 0.00029097267782448514
+    },
+    {
+     "contribution_share": 0.03213972491704132,
+     "direct_coefficient": 0.020437939270874513,
+     "gross_output": 37501775.0,
+     "io_sector_code": "054",
+     "io_sector_label": "Noodles and similar products",
+     "output_weight": 0.013454320249212531,
+     "weighted_contribution": 0.00027497858018430294
+    },
+    {
+     "contribution_share": 0.031144199769244138,
+     "direct_coefficient": 0.007859977726334464,
+     "gross_output": 94493652.0,
+     "io_sector_code": "060",
+     "io_sector_label": "Other food products",
+     "output_weight": 0.03390100483312169,
+     "weighted_contribution": 0.00026646114288869345
+    },
+    {
+     "contribution_share": 0.03053391069123394,
+     "direct_coefficient": 0.010987756058910805,
+     "gross_output": 66270492.0,
+     "io_sector_code": "053",
+     "io_sector_label": "Bakery products",
+     "output_weight": 0.023775525890197918,
+     "weighted_contribution": 0.00026123967865381286
+    },
+    {
+     "contribution_share": 0.030355612686582344,
+     "direct_coefficient": 0.006302923567726808,
+     "gross_output": 114853368.0,
+     "io_sector_code": "045",
+     "io_sector_label": "Canning and preservation of fruit and vegetables",
+     "output_weight": 0.04120535614041358,
+     "weighted_contribution": 0.0002597142103339893
+    },
+    {
+     "contribution_share": 0.02593669875709266,
+     "direct_coefficient": 0.005223283194129328,
+     "gross_output": 118418048.0,
+     "io_sector_code": "044",
+     "io_sector_label": "Dairy products",
+     "output_weight": 0.04248423817482296,
+     "weighted_contribution": 0.0002219072072739404
+    },
+    {
+     "contribution_share": 0.025932589348706996,
+     "direct_coefficient": 0.008299825337187912,
+     "gross_output": 74511568.0,
+     "io_sector_code": "047",
+     "io_sector_label": "Coconut and palm oil",
+     "output_weight": 0.026732134629440244,
+     "weighted_contribution": 0.00022187204831454653
+    },
+    {
+     "contribution_share": 0.021396473414748544,
+     "direct_coefficient": 0.02690290564794041,
+     "gross_output": 18966613.0,
+     "io_sector_code": "058",
+     "io_sector_label": "Monosodium glutamate",
+     "output_weight": 0.006804554860266684,
+     "weighted_contribution": 0.00018306229738198896
+    },
+    {
+     "contribution_share": 0.019486227506492763,
+     "direct_coefficient": 0.01425370591691576,
+     "gross_output": 32602188.0,
+     "io_sector_code": "057",
+     "io_sector_label": "Ice",
+     "output_weight": 0.011696520449419628,
+     "weighted_contribution": 0.00016671876273721876
+    },
+    {
+     "contribution_share": 0.011374884344265267,
+     "direct_coefficient": 0.007727941586202707,
+     "gross_output": 35101844.0,
+     "io_sector_code": "052",
+     "io_sector_label": "Flour and other grain milling",
+     "output_weight": 0.012593309263732167,
+     "weighted_contribution": 9.73203583671076e-05
+    },
+    {
+     "contribution_share": 0.007868175210916435,
+     "direct_coefficient": 0.0032617375696253415,
+     "gross_output": 57527007.0,
+     "io_sector_code": "061",
+     "io_sector_label": "Animal feed",
+     "output_weight": 0.020638670440444245,
+     "weighted_contribution": 6.731792676271299e-05
+    },
+    {
+     "contribution_share": 0.007034300770535039,
+     "direct_coefficient": 0.011874335284051594,
+     "gross_output": 14127275.0,
+     "io_sector_code": "056",
+     "io_sector_label": "Confectionery",
+     "output_weight": 0.005068370286438281,
+     "weighted_contribution": 6.0183528124892766e-05
+    },
+    {
+     "contribution_share": 0.005111600838906369,
+     "direct_coefficient": 0.004848483305725351,
+     "gross_output": 25141883.0,
+     "io_sector_code": "048",
+     "io_sector_label": "Animal oil, animal fat, vegetable oil and by-products",
+     "output_weight": 0.009020024933492675,
+     "weighted_contribution": 4.3733440307265653e-05
+    },
+    {
+     "contribution_share": 0.0031264211267201074,
+     "direct_coefficient": 0.0008410853983816027,
+     "gross_output": 88644982.0,
+     "io_sector_code": "066",
+     "io_sector_label": "Tobacco products",
+     "output_weight": 0.03180270737354913,
+     "weighted_contribution": 2.6748792800895102e-05
+    },
+    {
+     "contribution_share": 0.0004604634028878658,
+     "direct_coefficient": 0.0030845315000862356,
+     "gross_output": 3560022.0,
+     "io_sector_code": "065",
+     "io_sector_label": "Tobacco processing",
+     "output_weight": 0.0012772109075434987,
+     "weighted_contribution": 3.93959727657165e-06
+    },
+    {
+     "contribution_share": 0.00012361771347904821,
+     "direct_coefficient": 0.009228245694215756,
+     "gross_output": 319454.0,
+     "io_sector_code": "051",
+     "io_sector_label": "Grinding of maize",
+     "output_weight": 0.00011460887973681085,
+     "weighted_contribution": 1.0576389009501161e-06
+    }
+   ],
+   "direct_exposure": 0.008555722891035141,
+   "direction_channel": "cost_pressure",
+   "direction_interpretation_level": "the industry purchases refinery products as inputs and does not produce them, so a higher price is a cost increase",
+   "direction_interpretation_volatility": "disruption_magnitude_nonnegative",
+   "direction_multiplier": 1,
+   "eligible": true,
+   "exclusion_reason": null,
+   "exposure_reconciliation_residual": 0.0,
+   "exposure_row_checksum": "2947c15eed20e5a5ee2b4e309055ca5b854034d84a228a8a31fb4dcaeca360ec",
+   "exposure_summed_flow_form": 0.008555722891035141,
+   "exposure_weighted_mean_form": 0.008555722891035141,
+   "gross_output_weights": {
+    "042": 0.15141687791846697,
+    "043": 0.029653729350304983,
+    "044": 0.04248423817482296,
+    "045": 0.04120535614041358,
+    "046": 0.07278554210119405,
+    "047": 0.026732134629440244,
+    "048": 0.009020024933492675,
+    "049": 0.14013668977535554,
+    "050": 0.04306681639174102,
+    "051": 0.00011460887973681085,
+    "052": 0.012593309263732167,
+    "053": 0.023775525890197918,
+    "054": 0.013454320249212531,
+    "055": 0.06296093702957795,
+    "056": 0.005068370286438281,
+    "057": 0.011696520449419628,
+    "058": 0.006804554860266684,
+    "059": 0.012296344853450162,
+    "060": 0.03390100483312169,
+    "061": 0.020638670440444245,
+    "062": 0.03273968323721374,
+    "063": 0.11167235106856112,
+    "064": 0.06270247096230244,
+    "065": 0.0012772109075434987,
+    "066": 0.03180270737354913
+   },
+   "industry_contains_the_producer_sector": false,
+   "industry_id": "IND-01",
+   "industry_name": "Food, Beverages and Tobacco",
+   "io_sector_code": "093",
+   "io_sector_label": "Petroleum refineries",
+   "observed_zero": false,
+   "phase_a_decision_checksum": "d528aba4aedcb8b8051ad618d66d49c71239267fb26fd2ead292ee90b12c9703",
+   "product_specific_evidence_available": false,
+   "proxy_fit": "broad_proxy_use_with_caution",
+   "proxy_reason": "The industry buys from sector 093, whose official basket is gasoline, jet oil, LPG, asphalt, paraffin, sulfur, kerosene, diesel, fuel oil. No source Phase A may read identifies which of those products it buys, so FO 600 / FO 1500 stand in for the whole basket and the conditioned value is a structural interaction, not a fuel-oil cost.",
+   "quality_flag": "ok",
+   "structural_source_checksum": "7da4b4dca118af760844abd6c78ae01a83f313c8898321ac69e72be730e93c81",
+   "target_outcomes_used": false,
+   "valuation_basis_alignment": "partial_mismatch_purchasers_price_coefficient_x_ex_refinery_price",
+   "variant_id": "fo600_direct_sector093"
+  },
+  {
+   "channel_id": "eppo_fo1500_channel",
+   "component_sector_codes": [
+    "068",
+    "070",
+    "072",
+    "067",
+    "069",
+    "071",
+    "077",
+    "076",
+    "073",
+    "075",
+    "074"
+   ],
+   "confidence": "medium",
+   "contributions": [
+    {
+     "contribution_share": 0.378735832826654,
+     "direct_coefficient": 0.019683620404831036,
+     "gross_output": 171678834.0,
+     "io_sector_code": "068",
+     "io_sector_label": "Weaving",
+     "output_weight": 0.21922353064721145,
+     "weighted_contribution": 0.004315112761066553
+    },
+    {
+     "contribution_share": 0.2273555263533941,
+     "direct_coefficient": 0.027233617180462886,
+     "gross_output": 74487865.0,
+     "io_sector_code": "070",
+     "io_sector_label": "Made-up textile goods",
+     "output_weight": 0.09511651713380607,
+     "weighted_contribution": 0.0025903668151610135
+    },
+    {
+     "contribution_share": 0.148845919994172,
+     "direct_coefficient": 0.004968710206000899,
+     "gross_output": 267287474.0,
+     "io_sector_code": "072",
+     "io_sector_label": "Wearing apparel",
+     "output_weight": 0.34131000533271755,
+     "weighted_contribution": 0.0016958705069068949
+    },
+    {
+     "contribution_share": 0.08828010165340894,
+     "direct_coefficient": 0.007450463916771509,
+     "gross_output": 105721873.0,
+     "io_sector_code": "067",
+     "io_sector_label": "Spinning",
+     "output_weight": 0.13500046409737437,
+     "weighted_contribution": 0.0010058160865048953
+    },
+    {
+     "contribution_share": 0.06498365083679136,
+     "direct_coefficient": 0.07020328033837155,
+     "gross_output": 8259087.0,
+     "io_sector_code": "069",
+     "io_sector_label": "Textile bleaching, printing and finishing",
+     "output_weight": 0.010546356646751723,
+     "weighted_contribution": 0.0007403888322203593
+    },
+    {
+     "contribution_share": 0.02619138747937091,
+     "direct_coefficient": 0.004595539091019232,
+     "gross_output": 50851923.0,
+     "io_sector_code": "071",
+     "io_sector_label": "Knitting",
+     "output_weight": 0.06493484281387965,
+     "weighted_contribution": 0.0002984106085203732
+    },
+    {
+     "contribution_share": 0.022404209594310994,
+     "direct_coefficient": 0.004711663876530228,
+     "gross_output": 42426838.0,
+     "io_sector_code": "077",
+     "io_sector_label": "Footwear, except of rubber",
+     "output_weight": 0.054176516719336966,
+     "weighted_contribution": 0.00025526153678273594
+    },
+    {
+     "contribution_share": 0.01635835348375871,
+     "direct_coefficient": 0.005389383383306282,
+     "gross_output": 27082319.0,
+     "io_sector_code": "076",
+     "io_sector_label": "Leather products",
+     "output_weight": 0.03458249017053586,
+     "weighted_contribution": 0.00018637829787843878
+    },
+    {
+     "contribution_share": 0.013575717499908938,
+     "direct_coefficient": 0.01405436588737177,
+     "gross_output": 8618603.0,
+     "io_sector_code": "073",
+     "io_sector_label": "Carpets and rugs",
+     "output_weight": 0.011005436924779257,
+     "weighted_contribution": 0.0001546744372912393
+    },
+    {
+     "contribution_share": 0.009699214623745093,
+     "direct_coefficient": 0.004738139512779908,
+     "gross_output": 18264764.0,
+     "io_sector_code": "075",
+     "io_sector_label": "Tanneries and leather finishing",
+     "output_weight": 0.02332300352481474,
+     "weighted_contribution": 0.00011050764455762978
+    },
+    {
+     "contribution_share": 0.003570085654484882,
+     "direct_coefficient": 0.0037729578158111022,
+     "gross_output": 8442713.0,
+     "io_sector_code": "074",
+     "io_sector_label": "Jute mill products",
+     "output_weight": 0.010780835988792366,
+     "weighted_contribution": 4.067563940489177e-05
+    }
+   ],
+   "direct_exposure": 0.011393463166295026,
+   "direction_channel": "cost_pressure",
+   "direction_interpretation_level": "the industry purchases refinery products as inputs and does not produce them, so a higher price is a cost increase",
+   "direction_interpretation_volatility": "disruption_magnitude_nonnegative",
+   "direction_multiplier": 1,
+   "eligible": true,
+   "exclusion_reason": null,
+   "exposure_reconciliation_residual": 1.734723475976807e-18,
+   "exposure_row_checksum": "2ef2419a5389f946da7d641409ff069bb940a9f15377baf988e7c559e1f46d10",
+   "exposure_summed_flow_form": 0.011393463166295024,
+   "exposure_weighted_mean_form": 0.011393463166295026,
+   "gross_output_weights": {
+    "067": 0.13500046409737437,
+    "068": 0.21922353064721145,
+    "069": 0.010546356646751723,
+    "070": 0.09511651713380607,
+    "071": 0.06493484281387965,
+    "072": 0.34131000533271755,
+    "073": 0.011005436924779257,
+    "074": 0.010780835988792366,
+    "075": 0.02332300352481474,
+    "076": 0.03458249017053586,
+    "077": 0.054176516719336966
+   },
+   "industry_contains_the_producer_sector": false,
+   "industry_id": "IND-02",
+   "industry_name": "Textiles, Apparel and Leather",
+   "io_sector_code": "093",
+   "io_sector_label": "Petroleum refineries",
+   "observed_zero": false,
+   "phase_a_decision_checksum": "d528aba4aedcb8b8051ad618d66d49c71239267fb26fd2ead292ee90b12c9703",
+   "product_specific_evidence_available": false,
+   "proxy_fit": "broad_proxy_use_with_caution",
+   "proxy_reason": "The industry buys from sector 093, whose official basket is gasoline, jet oil, LPG, asphalt, paraffin, sulfur, kerosene, diesel, fuel oil. No source Phase A may read identifies which of those products it buys, so FO 600 / FO 1500 stand in for the whole basket and the conditioned value is a structural interaction, not a fuel-oil cost.",
+   "quality_flag": "ok",
+   "structural_source_checksum": "7da4b4dca118af760844abd6c78ae01a83f313c8898321ac69e72be730e93c81",
+   "target_outcomes_used": false,
+   "valuation_basis_alignment": "partial_mismatch_purchasers_price_coefficient_x_ex_refinery_price",
+   "variant_id": "fo1500_direct_sector093"
+  },
+  {
+   "channel_id": "eppo_fo600_channel",
+   "component_sector_codes": [
+    "068",
+    "070",
+    "072",
+    "067",
+    "069",
+    "071",
+    "077",
+    "076",
+    "073",
+    "075",
+    "074"
+   ],
+   "confidence": "medium",
+   "contributions": [
+    {
+     "contribution_share": 0.378735832826654,
+     "direct_coefficient": 0.019683620404831036,
+     "gross_output": 171678834.0,
+     "io_sector_code": "068",
+     "io_sector_label": "Weaving",
+     "output_weight": 0.21922353064721145,
+     "weighted_contribution": 0.004315112761066553
+    },
+    {
+     "contribution_share": 0.2273555263533941,
+     "direct_coefficient": 0.027233617180462886,
+     "gross_output": 74487865.0,
+     "io_sector_code": "070",
+     "io_sector_label": "Made-up textile goods",
+     "output_weight": 0.09511651713380607,
+     "weighted_contribution": 0.0025903668151610135
+    },
+    {
+     "contribution_share": 0.148845919994172,
+     "direct_coefficient": 0.004968710206000899,
+     "gross_output": 267287474.0,
+     "io_sector_code": "072",
+     "io_sector_label": "Wearing apparel",
+     "output_weight": 0.34131000533271755,
+     "weighted_contribution": 0.0016958705069068949
+    },
+    {
+     "contribution_share": 0.08828010165340894,
+     "direct_coefficient": 0.007450463916771509,
+     "gross_output": 105721873.0,
+     "io_sector_code": "067",
+     "io_sector_label": "Spinning",
+     "output_weight": 0.13500046409737437,
+     "weighted_contribution": 0.0010058160865048953
+    },
+    {
+     "contribution_share": 0.06498365083679136,
+     "direct_coefficient": 0.07020328033837155,
+     "gross_output": 8259087.0,
+     "io_sector_code": "069",
+     "io_sector_label": "Textile bleaching, printing and finishing",
+     "output_weight": 0.010546356646751723,
+     "weighted_contribution": 0.0007403888322203593
+    },
+    {
+     "contribution_share": 0.02619138747937091,
+     "direct_coefficient": 0.004595539091019232,
+     "gross_output": 50851923.0,
+     "io_sector_code": "071",
+     "io_sector_label": "Knitting",
+     "output_weight": 0.06493484281387965,
+     "weighted_contribution": 0.0002984106085203732
+    },
+    {
+     "contribution_share": 0.022404209594310994,
+     "direct_coefficient": 0.004711663876530228,
+     "gross_output": 42426838.0,
+     "io_sector_code": "077",
+     "io_sector_label": "Footwear, except of rubber",
+     "output_weight": 0.054176516719336966,
+     "weighted_contribution": 0.00025526153678273594
+    },
+    {
+     "contribution_share": 0.01635835348375871,
+     "direct_coefficient": 0.005389383383306282,
+     "gross_output": 27082319.0,
+     "io_sector_code": "076",
+     "io_sector_label": "Leather products",
+     "output_weight": 0.03458249017053586,
+     "weighted_contribution": 0.00018637829787843878
+    },
+    {
+     "contribution_share": 0.013575717499908938,
+     "direct_coefficient": 0.01405436588737177,
+     "gross_output": 8618603.0,
+     "io_sector_code": "073",
+     "io_sector_label": "Carpets and rugs",
+     "output_weight": 0.011005436924779257,
+     "weighted_contribution": 0.0001546744372912393
+    },
+    {
+     "contribution_share": 0.009699214623745093,
+     "direct_coefficient": 0.004738139512779908,
+     "gross_output": 18264764.0,
+     "io_sector_code": "075",
+     "io_sector_label": "Tanneries and leather finishing",
+     "output_weight": 0.02332300352481474,
+     "weighted_contribution": 0.00011050764455762978
+    },
+    {
+     "contribution_share": 0.003570085654484882,
+     "direct_coefficient": 0.0037729578158111022,
+     "gross_output": 8442713.0,
+     "io_sector_code": "074",
+     "io_sector_label": "Jute mill products",
+     "output_weight": 0.010780835988792366,
+     "weighted_contribution": 4.067563940489177e-05
+    }
+   ],
+   "direct_exposure": 0.011393463166295026,
+   "direction_channel": "cost_pressure",
+   "direction_interpretation_level": "the industry purchases refinery products as inputs and does not produce them, so a higher price is a cost increase",
+   "direction_interpretation_volatility": "disruption_magnitude_nonnegative",
+   "direction_multiplier": 1,
+   "eligible": true,
+   "exclusion_reason": null,
+   "exposure_reconciliation_residual": 1.734723475976807e-18,
+   "exposure_row_checksum": "295b94b72367fc244de46822713125ff801027501ce4b16319feb7445d2effd2",
+   "exposure_summed_flow_form": 0.011393463166295024,
+   "exposure_weighted_mean_form": 0.011393463166295026,
+   "gross_output_weights": {
+    "067": 0.13500046409737437,
+    "068": 0.21922353064721145,
+    "069": 0.010546356646751723,
+    "070": 0.09511651713380607,
+    "071": 0.06493484281387965,
+    "072": 0.34131000533271755,
+    "073": 0.011005436924779257,
+    "074": 0.010780835988792366,
+    "075": 0.02332300352481474,
+    "076": 0.03458249017053586,
+    "077": 0.054176516719336966
+   },
+   "industry_contains_the_producer_sector": false,
+   "industry_id": "IND-02",
+   "industry_name": "Textiles, Apparel and Leather",
+   "io_sector_code": "093",
+   "io_sector_label": "Petroleum refineries",
+   "observed_zero": false,
+   "phase_a_decision_checksum": "d528aba4aedcb8b8051ad618d66d49c71239267fb26fd2ead292ee90b12c9703",
+   "product_specific_evidence_available": false,
+   "proxy_fit": "broad_proxy_use_with_caution",
+   "proxy_reason": "The industry buys from sector 093, whose official basket is gasoline, jet oil, LPG, asphalt, paraffin, sulfur, kerosene, diesel, fuel oil. No source Phase A may read identifies which of those products it buys, so FO 600 / FO 1500 stand in for the whole basket and the conditioned value is a structural interaction, not a fuel-oil cost.",
+   "quality_flag": "ok",
+   "structural_source_checksum": "7da4b4dca118af760844abd6c78ae01a83f313c8898321ac69e72be730e93c81",
+   "target_outcomes_used": false,
+   "valuation_basis_alignment": "partial_mismatch_purchasers_price_coefficient_x_ex_refinery_price",
+   "variant_id": "fo600_direct_sector093"
+  },
+  {
+   "channel_id": "eppo_fo1500_channel",
+   "component_sector_codes": [
+    "081",
+    "078",
+    "082",
+    "079"
+   ],
+   "confidence": "medium",
+   "contributions": [
+    {
+     "contribution_share": 0.4512812366115,
+     "direct_coefficient": 0.012681385825483836,
+     "gross_output": 101251710.0,
+     "io_sector_code": "081",
+     "io_sector_label": "Pulp, paper and paperboard",
+     "output_weight": 0.3581837125887057,
+     "weighted_contribution": 0.004542265855741588
+    },
+    {
+     "contribution_share": 0.28055090942511735,
+     "direct_coefficient": 0.012502207197771781,
+     "gross_output": 63847926.0,
+     "io_sector_code": "078",
+     "io_sector_label": "Saw mills",
+     "output_weight": 0.22586568835004314,
+     "weighted_contribution": 0.0028238196346195873
+    },
+    {
+     "contribution_share": 0.1388084529387307,
+     "direct_coefficient": 0.005860310186933695,
+     "gross_output": 67393361.0,
+     "io_sector_code": "082",
+     "io_sector_label": "Paper and paperboard products",
+     "output_weight": 0.23840786735168112,
+     "weighted_contribution": 0.0013971440536861938
+    },
+    {
+     "contribution_share": 0.1293594010246519,
+     "direct_coefficient": 0.007333653237499434,
+     "gross_output": 50187947.0,
+     "io_sector_code": "079",
+     "io_sector_label": "Wood and cork products",
+     "output_weight": 0.17754273170957008,
+     "weighted_contribution": 0.001302036829196382
+    }
+   ],
+   "direct_exposure": 0.010065266373243752,
+   "direction_channel": "cost_pressure",
+   "direction_interpretation_level": "the industry purchases refinery products as inputs and does not produce them, so a higher price is a cost increase",
+   "direction_interpretation_volatility": "disruption_magnitude_nonnegative",
+   "direction_multiplier": 1,
+   "eligible": true,
+   "exclusion_reason": null,
+   "exposure_reconciliation_residual": 0.0,
+   "exposure_row_checksum": "5235df58b044ad85ecc9f6a9856d6164313328415609d1ce6fa5432464e50eb7",
+   "exposure_summed_flow_form": 0.010065266373243752,
+   "exposure_weighted_mean_form": 0.010065266373243752,
+   "gross_output_weights": {
+    "078": 0.22586568835004314,
+    "079": 0.17754273170957008,
+    "081": 0.3581837125887057,
+    "082": 0.23840786735168112
+   },
+   "industry_contains_the_producer_sector": false,
+   "industry_id": "IND-03",
+   "industry_name": "Wood and Paper",
+   "io_sector_code": "093",
+   "io_sector_label": "Petroleum refineries",
+   "observed_zero": false,
+   "phase_a_decision_checksum": "d528aba4aedcb8b8051ad618d66d49c71239267fb26fd2ead292ee90b12c9703",
+   "product_specific_evidence_available": false,
+   "proxy_fit": "broad_proxy_use_with_caution",
+   "proxy_reason": "The industry buys from sector 093, whose official basket is gasoline, jet oil, LPG, asphalt, paraffin, sulfur, kerosene, diesel, fuel oil. No source Phase A may read identifies which of those products it buys, so FO 600 / FO 1500 stand in for the whole basket and the conditioned value is a structural interaction, not a fuel-oil cost.",
+   "quality_flag": "ok",
+   "structural_source_checksum": "7da4b4dca118af760844abd6c78ae01a83f313c8898321ac69e72be730e93c81",
+   "target_outcomes_used": false,
+   "valuation_basis_alignment": "partial_mismatch_purchasers_price_coefficient_x_ex_refinery_price",
+   "variant_id": "fo1500_direct_sector093"
+  },
+  {
+   "channel_id": "eppo_fo600_channel",
+   "component_sector_codes": [
+    "081",
+    "078",
+    "082",
+    "079"
+   ],
+   "confidence": "medium",
+   "contributions": [
+    {
+     "contribution_share": 0.4512812366115,
+     "direct_coefficient": 0.012681385825483836,
+     "gross_output": 101251710.0,
+     "io_sector_code": "081",
+     "io_sector_label": "Pulp, paper and paperboard",
+     "output_weight": 0.3581837125887057,
+     "weighted_contribution": 0.004542265855741588
+    },
+    {
+     "contribution_share": 0.28055090942511735,
+     "direct_coefficient": 0.012502207197771781,
+     "gross_output": 63847926.0,
+     "io_sector_code": "078",
+     "io_sector_label": "Saw mills",
+     "output_weight": 0.22586568835004314,
+     "weighted_contribution": 0.0028238196346195873
+    },
+    {
+     "contribution_share": 0.1388084529387307,
+     "direct_coefficient": 0.005860310186933695,
+     "gross_output": 67393361.0,
+     "io_sector_code": "082",
+     "io_sector_label": "Paper and paperboard products",
+     "output_weight": 0.23840786735168112,
+     "weighted_contribution": 0.0013971440536861938
+    },
+    {
+     "contribution_share": 0.1293594010246519,
+     "direct_coefficient": 0.007333653237499434,
+     "gross_output": 50187947.0,
+     "io_sector_code": "079",
+     "io_sector_label": "Wood and cork products",
+     "output_weight": 0.17754273170957008,
+     "weighted_contribution": 0.001302036829196382
+    }
+   ],
+   "direct_exposure": 0.010065266373243752,
+   "direction_channel": "cost_pressure",
+   "direction_interpretation_level": "the industry purchases refinery products as inputs and does not produce them, so a higher price is a cost increase",
+   "direction_interpretation_volatility": "disruption_magnitude_nonnegative",
+   "direction_multiplier": 1,
+   "eligible": true,
+   "exclusion_reason": null,
+   "exposure_reconciliation_residual": 0.0,
+   "exposure_row_checksum": "7ff74909a31c5f1d222d375b4ce56502c76af58918b39834f873789ffc1ca17f",
+   "exposure_summed_flow_form": 0.010065266373243752,
+   "exposure_weighted_mean_form": 0.010065266373243752,
+   "gross_output_weights": {
+    "078": 0.22586568835004314,
+    "079": 0.17754273170957008,
+    "081": 0.3581837125887057,
+    "082": 0.23840786735168112
+   },
+   "industry_contains_the_producer_sector": false,
+   "industry_id": "IND-03",
+   "industry_name": "Wood and Paper",
+   "io_sector_code": "093",
+   "io_sector_label": "Petroleum refineries",
+   "observed_zero": false,
+   "phase_a_decision_checksum": "d528aba4aedcb8b8051ad618d66d49c71239267fb26fd2ead292ee90b12c9703",
+   "product_specific_evidence_available": false,
+   "proxy_fit": "broad_proxy_use_with_caution",
+   "proxy_reason": "The industry buys from sector 093, whose official basket is gasoline, jet oil, LPG, asphalt, paraffin, sulfur, kerosene, diesel, fuel oil. No source Phase A may read identifies which of those products it buys, so FO 600 / FO 1500 stand in for the whole basket and the conditioned value is a structural interaction, not a fuel-oil cost.",
+   "quality_flag": "ok",
+   "structural_source_checksum": "7da4b4dca118af760844abd6c78ae01a83f313c8898321ac69e72be730e93c81",
+   "target_outcomes_used": false,
+   "valuation_basis_alignment": "partial_mismatch_purchasers_price_coefficient_x_ex_refinery_price",
+   "variant_id": "fo600_direct_sector093"
+  },
+  {
+   "channel_id": "eppo_fo1500_channel",
+   "component_sector_codes": [
+    "093",
+    "094"
+   ],
+   "confidence": "medium",
+   "contributions": [
+    {
+     "contribution_share": 0.7162506188664346,
+     "direct_coefficient": 0.007357928322275687,
+     "gross_output": 1190323365.0,
+     "io_sector_code": "093",
+     "io_sector_label": "Petroleum refineries",
+     "output_weight": 0.953646863097304,
+     "weighted_contribution": 0.007016865263433017
+    },
+    {
+     "contribution_share": 0.2837493811335654,
+     "direct_coefficient": 0.059969982238474225,
+     "gross_output": 57857079.0,
+     "io_sector_code": "094",
+     "io_sector_label": "Other petroleum products",
+     "output_weight": 0.046353136902696095,
+     "weighted_contribution": 0.002779796796752249
+    }
+   ],
+   "direct_exposure": 0.009796662060185266,
+   "direction_channel": "mixed_or_ambiguous",
+   "direction_interpretation_level": "a higher refinery-product price is simultaneously revenue and input cost for this industry; the net sign is unresolved",
+   "direction_interpretation_volatility": "disruption_magnitude_nonnegative",
+   "direction_multiplier": null,
+   "eligible": false,
+   "exclusion_reason": "direction_ambiguous_industry_contains_producer_sector",
+   "exposure_reconciliation_residual": 0.0,
+   "exposure_row_checksum": "9c613aafb29d56ff270a5c6b317c1755370eabb491582fd55802772874729950",
+   "exposure_summed_flow_form": 0.009796662060185266,
+   "exposure_weighted_mean_form": 0.009796662060185266,
+   "gross_output_weights": {
+    "093": 0.953646863097304,
+    "094": 0.046353136902696095
+   },
+   "industry_contains_the_producer_sector": true,
+   "industry_id": "IND-04",
+   "industry_name": "Refined Petroleum Products",
+   "io_sector_code": "093",
+   "io_sector_label": "Petroleum refineries",
+   "observed_zero": false,
+   "phase_a_decision_checksum": "d528aba4aedcb8b8051ad618d66d49c71239267fb26fd2ead292ee90b12c9703",
+   "product_specific_evidence_available": false,
+   "proxy_fit": "broad_proxy_use_with_caution",
+   "proxy_reason": "The industry buys from sector 093, whose official basket is gasoline, jet oil, LPG, asphalt, paraffin, sulfur, kerosene, diesel, fuel oil. No source Phase A may read identifies which of those products it buys, so FO 600 / FO 1500 stand in for the whole basket and the conditioned value is a structural interaction, not a fuel-oil cost.",
+   "quality_flag": "ok",
+   "structural_source_checksum": "7da4b4dca118af760844abd6c78ae01a83f313c8898321ac69e72be730e93c81",
+   "target_outcomes_used": false,
+   "valuation_basis_alignment": "partial_mismatch_purchasers_price_coefficient_x_ex_refinery_price",
+   "variant_id": "fo1500_direct_sector093"
+  },
+  {
+   "channel_id": "eppo_fo600_channel",
+   "component_sector_codes": [
+    "093",
+    "094"
+   ],
+   "confidence": "medium",
+   "contributions": [
+    {
+     "contribution_share": 0.7162506188664346,
+     "direct_coefficient": 0.007357928322275687,
+     "gross_output": 1190323365.0,
+     "io_sector_code": "093",
+     "io_sector_label": "Petroleum refineries",
+     "output_weight": 0.953646863097304,
+     "weighted_contribution": 0.007016865263433017
+    },
+    {
+     "contribution_share": 0.2837493811335654,
+     "direct_coefficient": 0.059969982238474225,
+     "gross_output": 57857079.0,
+     "io_sector_code": "094",
+     "io_sector_label": "Other petroleum products",
+     "output_weight": 0.046353136902696095,
+     "weighted_contribution": 0.002779796796752249
+    }
+   ],
+   "direct_exposure": 0.009796662060185266,
+   "direction_channel": "mixed_or_ambiguous",
+   "direction_interpretation_level": "a higher refinery-product price is simultaneously revenue and input cost for this industry; the net sign is unresolved",
+   "direction_interpretation_volatility": "disruption_magnitude_nonnegative",
+   "direction_multiplier": null,
+   "eligible": false,
+   "exclusion_reason": "direction_ambiguous_industry_contains_producer_sector",
+   "exposure_reconciliation_residual": 0.0,
+   "exposure_row_checksum": "792fbf14ac0ac8ea9bc3668733ec9c30f5e67259d7447def7794d7423b2cbbcb",
+   "exposure_summed_flow_form": 0.009796662060185266,
+   "exposure_weighted_mean_form": 0.009796662060185266,
+   "gross_output_weights": {
+    "093": 0.953646863097304,
+    "094": 0.046353136902696095
+   },
+   "industry_contains_the_producer_sector": true,
+   "industry_id": "IND-04",
+   "industry_name": "Refined Petroleum Products",
+   "io_sector_code": "093",
+   "io_sector_label": "Petroleum refineries",
+   "observed_zero": false,
+   "phase_a_decision_checksum": "d528aba4aedcb8b8051ad618d66d49c71239267fb26fd2ead292ee90b12c9703",
+   "product_specific_evidence_available": false,
+   "proxy_fit": "broad_proxy_use_with_caution",
+   "proxy_reason": "The industry buys from sector 093, whose official basket is gasoline, jet oil, LPG, asphalt, paraffin, sulfur, kerosene, diesel, fuel oil. No source Phase A may read identifies which of those products it buys, so FO 600 / FO 1500 stand in for the whole basket and the conditioned value is a structural interaction, not a fuel-oil cost.",
+   "quality_flag": "ok",
+   "structural_source_checksum": "7da4b4dca118af760844abd6c78ae01a83f313c8898321ac69e72be730e93c81",
+   "target_outcomes_used": false,
+   "valuation_basis_alignment": "partial_mismatch_purchasers_price_coefficient_x_ex_refinery_price",
+   "variant_id": "fo600_direct_sector093"
+  },
+  {
+   "channel_id": "eppo_fo1500_channel",
+   "component_sector_codes": [
+    "086",
+    "084",
+    "092",
+    "085",
+    "089",
+    "087",
+    "090",
+    "088",
+    "091"
+   ],
+   "confidence": "medium",
+   "contributions": [
+    {
+     "contribution_share": 0.7623346359705202,
+     "direct_coefficient": 0.11703904261039466,
+     "gross_output": 445530302.0,
+     "io_sector_code": "086",
+     "io_sector_label": "Petrochemical products",
+     "output_weight": 0.41788025768779236,
+     "weighted_contribution": 0.04890830528556423
+    },
+    {
+     "contribution_share": 0.1817117692091715,
+     "direct_coefficient": 0.05726958226894722,
+     "gross_output": 217030813.0,
+     "io_sector_code": "084",
+     "io_sector_label": "Basic industrial chemicals",
+     "output_weight": 0.20356166944315066,
+     "weighted_contribution": 0.011657891774978755
+    },
+    {
+     "contribution_share": 0.01747740913380122,
+     "direct_coefficient": 0.02142901904526044,
+     "gross_output": 55787528.0,
+     "io_sector_code": "092",
+     "io_sector_label": "Other chemical products",
+     "output_weight": 0.052325299697359155,
+     "weighted_contribution": 0.0011212798437636696
+    },
+    {
+     "contribution_share": 0.011143260583162659,
+     "direct_coefficient": 0.014994272762623495,
+     "gross_output": 50833409.0,
+     "io_sector_code": "085",
+     "io_sector_label": "Fertilizer and pesticides",
+     "output_weight": 0.047678638145849266,
+     "weighted_contribution": 0.0007149065053092893
+    },
+    {
+     "contribution_share": 0.008066915995434862,
+     "direct_coefficient": 0.007323545503063543,
+     "gross_output": 75343971.0,
+     "io_sector_code": "089",
+     "io_sector_label": "Soap and cleaning preparations",
+     "output_weight": 0.07066805080454787,
+     "weighted_contribution": 0.0005175406856799125
+    },
+    {
+     "contribution_share": 0.0074769975900200875,
+     "direct_coefficient": 0.0072258808249174985,
+     "gross_output": 70778084.0,
+     "io_sector_code": "087",
+     "io_sector_label": "Paints",
+     "output_weight": 0.06638552719713375,
+     "weighted_contribution": 0.00047969390802580787
+    },
+    {
+     "contribution_share": 0.006386121486408421,
+     "direct_coefficient": 0.013388265997083261,
+     "gross_output": 32626854.0,
+     "io_sector_code": "090",
+     "io_sector_label": "Cosmetic",
+     "output_weight": 0.030601999675124184,
+     "weighted_contribution": 0.0004097077116932181
+    },
+    {
+     "contribution_share": 0.005129472916216048,
+     "direct_coefficient": 0.0029812653084045,
+     "gross_output": 117688620.0,
+     "io_sector_code": "088",
+     "io_sector_label": "Drugs and medicines",
+     "output_weight": 0.1103847496606879,
+     "weighted_contribution": 0.00032908622474032425
+    },
+    {
+     "contribution_share": 0.0002734171152652262,
+     "direct_coefficient": 0.03413988554321337,
+     "gross_output": 547805.0,
+     "io_sector_code": "091",
+     "io_sector_label": "Matches",
+     "output_weight": 0.0005138076883548565,
+     "weighted_contribution": 1.754133567165785e-05
+    }
+   ],
+   "direct_exposure": 0.06415595327542685,
+   "direction_channel": "cost_pressure",
+   "direction_interpretation_level": "the industry purchases refinery products as inputs and does not produce them, so a higher price is a cost increase",
+   "direction_interpretation_volatility": "disruption_magnitude_nonnegative",
+   "direction_multiplier": 1,
+   "eligible": true,
+   "exclusion_reason": null,
+   "exposure_reconciliation_residual": 1.3877787807814457e-17,
+   "exposure_row_checksum": "2d93269fa52573a13e893db97955a138c179d7a483eaf4beb5f0a748867d0088",
+   "exposure_summed_flow_form": 0.06415595327542686,
+   "exposure_weighted_mean_form": 0.06415595327542685,
+   "gross_output_weights": {
+    "084": 0.20356166944315066,
+    "085": 0.047678638145849266,
+    "086": 0.41788025768779236,
+    "087": 0.06638552719713375,
+    "088": 0.1103847496606879,
+    "089": 0.07066805080454787,
+    "090": 0.030601999675124184,
+    "091": 0.0005138076883548565,
+    "092": 0.052325299697359155
+   },
+   "industry_contains_the_producer_sector": false,
+   "industry_id": "IND-05",
+   "industry_name": "Chemicals and Pharmaceuticals",
+   "io_sector_code": "093",
+   "io_sector_label": "Petroleum refineries",
+   "observed_zero": false,
+   "phase_a_decision_checksum": "d528aba4aedcb8b8051ad618d66d49c71239267fb26fd2ead292ee90b12c9703",
+   "product_specific_evidence_available": false,
+   "proxy_fit": "broad_proxy_use_with_caution",
+   "proxy_reason": "The industry buys from sector 093, whose official basket is gasoline, jet oil, LPG, asphalt, paraffin, sulfur, kerosene, diesel, fuel oil. No source Phase A may read identifies which of those products it buys, so FO 600 / FO 1500 stand in for the whole basket and the conditioned value is a structural interaction, not a fuel-oil cost.",
+   "quality_flag": "ok",
+   "structural_source_checksum": "7da4b4dca118af760844abd6c78ae01a83f313c8898321ac69e72be730e93c81",
+   "target_outcomes_used": false,
+   "valuation_basis_alignment": "partial_mismatch_purchasers_price_coefficient_x_ex_refinery_price",
+   "variant_id": "fo1500_direct_sector093"
+  },
+  {
+   "channel_id": "eppo_fo600_channel",
+   "component_sector_codes": [
+    "086",
+    "084",
+    "092",
+    "085",
+    "089",
+    "087",
+    "090",
+    "088",
+    "091"
+   ],
+   "confidence": "medium",
+   "contributions": [
+    {
+     "contribution_share": 0.7623346359705202,
+     "direct_coefficient": 0.11703904261039466,
+     "gross_output": 445530302.0,
+     "io_sector_code": "086",
+     "io_sector_label": "Petrochemical products",
+     "output_weight": 0.41788025768779236,
+     "weighted_contribution": 0.04890830528556423
+    },
+    {
+     "contribution_share": 0.1817117692091715,
+     "direct_coefficient": 0.05726958226894722,
+     "gross_output": 217030813.0,
+     "io_sector_code": "084",
+     "io_sector_label": "Basic industrial chemicals",
+     "output_weight": 0.20356166944315066,
+     "weighted_contribution": 0.011657891774978755
+    },
+    {
+     "contribution_share": 0.01747740913380122,
+     "direct_coefficient": 0.02142901904526044,
+     "gross_output": 55787528.0,
+     "io_sector_code": "092",
+     "io_sector_label": "Other chemical products",
+     "output_weight": 0.052325299697359155,
+     "weighted_contribution": 0.0011212798437636696
+    },
+    {
+     "contribution_share": 0.011143260583162659,
+     "direct_coefficient": 0.014994272762623495,
+     "gross_output": 50833409.0,
+     "io_sector_code": "085",
+     "io_sector_label": "Fertilizer and pesticides",
+     "output_weight": 0.047678638145849266,
+     "weighted_contribution": 0.0007149065053092893
+    },
+    {
+     "contribution_share": 0.008066915995434862,
+     "direct_coefficient": 0.007323545503063543,
+     "gross_output": 75343971.0,
+     "io_sector_code": "089",
+     "io_sector_label": "Soap and cleaning preparations",
+     "output_weight": 0.07066805080454787,
+     "weighted_contribution": 0.0005175406856799125
+    },
+    {
+     "contribution_share": 0.0074769975900200875,
+     "direct_coefficient": 0.0072258808249174985,
+     "gross_output": 70778084.0,
+     "io_sector_code": "087",
+     "io_sector_label": "Paints",
+     "output_weight": 0.06638552719713375,
+     "weighted_contribution": 0.00047969390802580787
+    },
+    {
+     "contribution_share": 0.006386121486408421,
+     "direct_coefficient": 0.013388265997083261,
+     "gross_output": 32626854.0,
+     "io_sector_code": "090",
+     "io_sector_label": "Cosmetic",
+     "output_weight": 0.030601999675124184,
+     "weighted_contribution": 0.0004097077116932181
+    },
+    {
+     "contribution_share": 0.005129472916216048,
+     "direct_coefficient": 0.0029812653084045,
+     "gross_output": 117688620.0,
+     "io_sector_code": "088",
+     "io_sector_label": "Drugs and medicines",
+     "output_weight": 0.1103847496606879,
+     "weighted_contribution": 0.00032908622474032425
+    },
+    {
+     "contribution_share": 0.0002734171152652262,
+     "direct_coefficient": 0.03413988554321337,
+     "gross_output": 547805.0,
+     "io_sector_code": "091",
+     "io_sector_label": "Matches",
+     "output_weight": 0.0005138076883548565,
+     "weighted_contribution": 1.754133567165785e-05
+    }
+   ],
+   "direct_exposure": 0.06415595327542685,
+   "direction_channel": "cost_pressure",
+   "direction_interpretation_level": "the industry purchases refinery products as inputs and does not produce them, so a higher price is a cost increase",
+   "direction_interpretation_volatility": "disruption_magnitude_nonnegative",
+   "direction_multiplier": 1,
+   "eligible": true,
+   "exclusion_reason": null,
+   "exposure_reconciliation_residual": 1.3877787807814457e-17,
+   "exposure_row_checksum": "1e633483676fa70d61064316367580d00f52e6634dd3a3864a4c0db074c81116",
+   "exposure_summed_flow_form": 0.06415595327542686,
+   "exposure_weighted_mean_form": 0.06415595327542685,
+   "gross_output_weights": {
+    "084": 0.20356166944315066,
+    "085": 0.047678638145849266,
+    "086": 0.41788025768779236,
+    "087": 0.06638552719713375,
+    "088": 0.1103847496606879,
+    "089": 0.07066805080454787,
+    "090": 0.030601999675124184,
+    "091": 0.0005138076883548565,
+    "092": 0.052325299697359155
+   },
+   "industry_contains_the_producer_sector": false,
+   "industry_id": "IND-05",
+   "industry_name": "Chemicals and Pharmaceuticals",
+   "io_sector_code": "093",
+   "io_sector_label": "Petroleum refineries",
+   "observed_zero": false,
+   "phase_a_decision_checksum": "d528aba4aedcb8b8051ad618d66d49c71239267fb26fd2ead292ee90b12c9703",
+   "product_specific_evidence_available": false,
+   "proxy_fit": "broad_proxy_use_with_caution",
+   "proxy_reason": "The industry buys from sector 093, whose official basket is gasoline, jet oil, LPG, asphalt, paraffin, sulfur, kerosene, diesel, fuel oil. No source Phase A may read identifies which of those products it buys, so FO 600 / FO 1500 stand in for the whole basket and the conditioned value is a structural interaction, not a fuel-oil cost.",
+   "quality_flag": "ok",
+   "structural_source_checksum": "7da4b4dca118af760844abd6c78ae01a83f313c8898321ac69e72be730e93c81",
+   "target_outcomes_used": false,
+   "valuation_basis_alignment": "partial_mismatch_purchasers_price_coefficient_x_ex_refinery_price",
+   "variant_id": "fo600_direct_sector093"
+  },
+  {
+   "channel_id": "eppo_fo1500_channel",
+   "component_sector_codes": [
+    "098",
+    "096",
+    "095",
+    "097"
+   ],
+   "confidence": "medium",
+   "contributions": [
+    {
+     "contribution_share": 0.5346180279802036,
+     "direct_coefficient": 0.014792522884629664,
+     "gross_output": 397603441.0,
+     "io_sector_code": "098",
+     "io_sector_label": "Plastic ware",
+     "output_weight": 0.517567146280943,
+     "weighted_contribution": 0.007656123855693318
+    },
+    {
+     "contribution_share": 0.31649956855573474,
+     "direct_coefficient": 0.025075187141482894,
+     "gross_output": 138860180.0,
+     "io_sector_code": "096",
+     "io_sector_label": "Tyres and tubes",
+     "output_weight": 0.1807566526937026,
+     "weighted_contribution": 0.004532506893362621
+    },
+    {
+     "contribution_share": 0.10641652564700506,
+     "direct_coefficient": 0.006779232101248565,
+     "gross_output": 172694043.0,
+     "io_sector_code": "095",
+     "io_sector_label": "Rubber sheet and block rubber",
+     "output_weight": 0.2247987663045111,
+     "weighted_contribution": 0.0015239630128526158
+    },
+    {
+     "contribution_share": 0.04246587781705654,
+     "direct_coefficient": 0.007910548063989517,
+     "gross_output": 59058487.0,
+     "io_sector_code": "097",
+     "io_sector_label": "Other rubber products",
+     "output_weight": 0.0768774347208433,
+     "weighted_contribution": 0.0006081426423954474
+    }
+   ],
+   "direct_exposure": 0.014320736404304002,
+   "direction_channel": "cost_pressure",
+   "direction_interpretation_level": "the industry purchases refinery products as inputs and does not produce them, so a higher price is a cost increase",
+   "direction_interpretation_volatility": "disruption_magnitude_nonnegative",
+   "direction_multiplier": 1,
+   "eligible": true,
+   "exclusion_reason": null,
+   "exposure_reconciliation_residual": 0.0,
+   "exposure_row_checksum": "a3ccb875f8a2891403109ac33bee40ffa24f7bc62d2a64d9c81dd6f9b905b7f0",
+   "exposure_summed_flow_form": 0.014320736404304002,
+   "exposure_weighted_mean_form": 0.014320736404304002,
+   "gross_output_weights": {
+    "095": 0.2247987663045111,
+    "096": 0.1807566526937026,
+    "097": 0.0768774347208433,
+    "098": 0.517567146280943
+   },
+   "industry_contains_the_producer_sector": false,
+   "industry_id": "IND-06",
+   "industry_name": "Rubber and Plastics",
+   "io_sector_code": "093",
+   "io_sector_label": "Petroleum refineries",
+   "observed_zero": false,
+   "phase_a_decision_checksum": "d528aba4aedcb8b8051ad618d66d49c71239267fb26fd2ead292ee90b12c9703",
+   "product_specific_evidence_available": false,
+   "proxy_fit": "broad_proxy_use_with_caution",
+   "proxy_reason": "The industry buys from sector 093, whose official basket is gasoline, jet oil, LPG, asphalt, paraffin, sulfur, kerosene, diesel, fuel oil. No source Phase A may read identifies which of those products it buys, so FO 600 / FO 1500 stand in for the whole basket and the conditioned value is a structural interaction, not a fuel-oil cost.",
+   "quality_flag": "ok",
+   "structural_source_checksum": "7da4b4dca118af760844abd6c78ae01a83f313c8898321ac69e72be730e93c81",
+   "target_outcomes_used": false,
+   "valuation_basis_alignment": "partial_mismatch_purchasers_price_coefficient_x_ex_refinery_price",
+   "variant_id": "fo1500_direct_sector093"
+  },
+  {
+   "channel_id": "eppo_fo600_channel",
+   "component_sector_codes": [
+    "098",
+    "096",
+    "095",
+    "097"
+   ],
+   "confidence": "medium",
+   "contributions": [
+    {
+     "contribution_share": 0.5346180279802036,
+     "direct_coefficient": 0.014792522884629664,
+     "gross_output": 397603441.0,
+     "io_sector_code": "098",
+     "io_sector_label": "Plastic ware",
+     "output_weight": 0.517567146280943,
+     "weighted_contribution": 0.007656123855693318
+    },
+    {
+     "contribution_share": 0.31649956855573474,
+     "direct_coefficient": 0.025075187141482894,
+     "gross_output": 138860180.0,
+     "io_sector_code": "096",
+     "io_sector_label": "Tyres and tubes",
+     "output_weight": 0.1807566526937026,
+     "weighted_contribution": 0.004532506893362621
+    },
+    {
+     "contribution_share": 0.10641652564700506,
+     "direct_coefficient": 0.006779232101248565,
+     "gross_output": 172694043.0,
+     "io_sector_code": "095",
+     "io_sector_label": "Rubber sheet and block rubber",
+     "output_weight": 0.2247987663045111,
+     "weighted_contribution": 0.0015239630128526158
+    },
+    {
+     "contribution_share": 0.04246587781705654,
+     "direct_coefficient": 0.007910548063989517,
+     "gross_output": 59058487.0,
+     "io_sector_code": "097",
+     "io_sector_label": "Other rubber products",
+     "output_weight": 0.0768774347208433,
+     "weighted_contribution": 0.0006081426423954474
+    }
+   ],
+   "direct_exposure": 0.014320736404304002,
+   "direction_channel": "cost_pressure",
+   "direction_interpretation_level": "the industry purchases refinery products as inputs and does not produce them, so a higher price is a cost increase",
+   "direction_interpretation_volatility": "disruption_magnitude_nonnegative",
+   "direction_multiplier": 1,
+   "eligible": true,
+   "exclusion_reason": null,
+   "exposure_reconciliation_residual": 0.0,
+   "exposure_row_checksum": "6d874a8d0adf3373e5f16ce442b2f1f529589aaf17e97ce56eee1f8e5078961e",
+   "exposure_summed_flow_form": 0.014320736404304002,
+   "exposure_weighted_mean_form": 0.014320736404304002,
+   "gross_output_weights": {
+    "095": 0.2247987663045111,
+    "096": 0.1807566526937026,
+    "097": 0.0768774347208433,
+    "098": 0.517567146280943
+   },
+   "industry_contains_the_producer_sector": false,
+   "industry_id": "IND-06",
+   "industry_name": "Rubber and Plastics",
+   "io_sector_code": "093",
+   "io_sector_label": "Petroleum refineries",
+   "observed_zero": false,
+   "phase_a_decision_checksum": "d528aba4aedcb8b8051ad618d66d49c71239267fb26fd2ead292ee90b12c9703",
+   "product_specific_evidence_available": false,
+   "proxy_fit": "broad_proxy_use_with_caution",
+   "proxy_reason": "The industry buys from sector 093, whose official basket is gasoline, jet oil, LPG, asphalt, paraffin, sulfur, kerosene, diesel, fuel oil. No source Phase A may read identifies which of those products it buys, so FO 600 / FO 1500 stand in for the whole basket and the conditioned value is a structural interaction, not a fuel-oil cost.",
+   "quality_flag": "ok",
+   "structural_source_checksum": "7da4b4dca118af760844abd6c78ae01a83f313c8898321ac69e72be730e93c81",
+   "target_outcomes_used": false,
+   "valuation_basis_alignment": "partial_mismatch_purchasers_price_coefficient_x_ex_refinery_price",
+   "variant_id": "fo600_direct_sector093"
+  },
+  {
+   "channel_id": "eppo_fo1500_channel",
+   "component_sector_codes": [
+    "102",
+    "100",
+    "101",
+    "099",
+    "104",
+    "103"
+   ],
+   "confidence": "medium",
+   "contributions": [
+    {
+     "contribution_share": 0.3480591148983494,
+     "direct_coefficient": 0.04758651493438737,
+     "gross_output": 119962872.0,
+     "io_sector_code": "102",
+     "io_sector_label": "Cement",
+     "output_weight": 0.2534259041042099,
+     "weighted_contribution": 0.012059655570415606
+    },
+    {
+     "contribution_share": 0.2802986108401295,
+     "direct_coefficient": 0.033538680471373074,
+     "gross_output": 137073252.0,
+     "io_sector_code": "100",
+     "io_sector_label": "Glass and glass products",
+     "output_weight": 0.2895722004438523,
+     "weighted_contribution": 0.009711869504078758
+    },
+    {
+     "contribution_share": 0.22736963212627304,
+     "direct_coefficient": 0.07146238072988746,
+     "gross_output": 52183442.0,
+     "io_sector_code": "101",
+     "io_sector_label": "Structural clay products",
+     "output_weight": 0.1102394078071055,
+     "weighted_contribution": 0.007877970532148702
+    },
+    {
+     "contribution_share": 0.06037705593709759,
+     "direct_coefficient": 0.019564464010074112,
+     "gross_output": 50615289.0,
+     "io_sector_code": "099",
+     "io_sector_label": "Ceramic and earthen ware",
+     "output_weight": 0.10692662790134659,
+     "weighted_contribution": 0.002091962163294482
+    },
+    {
+     "contribution_share": 0.04841792835681117,
+     "direct_coefficient": 0.022659460565043824,
+     "gross_output": 35045671.0,
+     "io_sector_code": "104",
+     "io_sector_label": "Other non-metallic products",
+     "output_weight": 0.07403524698969936,
+     "weighted_contribution": 0.001677598759586372
+    },
+    {
+     "contribution_share": 0.03547765784133921,
+     "direct_coefficient": 0.007413967920199535,
+     "gross_output": 78484154.0,
+     "io_sector_code": "103",
+     "io_sector_label": "Concrete and cement products",
+     "output_weight": 0.16580061275378635,
+     "weighted_contribution": 0.0012292404241059979
+    }
+   ],
+   "direct_exposure": 0.03464829695362992,
+   "direction_channel": "cost_pressure",
+   "direction_interpretation_level": "the industry purchases refinery products as inputs and does not produce them, so a higher price is a cost increase",
+   "direction_interpretation_volatility": "disruption_magnitude_nonnegative",
+   "direction_multiplier": 1,
+   "eligible": true,
+   "exclusion_reason": null,
+   "exposure_reconciliation_residual": 6.938893903907228e-18,
+   "exposure_row_checksum": "031dcac7786cabdc53d1d84246acf03721dedecd9dae7c47773ad6fbf3842f76",
+   "exposure_summed_flow_form": 0.03464829695362991,
+   "exposure_weighted_mean_form": 0.03464829695362992,
+   "gross_output_weights": {
+    "099": 0.10692662790134659,
+    "100": 0.2895722004438523,
+    "101": 0.1102394078071055,
+    "102": 0.2534259041042099,
+    "103": 0.16580061275378635,
+    "104": 0.07403524698969936
+   },
+   "industry_contains_the_producer_sector": false,
+   "industry_id": "IND-07",
+   "industry_name": "Non-metallic Mineral Products",
+   "io_sector_code": "093",
+   "io_sector_label": "Petroleum refineries",
+   "observed_zero": false,
+   "phase_a_decision_checksum": "d528aba4aedcb8b8051ad618d66d49c71239267fb26fd2ead292ee90b12c9703",
+   "product_specific_evidence_available": false,
+   "proxy_fit": "broad_proxy_use_with_caution",
+   "proxy_reason": "The industry buys from sector 093, whose official basket is gasoline, jet oil, LPG, asphalt, paraffin, sulfur, kerosene, diesel, fuel oil. No source Phase A may read identifies which of those products it buys, so FO 600 / FO 1500 stand in for the whole basket and the conditioned value is a structural interaction, not a fuel-oil cost.",
+   "quality_flag": "ok",
+   "structural_source_checksum": "7da4b4dca118af760844abd6c78ae01a83f313c8898321ac69e72be730e93c81",
+   "target_outcomes_used": false,
+   "valuation_basis_alignment": "partial_mismatch_purchasers_price_coefficient_x_ex_refinery_price",
+   "variant_id": "fo1500_direct_sector093"
+  },
+  {
+   "channel_id": "eppo_fo600_channel",
+   "component_sector_codes": [
+    "102",
+    "100",
+    "101",
+    "099",
+    "104",
+    "103"
+   ],
+   "confidence": "medium",
+   "contributions": [
+    {
+     "contribution_share": 0.3480591148983494,
+     "direct_coefficient": 0.04758651493438737,
+     "gross_output": 119962872.0,
+     "io_sector_code": "102",
+     "io_sector_label": "Cement",
+     "output_weight": 0.2534259041042099,
+     "weighted_contribution": 0.012059655570415606
+    },
+    {
+     "contribution_share": 0.2802986108401295,
+     "direct_coefficient": 0.033538680471373074,
+     "gross_output": 137073252.0,
+     "io_sector_code": "100",
+     "io_sector_label": "Glass and glass products",
+     "output_weight": 0.2895722004438523,
+     "weighted_contribution": 0.009711869504078758
+    },
+    {
+     "contribution_share": 0.22736963212627304,
+     "direct_coefficient": 0.07146238072988746,
+     "gross_output": 52183442.0,
+     "io_sector_code": "101",
+     "io_sector_label": "Structural clay products",
+     "output_weight": 0.1102394078071055,
+     "weighted_contribution": 0.007877970532148702
+    },
+    {
+     "contribution_share": 0.06037705593709759,
+     "direct_coefficient": 0.019564464010074112,
+     "gross_output": 50615289.0,
+     "io_sector_code": "099",
+     "io_sector_label": "Ceramic and earthen ware",
+     "output_weight": 0.10692662790134659,
+     "weighted_contribution": 0.002091962163294482
+    },
+    {
+     "contribution_share": 0.04841792835681117,
+     "direct_coefficient": 0.022659460565043824,
+     "gross_output": 35045671.0,
+     "io_sector_code": "104",
+     "io_sector_label": "Other non-metallic products",
+     "output_weight": 0.07403524698969936,
+     "weighted_contribution": 0.001677598759586372
+    },
+    {
+     "contribution_share": 0.03547765784133921,
+     "direct_coefficient": 0.007413967920199535,
+     "gross_output": 78484154.0,
+     "io_sector_code": "103",
+     "io_sector_label": "Concrete and cement products",
+     "output_weight": 0.16580061275378635,
+     "weighted_contribution": 0.0012292404241059979
+    }
+   ],
+   "direct_exposure": 0.03464829695362992,
+   "direction_channel": "cost_pressure",
+   "direction_interpretation_level": "the industry purchases refinery products as inputs and does not produce them, so a higher price is a cost increase",
+   "direction_interpretation_volatility": "disruption_magnitude_nonnegative",
+   "direction_multiplier": 1,
+   "eligible": true,
+   "exclusion_reason": null,
+   "exposure_reconciliation_residual": 6.938893903907228e-18,
+   "exposure_row_checksum": "1fb21a3769dec9a4464c9fb48ae9a1e598eb78cee365510908ed2d4944004b9c",
+   "exposure_summed_flow_form": 0.03464829695362991,
+   "exposure_weighted_mean_form": 0.03464829695362992,
+   "gross_output_weights": {
+    "099": 0.10692662790134659,
+    "100": 0.2895722004438523,
+    "101": 0.1102394078071055,
+    "102": 0.2534259041042099,
+    "103": 0.16580061275378635,
+    "104": 0.07403524698969936
+   },
+   "industry_contains_the_producer_sector": false,
+   "industry_id": "IND-07",
+   "industry_name": "Non-metallic Mineral Products",
+   "io_sector_code": "093",
+   "io_sector_label": "Petroleum refineries",
+   "observed_zero": false,
+   "phase_a_decision_checksum": "d528aba4aedcb8b8051ad618d66d49c71239267fb26fd2ead292ee90b12c9703",
+   "product_specific_evidence_available": false,
+   "proxy_fit": "broad_proxy_use_with_caution",
+   "proxy_reason": "The industry buys from sector 093, whose official basket is gasoline, jet oil, LPG, asphalt, paraffin, sulfur, kerosene, diesel, fuel oil. No source Phase A may read identifies which of those products it buys, so FO 600 / FO 1500 stand in for the whole basket and the conditioned value is a structural interaction, not a fuel-oil cost.",
+   "quality_flag": "ok",
+   "structural_source_checksum": "7da4b4dca118af760844abd6c78ae01a83f313c8898321ac69e72be730e93c81",
+   "target_outcomes_used": false,
+   "valuation_basis_alignment": "partial_mismatch_purchasers_price_coefficient_x_ex_refinery_price",
+   "variant_id": "fo600_direct_sector093"
+  },
+  {
+   "channel_id": "eppo_fo1500_channel",
+   "component_sector_codes": [
+    "105",
+    "107",
+    "106",
+    "111",
+    "110",
+    "108"
+   ],
+   "confidence": "medium",
+   "contributions": [
+    {
+     "contribution_share": 0.4326300174222293,
+     "direct_coefficient": 0.08396345039343456,
+     "gross_output": 92708303.0,
+     "io_sector_code": "105",
+     "io_sector_label": "Iron and steel",
+     "output_weight": 0.13863786508578343,
+     "weighted_contribution": 0.01164051350778185
+    },
+    {
+     "contribution_share": 0.22935739279815612,
+     "direct_coefficient": 0.0440011676721159,
+     "gross_output": 93786602.0,
+     "io_sector_code": "107",
+     "io_sector_label": "Non-ferrous metal",
+     "output_weight": 0.1402503751463347,
+     "weighted_contribution": 0.006171180272891029
+    },
+    {
+     "contribution_share": 0.14667308340333,
+     "direct_coefficient": 0.022726857400996264,
+     "gross_output": 116119002.0,
+     "io_sector_code": "106",
+     "io_sector_label": "Secondary steel products",
+     "output_weight": 0.17364669627457013,
+     "weighted_contribution": 0.003946443704386265
+    },
+    {
+     "contribution_share": 0.12744843957751137,
+     "direct_coefficient": 0.012014721491874306,
+     "gross_output": 190859189.0,
+     "io_sector_code": "111",
+     "io_sector_label": "Other fabricated metal products",
+     "output_weight": 0.28541467849933616,
+     "weighted_contribution": 0.0034291778718623695
+    },
+    {
+     "contribution_share": 0.03727769039275243,
+     "direct_coefficient": 0.00649872795577935,
+     "gross_output": 103207890.0,
+     "io_sector_code": "110",
+     "io_sector_label": "Structure metal products",
+     "output_weight": 0.15433915913236357,
+     "weighted_contribution": 0.001003008208124969
+    },
+    {
+     "contribution_share": 0.026613376406020926,
+     "direct_coefficient": 0.006648053379686064,
+     "gross_output": 72027400.0,
+     "io_sector_code": "108",
+     "io_sector_label": "Cutlery and hand tools",
+     "output_weight": 0.10771122586161197,
+     "weighted_contribution": 0.0007160699791194184
+    }
+   ],
+   "direct_exposure": 0.026906393544165897,
+   "direction_channel": "cost_pressure",
+   "direction_interpretation_level": "the industry purchases refinery products as inputs and does not produce them, so a higher price is a cost increase",
+   "direction_interpretation_volatility": "disruption_magnitude_nonnegative",
+   "direction_multiplier": 1,
+   "eligible": true,
+   "exclusion_reason": null,
+   "exposure_reconciliation_residual": 3.469446951953614e-18,
+   "exposure_row_checksum": "38bb644966c74c3facbf35a12eefeb8bc23fe2ba465d414ba9b0179e2b95c9c9",
+   "exposure_summed_flow_form": 0.0269063935441659,
+   "exposure_weighted_mean_form": 0.026906393544165897,
+   "gross_output_weights": {
+    "105": 0.13863786508578343,
+    "106": 0.17364669627457013,
+    "107": 0.1402503751463347,
+    "108": 0.10771122586161197,
+    "110": 0.15433915913236357,
+    "111": 0.28541467849933616
+   },
+   "industry_contains_the_producer_sector": false,
+   "industry_id": "IND-08",
+   "industry_name": "Basic and Fabricated Metals",
+   "io_sector_code": "093",
+   "io_sector_label": "Petroleum refineries",
+   "observed_zero": false,
+   "phase_a_decision_checksum": "d528aba4aedcb8b8051ad618d66d49c71239267fb26fd2ead292ee90b12c9703",
+   "product_specific_evidence_available": false,
+   "proxy_fit": "broad_proxy_use_with_caution",
+   "proxy_reason": "The industry buys from sector 093, whose official basket is gasoline, jet oil, LPG, asphalt, paraffin, sulfur, kerosene, diesel, fuel oil. No source Phase A may read identifies which of those products it buys, so FO 600 / FO 1500 stand in for the whole basket and the conditioned value is a structural interaction, not a fuel-oil cost.",
+   "quality_flag": "ok",
+   "structural_source_checksum": "7da4b4dca118af760844abd6c78ae01a83f313c8898321ac69e72be730e93c81",
+   "target_outcomes_used": false,
+   "valuation_basis_alignment": "partial_mismatch_purchasers_price_coefficient_x_ex_refinery_price",
+   "variant_id": "fo1500_direct_sector093"
+  },
+  {
+   "channel_id": "eppo_fo600_channel",
+   "component_sector_codes": [
+    "105",
+    "107",
+    "106",
+    "111",
+    "110",
+    "108"
+   ],
+   "confidence": "medium",
+   "contributions": [
+    {
+     "contribution_share": 0.4326300174222293,
+     "direct_coefficient": 0.08396345039343456,
+     "gross_output": 92708303.0,
+     "io_sector_code": "105",
+     "io_sector_label": "Iron and steel",
+     "output_weight": 0.13863786508578343,
+     "weighted_contribution": 0.01164051350778185
+    },
+    {
+     "contribution_share": 0.22935739279815612,
+     "direct_coefficient": 0.0440011676721159,
+     "gross_output": 93786602.0,
+     "io_sector_code": "107",
+     "io_sector_label": "Non-ferrous metal",
+     "output_weight": 0.1402503751463347,
+     "weighted_contribution": 0.006171180272891029
+    },
+    {
+     "contribution_share": 0.14667308340333,
+     "direct_coefficient": 0.022726857400996264,
+     "gross_output": 116119002.0,
+     "io_sector_code": "106",
+     "io_sector_label": "Secondary steel products",
+     "output_weight": 0.17364669627457013,
+     "weighted_contribution": 0.003946443704386265
+    },
+    {
+     "contribution_share": 0.12744843957751137,
+     "direct_coefficient": 0.012014721491874306,
+     "gross_output": 190859189.0,
+     "io_sector_code": "111",
+     "io_sector_label": "Other fabricated metal products",
+     "output_weight": 0.28541467849933616,
+     "weighted_contribution": 0.0034291778718623695
+    },
+    {
+     "contribution_share": 0.03727769039275243,
+     "direct_coefficient": 0.00649872795577935,
+     "gross_output": 103207890.0,
+     "io_sector_code": "110",
+     "io_sector_label": "Structure metal products",
+     "output_weight": 0.15433915913236357,
+     "weighted_contribution": 0.001003008208124969
+    },
+    {
+     "contribution_share": 0.026613376406020926,
+     "direct_coefficient": 0.006648053379686064,
+     "gross_output": 72027400.0,
+     "io_sector_code": "108",
+     "io_sector_label": "Cutlery and hand tools",
+     "output_weight": 0.10771122586161197,
+     "weighted_contribution": 0.0007160699791194184
+    }
+   ],
+   "direct_exposure": 0.026906393544165897,
+   "direction_channel": "cost_pressure",
+   "direction_interpretation_level": "the industry purchases refinery products as inputs and does not produce them, so a higher price is a cost increase",
+   "direction_interpretation_volatility": "disruption_magnitude_nonnegative",
+   "direction_multiplier": 1,
+   "eligible": true,
+   "exclusion_reason": null,
+   "exposure_reconciliation_residual": 3.469446951953614e-18,
+   "exposure_row_checksum": "78484977c6b16f2799a6313f3e763c516caaf0ccd662d90c6d42ee9948176a31",
+   "exposure_summed_flow_form": 0.0269063935441659,
+   "exposure_weighted_mean_form": 0.026906393544165897,
+   "gross_output_weights": {
+    "105": 0.13863786508578343,
+    "106": 0.17364669627457013,
+    "107": 0.1402503751463347,
+    "108": 0.10771122586161197,
+    "110": 0.15433915913236357,
+    "111": 0.28541467849933616
+   },
+   "industry_contains_the_producer_sector": false,
+   "industry_id": "IND-08",
+   "industry_name": "Basic and Fabricated Metals",
+   "io_sector_code": "093",
+   "io_sector_label": "Petroleum refineries",
+   "observed_zero": false,
+   "phase_a_decision_checksum": "d528aba4aedcb8b8051ad618d66d49c71239267fb26fd2ead292ee90b12c9703",
+   "product_specific_evidence_available": false,
+   "proxy_fit": "broad_proxy_use_with_caution",
+   "proxy_reason": "The industry buys from sector 093, whose official basket is gasoline, jet oil, LPG, asphalt, paraffin, sulfur, kerosene, diesel, fuel oil. No source Phase A may read identifies which of those products it buys, so FO 600 / FO 1500 stand in for the whole basket and the conditioned value is a structural interaction, not a fuel-oil cost.",
+   "quality_flag": "ok",
+   "structural_source_checksum": "7da4b4dca118af760844abd6c78ae01a83f313c8898321ac69e72be730e93c81",
+   "target_outcomes_used": false,
+   "valuation_basis_alignment": "partial_mismatch_purchasers_price_coefficient_x_ex_refinery_price",
+   "variant_id": "fo600_direct_sector093"
+  },
+  {
+   "channel_id": "eppo_fo1500_channel",
+   "component_sector_codes": [
+    "122",
+    "131",
+    "118",
+    "129",
+    "120",
+    "121",
+    "119",
+    "130",
+    "117"
+   ],
+   "confidence": "medium",
+   "contributions": [
+    {
+     "contribution_share": 0.3998094418856659,
+     "direct_coefficient": 0.013845383293520499,
+     "gross_output": 208333994.0,
+     "io_sector_code": "122",
+     "io_sector_label": "Other electrical apparatus and supplies",
+     "output_weight": 0.14642979220234703,
+     "weighted_contribution": 0.0020273765986320537
+    },
+    {
+     "contribution_share": 0.23595926425273647,
+     "direct_coefficient": 0.012414032501695128,
+     "gross_output": 137131186.0,
+     "io_sector_code": "131",
+     "io_sector_label": "Watches and clocks",
+     "output_weight": 0.09638413148476095,
+     "weighted_contribution": 0.0011965157408994791
+    },
+    {
+     "contribution_share": 0.12770650945576031,
+     "direct_coefficient": 0.00125520078088703,
+     "gross_output": 734026790.0,
+     "io_sector_code": "118",
+     "io_sector_label": "Radio, television and communication equipment and apparatus",
+     "output_weight": 0.5159186375059647,
+     "weighted_contribution": 0.0006475814766716594
+    },
+    {
+     "contribution_share": 0.06471657391258306,
+     "direct_coefficient": 0.007708526485107796,
+     "gross_output": 60569812.0,
+     "io_sector_code": "129",
+     "io_sector_label": "Scientific equipment",
+     "output_weight": 0.0425721449227111,
+     "weighted_contribution": 0.0003281685066645659
+    },
+    {
+     "contribution_share": 0.053826845768377644,
+     "direct_coefficient": 0.0032413320935989346,
+     "gross_output": 119808458.0,
+     "io_sector_code": "120",
+     "io_sector_label": "Insulated wire and cable",
+     "output_weight": 0.08420866548079341,
+     "weighted_contribution": 0.00027294824998203243
+    },
+    {
+     "contribution_share": 0.04702369376972823,
+     "direct_coefficient": 0.012626817810186127,
+     "gross_output": 26867973.0,
+     "io_sector_code": "121",
+     "io_sector_label": "Electric accumulators and batteries",
+     "output_weight": 0.018884444289433967,
+     "weighted_contribution": 0.0002384504374892925
+    },
+    {
+     "contribution_share": 0.03520335231475854,
+     "direct_coefficient": 0.006316786371432301,
+     "gross_output": 40206837.0,
+     "io_sector_code": "119",
+     "io_sector_label": "Household electrical appliances",
+     "output_weight": 0.028259808560208557,
+     "weighted_contribution": 0.00017851117357241129
+    },
+    {
+     "contribution_share": 0.021155720825432107,
+     "direct_coefficient": 0.003415213886188506,
+     "gross_output": 44691198.0,
+     "io_sector_code": "130",
+     "io_sector_label": "Photographic and optical goods",
+     "output_weight": 0.031411690002035614,
+     "weighted_contribution": 0.00010727763988360069
+    },
+    {
+     "contribution_share": 0.014598597814957648,
+     "direct_coefficient": 0.0020602836858622437,
+     "gross_output": 51120630.0,
+     "io_sector_code": "117",
+     "io_sector_label": "Electrical industrial machinery and appliances",
+     "output_weight": 0.0359306855517447,
+     "weighted_contribution": 7.402740526410584e-05
+    }
+   ],
+   "direct_exposure": 0.005070857229059201,
+   "direction_channel": "cost_pressure",
+   "direction_interpretation_level": "the industry purchases refinery products as inputs and does not produce them, so a higher price is a cost increase",
+   "direction_interpretation_volatility": "disruption_magnitude_nonnegative",
+   "direction_multiplier": 1,
+   "eligible": true,
+   "exclusion_reason": null,
+   "exposure_reconciliation_residual": 0.0,
+   "exposure_row_checksum": "8552fbe843df27602d000ac97bea55f74e60ba12f27fbfc65befa223a6480381",
+   "exposure_summed_flow_form": 0.005070857229059201,
+   "exposure_weighted_mean_form": 0.005070857229059201,
+   "gross_output_weights": {
+    "117": 0.0359306855517447,
+    "118": 0.5159186375059647,
+    "119": 0.028259808560208557,
+    "120": 0.08420866548079341,
+    "121": 0.018884444289433967,
+    "122": 0.14642979220234703,
+    "129": 0.0425721449227111,
+    "130": 0.031411690002035614,
+    "131": 0.09638413148476095
+   },
+   "industry_contains_the_producer_sector": false,
+   "industry_id": "IND-09",
+   "industry_name": "Computer, Electronics and Electrical Equipment",
+   "io_sector_code": "093",
+   "io_sector_label": "Petroleum refineries",
+   "observed_zero": false,
+   "phase_a_decision_checksum": "d528aba4aedcb8b8051ad618d66d49c71239267fb26fd2ead292ee90b12c9703",
+   "product_specific_evidence_available": false,
+   "proxy_fit": "broad_proxy_use_with_caution",
+   "proxy_reason": "The industry buys from sector 093, whose official basket is gasoline, jet oil, LPG, asphalt, paraffin, sulfur, kerosene, diesel, fuel oil. No source Phase A may read identifies which of those products it buys, so FO 600 / FO 1500 stand in for the whole basket and the conditioned value is a structural interaction, not a fuel-oil cost.",
+   "quality_flag": "ok",
+   "structural_source_checksum": "7da4b4dca118af760844abd6c78ae01a83f313c8898321ac69e72be730e93c81",
+   "target_outcomes_used": false,
+   "valuation_basis_alignment": "partial_mismatch_purchasers_price_coefficient_x_ex_refinery_price",
+   "variant_id": "fo1500_direct_sector093"
+  },
+  {
+   "channel_id": "eppo_fo600_channel",
+   "component_sector_codes": [
+    "122",
+    "131",
+    "118",
+    "129",
+    "120",
+    "121",
+    "119",
+    "130",
+    "117"
+   ],
+   "confidence": "medium",
+   "contributions": [
+    {
+     "contribution_share": 0.3998094418856659,
+     "direct_coefficient": 0.013845383293520499,
+     "gross_output": 208333994.0,
+     "io_sector_code": "122",
+     "io_sector_label": "Other electrical apparatus and supplies",
+     "output_weight": 0.14642979220234703,
+     "weighted_contribution": 0.0020273765986320537
+    },
+    {
+     "contribution_share": 0.23595926425273647,
+     "direct_coefficient": 0.012414032501695128,
+     "gross_output": 137131186.0,
+     "io_sector_code": "131",
+     "io_sector_label": "Watches and clocks",
+     "output_weight": 0.09638413148476095,
+     "weighted_contribution": 0.0011965157408994791
+    },
+    {
+     "contribution_share": 0.12770650945576031,
+     "direct_coefficient": 0.00125520078088703,
+     "gross_output": 734026790.0,
+     "io_sector_code": "118",
+     "io_sector_label": "Radio, television and communication equipment and apparatus",
+     "output_weight": 0.5159186375059647,
+     "weighted_contribution": 0.0006475814766716594
+    },
+    {
+     "contribution_share": 0.06471657391258306,
+     "direct_coefficient": 0.007708526485107796,
+     "gross_output": 60569812.0,
+     "io_sector_code": "129",
+     "io_sector_label": "Scientific equipment",
+     "output_weight": 0.0425721449227111,
+     "weighted_contribution": 0.0003281685066645659
+    },
+    {
+     "contribution_share": 0.053826845768377644,
+     "direct_coefficient": 0.0032413320935989346,
+     "gross_output": 119808458.0,
+     "io_sector_code": "120",
+     "io_sector_label": "Insulated wire and cable",
+     "output_weight": 0.08420866548079341,
+     "weighted_contribution": 0.00027294824998203243
+    },
+    {
+     "contribution_share": 0.04702369376972823,
+     "direct_coefficient": 0.012626817810186127,
+     "gross_output": 26867973.0,
+     "io_sector_code": "121",
+     "io_sector_label": "Electric accumulators and batteries",
+     "output_weight": 0.018884444289433967,
+     "weighted_contribution": 0.0002384504374892925
+    },
+    {
+     "contribution_share": 0.03520335231475854,
+     "direct_coefficient": 0.006316786371432301,
+     "gross_output": 40206837.0,
+     "io_sector_code": "119",
+     "io_sector_label": "Household electrical appliances",
+     "output_weight": 0.028259808560208557,
+     "weighted_contribution": 0.00017851117357241129
+    },
+    {
+     "contribution_share": 0.021155720825432107,
+     "direct_coefficient": 0.003415213886188506,
+     "gross_output": 44691198.0,
+     "io_sector_code": "130",
+     "io_sector_label": "Photographic and optical goods",
+     "output_weight": 0.031411690002035614,
+     "weighted_contribution": 0.00010727763988360069
+    },
+    {
+     "contribution_share": 0.014598597814957648,
+     "direct_coefficient": 0.0020602836858622437,
+     "gross_output": 51120630.0,
+     "io_sector_code": "117",
+     "io_sector_label": "Electrical industrial machinery and appliances",
+     "output_weight": 0.0359306855517447,
+     "weighted_contribution": 7.402740526410584e-05
+    }
+   ],
+   "direct_exposure": 0.005070857229059201,
+   "direction_channel": "cost_pressure",
+   "direction_interpretation_level": "the industry purchases refinery products as inputs and does not produce them, so a higher price is a cost increase",
+   "direction_interpretation_volatility": "disruption_magnitude_nonnegative",
+   "direction_multiplier": 1,
+   "eligible": true,
+   "exclusion_reason": null,
+   "exposure_reconciliation_residual": 0.0,
+   "exposure_row_checksum": "742035f2b4703c481cedaf3cf8671a0dd6a7b0161891a4d70d03173b0aff00e5",
+   "exposure_summed_flow_form": 0.005070857229059201,
+   "exposure_weighted_mean_form": 0.005070857229059201,
+   "gross_output_weights": {
+    "117": 0.0359306855517447,
+    "118": 0.5159186375059647,
+    "119": 0.028259808560208557,
+    "120": 0.08420866548079341,
+    "121": 0.018884444289433967,
+    "122": 0.14642979220234703,
+    "129": 0.0425721449227111,
+    "130": 0.031411690002035614,
+    "131": 0.09638413148476095
+   },
+   "industry_contains_the_producer_sector": false,
+   "industry_id": "IND-09",
+   "industry_name": "Computer, Electronics and Electrical Equipment",
+   "io_sector_code": "093",
+   "io_sector_label": "Petroleum refineries",
+   "observed_zero": false,
+   "phase_a_decision_checksum": "d528aba4aedcb8b8051ad618d66d49c71239267fb26fd2ead292ee90b12c9703",
+   "product_specific_evidence_available": false,
+   "proxy_fit": "broad_proxy_use_with_caution",
+   "proxy_reason": "The industry buys from sector 093, whose official basket is gasoline, jet oil, LPG, asphalt, paraffin, sulfur, kerosene, diesel, fuel oil. No source Phase A may read identifies which of those products it buys, so FO 600 / FO 1500 stand in for the whole basket and the conditioned value is a structural interaction, not a fuel-oil cost.",
+   "quality_flag": "ok",
+   "structural_source_checksum": "7da4b4dca118af760844abd6c78ae01a83f313c8898321ac69e72be730e93c81",
+   "target_outcomes_used": false,
+   "valuation_basis_alignment": "partial_mismatch_purchasers_price_coefficient_x_ex_refinery_price",
+   "variant_id": "fo600_direct_sector093"
+  },
+  {
+   "channel_id": "eppo_fo1500_channel",
+   "component_sector_codes": [
+    "116",
+    "115",
+    "112",
+    "113",
+    "114"
+   ],
+   "confidence": "medium",
+   "contributions": [
+    {
+     "contribution_share": 0.5441752888232742,
+     "direct_coefficient": 0.005195200662880089,
+     "gross_output": 1826538495.0,
+     "io_sector_code": "116",
+     "io_sector_label": "Office and household machinery and appliances",
+     "output_weight": 0.7878095375541911,
+     "weighted_contribution": 0.00409282863172479
+    },
+    {
+     "contribution_share": 0.35580433019574803,
+     "direct_coefficient": 0.01925572401860471,
+     "gross_output": 322213488.0,
+     "io_sector_code": "115",
+     "io_sector_label": "Special industrial machinery",
+     "output_weight": 0.1389748202240889,
+     "weighted_contribution": 0.0026760607837702606
+    },
+    {
+     "contribution_share": 0.08115816730824128,
+     "direct_coefficient": 0.012664578684286528,
+     "gross_output": 111746473.0,
+     "io_sector_code": "112",
+     "io_sector_label": "Engines and turbines",
+     "output_weight": 0.048197690581627685,
+     "weighted_contribution": 0.0006104034447719195
+    },
+    {
+     "contribution_share": 0.014017974488333581,
+     "direct_coefficient": 0.007705479533020383,
+     "gross_output": 31723269.0,
+     "io_sector_code": "113",
+     "io_sector_label": "Agricultural machinery and equipment",
+     "output_weight": 0.013682653800623681,
+     "weighted_contribution": 0.00010543140881810934
+    },
+    {
+     "contribution_share": 0.004844239184402918,
+     "direct_coefficient": 0.0032142332318833003,
+     "gross_output": 26280918.0,
+     "io_sector_code": "114",
+     "io_sector_label": "Wood and metal working machines",
+     "output_weight": 0.011335297839468541,
+     "weighted_contribution": 3.643429100891476e-05
+    }
+   ],
+   "direct_exposure": 0.007521158560093995,
+   "direction_channel": "cost_pressure",
+   "direction_interpretation_level": "the industry purchases refinery products as inputs and does not produce them, so a higher price is a cost increase",
+   "direction_interpretation_volatility": "disruption_magnitude_nonnegative",
+   "direction_multiplier": 1,
+   "eligible": true,
+   "exclusion_reason": null,
+   "exposure_reconciliation_residual": 0.0,
+   "exposure_row_checksum": "7ed81558d220665317154c0adbe55b6a1aca821a855f4ff88eec93fc07ef65ed",
+   "exposure_summed_flow_form": 0.007521158560093995,
+   "exposure_weighted_mean_form": 0.007521158560093995,
+   "gross_output_weights": {
+    "112": 0.048197690581627685,
+    "113": 0.013682653800623681,
+    "114": 0.011335297839468541,
+    "115": 0.1389748202240889,
+    "116": 0.7878095375541911
+   },
+   "industry_contains_the_producer_sector": false,
+   "industry_id": "IND-10",
+   "industry_name": "Machinery and Equipment",
+   "io_sector_code": "093",
+   "io_sector_label": "Petroleum refineries",
+   "observed_zero": false,
+   "phase_a_decision_checksum": "d528aba4aedcb8b8051ad618d66d49c71239267fb26fd2ead292ee90b12c9703",
+   "product_specific_evidence_available": false,
+   "proxy_fit": "broad_proxy_use_with_caution",
+   "proxy_reason": "The industry buys from sector 093, whose official basket is gasoline, jet oil, LPG, asphalt, paraffin, sulfur, kerosene, diesel, fuel oil. No source Phase A may read identifies which of those products it buys, so FO 600 / FO 1500 stand in for the whole basket and the conditioned value is a structural interaction, not a fuel-oil cost.",
+   "quality_flag": "ok",
+   "structural_source_checksum": "7da4b4dca118af760844abd6c78ae01a83f313c8898321ac69e72be730e93c81",
+   "target_outcomes_used": false,
+   "valuation_basis_alignment": "partial_mismatch_purchasers_price_coefficient_x_ex_refinery_price",
+   "variant_id": "fo1500_direct_sector093"
+  },
+  {
+   "channel_id": "eppo_fo600_channel",
+   "component_sector_codes": [
+    "116",
+    "115",
+    "112",
+    "113",
+    "114"
+   ],
+   "confidence": "medium",
+   "contributions": [
+    {
+     "contribution_share": 0.5441752888232742,
+     "direct_coefficient": 0.005195200662880089,
+     "gross_output": 1826538495.0,
+     "io_sector_code": "116",
+     "io_sector_label": "Office and household machinery and appliances",
+     "output_weight": 0.7878095375541911,
+     "weighted_contribution": 0.00409282863172479
+    },
+    {
+     "contribution_share": 0.35580433019574803,
+     "direct_coefficient": 0.01925572401860471,
+     "gross_output": 322213488.0,
+     "io_sector_code": "115",
+     "io_sector_label": "Special industrial machinery",
+     "output_weight": 0.1389748202240889,
+     "weighted_contribution": 0.0026760607837702606
+    },
+    {
+     "contribution_share": 0.08115816730824128,
+     "direct_coefficient": 0.012664578684286528,
+     "gross_output": 111746473.0,
+     "io_sector_code": "112",
+     "io_sector_label": "Engines and turbines",
+     "output_weight": 0.048197690581627685,
+     "weighted_contribution": 0.0006104034447719195
+    },
+    {
+     "contribution_share": 0.014017974488333581,
+     "direct_coefficient": 0.007705479533020383,
+     "gross_output": 31723269.0,
+     "io_sector_code": "113",
+     "io_sector_label": "Agricultural machinery and equipment",
+     "output_weight": 0.013682653800623681,
+     "weighted_contribution": 0.00010543140881810934
+    },
+    {
+     "contribution_share": 0.004844239184402918,
+     "direct_coefficient": 0.0032142332318833003,
+     "gross_output": 26280918.0,
+     "io_sector_code": "114",
+     "io_sector_label": "Wood and metal working machines",
+     "output_weight": 0.011335297839468541,
+     "weighted_contribution": 3.643429100891476e-05
+    }
+   ],
+   "direct_exposure": 0.007521158560093995,
+   "direction_channel": "cost_pressure",
+   "direction_interpretation_level": "the industry purchases refinery products as inputs and does not produce them, so a higher price is a cost increase",
+   "direction_interpretation_volatility": "disruption_magnitude_nonnegative",
+   "direction_multiplier": 1,
+   "eligible": true,
+   "exclusion_reason": null,
+   "exposure_reconciliation_residual": 0.0,
+   "exposure_row_checksum": "7902b0166230fee80cbd85ce910f7b746e11db937a23a7e0cf151117de8ec193",
+   "exposure_summed_flow_form": 0.007521158560093995,
+   "exposure_weighted_mean_form": 0.007521158560093995,
+   "gross_output_weights": {
+    "112": 0.048197690581627685,
+    "113": 0.013682653800623681,
+    "114": 0.011335297839468541,
+    "115": 0.1389748202240889,
+    "116": 0.7878095375541911
+   },
+   "industry_contains_the_producer_sector": false,
+   "industry_id": "IND-10",
+   "industry_name": "Machinery and Equipment",
+   "io_sector_code": "093",
+   "io_sector_label": "Petroleum refineries",
+   "observed_zero": false,
+   "phase_a_decision_checksum": "d528aba4aedcb8b8051ad618d66d49c71239267fb26fd2ead292ee90b12c9703",
+   "product_specific_evidence_available": false,
+   "proxy_fit": "broad_proxy_use_with_caution",
+   "proxy_reason": "The industry buys from sector 093, whose official basket is gasoline, jet oil, LPG, asphalt, paraffin, sulfur, kerosene, diesel, fuel oil. No source Phase A may read identifies which of those products it buys, so FO 600 / FO 1500 stand in for the whole basket and the conditioned value is a structural interaction, not a fuel-oil cost.",
+   "quality_flag": "ok",
+   "structural_source_checksum": "7da4b4dca118af760844abd6c78ae01a83f313c8898321ac69e72be730e93c81",
+   "target_outcomes_used": false,
+   "valuation_basis_alignment": "partial_mismatch_purchasers_price_coefficient_x_ex_refinery_price",
+   "variant_id": "fo600_direct_sector093"
+  },
+  {
+   "channel_id": "eppo_fo1500_channel",
+   "component_sector_codes": [
+    "125",
+    "126",
+    "128",
+    "124",
+    "123"
+   ],
+   "confidence": "medium",
+   "contributions": [
+    {
+     "contribution_share": 0.8647457441854761,
+     "direct_coefficient": 0.008852227989817583,
+     "gross_output": 1549680489.0,
+     "io_sector_code": "125",
+     "io_sector_label": "Motor vehicles",
+     "output_weight": 0.8509664290478053,
+     "weighted_contribution": 0.0075329488416121
+    },
+    {
+     "contribution_share": 0.06442568149166587,
+     "direct_coefficient": 0.006712850240505146,
+     "gross_output": 152250380.0,
+     "io_sector_code": "126",
+     "io_sector_label": "Motor vehicles",
+     "output_weight": 0.08360430624855818,
+     "weighted_contribution": 0.0005612231873078997
+    },
+    {
+     "contribution_share": 0.032913872222152536,
+     "direct_coefficient": 0.016295859080695804,
+     "gross_output": 32041146.0,
+     "io_sector_code": "128",
+     "io_sector_label": "Aircraft",
+     "output_weight": 0.01759455564405662,
+     "weighted_contribution": 0.00028671839936300766
+    },
+    {
+     "contribution_share": 0.02123077072425484,
+     "direct_coefficient": 0.06870847248091035,
+     "gross_output": 4901870.0,
+     "io_sector_code": "124",
+     "io_sector_label": "Railroad equipment",
+     "output_weight": 0.0026917334503245237,
+     "weighted_contribution": 0.0001849448936975684
+    },
+    {
+     "contribution_share": 0.0166839313764505,
+     "direct_coefficient": 0.0032194730741807735,
+     "gross_output": 82209105.0,
+     "io_sector_code": "123",
+     "io_sector_label": "Ship building and repairing",
+     "output_weight": 0.04514297560925546,
+     "weighted_contribution": 0.00014533659446239736
+    }
+   ],
+   "direct_exposure": 0.008711171916442974,
+   "direction_channel": "cost_pressure",
+   "direction_interpretation_level": "the industry purchases refinery products as inputs and does not produce them, so a higher price is a cost increase",
+   "direction_interpretation_volatility": "disruption_magnitude_nonnegative",
+   "direction_multiplier": 1,
+   "eligible": true,
+   "exclusion_reason": null,
+   "exposure_reconciliation_residual": 0.0,
+   "exposure_row_checksum": "629cb2a77e224528f25a57980b040f614201395f8da450053a98c656ac60d500",
+   "exposure_summed_flow_form": 0.008711171916442974,
+   "exposure_weighted_mean_form": 0.008711171916442974,
+   "gross_output_weights": {
+    "123": 0.04514297560925546,
+    "124": 0.0026917334503245237,
+    "125": 0.8509664290478053,
+    "126": 0.08360430624855818,
+    "128": 0.01759455564405662
+   },
+   "industry_contains_the_producer_sector": false,
+   "industry_id": "IND-11",
+   "industry_name": "Motor Vehicles and Other Transport Equipment",
+   "io_sector_code": "093",
+   "io_sector_label": "Petroleum refineries",
+   "observed_zero": false,
+   "phase_a_decision_checksum": "d528aba4aedcb8b8051ad618d66d49c71239267fb26fd2ead292ee90b12c9703",
+   "product_specific_evidence_available": false,
+   "proxy_fit": "broad_proxy_use_with_caution",
+   "proxy_reason": "The industry buys from sector 093, whose official basket is gasoline, jet oil, LPG, asphalt, paraffin, sulfur, kerosene, diesel, fuel oil. No source Phase A may read identifies which of those products it buys, so FO 600 / FO 1500 stand in for the whole basket and the conditioned value is a structural interaction, not a fuel-oil cost.",
+   "quality_flag": "ok",
+   "structural_source_checksum": "7da4b4dca118af760844abd6c78ae01a83f313c8898321ac69e72be730e93c81",
+   "target_outcomes_used": false,
+   "valuation_basis_alignment": "partial_mismatch_purchasers_price_coefficient_x_ex_refinery_price",
+   "variant_id": "fo1500_direct_sector093"
+  },
+  {
+   "channel_id": "eppo_fo600_channel",
+   "component_sector_codes": [
+    "125",
+    "126",
+    "128",
+    "124",
+    "123"
+   ],
+   "confidence": "medium",
+   "contributions": [
+    {
+     "contribution_share": 0.8647457441854761,
+     "direct_coefficient": 0.008852227989817583,
+     "gross_output": 1549680489.0,
+     "io_sector_code": "125",
+     "io_sector_label": "Motor vehicles",
+     "output_weight": 0.8509664290478053,
+     "weighted_contribution": 0.0075329488416121
+    },
+    {
+     "contribution_share": 0.06442568149166587,
+     "direct_coefficient": 0.006712850240505146,
+     "gross_output": 152250380.0,
+     "io_sector_code": "126",
+     "io_sector_label": "Motor vehicles",
+     "output_weight": 0.08360430624855818,
+     "weighted_contribution": 0.0005612231873078997
+    },
+    {
+     "contribution_share": 0.032913872222152536,
+     "direct_coefficient": 0.016295859080695804,
+     "gross_output": 32041146.0,
+     "io_sector_code": "128",
+     "io_sector_label": "Aircraft",
+     "output_weight": 0.01759455564405662,
+     "weighted_contribution": 0.00028671839936300766
+    },
+    {
+     "contribution_share": 0.02123077072425484,
+     "direct_coefficient": 0.06870847248091035,
+     "gross_output": 4901870.0,
+     "io_sector_code": "124",
+     "io_sector_label": "Railroad equipment",
+     "output_weight": 0.0026917334503245237,
+     "weighted_contribution": 0.0001849448936975684
+    },
+    {
+     "contribution_share": 0.0166839313764505,
+     "direct_coefficient": 0.0032194730741807735,
+     "gross_output": 82209105.0,
+     "io_sector_code": "123",
+     "io_sector_label": "Ship building and repairing",
+     "output_weight": 0.04514297560925546,
+     "weighted_contribution": 0.00014533659446239736
+    }
+   ],
+   "direct_exposure": 0.008711171916442974,
+   "direction_channel": "cost_pressure",
+   "direction_interpretation_level": "the industry purchases refinery products as inputs and does not produce them, so a higher price is a cost increase",
+   "direction_interpretation_volatility": "disruption_magnitude_nonnegative",
+   "direction_multiplier": 1,
+   "eligible": true,
+   "exclusion_reason": null,
+   "exposure_reconciliation_residual": 0.0,
+   "exposure_row_checksum": "0f75be4e5c2f881c0f17d4b5e24e9093632881fea8a530fed9442f90a9e127d7",
+   "exposure_summed_flow_form": 0.008711171916442974,
+   "exposure_weighted_mean_form": 0.008711171916442974,
+   "gross_output_weights": {
+    "123": 0.04514297560925546,
+    "124": 0.0026917334503245237,
+    "125": 0.8509664290478053,
+    "126": 0.08360430624855818,
+    "128": 0.01759455564405662
+   },
+   "industry_contains_the_producer_sector": false,
+   "industry_id": "IND-11",
+   "industry_name": "Motor Vehicles and Other Transport Equipment",
+   "io_sector_code": "093",
+   "io_sector_label": "Petroleum refineries",
+   "observed_zero": false,
+   "phase_a_decision_checksum": "d528aba4aedcb8b8051ad618d66d49c71239267fb26fd2ead292ee90b12c9703",
+   "product_specific_evidence_available": false,
+   "proxy_fit": "broad_proxy_use_with_caution",
+   "proxy_reason": "The industry buys from sector 093, whose official basket is gasoline, jet oil, LPG, asphalt, paraffin, sulfur, kerosene, diesel, fuel oil. No source Phase A may read identifies which of those products it buys, so FO 600 / FO 1500 stand in for the whole basket and the conditioned value is a structural interaction, not a fuel-oil cost.",
+   "quality_flag": "ok",
+   "structural_source_checksum": "7da4b4dca118af760844abd6c78ae01a83f313c8898321ac69e72be730e93c81",
+   "target_outcomes_used": false,
+   "valuation_basis_alignment": "partial_mismatch_purchasers_price_coefficient_x_ex_refinery_price",
+   "variant_id": "fo600_direct_sector093"
+  },
+  {
+   "channel_id": "eppo_fo1500_channel",
+   "component_sector_codes": [
+    "134",
+    "132",
+    "080",
+    "109",
+    "133"
+   ],
+   "confidence": "medium",
+   "contributions": [
+    {
+     "contribution_share": 0.5013332427791799,
+     "direct_coefficient": 0.020415018797185245,
+     "gross_output": 107751505.0,
+     "io_sector_code": "134",
+     "io_sector_label": "Other manufactured goods",
+     "output_weight": 0.11660420794046272,
+     "weighted_contribution": 0.0023804770969354434
+    },
+    {
+     "contribution_share": 0.3833223407276269,
+     "direct_coefficient": 0.002437513998987576,
+     "gross_output": 690023114.0,
+     "io_sector_code": "132",
+     "io_sector_label": "Jewellery and related articles",
+     "output_weight": 0.746714383883377,
+     "weighted_contribution": 0.001820126763961114
+    },
+    {
+     "contribution_share": 0.0642265209109444,
+     "direct_coefficient": 0.004257799144826195,
+     "gross_output": 66187481.0,
+     "io_sector_code": "080",
+     "io_sector_label": "Wooden furniture and fixtures",
+     "output_weight": 0.07162534572096627,
+     "weighted_contribution": 0.00030496633575861074
+    },
+    {
+     "contribution_share": 0.036894132318762166,
+     "direct_coefficient": 0.003959958828991711,
+     "gross_output": 40880223.0,
+     "io_sector_code": "109",
+     "io_sector_label": "Metal furniture and fixtures",
+     "output_weight": 0.04423888114921909,
+     "weighted_contribution": 0.0001751841479915651
+    },
+    {
+     "contribution_share": 0.014223763263486606,
+     "direct_coefficient": 0.003244367894091722,
+     "gross_output": 19236721.0,
+     "io_sector_code": "133",
+     "io_sector_label": "Recreational and athletic equipment",
+     "output_weight": 0.020817181305974947,
+     "weighted_contribution": 6.75385946745915e-05
+    }
+   ],
+   "direct_exposure": 0.004748292939321325,
+   "direction_channel": "cost_pressure",
+   "direction_interpretation_level": "the industry purchases refinery products as inputs and does not produce them, so a higher price is a cost increase",
+   "direction_interpretation_volatility": "disruption_magnitude_nonnegative",
+   "direction_multiplier": 1,
+   "eligible": true,
+   "exclusion_reason": null,
+   "exposure_reconciliation_residual": 0.0,
+   "exposure_row_checksum": "2c491df84287ee94d107168644a7edb52e1f05cca2cd6c8f2b98752fa68a6c03",
+   "exposure_summed_flow_form": 0.004748292939321325,
+   "exposure_weighted_mean_form": 0.004748292939321325,
+   "gross_output_weights": {
+    "080": 0.07162534572096627,
+    "109": 0.04423888114921909,
+    "132": 0.746714383883377,
+    "133": 0.020817181305974947,
+    "134": 0.11660420794046272
+   },
+   "industry_contains_the_producer_sector": false,
+   "industry_id": "IND-12",
+   "industry_name": "Furniture and Other Manufacturing",
+   "io_sector_code": "093",
+   "io_sector_label": "Petroleum refineries",
+   "observed_zero": false,
+   "phase_a_decision_checksum": "d528aba4aedcb8b8051ad618d66d49c71239267fb26fd2ead292ee90b12c9703",
+   "product_specific_evidence_available": false,
+   "proxy_fit": "broad_proxy_use_with_caution",
+   "proxy_reason": "The industry buys from sector 093, whose official basket is gasoline, jet oil, LPG, asphalt, paraffin, sulfur, kerosene, diesel, fuel oil. No source Phase A may read identifies which of those products it buys, so FO 600 / FO 1500 stand in for the whole basket and the conditioned value is a structural interaction, not a fuel-oil cost.",
+   "quality_flag": "ok",
+   "structural_source_checksum": "7da4b4dca118af760844abd6c78ae01a83f313c8898321ac69e72be730e93c81",
+   "target_outcomes_used": false,
+   "valuation_basis_alignment": "partial_mismatch_purchasers_price_coefficient_x_ex_refinery_price",
+   "variant_id": "fo1500_direct_sector093"
+  },
+  {
+   "channel_id": "eppo_fo600_channel",
+   "component_sector_codes": [
+    "134",
+    "132",
+    "080",
+    "109",
+    "133"
+   ],
+   "confidence": "medium",
+   "contributions": [
+    {
+     "contribution_share": 0.5013332427791799,
+     "direct_coefficient": 0.020415018797185245,
+     "gross_output": 107751505.0,
+     "io_sector_code": "134",
+     "io_sector_label": "Other manufactured goods",
+     "output_weight": 0.11660420794046272,
+     "weighted_contribution": 0.0023804770969354434
+    },
+    {
+     "contribution_share": 0.3833223407276269,
+     "direct_coefficient": 0.002437513998987576,
+     "gross_output": 690023114.0,
+     "io_sector_code": "132",
+     "io_sector_label": "Jewellery and related articles",
+     "output_weight": 0.746714383883377,
+     "weighted_contribution": 0.001820126763961114
+    },
+    {
+     "contribution_share": 0.0642265209109444,
+     "direct_coefficient": 0.004257799144826195,
+     "gross_output": 66187481.0,
+     "io_sector_code": "080",
+     "io_sector_label": "Wooden furniture and fixtures",
+     "output_weight": 0.07162534572096627,
+     "weighted_contribution": 0.00030496633575861074
+    },
+    {
+     "contribution_share": 0.036894132318762166,
+     "direct_coefficient": 0.003959958828991711,
+     "gross_output": 40880223.0,
+     "io_sector_code": "109",
+     "io_sector_label": "Metal furniture and fixtures",
+     "output_weight": 0.04423888114921909,
+     "weighted_contribution": 0.0001751841479915651
+    },
+    {
+     "contribution_share": 0.014223763263486606,
+     "direct_coefficient": 0.003244367894091722,
+     "gross_output": 19236721.0,
+     "io_sector_code": "133",
+     "io_sector_label": "Recreational and athletic equipment",
+     "output_weight": 0.020817181305974947,
+     "weighted_contribution": 6.75385946745915e-05
+    }
+   ],
+   "direct_exposure": 0.004748292939321325,
+   "direction_channel": "cost_pressure",
+   "direction_interpretation_level": "the industry purchases refinery products as inputs and does not produce them, so a higher price is a cost increase",
+   "direction_interpretation_volatility": "disruption_magnitude_nonnegative",
+   "direction_multiplier": 1,
+   "eligible": true,
+   "exclusion_reason": null,
+   "exposure_reconciliation_residual": 0.0,
+   "exposure_row_checksum": "52d30b5014362da13641eecc4f8c0d4e50d5773f63a290336fb5ddf7e86e47a4",
+   "exposure_summed_flow_form": 0.004748292939321325,
+   "exposure_weighted_mean_form": 0.004748292939321325,
+   "gross_output_weights": {
+    "080": 0.07162534572096627,
+    "109": 0.04423888114921909,
+    "132": 0.746714383883377,
+    "133": 0.020817181305974947,
+    "134": 0.11660420794046272
+   },
+   "industry_contains_the_producer_sector": false,
+   "industry_id": "IND-12",
+   "industry_name": "Furniture and Other Manufacturing",
+   "io_sector_code": "093",
+   "io_sector_label": "Petroleum refineries",
+   "observed_zero": false,
+   "phase_a_decision_checksum": "d528aba4aedcb8b8051ad618d66d49c71239267fb26fd2ead292ee90b12c9703",
+   "product_specific_evidence_available": false,
+   "proxy_fit": "broad_proxy_use_with_caution",
+   "proxy_reason": "The industry buys from sector 093, whose official basket is gasoline, jet oil, LPG, asphalt, paraffin, sulfur, kerosene, diesel, fuel oil. No source Phase A may read identifies which of those products it buys, so FO 600 / FO 1500 stand in for the whole basket and the conditioned value is a structural interaction, not a fuel-oil cost.",
+   "quality_flag": "ok",
+   "structural_source_checksum": "7da4b4dca118af760844abd6c78ae01a83f313c8898321ac69e72be730e93c81",
+   "target_outcomes_used": false,
+   "valuation_basis_alignment": "partial_mismatch_purchasers_price_coefficient_x_ex_refinery_price",
+   "variant_id": "fo600_direct_sector093"
+  }
+ ],
+ "direction": {
+  "channels": [
+   "cost_pressure",
+   "mixed_or_ambiguous",
+   "unresolved"
+  ],
+  "consumer_industry": {
+   "direction_channel": "cost_pressure",
+   "direction_multiplier": 1
+  },
+  "industry_containing_the_producer_sector": {
+   "direction_channel": "mixed_or_ambiguous",
+   "direction_multiplier": null,
+   "reason": "A higher refinery-product price is simultaneously revenue and input cost. The net sign is unresolved and is not forced to +1."
+  },
+  "realized_volatility_interpretation": "disruption_magnitude_nonnegative",
+  "volatility_called_a_price_increase": false
+ },
+ "eligibility": {
+  "conditions": [
+   "sector_093_exposure_resolved",
+   "exposure_finite_and_nonnegative",
+   "proxy_fitness_not_not_fit_for_product_specific_use",
+   "direction_resolved",
+   "direction_multiplier_non_null",
+   "no_target_outcome_used",
+   "shared_channel_restrictions_preserved"
+  ],
+  "ineligible_pairs_deleted_from_the_audit_table": false,
+  "mixed_direction_is_ineligible_for_the_default_feature": true,
+  "observed_zero_quality_flag": "observed_zero_direct_exposure",
+  "observed_zero_remains_eligible": true
+ },
+ "eligible_industries": [
+  "IND-01",
+  "IND-02",
+  "IND-03",
+  "IND-05",
+  "IND-06",
+  "IND-07",
+  "IND-08",
+  "IND-09",
+  "IND-10",
+  "IND-11",
+  "IND-12"
+ ],
+ "eligible_industries_per_channel": 11,
+ "evaluation_metrics_read": false,
+ "expected_phase_b_counts": {
+  "full_grid_rows": 7800,
+  "ineligible_rows": 650,
+  "source_gap_rows": 572,
+  "source_numeric_rows": 6578
+ },
+ "expected_phase_b_counts_per_channel": {
+  "eppo_fo1500_channel": {
+   "eligible_industries_per_channel": 11,
+   "full_grid_rows": 3900,
+   "ineligible_industries_per_channel": 1,
+   "ineligible_rows": 325,
+   "source_gap_rows": 286,
+   "source_numeric_rows": 3289
+  },
+  "eppo_fo600_channel": {
+   "eligible_industries_per_channel": 11,
+   "full_grid_rows": 3900,
+   "ineligible_industries_per_channel": 1,
+   "ineligible_rows": 325,
+   "source_gap_rows": 286,
+   "source_numeric_rows": 3289
+  }
+ },
+ "exposure": {
+  "both_forms_calculated_independently": true,
+  "direct_coefficient_formula": "A[093,j] = Z[093,j] / X_j",
+  "industry_aggregation_exact_form": "E[093,g] = sum_j Z[093,j] / sum_j X_j",
+  "industry_aggregation_weighted_form": "E[093,g] = sum_j (X_j / sum_l X_l) * A[093,j]",
+  "io_sector_code": "093",
+  "io_sector_label": "Petroleum refineries",
+  "large_exposure_is_an_error": false,
+  "measure": "purchaser",
+  "prohibited": [
+   "sector_031_crude_exposure_reused_as_sector_093",
+   "brent_exposure_reused",
+   "total_requirement_T_equals_L_minus_I",
+   "total_requirement_exposure",
+   "weights_inferred_from_target_outcomes",
+   "normalisation_across_industries"
+  ],
+  "reconciliation_tolerance": 1e-12,
+  "sector_093_definition": {
+   "definition": "This sector covers oil-processing refineries. Products of this sector are gasoline, jet oil, LPG, asphalt, paraffin, sulfur, kerosene, diesel and fuel oil.",
+   "label": "Petroleum refineries"
+  },
+  "structural_checks": [
+   "sector_093_exists_exactly_once",
+   "official_label_matches",
+   "no_final_demand_row_enters_z",
+   "no_value_added_row_enters_z",
+   "every_included_sector_has_positive_gross_output",
+   "industry_weights_sum_to_one",
+   "coefficients_finite_and_nonnegative",
+   "no_industry_sector_assigned_twice",
+   "purchasers_price_basis_preserved",
+   "deterministic"
+  ],
+  "summary": {
+   "industries": 12,
+   "industries_containing_the_producer_sector": [
+    "IND-04"
+   ],
+   "io_sector_code": "093",
+   "io_sector_label": "Petroleum refineries",
+   "max_reconciliation_residual": 1.3877787807814457e-17,
+   "maximum": 0.06415595327542685,
+   "median": 0.009930964216714508,
+   "minimum": 0.004748292939321325,
+   "normalised_across_industries": false,
+   "note": "Baht of sector-093 output purchased per baht of industry gross output, purchasers' prices, import-inclusive, one 2015 benchmark under fixed proportions. Not an elasticity, not a pass-through rate, not a causal effect. A large exposure is a structural fact, not an error.",
+   "observed_zero_count": 0,
+   "top_exposed_industries": [
+    {
+     "direct_exposure": 0.06415595327542685,
+     "industry_id": "IND-05",
+     "industry_name": "Chemicals and Pharmaceuticals"
+    },
+    {
+     "direct_exposure": 0.03464829695362992,
+     "industry_id": "IND-07",
+     "industry_name": "Non-metallic Mineral Products"
+    },
+    {
+     "direct_exposure": 0.026906393544165897,
+     "industry_id": "IND-08",
+     "industry_name": "Basic and Fabricated Metals"
+    },
+    {
+     "direct_exposure": 0.014320736404304002,
+     "industry_id": "IND-06",
+     "industry_name": "Rubber and Plastics"
+    },
+    {
+     "direct_exposure": 0.011393463166295026,
+     "industry_id": "IND-02",
+     "industry_name": "Textiles, Apparel and Leather"
+    }
+   ],
+   "total_requirement_used": false,
+   "unresolved_count": 0
+  }
+ },
+ "generated_at_utc": "2026-08-29T07:55:17.174184+00:00",
+ "ineligible_industries": [
+  "IND-04"
+ ],
+ "ineligible_industries_per_channel": 1,
+ "mpi_values_read": false,
+ "per_channel_eligibility": {
+  "eppo_fo1500_channel": {
+   "eligible": [
+    "IND-01",
+    "IND-02",
+    "IND-03",
+    "IND-05",
+    "IND-06",
+    "IND-07",
+    "IND-08",
+    "IND-09",
+    "IND-10",
+    "IND-11",
+    "IND-12"
+   ],
+   "ineligible": [
+    "IND-04"
+   ]
+  },
+  "eppo_fo600_channel": {
+   "eligible": [
+    "IND-01",
+    "IND-02",
+    "IND-03",
+    "IND-05",
+    "IND-06",
+    "IND-07",
+    "IND-08",
+    "IND-09",
+    "IND-10",
+    "IND-11",
+    "IND-12"
+   ],
+   "ineligible": [
+    "IND-04"
+   ]
+  }
+ },
+ "phase": "A",
+ "phase_a_version": "c9_phase_a_structural_decision_v1",
+ "phases": {
+  "phase_a": {
+   "frozen_before_phase_b": true,
+   "may_read": [
+    "nesdc_io_matrix",
+    "sector_descriptions",
+    "industry_crosswalk",
+    "c3_c3r1_structural_metadata",
+    "c5_mediator_findings",
+    "c8_channel_metadata_only"
+   ],
+   "must_not_read": [
+    "c8_numeric_feature_values",
+    "mpi_values",
+    "targets",
+    "predictions",
+    "evaluation_metrics"
+   ],
+   "name": "structural_decision",
+   "produces": [
+    "sector_093_industry_exposures",
+    "proxy_fitness_decisions",
+    "direction_decisions",
+    "eligibility",
+    "expected_row_count_formulas",
+    "structural_decision_checksum"
+   ]
+  },
+  "phase_b": {
+   "eligibility_change_after_loading_values": "raises",
+   "name": "conditioning",
+   "precondition": "phase_a_artifact_written_and_checksum_frozen",
+   "reasserts_checksum_before_loading_c8_values": true
+  }
+ },
+ "predictions_read": false,
+ "proxy_fitness": {
+  "absence_of_evidence_note": "The 179-sector table does not split refinery products by type, so no source Phase A may read identifies which product an industry buys. That is a limit of the permitted sources, not proof that no such evidence exists anywhere.",
+  "basket_source": "NESDC 2015 sector classification, definition of sector 093",
+  "considerations": [
+   "industry_directly_purchases_sector_093_output",
+   "official_io_data_identify_the_purchased_petroleum_product",
+   "fuel_oil_can_represent_the_full_sector_093_basket",
+   "exposure_is_observed_zero",
+   "industry_contains_sector_093_itself",
+   "product_specific_consumption_evidence_exists"
+  ],
+  "default_confidence_high_without_product_specific_evidence": false,
+  "fuel_oil_use_inferred_from_a_positive_coefficient": false,
+  "product_specific_evidence_sources_permitted_in_phase_a": [
+   "nesdc_io_matrix",
+   "nesdc_sector_definitions",
+   "industry_crosswalk",
+   "c3_c3r1_structural_metadata",
+   "c5_mediator_findings"
+  ],
+  "sector_093_official_basket": [
+   "gasoline",
+   "jet oil",
+   "LPG",
+   "asphalt",
+   "paraffin",
+   "sulfur",
+   "kerosene",
+   "diesel",
+   "fuel oil"
+  ],
+  "statuses": [
+   "fit_for_structural_use",
+   "broad_proxy_use_with_caution",
+   "not_fit_for_product_specific_use",
+   "unresolved"
+  ]
+ },
+ "structural_audit_grid": {
+  "channels": 2,
+  "columns": [
+   "industry_id",
+   "channel_id",
+   "io_sector_code",
+   "direct_exposure",
+   "observed_zero",
+   "proxy_fit",
+   "confidence",
+   "direction_channel",
+   "direction_multiplier",
+   "eligible",
+   "exclusion_reason",
+   "valuation_basis_alignment",
+   "structural_source_checksum",
+   "exposure_row_checksum",
+   "phase_a_decision_checksum"
+  ],
+  "industries": 12,
+  "rows": 24,
+  "rows_built": 24
+ },
+ "structural_decision_checksum": "d528aba4aedcb8b8051ad618d66d49c71239267fb26fd2ead292ee90b12c9703",
+ "targets_read": false,
+ "task": "C9",
+ "upstream_invariants": {
+  "all_reproduced": true,
+  "checks": {
+   "c3_coefficient_measure": {
+    "actual": "purchaser",
+    "expected": "purchaser",
+    "reproduced": true
+   },
+   "c3_excluded_zero_output_sector": {
+    "actual": [
+     "179"
+    ],
+    "expected": [
+     "179"
+    ],
+    "reproduced": true
+   },
+   "c3_import_treatment": {
+    "actual": "import_inclusive",
+    "expected": "import_inclusive",
+    "reproduced": true
+   },
+   "c3_no_duplicate_sector_assignment": {
+    "actual": true,
+    "expected": true,
+    "reproduced": true
+   },
+   "c3_production_industries": {
+    "actual": 12,
+    "expected": 12,
+    "reproduced": true
+   },
+   "c3_structural_available_by": {
+    "actual": "2020-03-31",
+    "expected": "2020-03-31",
+    "reproduced": true
+   },
+   "c3_target_outcomes_used_in_crosswalk": {
+    "actual": false,
+    "expected": false,
+    "reproduced": true
+   },
+   "c3_valid_io_sectors": {
+    "actual": 179,
+    "expected": 179,
+    "reproduced": true
+   },
+   "c3_valuation_price_basis": {
+    "actual": "purchasers_prices",
+    "expected": "purchasers_prices",
+    "reproduced": true
+   },
+   "c8_channels": {
+    "actual": [
+     "eppo_fo1500_channel",
+     "eppo_fo600_channel"
+    ],
+    "expected": [
+     "eppo_fo1500_channel",
+     "eppo_fo600_channel"
+    ],
+    "reproduced": true
+   },
+   "c8_finite_per_channel": {
+    "actual": [
+     299
+    ],
+    "expected": [
+     299
+    ],
+    "reproduced": true
+   },
+   "c8_finite_rows": {
+    "actual": 598,
+    "expected": 598,
+    "reproduced": true
+   },
+   "c8_fo1500_ready": {
+    "actual": true,
+    "expected": true,
+    "reproduced": true
+   },
+   "c8_fo600_ready": {
+    "actual": true,
+    "expected": true,
+    "reproduced": true
+   },
+   "c8_hsd_absent": {
+    "actual": true,
+    "expected": true,
+    "reproduced": true
+   },
+   "c8_lag_is_measured": {
+    "actual": false,
+    "expected": false,
+    "reproduced": true
+   },
+   "c8_latest_vintage_used": {
+    "actual": true,
+    "expected": true,
+    "reproduced": true
+   },
+   "c8_null_per_channel": {
+    "actual": [
+     26
+    ],
+    "expected": [
+     26
+    ],
+    "reproduced": true
+   },
+   "c8_null_rows": {
+    "actual": 52,
+    "expected": 52,
+    "reproduced": true
+   },
+   "c8_point_in_time_supported": {
+    "actual": false,
+    "expected": false,
+    "reproduced": true
+   },
+   "c8_policy_lag_months": {
+    "actual": 2,
+    "expected": 2,
+    "reproduced": true
+   },
+   "c8_rows_per_channel": {
+    "actual": [
+     325
+    ],
+    "expected": [
+     325
+    ],
+    "reproduced": true
+   },
+   "c8_shared_price_stage_group": {
+    "actual": "io_sector_093_fuel_oil",
+    "expected": "io_sector_093_fuel_oil",
+    "reproduced": true
+   },
+   "c8_source_available_as_of_null_rows": {
+    "actual": 650,
+    "expected": 650,
+    "reproduced": true
+   },
+   "c8_source_transformation_rows": {
+    "actual": 650,
+    "expected": 650,
+    "reproduced": true
+   },
+   "c8_transformation_definitions": {
+    "actual": 5,
+    "expected": 5,
+    "reproduced": true
+   },
+   "gross_output_positive_for_every_used_sector": {
+    "actual": true,
+    "expected": true,
+    "reproduced": true
+   },
+   "sector_093_official_label": {
+    "actual": "Petroleum refineries",
+    "expected": "Petroleum refineries",
+    "reproduced": true
+   },
+   "sector_093_present_exactly_once": {
+    "actual": 1,
+    "expected": 1,
+    "reproduced": true
+   }
+  },
+  "failed": []
+ },
+ "valuation": {
+  "causal_effect": false,
+  "elasticity": false,
+  "eppo_excluded_components": [
+   "excise_tax",
+   "municipal_tax",
+   "oil_fund",
+   "conservation_fund",
+   "wholesale_components",
+   "vat",
+   "marketing_margin",
+   "retail_margin"
+  ],
+  "eppo_included_components": [
+   "base_ex_refinery_price"
+  ],
+  "eppo_price_stage": "ex_refinery",
+  "io_import_treatment": "import_inclusive",
+  "io_valuation_basis": "purchasers_prices",
+  "monetary_cost_measure": false,
+  "prohibited_claim": "Multiplying the EPPO price by the I/O coefficient does NOT produce baht cost per unit of industrial output. The price stage and the valuation basis differ.",
+  "structural_interaction_only": true,
+  "valuation_basis_alignment": "partial_mismatch_purchasers_price_coefficient_x_ex_refinery_price"
+ }
+}

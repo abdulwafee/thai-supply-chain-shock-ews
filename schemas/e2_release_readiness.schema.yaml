@@ -1,0 +1,263 @@
+# Schema definition (documentation-level, not yet enforced by code) for the
+# Task E2 release-readiness report:
+#
+#   docs/e2_release_readiness.json
+#   docs/e2_release_readiness.md
+#
+# The readiness status has three values and they are not interchangeable.
+# `ready` means every gate was measured and passed. `ready_with_documented_
+# nonblocking_limitations` means the same, plus limitations a reader must know
+# about that do not endanger anyone who installs the package. `blocked` means at
+# least one blocker is live, and a blocker cannot be argued away by pointing at
+# the gates that passed.
+#
+# A PASSING WORKING DIRECTORY IS NOT READINESS. The working directory has the
+# raw data, an editable install and an exported environment variable; the
+# release tree has none of those. Only clean-tree measurements feed the
+# decision, and the decision refuses to be made without them.
+#
+# NO SECRET VALUE APPEARS ANYWHERE IN THIS DOCUMENT. Findings carry a family, a
+# path, a line, a length and a truncated fingerprint. The rendered report is
+# re-checked against the values that were found, so the guarantee is verified
+# rather than intended.
+
+schema_version: 1
+task: E2
+documents:
+  - docs/e2_release_readiness.json
+  - docs/e2_release_readiness.md
+report_version: e2_release_contract_v1
+
+# ---------------------------------------------------------------------------
+top_level_fields:
+  - name: task
+    type: string
+    fixed_value: E2
+  - name: generation_timestamp_in_report
+    type: bool
+    fixed_value: false
+    note: >-
+      A generation timestamp inside a released document would make the release
+      manifest checksum differ on every run. The run date is recorded once, by
+      hand, in docs/e2_release_checklist.md and in the decision log.
+  - name: contract_checksum
+    type: string
+    pattern: "^[0-9a-f]{64}$"
+    note: sha256 of configs/e2_release_preparation.yaml as loaded.
+  - name: preserved_closeout
+    type: record
+  - name: inventory
+    type: record
+  - name: dependencies
+    type: record
+  - name: security
+    type: record
+  - name: clean_tree
+    type: record
+  - name: wheel_install_probe
+    type: record
+  - name: package
+    type: record
+  - name: release_manifest_checksum
+    type: string
+  - name: release_manifest_checksum_recomputed
+    type: string
+    rule: "must equal release_manifest_checksum"
+  - name: readiness
+    type: record
+  - name: prohibited_actions_taken
+    type: map[string, bool]
+    rule: "every value false"
+
+# ---------------------------------------------------------------------------
+preserved_closeout:
+  purpose: >-
+    Release preparation alters no scientific conclusion. Every upstream result
+    artifact is checked BEFORE the inventory is walked, and the run stops if one
+    moved.
+  per_artifact_fields:
+    - name: path
+      type: string
+    - name: present
+      type: bool
+    - name: declared_content_checksum_frozen
+      type: string
+      note: The value copied into the E2 contract from the upstream document.
+    - name: declared_content_checksum_observed
+      type: string
+      note: >-
+        The checksum the document currently declares about itself. Each upstream
+        task computed it with its own rule; E2 checks the declaration rather
+        than re-deriving seven conventions.
+    - name: declared_unchanged
+      type: bool
+      rule: "must be true for every artifact or the run stops"
+    - name: e2_file_sha256
+      type: string
+      note: >-
+        E2's own digest of the bytes. Recorded separately so a later edit stays
+        detectable even if the declaration is edited to match.
+
+# ---------------------------------------------------------------------------
+security:
+  states_are_distinct: >-
+    `credential`, `reviewed and not a credential`, `unreviewed` and `not run`
+    are four different facts. A scan nobody performed found nothing in the same
+    uninformative sense that an unopened box contains nothing.
+  fields:
+    - name: credential_findings
+      type: int
+      note: A discovered credential is a release blocker until removed, and rotated
+            where it was ever real.
+    - name: credential_fingerprints
+      type: list[string]
+      note: Truncated digests. Never a value, never a usable prefix.
+    - name: declared_content_checksums_excluded
+      type: int
+      note: >-
+        High-entropy findings reclassified as published content checksums. The
+        reclassification is a check, not a dismissal: a hex digest counts only
+        when its own line, an adjacent line or an enclosing mapping key names it
+        as a checksum, digest, hash or fingerprint.
+    - name: review
+      type: record
+      subfields:
+        - reviewed_and_not_credentials
+        - reviewed_count
+        - unreviewed
+        - unreviewed_count
+        - review_entries_that_matched_nothing
+      note: >-
+        Review entries are keyed on path, family and fingerprint, never on a
+        line number: a suppression that survives an edit stops meaning anything.
+        An entry matching nothing is reported rather than dropped.
+    - name: dependency_audits
+      type: list[record]
+      per_record_fields:
+        [tool, tool_version, advisory_service, trust_store, state, scope,
+         packages_audited, vulnerabilities, counted_as_clean,
+         clean_audit_is_a_permanent_guarantee]
+      note: >-
+        `state` is one of ran / error / not_run. `counted_as_clean` is false
+        unless the audit actually ran, and a clean audit is one database on one
+        day rather than a property of the pinned set.
+    - name: secret_values_printed
+      type: bool
+      fixed_value: false
+
+# ---------------------------------------------------------------------------
+clean_tree:
+  purpose: Every release claim is measured in an isolated tree, never in the
+           working directory.
+  fields:
+    - name: materialised
+      type: record
+      note: files, bytes and the destination the allowlist was copied into.
+    - name: interpreter
+      type: string
+    - name: steps
+      type: list[record]
+      note: >-
+        Each step carries its own ok flag, and a failing step carries the tail of
+        its output. Steps are create_environment, install_runtime_lock,
+        install_development_lock, install_project_from_source, import_package,
+        ruff, parse_configs_and_schemas and hermetic_tests.
+    - name: hermetic_tests.counts
+      type: record
+      note: >-
+        Parsed from pytest's own summary line. `measured_from_command_output` is
+        true and `copied_from_prior_totals` is false; a supplied literal is
+        refused, because a number typed into a report drifts the moment a test is
+        added and a stale count looks exactly like evidence.
+    - name: registry_verification
+      type: record
+      subfields:
+        [registered, failed_without_registry, unregistered_failures,
+         registered_but_did_not_fail, failures_without_a_missing_input_marker,
+         verified, tests_weakened_to_obtain_green_ci]
+      note: >-
+        The data-backed registry is proved, not trusted. With it removed, every
+        registered test must fail, nothing else may fail, and every failure must
+        name a missing input. Deselecting a green test is how a suite gets
+        quietly weakened to produce a green CI result.
+    - name: tree_checksum_before_tests
+      type: string
+    - name: tree_checksum_after_tests
+      type: string
+    - name: tree_unchanged_by_tests
+      type: bool
+      rule: >-
+        must be true. A suite that writes into its own source tree is a suite
+        whose second run differs from its first.
+
+# ---------------------------------------------------------------------------
+readiness:
+  fields:
+    - name: status
+      type: string
+      allowed_values:
+        - release_candidate_ready
+        - release_candidate_ready_with_documented_nonblocking_limitations
+        - release_candidate_blocked
+    - name: blockers
+      type: list[string]
+      allowed_values:
+        - secret_or_credential_exposure
+        - locked_outcome_present_in_intended_release_or_history
+        - missing_owner_license_decision
+        - clean_installation_failure
+        - hermetic_ci_failure
+        - package_includes_prohibited_files
+        - unresolved_redistribution_of_included_raw_data
+        - dependency_vulnerability_without_accepted_resolution
+        - tests_mutate_the_release_worktree
+      ordering: most consequential first
+    - name: documented_nonblocking_limitations
+      type: list[record]
+      per_record_fields: [id, statement, why_not_blocking]
+      note: >-
+        Each limitation names what was NOT verified. A limitation is not a
+        finding that was talked out of being one.
+    - name: ready_because_working_directory_passes_tests
+      type: bool
+      fixed_value: false
+    - name: published
+      type: bool
+      fixed_value: false
+    - name: committed
+      type: bool
+      fixed_value: false
+    - name: tagged
+      type: bool
+      fixed_value: false
+    - name: pushed
+      type: bool
+      fixed_value: false
+    - name: released_on_github
+      type: bool
+      fixed_value: false
+    - name: uploaded_to_pypi
+      type: bool
+      fixed_value: false
+
+language_guards:
+  note: >-
+    Every guard strips backticked and quoted spans and skips negated
+    occurrences, so this schema and the reports can name the rules they enforce.
+  guards:
+    - name: assert_no_license_asserted
+      refuses: >-
+        Stating a licence the owner has not chosen. A recommendation is
+        permitted; an assertion is not.
+    - name: assert_no_redistribution_inference
+      refuses: >-
+        Treating public download access as a redistribution right.
+    - name: assert_no_permanent_security_guarantee
+      refuses: >-
+        Presenting a clean scan as a standing property of the release.
+    - name: assert_no_invented_owner_metadata
+      refuses: >-
+        Any email address or ORCID identifier the owner has not supplied.
+    - name: assert_no_secret_values_printed
+      refuses: >-
+        A rendered report containing any value the scan actually found.

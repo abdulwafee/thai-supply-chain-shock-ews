@@ -1,0 +1,186 @@
+# Upstream commodity-shock sources — Task C1
+#
+# PREREGISTERED. The eligibility criteria below are fixed by the task
+# specification and were written before any candidate's numeric quality
+# statistics were computed. They are not adjusted after seeing which candidates
+# pass.
+#
+# SCOPE: this file records SOURCE VERIFICATION only. A verified source is NOT an
+# approved predictive feature. Three separate fields are kept per candidate:
+#   source_verified            — the data exists, parses, and is documented
+#   feature_semantics_approved — transformation and timing semantics reviewed
+#   model_feature_approved     — cleared for use as a model input
+# For C1 the latter two are FALSE for every candidate, without exception.
+#
+# NOT DONE IN C1: no feature engineering, no join to the target, no correlation
+# with MPI, no lag choice, no model, no locked-test access.
+
+schema_version: 1
+audit_version: c1_commodity_source_audit_v1
+task: C1
+
+# --- primary source ----------------------------------------------------------
+primary_source:
+  source_id: WB_PINKSHEET
+  source_name: World Bank Commodity Markets ("Pink Sheet")
+  landing_page: https://www.worldbank.org/en/research/commodity-markets
+  workbook_family: CMO-Historical-Data-Monthly.xlsx
+  # URL DISCOVERY, not a hard-coded constant: the landing page above is fetched
+  # and the CMO-Historical-Data-Monthly.xlsx href is extracted from its HTML.
+  # The resolved URL is recorded in the manifest at acquisition time. It is
+  # documented here for reference only and must be re-resolved on each refresh,
+  # because the World Bank rotates the document hash in the path each month.
+  url_discovery_method: extract_href_from_landing_page_html
+  resolved_url_at_last_acquisition: https://thedocs.worldbank.org/en/doc/74e8be41ceb20fa0da750cda2f6b9e4e-0050012026/related/CMO-Historical-Data-Monthly.xlsx
+  data_sheet: Monthly Prices
+  description_sheet: Description
+  license: CC BY 4.0
+  header_layout:
+    title_rows: [0, 1, 2, 3]
+    label_row: 4
+    unit_row: 5
+    first_data_row: 6
+    date_column: 0
+    date_format: YYYYMmm # e.g. 1960M01
+    missing_token: "…"
+
+# --- independent cross-check source (NOT a production feature) ---------------
+cross_check_source:
+  source_id: FRED_BRENT
+  series: MCOILBRENTEU
+  source_name: FRED (Federal Reserve Bank of St. Louis), original source EIA
+  url: https://fred.stlouisfed.org/graph/fredgraph.csv?id=MCOILBRENTEU
+  purpose: independent_cross_check_of_world_bank_brent_only
+  # Explicit prohibition: FRED Brent and World Bank Brent must never both appear
+  # as model features. They measure the same benchmark; carrying both would be a
+  # duplicate predictor dressed up as two sources.
+  may_enter_production_feature_table: false
+  is_second_brent_predictor: false
+
+# --- eligibility gate --------------------------------------------------------
+# All eleven criteria must hold for `source_verified`.
+eligibility_criteria:
+  found_in_official_workbook: true
+  exact_label_and_unit_documented: true
+  dates_parse_to_unambiguous_gregorian_months: true
+  no_duplicate_month: true
+  required_window:
+    start: 2020-01-01
+    end: 2026-05-01
+  max_missingness_pct_in_required_window: 1.0
+  all_values_finite: true
+  no_unexplained_unit_change_in_required_window: true
+  # Criterion 9: a DEFINITION or pricing-benchmark break dated inside
+  # 2021-01..2026-05 is disqualifying for `source_verified` unless resolved.
+  definition_break_window:
+    start: 2021-01-01
+    end: 2026-05-01
+  no_unresolved_definition_break_in_definition_window: true
+  provenance_recorded: [source_url, downloaded_at_utc, sha256]
+  deterministically_reproducible_from_raw: true
+
+allowed_statuses: [source_verified, conditional, rejected]
+
+# --- candidates --------------------------------------------------------------
+# `intended_source_series` is what the task asked for; `resolved_source_label`
+# is what the workbook ACTUALLY calls it. They differ for coal — the workbook
+# label is "Coal, Australian", not "Coal, Australia" — and the resolved label
+# is what the parser matches on. No silent substitution is permitted.
+candidates:
+  - candidate_id: brent_crude_usd_bbl
+    intended_source_series: Crude oil, Brent
+    resolved_source_label: Crude oil, Brent
+    expected_unit: ($/bbl)
+    rationale: Broad energy and petrochemical input shock
+  - candidate_id: coal_australia_usd_mt
+    intended_source_series: Coal, Australia
+    resolved_source_label: Coal, Australian
+    expected_unit: ($/mt)
+    rationale: Regional industrial-energy benchmark
+  - candidate_id: lng_japan_usd_mmbtu
+    intended_source_series: Liquefied natural gas, Japan
+    resolved_source_label: Liquefied natural gas, Japan
+    expected_unit: ($/mmbtu)
+    rationale: Asia-relevant imported gas benchmark
+  - candidate_id: aluminum_usd_mt
+    intended_source_series: Aluminum
+    resolved_source_label: Aluminum
+    expected_unit: ($/mt)
+    rationale: Metal, machinery, transport and electrical input
+  - candidate_id: copper_usd_mt
+    intended_source_series: Copper
+    resolved_source_label: Copper
+    expected_unit: ($/mt)
+    rationale: Electrical, electronics and machinery input
+  - candidate_id: rubber_rss3_usd_kg
+    intended_source_series: Rubber, RSS3
+    resolved_source_label: Rubber, RSS3
+    expected_unit: ($/kg)
+    rationale: Rubber products and transport supply chain
+  - candidate_id: palm_oil_usd_mt
+    intended_source_series: Palm oil
+    resolved_source_label: Palm oil
+    expected_unit: ($/mt)
+    rationale: Food, chemical and bio-based material input
+
+# Candidate inclusion is by DOMAIN RELEVANCE only. No candidate was chosen,
+# kept, or dropped because of any observed association with the target — no such
+# association was computed in C1.
+candidate_selection_basis: domain_relevance_not_observed_association
+
+# --- Brent cross-check classification (preregistered) ------------------------
+cross_check_classification:
+  overlap_window:
+    start: 2021-01-01
+    end: 2026-05-01
+  consistent:
+    min_common_months: 60
+    min_pearson: 0.995
+    max_median_abs_pct_diff: 2.0
+  inconsistent:
+    max_pearson_exclusive: 0.98 # below this
+    min_median_abs_pct_diff_exclusive: 5.0 # above this
+    or_materially_different_units_definitions_or_alignment: true
+  conditional: anything_between_or_any_unresolved_semantic_difference
+  # A fourth STATE, distinct from the three outcome classes above. It means the
+  # comparison did not run at all, not that it ran and landed in the middle.
+  # Reporting an unreachable source as "conditional" would misrepresent a
+  # missing measurement as a middling result.
+  not_executed_state: not_executed_source_unreachable
+  on_failure: investigate_and_report_do_not_auto_replace_world_bank_series
+
+# --- feature-timing warning --------------------------------------------------
+# The Pink Sheet is a LATEST-VINTAGE historical dataset. A workbook downloaded
+# today shows today's values for past months; it does not prove what value was
+# visible at a past forecast origin. Historical observations may be revised —
+# the workbook itself states that recent LNG (Japan) months are estimates.
+timing:
+  # SUPERSEDED IN PART BY TASK C1.5 - see configs/commodity_timing.yaml, which
+  # holds the evidence-based contract. The fields below remain accurate; C1.5
+  # added the measured publication delays, the revision audit, and the reason
+  # minimum_safe_lag_months is still null.
+  timing_contract_config: configs/commodity_timing.yaml
+  latest_vintage_only: true
+  point_in_time_backtest_supported: false
+  same_month_availability_verified: false
+  minimum_safe_lag_months: null
+  timing_status: unresolved
+  c2_default_policy: >-
+    C2 must default to LAGGED use unless stronger publication evidence is found.
+    The lag is deliberately NOT chosen in C1 — that requires a separate timing
+    and transformation decision.
+
+# --- approval fields (C1 state) ----------------------------------------------
+approval_defaults:
+  source_verified: determined_per_candidate_by_the_gate_above
+  feature_semantics_approved: false # not evaluated in C1
+  model_feature_approved: false # must remain false in C1
+
+not_in_scope_for_c1:
+  - feature_engineering
+  - mom_yoy_lag_volatility_zscore_or_shock_flags
+  - unit_conversion
+  - joining_commodity_data_to_the_target
+  - target_correlation_or_feature_importance
+  - model_training_or_baseline_evaluation
+  - locked_test_access

@@ -1,0 +1,228 @@
+# Schema definition (documentation-level, not yet enforced by code) for the
+# Task C12 closure record:
+#
+#   docs/c12_channel_closure.json
+#   docs/c12_channel_closure.md
+#
+# C12 produces NO tabular artifact. It reruns no model, recomputes no metric and
+# joins no target, so there is no prediction table, score table or design matrix
+# to describe here.
+#
+# The governing rule of this schema: a channel closed for MODELING is not a
+# channel proven useless, and not a source marked invalid. Every field that
+# would merge those three is fixed by value below.
+
+schema_version: 1
+task: C12
+document: docs/c12_channel_closure.json
+closure_version: c12_eppo_fuel_oil_channel_closure_v1
+
+# ---------------------------------------------------------------------------
+required_sections:
+  - conclusion
+  - terminal_evidence
+  - evidence_chain
+  - closure
+  - preservation
+  - validity_versus_eligibility
+  - prohibited_reopening_reasons
+  - permitted_reopening_evidence
+  - enforcement
+  - final_declaration
+
+# ---------------------------------------------------------------------------
+sections:
+  conclusion:
+    required_value:
+      statement: incremental_signal_not_demonstrated_in_registered_development_evaluation
+    prohibited_conclusions:
+      - fuel_oil_has_no_effect
+      - fuel_oil_is_unrelated_to_industrial_stress
+      - null_hypothesis_proven
+      - structural_exposure_is_invalid
+      - EPPO_data_is_invalid
+      - no_predictive_relationship_exists
+    explicit_record:
+      development_evidence_is_inconclusive_not_proof_of_absence: true
+      point_estimates_provide_no_positive_development_support: true
+      event_safety_fails_in_all_four_registered_evaluations: true
+      fifteen_issue_month_clusters_limit_uncertainty_resolution: true
+      preregistered_stop_rule_supports_closing_further_investment: true
+      closure_is_a_project_governance_decision: true
+      closure_is_a_population_level_scientific_conclusion: false
+      absence_of_effect_proven: false
+    note: >-
+      The prohibited list is DATA. A guard that could not tell a named forbidden
+      term from an asserted one would forbid publishing the rule, so the
+      language guard strips backticked and quoted spans before checking prose.
+
+  terminal_evidence:
+    source_task: D5
+    metrics_recomputed_in_c12: false
+    d5_rerun_in_c12: false
+    per_variant_horizon_fields:
+      - model_macro_mae
+      - benchmark_macro_mae
+      - paired_ci_low
+      - paired_ci_high
+      - mae_evidence
+      - event_safety_passed
+      - overall_status
+      - model_false_negatives
+      - benchmark_false_negatives
+    aggregate_expectations:
+      model_worse_than_benchmark_on_point_estimate: 4
+      paired_intervals_including_zero: 4
+      event_safety_gates_failed: 4
+      variant_horizons_evaluated: 4
+      h1_benchmark_false_negatives: 8
+      any_result_reached_supported: false
+      prediction_rows: 720
+      modeled_predictions: 660
+      ind_04_benchmark_passthrough: 60
+      variants_combined: false
+      variant_selected: false
+      purge_evaluated: false
+      locked_test_accessed: false
+      protocol_frozen_before_target_access: true
+      target_reads_before_prediction_freeze: 0
+      confirmatory_evaluation: false
+    on_mismatch: stop_rather_than_recompute_or_repair_d5
+
+  evidence_chain:
+    stages: [c7_c7_5, c8, c9, c10, c11_c11r1, d5]
+    attribution:
+      c10_established: a_design_limitation
+      d5_supplied: the_development_evidence
+    c10_alone_demonstrates_predictive_uselessness: false
+    note: >-
+      "C10 proved exposure is useless" is wrong in both directions. C10
+      established a property of the design matrix without reading any target;
+      D5 supplied the development evidence, and that evidence was inconclusive.
+
+  closure:
+    channel_id: eppo_sector093_fuel_oil
+    variants: [fo600_direct_sector093, fo1500_direct_sector093]
+    applied_identically_to_both_variants: true
+    either_variant_labelled_preferred_primary_or_less_bad: false
+    required_fields:
+      channel_status: closed_after_registered_development_evaluation
+      development_evidence_status: incremental_signal_not_demonstrated
+      carried_forward_to_operational_modeling: false
+      development_candidate_supported: false
+      model_feature_approved: false
+      confirmatory_claim_authorized: false
+      purge_evaluation_authorized: false
+      locked_test_evaluation_authorized: false
+      locked_test_should_be_opened_for_this_channel: false
+      additional_model_grid_authorized: false
+      channel_selection_authorized: false
+      source_pipeline_remains_valid: true
+      structural_audit_remains_valid: true
+      absence_of_effect_proven: false
+
+  preservation:
+    artifacts_deleted: 0
+    artifacts_modified: 0
+    preservation_implies_continued_modeling_eligibility: false
+    preservation_supports: [audit, portfolio_reproducibility]
+    historical_runners_remain_able_to_reproduce_their_outputs: true
+    pin_kinds:
+      content_checksum: >-
+        The DURABLE identity, computed with generation timestamps excluded. A
+        change means the record itself changed.
+      byte_sha256: >-
+        A FORWARD integrity baseline for generated tables, valid from C12
+        onward.
+    pinned_stages: [C7, C7.5, C8, C9, C10, C11, C11-R1, D5]
+
+  validity_versus_eligibility:
+    yes_fields:
+      - official_eppo_source_documents_still_valid_evidence
+      - c7_c7_5_semantic_decisions_retained
+      - c8_transformations_reproducible
+      - sector_093_exposure_reproducible
+      - interaction_architecture_mathematically_identifiable
+    no_fields:
+      - predictive_utility_demonstrated_on_development_data
+      - may_enter_further_operational_modeling
+      - may_open_the_locked_test_for_this_channel
+    must_remain_false:
+      - source_rows_marked_erroneous_because_the_model_failed
+      - transformations_marked_erroneous_because_the_model_failed
+      - exposures_marked_erroneous_because_the_model_failed
+
+  enforcement:
+    rule: >-
+      Refuse the closed features for a MODELING purpose; permit everything
+      else. A refused feature is reported with its closure reason, never as
+      missing - "not found" would send the next reader hunting a bug that does
+      not exist.
+    blocked_purposes:
+      - modeling
+      - model_training
+      - target_assembly
+      - feature_selection
+      - operational_modeling
+      - locked_test_evaluation
+    permitted_purposes:
+      - audit
+      - reproduction
+      - documentation
+      - source_quality
+      - provenance_verification
+      - historical_d5_reproduction
+    closed_id_groups:
+      - closed_feature_ids
+      - closed_aliases
+      - closed_composite_forms
+      - closed_upstream_feature_tables
+    unknown_purpose: raise
+    returns_specific_closure_reason: true
+    treats_closed_features_as_missing: false
+    alters_generic_upstream_feature_creation: false
+    historical_d5_reproducibility_preserved: true
+    unrelated_features_unaffected: true
+
+  final_declaration:
+    required_items:
+      - eppo_fuel_oil_modeling_channel_closed
+      - incremental_signal_was_not_demonstrated
+      - absence_of_an_effect_was_not_proven
+      - official_source_and_structural_artifacts_remain_preserved_and_valid_within_their_stated_limitations
+      - neither_fuel_oil_variant_is_selected
+      - no_further_specification_search_is_authorized
+      - locked_final_test_remains_unopened
+      - reopening_requires_genuinely_new_external_evidence
+
+# ---------------------------------------------------------------------------
+prohibited_fields:
+  reason: >-
+    Each would merge closure-for-modeling with proof-of-absence or with
+    source invalidity, or would name a preferred variant.
+  fields:
+    - fuel_oil_has_no_effect
+    - no_predictive_relationship_exists
+    - null_hypothesis_proven
+    - eppo_data_is_invalid
+    - structural_exposure_is_invalid
+    - primary_channel
+    - preferred_channel
+    - selected_variant
+    - less_bad_channel
+    - best_variant
+    - model_feature_approved_after_d5
+
+prohibited_artifacts_created:
+  prediction_artifact_created: false
+  model_artifact_created: false
+  metric_artifact_created: false
+  target_joined_artifact_created: false
+
+checksums:
+  closure_checksum:
+    scope: the closure decision, its evidence pins and its variant list
+    pattern: "^[0-9a-f]{64}$"
+  content_checksum:
+    scope: the whole payload, generation timestamps excluded
+    pattern: "^[0-9a-f]{64}$"

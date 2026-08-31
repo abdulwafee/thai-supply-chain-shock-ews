@@ -1,0 +1,63 @@
+# Schema for data/targets/production_stress_month.parquet — Task B3.
+# Describes what the code ACTUALLY writes
+# (thai_supply_chain_ews.targets.production_stress.MONTHLY_STRESS_COLUMNS),
+# verified by tests/test_b3_production_stress.py.
+
+schema_version: 1
+table: targets/production_stress_month
+grain: [reference_month, industry_id]
+primary_key: [reference_month, industry_id]
+written_by: thai_supply_chain_ews.targets.production_stress.build_monthly_stress
+target_name: industry_production_stress_score
+edition_scope: current_2021_based_only
+data_framing: latest_vintage_historical_data
+
+columns:
+  - name: reference_month
+    type: date
+    nullable: false
+    format: first-of-month
+  - name: industry_id
+    type: string
+    nullable: false
+  - name: mpi_adverse_yoy
+    type: float64
+    nullable: false
+    unit: percent_adverse_direction_positive
+    formula: "-100 * (mpi_t / mpi_t_minus_12 - 1)"
+    note: "positive = production declined vs the same month one year earlier"
+  - name: mpi_level
+    type: float64
+    nullable: false
+    note: "retained for auditability — the numerator of the YoY ratio"
+  - name: mpi_level_lagged
+    type: float64
+    nullable: false
+    note: "retained for auditability — the denominator; must be strictly positive"
+  - name: lag_source_month
+    type: string
+    nullable: false
+    rule: "exactly 12 months before reference_month"
+  - name: raw_stress_unit
+    type: string
+    nullable: false
+  - name: source_edition
+    type: string
+    nullable: false
+    allowed_values: ["2021_based"]
+  - name: target_definition_version
+    type: string
+    nullable: false
+
+exclusions:
+  preliminary_months: excluded
+  non_model_eligible: excluded
+  first_twelve_months: absent_never_imputed
+  winsorize_or_clip: false
+
+snapshot_expectations:
+  rows: 636
+  industries: 12
+  months_per_industry: 53
+  first_month: 2022-01-01
+  last_month: 2026-05-01

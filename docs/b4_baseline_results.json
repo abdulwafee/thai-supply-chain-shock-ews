@@ -1,0 +1,1070 @@
+{
+  "task": "B4",
+  "evaluation_harness_version": "walk_forward_harness_v1",
+  "target_definition_version": "production_stress_target_v1",
+  "b3_invariants": {
+    "monthly_rows": 636,
+    "monthly_industries": 12,
+    "monthly_months_per_industry": [
+      53
+    ],
+    "monthly_first": "2022-01-01",
+    "monthly_last": "2026-05-01",
+    "horizons": {
+      "1": {
+        "rows": 624,
+        "per_industry": [
+          52
+        ],
+        "first": "2022-01-01",
+        "last": "2026-04-01"
+      },
+      "3": {
+        "rows": 600,
+        "per_industry": [
+          50
+        ],
+        "first": "2022-01-01",
+        "last": "2026-02-01"
+      }
+    },
+    "combined_rows": 1224,
+    "uses_2026_06": [],
+    "duplicate_keys": 0,
+    "target_definition_versions": [
+      "production_stress_target_v1"
+    ],
+    "primary_component_count": 1,
+    "primary_component": "mpi_adverse_yoy",
+    "all_invariants_reproduced": true,
+    "failures": []
+  },
+  "development": {
+    "first_origin": "2024-01-01",
+    "last_origin": "2025-03-01",
+    "origin_count": 15,
+    "rows_per_horizon_per_baseline": 180,
+    "total_prediction_rows": 1620,
+    "blocks": [
+      "DEV-1",
+      "DEV-2",
+      "DEV-3"
+    ]
+  },
+  "purge_buffer": {
+    "first_origin": "2025-04-01",
+    "last_origin": "2025-06-01",
+    "metrics_reported": false
+  },
+  "locked_test_evaluated": false,
+  "information_rules": {
+    "calibration": {
+      "rule": "stress_month <= forecast_origin_month",
+      "include_origin_month": true,
+      "min_reference_observations": 24,
+      "refit_at_every_origin": true,
+      "fit_once_over_development": false
+    },
+    "training_labels": {
+      "rule": "target_window_end <= forecast_origin_month",
+      "enforced_per_horizon": true,
+      "select_by_origin_date_only": false
+    },
+    "evaluation_label": {
+      "rule": "The current origin's target is transformed only AFTER the baseline prediction is produced and the calibrator state is frozen."
+    },
+    "features": {
+      "rule": "feature_available_month <= forecast_origin_month",
+      "basis": "month_based_latest_vintage",
+      "is_real_time_release_date_rule": false,
+      "note": "Verified publication dates do not exist for these sources, so this is a MONTH-BASED LATEST-VINTAGE rule, not a real-time release-date rule. It cannot detect a value that was published late within its reference month.",
+      "on_violation": "raise",
+      "silently_drop_violations": false
+    }
+  },
+  "bootstrap": {
+    "method": "moving_block_over_origin_months",
+    "block_length_months": 3,
+    "replications": 1000,
+    "confidence_level": 0.95,
+    "random_seed": 20260827,
+    "cluster_unit": "forecast_origin_month",
+    "keep_all_industries_together": true,
+    "inconclusive_when_ci_crosses_zero": true
+  },
+  "by_horizon": {
+    "1": {
+      "baselines": {
+        "industry_historical_mean": {
+          "n_rows": 180,
+          "n_origins": 15,
+          "n_industries": 12,
+          "macro_industry_mae": 27.324098554414274,
+          "pooled_mae": 27.324098554414277,
+          "macro_industry_rmse": 31.022579501014487,
+          "pooled_rmse": 31.574713007134633,
+          "median_absolute_error": 27.413793103448278,
+          "pooled_spearman": -0.5114587382077515,
+          "per_industry_mae": {
+            "IND-01": 19.7779039545454,
+            "IND-02": 20.7102475480521,
+            "IND-03": 19.914263438996183,
+            "IND-04": 25.81326738007086,
+            "IND-05": 29.29785369606383,
+            "IND-06": 19.29541468669064,
+            "IND-07": 31.168043472788806,
+            "IND-08": 37.10148298064988,
+            "IND-09": 38.76693952331733,
+            "IND-10": 31.0546685736721,
+            "IND-11": 34.18861063369433,
+            "IND-12": 20.800486764429827
+          },
+          "high_stress_event": {
+            "threshold": 85.0,
+            "observed_events": 20,
+            "predicted_events": 0,
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 20,
+            "precision": null,
+            "recall": 0.0,
+            "f1": null,
+            "pr_auc": 0.06719057184265882,
+            "pr_auc_undefined_reason": null
+          },
+          "severe_event": {
+            "threshold": 95.0,
+            "observed_events": 11,
+            "predicted_events": 0,
+            "both": 0,
+            "reporting": "descriptive_counts_only",
+            "note": "Too few events for stable rate metrics; not used for selection."
+          },
+          "by_block": {
+            "DEV-1": {
+              "n_rows": 60,
+              "macro_industry_mae": 30.205670404520976,
+              "pooled_mae": 30.20567040452098
+            },
+            "DEV-2": {
+              "n_rows": 60,
+              "macro_industry_mae": 29.826275559858217,
+              "pooled_mae": 29.826275559858217
+            },
+            "DEV-3": {
+              "n_rows": 60,
+              "macro_industry_mae": 21.940349698863628,
+              "pooled_mae": 21.94034969886363
+            }
+          },
+          "macro_mae_ci": {
+            "point_estimate": 27.324098554414274,
+            "ci_low": 24.065091792916604,
+            "ci_high": 31.374984643622753,
+            "replications": 1000,
+            "block_length_months": 3,
+            "seed": 20260827,
+            "cluster_unit": "forecast_origin_month",
+            "n_month_clusters": 15,
+            "keeps_all_industries_together": true
+          },
+          "mae_skill_vs_historical_mean": 0.0,
+          "skill_ci": null,
+          "paired_difference_vs_reference": null
+        },
+        "no_contraction": {
+          "n_rows": 180,
+          "n_origins": 15,
+          "n_industries": 12,
+          "macro_industry_mae": 19.901588334921176,
+          "pooled_mae": 19.901588334921172,
+          "macro_industry_rmse": 23.874059756668686,
+          "pooled_rmse": 25.192884208334952,
+          "median_absolute_error": 15.384615384615387,
+          "pooled_spearman": 0.5554418436094666,
+          "per_industry_mae": {
+            "IND-01": 27.06571070684034,
+            "IND-02": 10.981256993960478,
+            "IND-03": 12.594231492108788,
+            "IND-04": 12.76128285063999,
+            "IND-05": 20.904335575282452,
+            "IND-06": 19.604412505291737,
+            "IND-07": 31.000522101319657,
+            "IND-08": 12.145195352011063,
+            "IND-09": 11.25926973766733,
+            "IND-10": 29.558240772116815,
+            "IND-11": 34.198473123819575,
+            "IND-12": 16.74612880799585
+          },
+          "high_stress_event": {
+            "threshold": 85.0,
+            "observed_events": 20,
+            "predicted_events": 0,
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 20,
+            "precision": null,
+            "recall": 0.0,
+            "f1": null,
+            "pr_auc": 0.25023905595803997,
+            "pr_auc_undefined_reason": null
+          },
+          "severe_event": {
+            "threshold": 95.0,
+            "observed_events": 11,
+            "predicted_events": 0,
+            "both": 0,
+            "reporting": "descriptive_counts_only",
+            "note": "Too few events for stable rate metrics; not used for selection."
+          },
+          "by_block": {
+            "DEV-1": {
+              "n_rows": 60,
+              "macro_industry_mae": 21.595118100290517,
+              "pooled_mae": 21.595118100290513
+            },
+            "DEV-2": {
+              "n_rows": 60,
+              "macro_industry_mae": 21.828391241638396,
+              "pooled_mae": 21.828391241638396
+            },
+            "DEV-3": {
+              "n_rows": 60,
+              "macro_industry_mae": 16.28125566283461,
+              "pooled_mae": 16.28125566283461
+            }
+          },
+          "macro_mae_ci": {
+            "point_estimate": 19.901588334921176,
+            "ci_low": 17.48872198699708,
+            "ci_high": 21.99277305291942,
+            "replications": 1000,
+            "block_length_months": 3,
+            "seed": 20260827,
+            "cluster_unit": "forecast_origin_month",
+            "n_month_clusters": 15,
+            "keeps_all_industries_together": true
+          },
+          "mae_skill_vs_historical_mean": 0.27164702999118606,
+          "paired_difference_vs_reference": {
+            "point_estimate": -7.422510219493098,
+            "ci_low": -10.044593892818153,
+            "ci_high": -5.683068892474695,
+            "replications": 1000,
+            "block_length_months": 3,
+            "seed": 20260827,
+            "cluster_unit": "forecast_origin_month",
+            "paired": true,
+            "verdict": "excludes_zero",
+            "conclusive": true
+          }
+        },
+        "persistence_current_month": {
+          "n_rows": 180,
+          "n_origins": 15,
+          "n_industries": 12,
+          "macro_industry_mae": 14.528671173147524,
+          "pooled_mae": 14.52867117314752,
+          "macro_industry_rmse": 18.43147596754079,
+          "pooled_rmse": 19.59676284028411,
+          "median_absolute_error": 10.0,
+          "pooled_spearman": 0.7383584680587763,
+          "per_industry_mae": {
+            "IND-01": 16.282441274393587,
+            "IND-02": 11.05809103036433,
+            "IND-03": 11.783436218201985,
+            "IND-04": 19.23361740969034,
+            "IND-05": 27.313834053708213,
+            "IND-06": 20.223096160364534,
+            "IND-07": 12.71672119694167,
+            "IND-08": 12.67230940723712,
+            "IND-09": 7.195825921737853,
+            "IND-10": 7.972048909480865,
+            "IND-11": 12.507069454458438,
+            "IND-12": 15.385563041191343
+          },
+          "high_stress_event": {
+            "threshold": 85.0,
+            "observed_events": 20,
+            "predicted_events": 21,
+            "true_positive": 13,
+            "false_positive": 8,
+            "false_negative": 7,
+            "precision": 0.6190476190476191,
+            "recall": 0.65,
+            "f1": 0.6341463414634146,
+            "pr_auc": 0.5968291598416515,
+            "pr_auc_undefined_reason": null
+          },
+          "severe_event": {
+            "threshold": 95.0,
+            "observed_events": 11,
+            "predicted_events": 9,
+            "both": 2,
+            "reporting": "descriptive_counts_only",
+            "note": "Too few events for stable rate metrics; not used for selection."
+          },
+          "by_block": {
+            "DEV-1": {
+              "n_rows": 60,
+              "macro_industry_mae": 12.167827787368019,
+              "pooled_mae": 12.167827787368019
+            },
+            "DEV-2": {
+              "n_rows": 60,
+              "macro_industry_mae": 15.675306791827195,
+              "pooled_mae": 15.675306791827191
+            },
+            "DEV-3": {
+              "n_rows": 60,
+              "macro_industry_mae": 15.74287894024736,
+              "pooled_mae": 15.742878940247362
+            }
+          },
+          "macro_mae_ci": {
+            "point_estimate": 14.528671173147524,
+            "ci_low": 13.016681553594655,
+            "ci_high": 16.695301346427144,
+            "replications": 1000,
+            "block_length_months": 3,
+            "seed": 20260827,
+            "cluster_unit": "forecast_origin_month",
+            "n_month_clusters": 15,
+            "keeps_all_industries_together": true
+          },
+          "mae_skill_vs_historical_mean": 0.46828360524997514,
+          "paired_difference_vs_reference": {
+            "point_estimate": -12.79542738126675,
+            "ci_low": -18.01244230173424,
+            "ci_high": -7.49014528241547,
+            "replications": 1000,
+            "block_length_months": 3,
+            "seed": 20260827,
+            "cluster_unit": "forecast_origin_month",
+            "paired": true,
+            "verdict": "excludes_zero",
+            "conclusive": true
+          }
+        },
+        "seasonal_naive": {
+          "n_rows": 180,
+          "n_origins": 15,
+          "n_industries": 12,
+          "macro_industry_mae": 40.33357878650114,
+          "pooled_mae": 40.33357878650114,
+          "macro_industry_rmse": 46.45423386585963,
+          "pooled_rmse": 46.85815369739898,
+          "median_absolute_error": 37.33974358974359,
+          "pooled_spearman": -0.26207641075092614,
+          "per_industry_mae": {
+            "IND-01": 41.03463723430045,
+            "IND-02": 43.401542065115265,
+            "IND-03": 37.305603623225835,
+            "IND-04": 31.910845830661923,
+            "IND-05": 39.204167711551946,
+            "IND-06": 38.833244286854296,
+            "IND-07": 28.45902522725373,
+            "IND-08": 43.93354611491897,
+            "IND-09": 51.31077005622726,
+            "IND-10": 51.02001796108292,
+            "IND-11": 35.33428999348467,
+            "IND-12": 42.25525533333641
+          },
+          "high_stress_event": {
+            "threshold": 85.0,
+            "observed_events": 20,
+            "predicted_events": 28,
+            "true_positive": 1,
+            "false_positive": 27,
+            "false_negative": 19,
+            "precision": 0.03571428571428571,
+            "recall": 0.05,
+            "f1": 0.041666666666666664,
+            "pr_auc": 0.09886773045295273,
+            "pr_auc_undefined_reason": null
+          },
+          "severe_event": {
+            "threshold": 95.0,
+            "observed_events": 11,
+            "predicted_events": 8,
+            "both": 0,
+            "reporting": "descriptive_counts_only",
+            "note": "Too few events for stable rate metrics; not used for selection."
+          },
+          "by_block": {
+            "DEV-1": {
+              "n_rows": 60,
+              "macro_industry_mae": 43.52461627346685,
+              "pooled_mae": 43.52461627346684
+            },
+            "DEV-2": {
+              "n_rows": 60,
+              "macro_industry_mae": 45.683479122342966,
+              "pooled_mae": 45.683479122342966
+            },
+            "DEV-3": {
+              "n_rows": 60,
+              "macro_industry_mae": 31.792640963693596,
+              "pooled_mae": 31.79264096369359
+            }
+          },
+          "macro_mae_ci": {
+            "point_estimate": 40.33357878650114,
+            "ci_low": 35.2460131945329,
+            "ci_high": 45.847120606759205,
+            "replications": 1000,
+            "block_length_months": 3,
+            "seed": 20260827,
+            "cluster_unit": "forecast_origin_month",
+            "n_month_clusters": 15,
+            "keeps_all_industries_together": true
+          },
+          "mae_skill_vs_historical_mean": -0.4761174538358248,
+          "paired_difference_vs_reference": {
+            "point_estimate": 13.009480232086869,
+            "ci_low": 10.312986561515814,
+            "ci_high": 15.413660549457948,
+            "replications": 1000,
+            "block_length_months": 3,
+            "seed": 20260827,
+            "cluster_unit": "forecast_origin_month",
+            "paired": true,
+            "verdict": "excludes_zero",
+            "conclusive": true
+          }
+        }
+      },
+      "macro_mae_by_origin": {
+        "industry_historical_mean": {
+          "2024-01-01": 25.833333333333332,
+          "2024-02-01": 27.615384615384613,
+          "2024-03-01": 34.53228869895537,
+          "2024-04-01": 34.12698412698413,
+          "2024-05-01": 28.920361247947454,
+          "2024-06-01": 37.04980842911878,
+          "2024-07-01": 28.26164874551971,
+          "2024-08-01": 23.370295698924735,
+          "2024-09-01": 34.58806818181818,
+          "2024-10-01": 25.861556743909684,
+          "2024-11-01": 26.750700280112042,
+          "2024-12-01": 24.490740740740744,
+          "2025-01-01": 18.674924924924923,
+          "2025-02-01": 16.933380749170222,
+          "2025-03-01": 22.852001799370218
+        },
+        "no_contraction": {
+          "2024-01-01": 22.0,
+          "2024-02-01": 21.474358974358974,
+          "2024-03-01": 25.0,
+          "2024-04-01": 20.535714285714285,
+          "2024-05-01": 18.965517241379313,
+          "2024-06-01": 23.611111111111114,
+          "2024-07-01": 19.35483870967742,
+          "2024-08-01": 20.572916666666668,
+          "2024-09-01": 25.505050505050505,
+          "2024-10-01": 20.098039215686274,
+          "2024-11-01": 20.714285714285715,
+          "2024-12-01": 21.06481481481481,
+          "2025-01-01": 13.73873873873874,
+          "2025-02-01": 9.649122807017543,
+          "2025-03-01": 16.23931623931624
+        },
+        "persistence_current_month": {
+          "2024-01-01": 14.0,
+          "2024-02-01": 9.935897435897438,
+          "2024-03-01": 16.049382716049386,
+          "2024-04-01": 13.095238095238095,
+          "2024-05-01": 7.758620689655172,
+          "2024-06-01": 15.833333333333336,
+          "2024-07-01": 11.290322580645162,
+          "2024-08-01": 15.364583333333334,
+          "2024-09-01": 20.202020202020197,
+          "2024-10-01": 15.686274509803923,
+          "2024-11-01": 14.761904761904761,
+          "2024-12-01": 18.75,
+          "2025-01-01": 20.045045045045043,
+          "2025-02-01": 14.473684210526313,
+          "2025-03-01": 10.683760683760683
+        },
+        "seasonal_naive": {
+          "2024-01-01": 37.333333333333336,
+          "2024-02-01": 38.46153846153846,
+          "2024-03-01": 53.08641975308641,
+          "2024-04-01": 48.511904761904766,
+          "2024-05-01": 40.229885057471265,
+          "2024-06-01": 49.72222222222222,
+          "2024-07-01": 42.473118279569896,
+          "2024-08-01": 45.572916666666664,
+          "2024-09-01": 48.73737373737374,
+          "2024-10-01": 41.911764705882355,
+          "2024-11-01": 30.47619047619047,
+          "2024-12-01": 31.712962962962962,
+          "2025-01-01": 30.405405405405403,
+          "2025-02-01": 30.043859649122805,
+          "2025-03-01": 36.324786324786324
+        }
+      },
+      "selected_benchmark": "persistence_current_month",
+      "selection_reason": "lowest_development_macro_industry_mae",
+      "selection_used_locked_test_information": false,
+      "leader_vs_runner_up": {
+        "leader": "persistence_current_month",
+        "runner_up": "no_contraction",
+        "paired_macro_mae_difference": {
+          "point_estimate": -5.3729171617736515,
+          "ci_low": -8.586359619640575,
+          "ci_high": -1.475623605119472,
+          "replications": 1000,
+          "block_length_months": 3,
+          "seed": 20260827,
+          "cluster_unit": "forecast_origin_month",
+          "paired": true,
+          "verdict": "excludes_zero",
+          "conclusive": true
+        },
+        "conclusive": true
+      }
+    },
+    "3": {
+      "baselines": {
+        "industry_historical_mean": {
+          "n_rows": 180,
+          "n_origins": 15,
+          "n_industries": 12,
+          "macro_industry_mae": 28.672016213808902,
+          "pooled_mae": 28.672016213808906,
+          "macro_industry_rmse": 31.751488616779508,
+          "pooled_rmse": 33.647843495693266,
+          "median_absolute_error": 27.034770784770792,
+          "pooled_spearman": -0.2966152011085624,
+          "per_industry_mae": {
+            "IND-01": 23.288897007948485,
+            "IND-02": 23.351594150122516,
+            "IND-03": 20.96092939582187,
+            "IND-04": 16.039857656287136,
+            "IND-05": 20.633072464533537,
+            "IND-06": 18.740459499412164,
+            "IND-07": 28.46962337159371,
+            "IND-08": 50.181374443540776,
+            "IND-09": 52.037130595632654,
+            "IND-10": 42.56154794521004,
+            "IND-11": 30.26119502244355,
+            "IND-12": 17.538513013160397
+          },
+          "high_stress_event": {
+            "threshold": 85.0,
+            "observed_events": 29,
+            "predicted_events": 0,
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 29,
+            "precision": null,
+            "recall": 0.0,
+            "f1": null,
+            "pr_auc": 0.13668618706705687,
+            "pr_auc_undefined_reason": null
+          },
+          "severe_event": {
+            "threshold": 95.0,
+            "observed_events": 21,
+            "predicted_events": 0,
+            "both": 0,
+            "reporting": "descriptive_counts_only",
+            "note": "Too few events for stable rate metrics; not used for selection."
+          },
+          "by_block": {
+            "DEV-1": {
+              "n_rows": 60,
+              "macro_industry_mae": 35.92310292094983,
+              "pooled_mae": 35.923102920949844
+            },
+            "DEV-2": {
+              "n_rows": 60,
+              "macro_industry_mae": 29.112580937964264,
+              "pooled_mae": 29.112580937964264
+            },
+            "DEV-3": {
+              "n_rows": 60,
+              "macro_industry_mae": 20.980364782512613,
+              "pooled_mae": 20.980364782512616
+            }
+          },
+          "macro_mae_ci": {
+            "point_estimate": 28.672016213808902,
+            "ci_low": 23.641930237363557,
+            "ci_high": 33.74797336275738,
+            "replications": 1000,
+            "block_length_months": 3,
+            "seed": 20260827,
+            "cluster_unit": "forecast_origin_month",
+            "n_month_clusters": 15,
+            "keeps_all_industries_together": true
+          },
+          "mae_skill_vs_historical_mean": 0.0,
+          "skill_ci": null,
+          "paired_difference_vs_reference": null
+        },
+        "no_contraction": {
+          "n_rows": 180,
+          "n_origins": 15,
+          "n_industries": 12,
+          "macro_industry_mae": 17.35029232753247,
+          "pooled_mae": 17.350292327532472,
+          "macro_industry_rmse": 20.407590983601605,
+          "pooled_rmse": 22.997994842054005,
+          "median_absolute_error": 12.903225806451614,
+          "pooled_spearman": 0.6618226031112631,
+          "per_industry_mae": {
+            "IND-01": 18.662703758565232,
+            "IND-02": 3.728418961236299,
+            "IND-03": 16.030708368813837,
+            "IND-04": 8.087018269590095,
+            "IND-05": 15.260930980547924,
+            "IND-06": 11.873407324674387,
+            "IND-07": 36.026435242673536,
+            "IND-08": 12.320143009717343,
+            "IND-09": 11.718085775430739,
+            "IND-10": 25.2182293712179,
+            "IND-11": 39.29917393634834,
+            "IND-12": 9.978252931574014
+          },
+          "high_stress_event": {
+            "threshold": 85.0,
+            "observed_events": 29,
+            "predicted_events": 0,
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 29,
+            "precision": null,
+            "recall": 0.0,
+            "f1": null,
+            "pr_auc": 0.367276789020163,
+            "pr_auc_undefined_reason": null
+          },
+          "severe_event": {
+            "threshold": 95.0,
+            "observed_events": 21,
+            "predicted_events": 0,
+            "both": 0,
+            "reporting": "descriptive_counts_only",
+            "note": "Too few events for stable rate metrics; not used for selection."
+          },
+          "by_block": {
+            "DEV-1": {
+              "n_rows": 60,
+              "macro_industry_mae": 18.93590304969615,
+              "pooled_mae": 18.935903049696154
+            },
+            "DEV-2": {
+              "n_rows": 60,
+              "macro_industry_mae": 18.38152576524256,
+              "pooled_mae": 18.381525765242557
+            },
+            "DEV-3": {
+              "n_rows": 60,
+              "macro_industry_mae": 14.733448167658695,
+              "pooled_mae": 14.733448167658695
+            }
+          },
+          "macro_mae_ci": {
+            "point_estimate": 17.35029232753247,
+            "ci_low": 15.945955546458778,
+            "ci_high": 19.028069528010366,
+            "replications": 1000,
+            "block_length_months": 3,
+            "seed": 20260827,
+            "cluster_unit": "forecast_origin_month",
+            "n_month_clusters": 15,
+            "keeps_all_industries_together": true
+          },
+          "mae_skill_vs_historical_mean": 0.3948701689427655,
+          "paired_difference_vs_reference": {
+            "point_estimate": -11.321723886276434,
+            "ci_low": -15.577716658109527,
+            "ci_high": -6.987917532102026,
+            "replications": 1000,
+            "block_length_months": 3,
+            "seed": 20260827,
+            "cluster_unit": "forecast_origin_month",
+            "paired": true,
+            "verdict": "excludes_zero",
+            "conclusive": true
+          }
+        },
+        "persistence_current_month": {
+          "n_rows": 180,
+          "n_origins": 15,
+          "n_industries": 12,
+          "macro_industry_mae": 16.63286992458836,
+          "pooled_mae": 16.63286992458836,
+          "macro_industry_rmse": 20.71631639123067,
+          "pooled_rmse": 21.841062547125773,
+          "median_absolute_error": 12.962962962962962,
+          "pooled_spearman": 0.7491911776274962,
+          "per_industry_mae": {
+            "IND-01": 22.68272848228838,
+            "IND-02": 12.256861267085231,
+            "IND-03": 15.894710966181893,
+            "IND-04": 17.28011563518756,
+            "IND-05": 30.16419733983833,
+            "IND-06": 21.29777565390285,
+            "IND-07": 11.215529483301998,
+            "IND-08": 15.662253652759459,
+            "IND-09": 6.184112488971789,
+            "IND-10": 18.993539974315585,
+            "IND-11": 11.051092376975985,
+            "IND-12": 16.911521774251245
+          },
+          "high_stress_event": {
+            "threshold": 85.0,
+            "observed_events": 29,
+            "predicted_events": 21,
+            "true_positive": 17,
+            "false_positive": 4,
+            "false_negative": 12,
+            "precision": 0.8095238095238095,
+            "recall": 0.5862068965517241,
+            "f1": 0.68,
+            "pr_auc": 0.7306529827735757,
+            "pr_auc_undefined_reason": null
+          },
+          "severe_event": {
+            "threshold": 95.0,
+            "observed_events": 21,
+            "predicted_events": 9,
+            "both": 6,
+            "reporting": "descriptive_counts_only",
+            "note": "Too few events for stable rate metrics; not used for selection."
+          },
+          "by_block": {
+            "DEV-1": {
+              "n_rows": 60,
+              "macro_industry_mae": 12.998982966799057,
+              "pooled_mae": 12.998982966799058
+            },
+            "DEV-2": {
+              "n_rows": 60,
+              "macro_industry_mae": 17.11901869741054,
+              "pooled_mae": 17.11901869741054
+            },
+            "DEV-3": {
+              "n_rows": 60,
+              "macro_industry_mae": 19.780608109555477,
+              "pooled_mae": 19.780608109555477
+            }
+          },
+          "macro_mae_ci": {
+            "point_estimate": 16.632869924588356,
+            "ci_low": 14.045314543000389,
+            "ci_high": 20.154816797088895,
+            "replications": 1000,
+            "block_length_months": 3,
+            "seed": 20260827,
+            "cluster_unit": "forecast_origin_month",
+            "n_month_clusters": 15,
+            "keeps_all_industries_together": true
+          },
+          "mae_skill_vs_historical_mean": 0.41989186248514665,
+          "paired_difference_vs_reference": {
+            "point_estimate": -12.039146289220547,
+            "ci_low": -20.25702185225662,
+            "ci_high": -3.5012189743212336,
+            "replications": 1000,
+            "block_length_months": 3,
+            "seed": 20260827,
+            "cluster_unit": "forecast_origin_month",
+            "paired": true,
+            "verdict": "excludes_zero",
+            "conclusive": true
+          }
+        },
+        "persistence_trailing_3m_max": {
+          "n_rows": 180,
+          "n_origins": 15,
+          "n_industries": 12,
+          "macro_industry_mae": 14.698493624422762,
+          "pooled_mae": 14.698493624422763,
+          "macro_industry_rmse": 18.71628589689863,
+          "pooled_rmse": 19.813757842366584,
+          "median_absolute_error": 10.771780303030305,
+          "pooled_spearman": 0.7381397267069177,
+          "per_industry_mae": {
+            "IND-01": 27.18023158019715,
+            "IND-02": 12.176302666727398,
+            "IND-03": 8.480333176038114,
+            "IND-04": 9.006214479565976,
+            "IND-05": 19.114456108313423,
+            "IND-06": 17.2658938108934,
+            "IND-07": 10.305911894427442,
+            "IND-08": 14.88451004303122,
+            "IND-09": 11.594215204843987,
+            "IND-10": 23.560298760192016,
+            "IND-11": 11.480013572411572,
+            "IND-12": 11.33354219643146
+          },
+          "high_stress_event": {
+            "threshold": 85.0,
+            "observed_events": 29,
+            "predicted_events": 37,
+            "true_positive": 24,
+            "false_positive": 13,
+            "false_negative": 5,
+            "precision": 0.6486486486486487,
+            "recall": 0.8275862068965517,
+            "f1": 0.7272727272727273,
+            "pr_auc": 0.6543078806923307,
+            "pr_auc_undefined_reason": null
+          },
+          "severe_event": {
+            "threshold": 95.0,
+            "observed_events": 21,
+            "predicted_events": 27,
+            "both": 17,
+            "reporting": "descriptive_counts_only",
+            "note": "Too few events for stable rate metrics; not used for selection."
+          },
+          "by_block": {
+            "DEV-1": {
+              "n_rows": 60,
+              "macro_industry_mae": 14.831610364943698,
+              "pooled_mae": 14.831610364943696
+            },
+            "DEV-2": {
+              "n_rows": 60,
+              "macro_industry_mae": 12.211901390566,
+              "pooled_mae": 12.211901390566002
+            },
+            "DEV-3": {
+              "n_rows": 60,
+              "macro_industry_mae": 17.051969117758592,
+              "pooled_mae": 17.05196911775859
+            }
+          },
+          "macro_mae_ci": {
+            "point_estimate": 14.698493624422762,
+            "ci_low": 11.976730786706181,
+            "ci_high": 16.396323077324332,
+            "replications": 1000,
+            "block_length_months": 3,
+            "seed": 20260827,
+            "cluster_unit": "forecast_origin_month",
+            "n_month_clusters": 15,
+            "keeps_all_industries_together": true
+          },
+          "mae_skill_vs_historical_mean": 0.4873575156063238,
+          "paired_difference_vs_reference": {
+            "point_estimate": -13.97352258938614,
+            "ci_low": -20.684447790054595,
+            "ci_high": -7.892934879506128,
+            "replications": 1000,
+            "block_length_months": 3,
+            "seed": 20260827,
+            "cluster_unit": "forecast_origin_month",
+            "paired": true,
+            "verdict": "excludes_zero",
+            "conclusive": true
+          }
+        },
+        "seasonal_naive": {
+          "n_rows": 180,
+          "n_origins": 15,
+          "n_industries": 12,
+          "macro_industry_mae": 37.581929354309466,
+          "pooled_mae": 37.58192935430946,
+          "macro_industry_rmse": 42.27311843767892,
+          "pooled_rmse": 44.09579613629186,
+          "median_absolute_error": 36.48580121703854,
+          "pooled_spearman": -0.16185821546879037,
+          "per_industry_mae": {
+            "IND-01": 39.677361881250924,
+            "IND-02": 41.09061491994092,
+            "IND-03": 37.08433829316907,
+            "IND-04": 9.402710313064969,
+            "IND-05": 32.446604046493,
+            "IND-06": 31.26096056759532,
+            "IND-07": 24.938117396739198,
+            "IND-08": 50.491546536433134,
+            "IND-09": 56.652086906359635,
+            "IND-10": 59.53533245275596,
+            "IND-11": 28.135567809379488,
+            "IND-12": 40.26791112853197
+          },
+          "high_stress_event": {
+            "threshold": 85.0,
+            "observed_events": 29,
+            "predicted_events": 66,
+            "true_positive": 9,
+            "false_positive": 57,
+            "false_negative": 20,
+            "precision": 0.13636363636363635,
+            "recall": 0.3103448275862069,
+            "f1": 0.18947368421052632,
+            "pr_auc": 0.15907529926439382,
+            "pr_auc_undefined_reason": null
+          },
+          "severe_event": {
+            "threshold": 95.0,
+            "observed_events": 21,
+            "predicted_events": 19,
+            "both": 0,
+            "reporting": "descriptive_counts_only",
+            "note": "Too few events for stable rate metrics; not used for selection."
+          },
+          "by_block": {
+            "DEV-1": {
+              "n_rows": 60,
+              "macro_industry_mae": 46.51994138258505,
+              "pooled_mae": 46.51994138258507
+            },
+            "DEV-2": {
+              "n_rows": 60,
+              "macro_industry_mae": 37.39217842562245,
+              "pooled_mae": 37.39217842562245
+            },
+            "DEV-3": {
+              "n_rows": 60,
+              "macro_industry_mae": 28.833668254720887,
+              "pooled_mae": 28.833668254720887
+            }
+          },
+          "macro_mae_ci": {
+            "point_estimate": 37.581929354309466,
+            "ci_low": 31.13462858897835,
+            "ci_high": 44.97940768068191,
+            "replications": 1000,
+            "block_length_months": 3,
+            "seed": 20260827,
+            "cluster_unit": "forecast_origin_month",
+            "n_month_clusters": 15,
+            "keeps_all_industries_together": true
+          },
+          "mae_skill_vs_historical_mean": -0.3107529332453922,
+          "paired_difference_vs_reference": {
+            "point_estimate": 8.909913140500564,
+            "ci_low": 7.066871687695315,
+            "ci_high": 10.529755273962072,
+            "replications": 1000,
+            "block_length_months": 3,
+            "seed": 20260827,
+            "cluster_unit": "forecast_origin_month",
+            "paired": true,
+            "verdict": "excludes_zero",
+            "conclusive": true
+          }
+        }
+      },
+      "macro_mae_by_origin": {
+        "industry_historical_mean": {
+          "2024-01-01": 34.03030303030303,
+          "2024-02-01": 33.59810479375697,
+          "2024-03-01": 39.364711934156375,
+          "2024-04-01": 39.023809523809526,
+          "2024-05-01": 33.59858532272325,
+          "2024-06-01": 31.23456790123457,
+          "2024-07-01": 29.713901689708138,
+          "2024-08-01": 29.669540229885058,
+          "2024-09-01": 29.873737373737374,
+          "2024-10-01": 25.071157495256163,
+          "2024-11-01": 20.498511904761905,
+          "2024-12-01": 19.486531986531986,
+          "2025-01-01": 19.534976152623212,
+          "2025-02-01": 23.640350877192983,
+          "2025-03-01": 21.74145299145299
+        },
+        "no_contraction": {
+          "2024-01-01": 20.666666666666668,
+          "2024-02-01": 17.948717948717945,
+          "2024-03-01": 20.37037037037037,
+          "2024-04-01": 18.452380952380953,
+          "2024-05-01": 17.24137931034483,
+          "2024-06-01": 17.222222222222225,
+          "2024-07-01": 17.473118279569896,
+          "2024-08-01": 16.927083333333332,
+          "2024-09-01": 19.6969696969697,
+          "2024-10-01": 20.58823529411765,
+          "2024-11-01": 18.809523809523807,
+          "2024-12-01": 15.509259259259261,
+          "2025-01-01": 15.54054054054054,
+          "2025-02-01": 11.842105263157896,
+          "2025-03-01": 11.965811965811966
+        },
+        "persistence_current_month": {
+          "2024-01-01": 13.666666666666666,
+          "2024-02-01": 13.141025641025642,
+          "2024-03-01": 12.345679012345679,
+          "2024-04-01": 16.07142857142857,
+          "2024-05-01": 9.770114942528735,
+          "2024-06-01": 16.38888888888889,
+          "2024-07-01": 18.81720430107527,
+          "2024-08-01": 14.0625,
+          "2024-09-01": 10.101010101010102,
+          "2024-10-01": 26.22549019607843,
+          "2024-11-01": 21.9047619047619,
+          "2024-12-01": 24.76851851851852,
+          "2025-01-01": 18.91891891891892,
+          "2025-02-01": 15.789473684210527,
+          "2025-03-01": 17.521367521367523
+        },
+        "persistence_trailing_3m_max": {
+          "2024-01-01": 22.333333333333332,
+          "2024-02-01": 14.743589743589743,
+          "2024-03-01": 13.271604938271603,
+          "2024-04-01": 15.476190476190476,
+          "2024-05-01": 8.333333333333334,
+          "2024-06-01": 14.444444444444445,
+          "2024-07-01": 13.978494623655914,
+          "2024-08-01": 13.28125,
+          "2024-09-01": 8.080808080808081,
+          "2024-10-01": 11.274509803921568,
+          "2024-11-01": 13.809523809523808,
+          "2024-12-01": 19.212962962962962,
+          "2025-01-01": 16.216216216216218,
+          "2025-02-01": 21.491228070175435,
+          "2025-03-01": 14.52991452991453
+        },
+        "seasonal_naive": {
+          "2024-01-01": 43.0,
+          "2024-02-01": 44.551282051282044,
+          "2024-03-01": 52.1604938271605,
+          "2024-04-01": 52.08333333333332,
+          "2024-05-01": 40.804597701149426,
+          "2024-06-01": 38.611111111111114,
+          "2024-07-01": 38.97849462365591,
+          "2024-08-01": 40.625,
+          "2024-09-01": 37.37373737373738,
+          "2024-10-01": 31.372549019607842,
+          "2024-11-01": 23.571428571428573,
+          "2024-12-01": 25.462962962962965,
+          "2025-01-01": 31.756756756756754,
+          "2025-02-01": 30.04385964912281,
+          "2025-03-01": 33.333333333333336
+        }
+      },
+      "selected_benchmark": "persistence_trailing_3m_max",
+      "selection_reason": "effective_tie_but_leader_also_had_fewer_false_negatives",
+      "selection_used_locked_test_information": false,
+      "leader_vs_runner_up": {
+        "leader": "persistence_trailing_3m_max",
+        "runner_up": "persistence_current_month",
+        "paired_macro_mae_difference": {
+          "point_estimate": -1.934376300165594,
+          "ci_low": -5.758439573521215,
+          "ci_high": 0.32922551437021763,
+          "replications": 1000,
+          "block_length_months": 3,
+          "seed": 20260827,
+          "cluster_unit": "forecast_origin_month",
+          "paired": true,
+          "verdict": "inconclusive",
+          "conclusive": false
+        },
+        "conclusive": false
+      }
+    }
+  },
+  "upstream_artifacts_unmodified": {
+    "b1_panel": true,
+    "b3_monthly_stress": true,
+    "b3_labels": true
+  }
+}

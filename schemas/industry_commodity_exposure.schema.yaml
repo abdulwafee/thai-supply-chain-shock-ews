@@ -1,0 +1,256 @@
+# Schema for the C3 commodity-industry structural exposure matrix.
+# Describes what the code ACTUALLY writes
+# (thai_supply_chain_ews.matrices.commodity_exposure.CANONICAL_COLUMNS),
+# verified by tests/test_c3_industry_exposure.py.
+#
+# A STRUCTURAL PRIOR from official national accounts. No target column, no
+# score, no prediction, no locked-test field — their absence is enforced by
+# test, not by convention.
+
+schema_version: 1
+table: features/c3_commodity_exposure
+grain: [industry_id, commodity_series_id]
+primary_key: [industry_id, commodity_series_id]
+row_count: 48 # 12 project industries x 4 approved commodity series
+written_by: thai_supply_chain_ews.matrices.commodity_exposure.build_exposure_table
+source_family: nesdc_input_output_table_thailand
+structural_reference_year: 2015
+ordering: [industry_id, commodity_series_id]
+
+interpretation: >-
+  Structural accounting ratios from one benchmark year under fixed proportions
+  and no substitution. NOT price pass-through elasticities, NOT causal effects,
+  NOT evidence of predictive value.
+
+columns:
+  - name: industry_id
+    type: string
+    nullable: false
+    allowed: [IND-01, IND-02, IND-03, IND-04, IND-05, IND-06,
+              IND-07, IND-08, IND-09, IND-10, IND-11, IND-12]
+    note: "Reproduced from configs/industry_mapping.yaml; C3 may not rename or replace one."
+
+  - name: industry_name
+    type: string
+    nullable: false
+
+  - name: commodity_series_id
+    type: string
+    nullable: false
+    allowed: [aluminum_usd_mt, brent_crude_usd_bbl, copper_usd_mt, rubber_rss3_usd_kg]
+    note: "Exactly the four C2-approved series. C3 does not widen the allowlist."
+
+  - name: commodity_source_label
+    type: string
+    nullable: false
+
+  - name: commodity_io_sector_code
+    type: string
+    nullable: false
+
+  - name: commodity_io_sector_label
+    type: string
+    nullable: false
+    note: "Verbatim from the official NESDC classification document."
+
+  - name: industry_io_sector_codes
+    type: string
+    nullable: false
+    note: "';'-joined official I/O output sectors the industry resolves to."
+
+  - name: direct_exposure
+    type: double
+    nullable: true
+    note: >-
+      A[c][IND] = sum_j Z[c][j] / sum_j X[j] over the industry's component
+      sectors. NULL when the mapping is unresolved; numeric 0.0 when the I/O
+      matrix provides an OBSERVED zero. The two are never merged.
+
+  - name: indirect_exposure
+    type: double
+    nullable: true
+    note: "total_requirement_exposure - direct_exposure."
+
+  - name: total_requirement_exposure
+    type: double
+    nullable: true
+    note: "T = (L - I)[c][IND], output-weighted across component sectors."
+
+  - name: exposure_unit
+    type: string
+    nullable: false
+    allowed: [io_technical_coefficient_ratio]
+    note: "A unit-free ratio. Not a percentage, not an elasticity."
+
+  - name: direction_channel
+    type: string
+    nullable: false
+    allowed: [cost_pressure, producer_revenue, mixed_or_ambiguous,
+              no_verified_channel, unresolved]
+
+  - name: price_increase_to_stress_sign
+    type: int
+    nullable: true
+    allowed: [1, -1, null]
+    note: >-
+      A DOMAIN direction for cost pressure, not an empirically estimated target
+      sign. NULL for mixed_or_ambiguous: an industry that both produces and
+      consumes the commodity is not forced into a single sign.
+
+  - name: mapping_type
+    type: string
+    nullable: false
+    allowed: [exact_official_category, official_broader_aggregate,
+              multiple_official_categories, qualitative_only, unresolved]
+
+  - name: mapping_confidence
+    type: string
+    nullable: false
+    allowed: [high, medium, low, unresolved]
+    note: "Deterministic from classification evidence. NEVER from target performance."
+
+  - name: shared_io_source_sector
+    type: bool
+    nullable: false
+    note: >-
+      True where the commodity shares its I/O sector with another commodity
+      (Aluminum and Copper both resolve to 107). Such coefficients are IDENTICAL
+      BY CONSTRUCTION and are one aggregate exposure reported twice, not two
+      independent measurements.
+
+  - name: shared_with
+    type: string
+    nullable: true
+
+  - name: structural_reference_year
+    type: string
+    nullable: false
+    allowed: ["2015"]
+
+  - name: time_invariant_assumption
+    type: bool
+    nullable: false
+    note: "True: one benchmark year is applied to all forecast periods."
+
+  - name: valuation_basis
+    type: string
+    nullable: false
+    allowed: [purchasers_prices]
+
+  - name: aggregation_weight_source
+    type: string
+    nullable: false
+    allowed: [official_io_gross_output_column_600]
+    note: "Never equal weights."
+
+  - name: evidence_urls
+    type: string
+    nullable: false
+
+  - name: crosswalk_version
+    type: string
+    nullable: false
+    allowed: [c3_industry_exposure_v1]
+
+  - name: io_source_sha256
+    type: string
+    nullable: false
+
+  - name: quality_flag
+    type: string
+    nullable: false
+    allowed: [ok, observed_zero_direct_exposure,
+              unresolved_mapping_no_numeric_exposure,
+              commodity_sector_absent_from_coefficient_matrix]
+
+  - name: model_feature_approved
+    type: bool
+    nullable: false
+    allowed: [false]
+    note: "C3 must not set this true."
+
+  # --- C3-R1: coefficient availability vs commodity-proxy fitness ------------
+  # A valid coefficient can still be a poor proxy. These answer different
+  # questions and must never be collapsed.
+  - name: quantitative_coefficient_status
+    type: string
+    nullable: false
+    allowed: [resolved, unresolved]
+    note: "Is the coefficient mathematically available?"
+
+  - name: commodity_proxy_fit_status
+    type: string
+    nullable: false
+    allowed:
+      - fit_for_structural_use
+      - broad_proxy_use_with_caution
+      - not_fit_for_commodity_specific_use
+      - unresolved
+    note: >-
+      Does the official I/O category actually represent the NAMED commodity for
+      THIS industry? Derived from the industry's dominant purchasing component
+      checked against that component's official definition. Never from a target.
+
+  - name: commodity_proxy_scope
+    type: string
+    nullable: false
+    note: "What the aggregate actually spans for this pair."
+
+  - name: commodity_proxy_evidence
+    type: string
+    nullable: false
+    note: "The official evidence behind the verdict, in words."
+
+  - name: dominant_purchasing_component
+    type: string
+    nullable: true
+    note: "The industry's own I/O sector that makes most of these purchases."
+
+  - name: dominant_purchasing_component_share
+    type: double
+    nullable: true
+
+  - name: industry_pair_feature_eligible
+    type: bool
+    nullable: false
+    note: >-
+      May this pair generate a DEFAULT C4 feature? Requires a resolved
+      coefficient, a usable proxy fit, and a non-null direction sign. `medium`
+      crosswalk confidence never implies eligibility on its own.
+
+  - name: feature_eligibility_reason
+    type: string
+    nullable: false
+
+  - name: double_counting_risk
+    type: string
+    nullable: false
+    allowed: [none, shared_io_sector_must_not_be_summed_or_averaged]
+    note: >-
+      Aluminum and Copper read the SAME sector-107 coefficient. They are not
+      independently measured, must not be summed or averaged, and may enter an
+      aggregate shock index at most once.
+
+forbidden_columns:
+  - target
+  - target_value
+  - mpi_adverse_yoy
+  - production_stress_score
+  - risk_level
+  - prediction
+  - forecast
+  - locked_test
+  - correlation
+  - feature_importance
+  - predictive_performance
+
+constraints:
+  - unique: [industry_id, commodity_series_id]
+  - row_count_equals_48
+  - direct_plus_indirect_equals_total
+  - unresolved_exposure_is_null_not_zero
+  - observed_zero_is_numeric_zero
+  - four_commodity_exposures_not_normalized_to_sum_one
+  - cost_pressure_implies_sign_plus_one
+  - mixed_or_ambiguous_implies_null_sign
+  - model_feature_approved_is_false

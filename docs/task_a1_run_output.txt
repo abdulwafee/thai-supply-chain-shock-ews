@@ -1,0 +1,44 @@
+
+=== OIE_MPI ===
+file: data\raw\OIE_MPI\2026-08-26\Prodidx1.xlsx
+sha256: 19cec1fd781b3a9098c393721b56548817d8275df71e235783864477de2b6389
+total rows in sheet: 529
+parsed calendar months: 66  (eligibility minimum: 60, preferred: 120)
+  earliest: 2021-01-01   latest: 2026-06-01 (preliminary)
+  chronological: True   duplicate months: False   gap months: none
+  -> PASS on date-coverage integrity
+TSIC divisions found (22): [10, 11, 12, 13, 14, 15, 16, 17, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32]
+TSIC divisions missing: [18, 33]
+sum of division-level weights: 100.0000  (0-value or NaN entries excluded; ~100 confirms these divisions are the survey's full weighted universe, not a subset with unaccounted-for weight)
+industries — any coverage: 12/12 (eligibility minimum: 11)  | FULL coverage: 10/12  | PARTIAL coverage: 2/12
+  -> fully covered: ['IND-01', 'IND-02', 'IND-04', 'IND-05', 'IND-06', 'IND-07', 'IND-08', 'IND-09', 'IND-10', 'IND-11']
+  -> partially covered (missing division listed): {'IND-03': [18], 'IND-12': [33]}
+  -> not covered at all: none
+  -> PASS on the ORIGINAL any-coverage eligibility bar (this is NOT the same claim as 'ready for final 12-industry aggregation' — see docs/task_a1_report.md §4)
+worst per-division missingness: 0.00%  (eligibility maximum: 10.0%)
+  -> PASS on maximum missingness
+
+=== OIE_CAPU ===
+file: data\raw\OIE_CAPU\2026-08-26\capidx.xlsx
+sha256: 0432b1627424e59a5bf9f56c5c4a498d0b636cba60800b1c8a5b307c79c0824f
+total rows in sheet: 233
+parsed calendar months: 66  (eligibility minimum: 60, preferred: 120)
+  earliest: 2021-01-01   latest: 2026-06-01 (preliminary)
+  chronological: True   duplicate months: False   gap months: none
+  -> PASS on date-coverage integrity
+TSIC divisions found (22): [10, 11, 12, 13, 14, 15, 16, 17, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32]
+TSIC divisions missing: [18, 33]
+sum of division-level weights: 100.0000  (0-value or NaN entries excluded; ~100 confirms these divisions are the survey's full weighted universe, not a subset with unaccounted-for weight)
+industries — any coverage: 12/12 (eligibility minimum: 11)  | FULL coverage: 10/12  | PARTIAL coverage: 2/12
+  -> fully covered: ['IND-01', 'IND-02', 'IND-04', 'IND-05', 'IND-06', 'IND-07', 'IND-08', 'IND-09', 'IND-10', 'IND-11']
+  -> partially covered (missing division listed): {'IND-03': [18], 'IND-12': [33]}
+  -> not covered at all: none
+  -> PASS on the ORIGINAL any-coverage eligibility bar (this is NOT the same claim as 'ready for final 12-industry aggregation' — see docs/task_a1_report.md §4)
+worst per-division missingness: 0.00%  (eligibility maximum: 10.0%)
+  -> PASS on maximum missingness
+
+Machine-readable output written to docs\task_a1_audit_output.json
+
+MOC_EXPORT and NSO_PPI are NOT audited by this script: both require interactive query-parameter discovery that this script does not guess. See docs/task_a1_report.md for what was verified manually.
+
+NOTE: this script computes SOURCE-ACCESS evidence only. It does not grant TARGET-COMPONENT approval — see configs/targets.yaml's source_verified vs. target_approved fields and docs/target_definition.md §1.4.

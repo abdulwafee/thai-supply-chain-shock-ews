@@ -1,0 +1,224 @@
+# Schema for data/features/commodity_features_long.parquet — Task C2.
+# Describes what the code ACTUALLY writes
+# (thai_supply_chain_ews.features.commodity_features.CANONICAL_COLUMNS),
+# verified by tests/test_c2_commodity_features.py.
+#
+# POINT-IN-TIME FEATURES on the commodity side only. No target column, no
+# industry column, no risk level, no prediction. Those belong to C3 and later,
+# and their absence here is enforced by test, not by convention.
+
+schema_version: 1
+table: features/commodity_features_long
+grain: [series_id, feature_name, reference_month, availability_policy]
+primary_key: [series_id, feature_name, reference_month, availability_policy]
+written_by: thai_supply_chain_ews.features.commodity_features.build_feature_table
+source_family: world_bank_pink_sheet_archived_first_release
+data_framing: point_in_time_first_release
+point_in_time_supported: full
+point_in_time_scope: >-
+  FEATURE SIDE ONLY. The MPI target remains latest-vintage (B1 emits release_date
+  and available_as_of as NULL), so an evaluation joining the two is not a
+  real-time backtest and must not be described as one.
+
+feature_definition_version: c2_commodity_features_v1
+ordering: [series_id, feature_name, reference_month]
+
+columns:
+  - name: series_id
+    type: string
+    nullable: false
+    allowed: [brent_crude_usd_bbl, aluminum_usd_mt, copper_usd_mt, rubber_rss3_usd_kg]
+    note: "Primary allowlist only. LNG, coal and palm oil are excluded by C1/C1.5 findings."
+
+  - name: source_series_label
+    type: string
+    nullable: false
+    note: "The archived PDF's own row label, preserved verbatim (e.g. 'Crude oil, Brent')."
+
+  - name: feature_name
+    type: string
+    nullable: false
+    allowed:
+      - price_level
+      - log_change_1m_pct
+      - log_change_3m_pct
+      - log_change_12m_pct
+      - realized_volatility_3m_pct
+    note: "Exactly five preregistered transformations. No others are created in C2."
+
+  - name: feature_value
+    type: double
+    nullable: false
+    finite: true
+    note: "Never rounded. Rounding a derived value would invent precision."
+
+  - name: unit
+    type: string
+    nullable: false
+    note: "The source unit for price_level ($/bbl, $/mt, $/kg); 'percent_log' for changes and volatility."
+
+  - name: reference_month
+    type: date
+    nullable: false
+    note: "Month-start date the feature describes. NOT a release timestamp."
+
+  - name: input_window_start
+    type: date
+    nullable: false
+    note: "Oldest observation consumed."
+
+  - name: input_window_end
+    type: date
+    nullable: false
+    note: "Newest observation consumed; equals reference_month for every C2 feature."
+
+  - name: input_observation_count
+    type: int
+    nullable: false
+    note: >-
+      Observations ACTUALLY read: 1 for price_level, 2 for each log change,
+      4 for realized_volatility_3m_pct (r_{m-2} is itself a change from m-3).
+
+  - name: source_available_month
+    type: date
+    nullable: false
+    note: >-
+      When the LATEST required input was first published, from the archived
+      issue that carried it. Measured, never derived from the download date.
+
+  - name: policy_available_month
+    type: date
+    nullable: false
+    note: "reference_month + operational_lag_months. A POLICY month."
+
+  - name: feature_available_month
+    type: date
+    nullable: false
+    note: >-
+      max(policy_available_month, every input's source_available_month). The
+      earliest month at which this feature may be used.
+
+  - name: minimum_publication_lag_months
+    type: int
+    nullable: false
+    note: "MEASURED: 1 (C1.5-R2, all 65 reference months available at t+1)."
+
+  - name: operational_lag_months
+    type: int
+    nullable: false
+    note: "POLICY: 2 for the primary table. Must never be cited as a measured minimum."
+
+  - name: availability_policy
+    type: string
+    nullable: false
+    allowed: [operational_lag_2m, publication_lag_1m]
+    note: "Part of the primary key: the two policies coexist without overwriting each other."
+
+  - name: availability_policy_label
+    type: string
+    nullable: false
+    allowed: [primary, sensitivity_only]
+    note: "publication_lag_1m is ALWAYS sensitivity_only and is never the default output."
+
+  - name: point_in_time_supported
+    type: string
+    nullable: false
+    allowed: [full]
+
+  - name: source_value_type
+    type: string
+    nullable: false
+    allowed: [archived_first_release]
+    note: "Latest-vintage workbook values are rejected from this table."
+
+  - name: source_issue_name
+    type: string
+    nullable: false
+    note: "Archived issue that first published the binding (latest) input."
+
+  - name: source_issue_date
+    type: date
+    nullable: false
+    note: "The issue PDF's own internal /CreationDate."
+
+  - name: source_issue_url
+    type: string
+    nullable: false
+
+  - name: source_issue_sha256
+    type: string
+    nullable: false
+    note: "Checksum of the archived PDF, matching the C1.5 manifest."
+
+  - name: source_footnote_marker
+    type: string
+    nullable: true
+    note: >-
+      Raw footnote token(s) carried by the source rows, ';'-joined, exactly as
+      displayed. 'a/' = energy index, 'b/' = non-energy index, 'c/' = precious
+      metals index, 'd/' = index definition. INDEX MEMBERSHIP ONLY — never an
+      estimate flag (corrected in C1.5-R3, AD-R45).
+
+  - name: source_footnote_meaning
+    type: string
+    nullable: true
+    note: >-
+      The documented INDEX meaning of the token(s), ';'-joined. Corrected in
+      C1.5-R3: these denote index membership only and never estimate status.
+
+  - name: estimate_status
+    type: string
+    nullable: false
+    allowed:
+      - source_documented_estimate
+      - not_covered_by_current_estimate_rule
+      - not_documented_as_estimate
+      - unknown
+    note: >-
+      Aggregated across every input month, from the upstream field that carries
+      INDEPENDENT Description evidence — never inferred from a footnote token.
+      All four primary series are `not_documented_as_estimate`.
+
+  - name: input_lineage_checksum
+    type: string
+    nullable: false
+    note: >-
+      SHA-256 over the ordered input tuples (series, month, displayed text,
+      value, issue date, issue checksum). Changes if any input changes.
+
+  - name: feature_definition_version
+    type: string
+    nullable: false
+    allowed: [c2_commodity_features_v1]
+
+  - name: quality_flag
+    type: string
+    nullable: false
+    note: "'ok' for every emitted row: a row that cannot be computed is not emitted."
+
+# --- columns that must NOT exist ---------------------------------------------
+# Enforced by test. Their presence would mean C2 had crossed into C3 or later.
+forbidden_columns:
+  - industry_id
+  - industry_code
+  - target
+  - target_value
+  - mpi_adverse_yoy
+  - production_stress_score
+  - risk_level
+  - prediction
+  - forecast
+  - locked_test
+  - correlation
+  - feature_importance
+
+constraints:
+  - unique: [series_id, feature_name, reference_month, availability_policy]
+  - feature_value_is_finite
+  - price_inputs_strictly_positive
+  - source_available_month_le_feature_available_month
+  - policy_available_month_le_feature_available_month
+  - operational_lag_months_ge_1 # lag zero prohibited
+  - operational_lag_months_ge_minimum_publication_lag_months
+  - no_imputation
+  - no_clipping_or_winsorization

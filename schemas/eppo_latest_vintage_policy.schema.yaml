@@ -1,0 +1,154 @@
+# Schema for the C6.5 EPPO latest-vintage policy decision.
+# Describes what the code ACTUALLY writes
+# (docs/c6_5_eppo_latest_vintage_decision.json and
+#  thai_supply_chain_ews.data.eppo_latest_vintage_policy), verified by
+# tests/test_c6_5_eppo_policy.py.
+#
+# DECISION RECORD ONLY. No feature, no aggregation, no target, no model.
+
+schema_version: 1
+task: C6.5
+written_by: scripts/decide_c6_5_eppo_policy.py
+output: docs/c6_5_eppo_latest_vintage_decision.json
+
+decision_values:
+  - proceed_exploratory_release_lag_aware_latest_vintage
+  - defer_pending_further_timing_evidence
+  - reject_source
+
+# ---------------------------------------------------------------------------
+# The central distinction this schema exists to protect.
+# ---------------------------------------------------------------------------
+lag_fields:
+  minimum_verified_publication_lag_months:
+    type: integer_or_null
+    const: null
+    note: >-
+      MEASURED delay. None was measured, so this is null and must stay null.
+      Deriving it from sparse capture upper bounds is forbidden.
+  operational_policy_lag_months:
+    type: integer
+    const: 2
+    note: "POLICY assumption imposed by the project. Not an observation."
+  operational_lag_is_measured:
+    type: boolean
+    const: false
+  operational_lag_basis:
+    type: string
+    const: conservative_project_policy
+
+permission_fields:
+  latest_vintage_values_used: {type: boolean, const: true}
+  historical_release_timing_verified: {type: boolean, const: false}
+  point_in_time_values_supported: {type: boolean, const: false}
+  fully_real_time_backtest: {type: boolean, const: false}
+  same_month_use_permitted: {type: boolean, const: false}
+  publication_lag_1m_use_permitted: {type: boolean, const: false}
+  operational_lag_2m_use_permitted: {type: boolean, const: true}
+  eligible_for_exploratory_development: {type: boolean, const: true}
+  eligible_for_confirmatory_claims: {type: boolean, const: false}
+  eligible_for_locked_test: {type: boolean, const: false}
+  feature_semantics_approved: {type: boolean, const: false}
+  model_feature_approved: {type: boolean, const: false}
+
+# ---------------------------------------------------------------------------
+# Observation-level availability. Four fields, never collapsed into one.
+# ---------------------------------------------------------------------------
+observation_availability:
+  columns:
+    - name: reference_month
+      type: string
+      format: "YYYY-MM"
+    - name: source_available_as_of
+      type: date_or_null
+      note: >-
+        The date the source is EVIDENCED to have been public. Null for every
+        historical observation. A policy-derived month written here would
+        present an assumption as provenance and raises.
+    - name: policy_available_month
+      type: string
+      format: "YYYY-MM"
+      rule: "reference_month + operational_policy_lag_months"
+    - name: availability_basis
+      type: string
+      enum: [conservative_policy_not_historical_measurement,
+             verified_historical_measurement]
+    - name: historical_timing_verified
+      type: boolean
+  invariant: >-
+    source_available_as_of is null wherever historical_timing_verified is false.
+
+interpretation:
+  rule: "reference_month <= issue_month - 2"
+  is_measured_delay: false
+
+# ---------------------------------------------------------------------------
+# Capture evidence.
+# ---------------------------------------------------------------------------
+capture_evidence_classes:
+  - contemporaneous_capture_upper_bound
+  - retrospective_capture_not_timing_evidence
+  - capture_identity_unverified
+  - capture_after_effective_date_only
+  - unresolved
+capture_proves_first_release: false
+delay_statistics_source: upper_bound_records_only
+
+# ---------------------------------------------------------------------------
+# Ingestion levels: five distinct states, not one.
+# ---------------------------------------------------------------------------
+ingestion_levels:
+  - monthly_document_presence_verified
+  - complete_daily_inventory_discovered
+  - complete_daily_documents_downloaded
+  - complete_daily_documents_validated
+  - monthly_aggregation_contract_approved
+expected_current:
+  monthly_document_presence_verified: true
+  complete_daily_inventory_discovered: true
+  complete_daily_documents_downloaded: false
+  complete_daily_documents_validated: false
+  monthly_aggregation_contract_approved: false
+
+# ---------------------------------------------------------------------------
+# Transformation status: two stages replace one ambiguous flag.
+# ---------------------------------------------------------------------------
+transformation_status_fields:
+  - historical_depth_sufficient
+  - source_ready_for_transformation
+transformations:
+  - price_level
+  - log_change_1m_pct
+  - log_change_3m_pct
+  - log_change_12m_pct
+  - realized_volatility_3m_pct
+transformations_created_in_c6_5: false
+
+series_decision_fields:
+  - exact_label
+  - unit
+  - eligible_for_c7_full_archive_ingestion
+  - semantic_status
+  - timing_basis
+  - feature_semantics_approved
+  - model_feature_approved
+
+c7_authorization_fields:
+  c7_full_archive_ingestion_authorized: {type: boolean, const: true}
+  c7_monthly_source_aggregation_authorized: {type: string, const: conditional}
+  c7_predictive_feature_creation_authorized: {type: boolean, const: false}
+  c7_target_join_authorized: {type: boolean, const: false}
+  c7_modeling_authorized: {type: boolean, const: false}
+
+invariants:
+  - "minimum_verified_publication_lag_months is null."
+  - "operational_lag_is_measured is false; the 2-month lag is policy."
+  - "source_available_as_of is never populated from a policy-derived date."
+  - "A reference month later than issue_month - 2 is rejected."
+  - "Lag 0 and lag 1 are both rejected."
+  - "point_in_time_values_supported and fully_real_time_backtest stay false."
+  - "H-DIESEL B7, B10 and B20 are never substituted for ordinary H-DIESEL."
+  - "The January 2024 H-DIESEL gap is neither filled nor silently dropped."
+  - "254 validated documents are never described as 1,315."
+  - "Monthly presence and complete daily validation remain distinct fields."
+  - "historical_depth_sufficient true does not imply source_ready_for_transformation."

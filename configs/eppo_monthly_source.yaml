@@ -1,0 +1,376 @@
+# Task C7 — full EPPO daily archive ingestion and monthly source table.
+#
+# PREREGISTERED. The aggregation rule, the approval gate, the allowed statuses
+# and the policy availability fields were written before the archive was
+# retrieved and before any monthly value existed.
+#
+# SOURCE INGESTION AND SOURCE-LEVEL AGGREGATION ONLY. A monthly source mean is
+# not a predictive feature. No transformation, no exposure multiplication, no
+# MPI join, no target association, no model, no locked test.
+
+schema_version: 1
+task: C7
+config_version: eppo_monthly_source_v1
+
+# ---------------------------------------------------------------------------
+# Inherited from C6.5 (configs/eppo_latest_vintage_policy.yaml). Restated here
+# so the ingestion contract is readable on its own, NOT re-decided.
+# ---------------------------------------------------------------------------
+inherited_policy:
+  decision: proceed_exploratory_release_lag_aware_latest_vintage
+  latest_vintage_values_used: true
+  historical_release_timing_verified: false
+  point_in_time_values_supported: false
+  fully_real_time_backtest: false
+  minimum_verified_publication_lag_months: null
+  operational_policy_lag_months: 2
+  operational_lag_is_measured: false
+  operational_lag_basis: conservative_project_policy
+  availability_basis: conservative_policy_not_historical_measurement
+  same_month_use_permitted: false
+  publication_lag_1m_use_permitted: false
+
+provenance:
+  target_joined: false
+  target_association_computed: false
+  industry_conditioned_features_created: false
+  predictive_transformations_created: false
+  model_trained: false
+  locked_test_accessed: false
+  feature_semantics_approved: false
+  model_feature_approved: false
+
+preserved_decisions:
+  c6_discovery_results_changed: false
+  c6_5_policy_changed: false
+  c5_price_stage_decision_changed: false
+  c3_or_c3r1_exposure_changed: false
+  c4_variants_changed: false
+  d3_contract_changed: false
+  d4_results_changed: false
+  b3_targets_changed: false
+
+# ---------------------------------------------------------------------------
+# The ingestion denominator. Every distinct officially discovered document-day
+# in the window is one retrieval ATTEMPT that must be accounted for. It is not
+# a guaranteed valid-document count.
+# ---------------------------------------------------------------------------
+required_window:
+  start: "2021-01-01"
+  end: "2026-05-31"
+  purpose: >-
+    Full transformation-parity window from C6. Twelve months of prehistory
+    before 2022-01 are required before any 12-month change could be computed
+    for the operational window; C7 computes no change of any kind.
+
+denominator:
+  primary: distinct_officially_discovered_document_days
+  expected_document_days_2021_01_to_2026_05: 1315
+  expected_document_days_2022_01_to_2026_05: 1076
+  discovered_days_are_validated_days: false
+  tracked_states:
+    - discovered_media_records
+    - distinct_document_days
+    - document_days_with_one_attachment
+    - document_days_with_multiple_attachment_candidates
+    - retrieval_attempts
+    - http_successes
+    - format_valid_files
+    - content_valid_files
+    - rejected_attachments
+    - duplicate_files
+    - conflicting_same_date_files
+    - valid_canonical_document_days
+    - unresolved_document_days
+
+# ---------------------------------------------------------------------------
+# Acquisition. Resumable, idempotent, polite, and never storing an error page
+# under a spreadsheet name.
+# ---------------------------------------------------------------------------
+acquisition:
+  raw_source_id: EPPO_PRICE_STRUCTURE
+  raw_directory: data/raw/EPPO_PRICE_STRUCTURE
+  manifest: data/raw/_manifests/EPPO_PRICE_STRUCTURE_manifest.jsonl
+  raw_files_git_ignored: true
+  request_interval_seconds: 0.35
+  max_attempts: 3
+  retry_backoff_seconds: [2.0, 6.0]
+  throttle_http_statuses: [403, 408, 429, 503, 509]
+  max_consecutive_throttles_before_abort: 8
+  checkpoint_every_candidates: 50
+  resume_by: [media_id, sha256]
+  verified_file_reused_without_refetch: true
+  valid_file_deleted_on_later_failure: false
+  html_or_waf_response_stored_as_spreadsheet: false
+  acquisition_timestamps_in_content_checksum: false
+
+# ---------------------------------------------------------------------------
+# Workbook layouts. Two regimes are KNOWN from C6 sampling. The interval
+# between them was never sampled and is discovered, not assumed.
+# ---------------------------------------------------------------------------
+layouts:
+  known_regimes:
+    xls_2021:
+      magic: xls_ole2
+      sheet: "โครงสร้างราคา"
+      tax_column: "TAX"
+      date_representation: excel_serial
+      c6_observed_range: ["2021-01-04", "2023-01-31"]
+    xlsx_2023:
+      magic: xlsx_zip
+      sheet: "Oil Price Structure"
+      tax_column: "EXCISE TAX"
+      date_representation: datetime_cell
+      c6_observed_range: ["2023-07-03", "2026-05-31"]
+  unsampled_transition_interval:
+    start: "2023-02-01"
+    end: "2023-06-30"
+    layout_status: unsampled_transition_interval
+  discovery_rules:
+    inspect_every_sheet: true
+    discover_headers_rather_than_force_layout: true
+    resolve_columns_by_label_only: true
+    positional_column_fallback_permitted: false
+    tax_column_rename_assumed_to_be_the_only_change: false
+    register_new_regime_only_from_actual_documents: true
+    unknown_layout_action: reject
+
+# ---------------------------------------------------------------------------
+# Exact product identity. Substitution is the failure mode this list exists to
+# prevent, so labels are stored exactly as displayed.
+# ---------------------------------------------------------------------------
+series:
+  eppo_ex_refinery_h_diesel_baht_litre:
+    exact_label: "H-DIESEL"
+    internal_series_id: eppo_ex_refinery_hsd
+    io_sector: "093"
+  eppo_ex_refinery_fo600_2pct_s_baht_litre:
+    exact_label: "FO 600 (1) 2%S"
+    internal_series_id: eppo_ex_refinery_fo600_2s
+    io_sector: "093"
+  eppo_ex_refinery_fo1500_2pct_s_baht_litre:
+    exact_label: "FO 1500 (2) 2%S"
+    internal_series_id: eppo_ex_refinery_fo1500_2s
+    io_sector: "093"
+
+price_stage: "EX-REFIN."
+price_stage_id: ex_refinery
+unit: "BAHT/LITRE"
+
+stage_columns_kept_distinct:
+  [ex_refinery, excise_tax, municipal_tax, oil_fund, conservation_fund,
+   wholesale, vat, wholesale_with_vat, marketing_margin, retail]
+
+forbidden_substitutions:
+  - wholesale_for_ex_refinery
+  - retail_for_ex_refinery
+  - lpg_baht_per_kg_for_petroleum_baht_per_litre
+  - h_diesel_b7_b10_or_b20_for_ordinary_h_diesel
+  - one_fuel_oil_grade_for_another
+
+# ---------------------------------------------------------------------------
+# The H-DIESEL January 2024 semantic gap, carried forward from C6.
+# ---------------------------------------------------------------------------
+h_diesel_january_2024:
+  audited_absent_document_days_in_c6: 22
+  blend_products_published_instead: ["H-DIESEL B7", "H-DIESEL B10", "H-DIESEL B20"]
+  monthly_value: null
+  aggregation_status: semantic_definition_gap
+  quality_flag: ordinary_h_diesel_not_published_blend_substitution_prohibited
+  blend_substitution_permitted: false
+  blend_average_permitted: false
+  interpolation_permitted: false
+  silent_month_removal_permitted: false
+  zero_permitted: false
+
+# ---------------------------------------------------------------------------
+# Duplicates, conflicts and wrong-date attachments.
+# ---------------------------------------------------------------------------
+document_identity:
+  duplicate_classes:
+    - duplicate_document                  # byte-identical
+    - content_equivalent_duplicate        # different bytes, identical parsed values
+    - same_date_conflicting_value         # different parsed values: UNRESOLVED
+  conflicting_value_resolution: block_month_do_not_choose_silently
+  wrong_date_attachment:
+    retain_rejected_inventory_record: true
+    silently_reassign_to_internal_date: false
+    counts_as_valid_document_for_listing_date: false
+  successive_effective_dates_are_revisions: false
+  candidate_ranking_uses_encounter_order: false
+  candidate_ranking_criteria:
+    - internal_date_matches_official_entry_date
+    - internal_title_correct
+    - required_source_table_present
+    - exact_product_labels_and_units_present
+    - not_html_or_waf_response
+    - checksum_and_content_identity_consistent
+
+# ---------------------------------------------------------------------------
+# Completeness. Reported against the DISCOVERED inventory, never an assumed
+# calendar schedule.
+# ---------------------------------------------------------------------------
+completeness:
+  expected_issue_count: null
+  expected_schedule_status: unresolved
+  weekday_without_discovered_entry_is_missing_document: false
+  discovered_entry_that_cannot_be_validated_is_unresolved: true
+  reported_per_month_and_product:
+    - discovered_document_days
+    - retrieval_attempted_days
+    - successfully_retrieved_days
+    - content_valid_document_days
+    - valid_product_observations
+    - duplicate_days
+    - rejected_days
+    - unresolved_days
+    - observed_weekdays
+    - first_effective_date
+    - last_effective_date
+    - inventory_retrieval_fraction
+    - product_observation_fraction
+
+# ---------------------------------------------------------------------------
+# The monthly aggregation rule. PREREGISTERED, selected from source semantics
+# and archive completeness only.
+# ---------------------------------------------------------------------------
+monthly_aggregation:
+  aggregation_rule: arithmetic_mean_of_validated_observed_official_document_days
+  aggregation_rule_version: c7_v1
+  unit: "BAHT/LITRE"
+  statistic_description: >-
+    Mean ex-refinery price across validated official EPPO document-days
+    observed in the completed reference month.
+  selected_from:
+    - source_publication_semantics
+    - archive_completeness
+    - deterministic_reproducibility
+  selected_from_predictive_performance: false
+  each_valid_document_day_counted_once: true
+  weekend_or_holiday_observation_synthesised: false
+  forward_fill_unchanged_prices: false
+  duration_weighting: false
+  all_calendar_day_mean: false
+  partial_issue_month_observations_used: false
+  must_not_be_described_as:
+    - calendar_day_mean
+    - trading_day_mean
+    - transaction_price
+    - price_paid_by_every_industrial_purchaser
+    - point_in_time_monthly_mean
+
+approval_gate:
+  conditions:
+    - every_discovered_document_day_attempted
+    - no_required_discovered_attachment_unretrieved
+    - every_accepted_document_content_validated
+    - no_unresolved_same_date_conflict
+    - exact_product_label_and_unit_stable
+    - at_least_one_valid_product_observation
+    - aggregation_reproducible_from_canonical_daily_rows
+    - complete_lineage_present
+  allowed_statuses:
+    - approved
+    - semantic_definition_gap
+    - no_valid_product_observation
+    - unresolved_document_retrieval
+    - unresolved_document_identity
+    - same_date_conflicting_value
+    - incomplete_inventory_validation
+    - unknown_layout
+    - unit_or_definition_break
+  dataset_level_requires:
+    all_required_fo600_months_pass: true
+    all_required_fo1500_months_pass: true
+  conditional_series: [eppo_ex_refinery_hsd]
+  fabricated_h_diesel_value_permitted_to_approve_fuel_oils: false
+  force_positive_result: false
+
+# ---------------------------------------------------------------------------
+# Availability. The two fields are never allowed to collapse into one.
+# ---------------------------------------------------------------------------
+availability:
+  source_available_as_of: null
+  policy_available_month_rule: reference_month_plus_2_months
+  availability_basis: conservative_policy_not_historical_measurement
+  latest_vintage_used: true
+  point_in_time_supported: false
+  daily_policy_field_name: candidate_monthly_policy_available_month
+  daily_policy_field_note: >-
+    The policy month is defined for a monthly observation. Carrying the same
+    name at daily granularity would imply a measured daily availability date,
+    so the daily column is named as a CANDIDATE monthly-policy field.
+  selector: select_monthly_source_available_at_issue
+  selector_rule: policy_available_month <= issue_month
+  equivalent_reference_month_rule: reference_month <= issue_month - 2 months
+  selector_reads_targets: false
+  examples:
+    - {issue_month: "2024-01", latest_permitted_reference_month: "2023-11"}
+    - {issue_month: "2025-03", latest_permitted_reference_month: "2025-01"}
+    - {issue_month: "2026-05", latest_permitted_reference_month: "2026-03"}
+
+# ---------------------------------------------------------------------------
+# What C7 is NOT. A monthly source mean is an ingestion aggregation.
+# ---------------------------------------------------------------------------
+transformations:
+  feature_transformations_created: false
+  industry_conditioned_matrix_created: false
+  model_feature_approved: false
+  prohibited_in_c7:
+    - log_change
+    - percentage_change
+    - lagged_price
+    - realized_volatility
+    - z_score
+    - shock_flag
+    - industry_exposure_interaction
+    - target_correlation
+    - mutual_information
+    - granger_causality
+    - feature_importance
+    - predictive_performance
+  source_ready_for_transformation_reported_by_series: true
+
+outputs:
+  daily_table: data/interim/c7_eppo_daily_prices.parquet
+  monthly_table: data/interim/c7_eppo_monthly_source.parquet
+  audit_json: docs/c7_eppo_full_archive_audit.json
+  audit_markdown: docs/c7_eppo_full_archive_audit.md
+  decision_markdown: docs/c7_eppo_monthly_source_decision.md
+  generated_parquet_git_ignored: true
+
+# ---------------------------------------------------------------------------
+# Superseded in part by Task C7.5 (configs/eppo_product_semantics.yaml).
+# The C7 rule, raw documents, labels, values and checksums stand unchanged;
+# only the single approval FIELD is replaced, because it was carrying three
+# different questions at once.
+# ---------------------------------------------------------------------------
+superseded_by:
+  task: C7.5
+  config: configs/eppo_product_semantics.yaml
+  c7_numerical_artifacts_changed: false
+  c7_monthly_audit_artifact_overwritten: false
+  approval_field_replaced:
+    old: monthly_aggregation_contract_approved
+    new:
+      - aggregation_method_semantics_approved
+      - full_requested_window_coverage_complete
+      - series_ready_for_transformation_with_explicit_gaps
+    reason: >-
+      One boolean was answering three questions - is the rule sound, is every
+      month covered, and may the series be transformed with its gaps propagating.
+      Forcing them to one value reported a sound method as a failed one.
+  resolutions:
+    fuel_oil_label_variant:
+      c7_status: unit_or_definition_break, 8 product-months blocked
+      c7_5_decision: equivalence_established
+      basis: >-
+        The workbook's Thai companion sheet is formula-bound to the English
+        rows and gives one identical, ordinal-free product name for both label
+        forms. Numeric continuity was recorded and is not load-bearing.
+    unresolved_document_days:
+      c7_status: 5 unresolved
+      c7_5_outcome: 2 recovered_and_validated, 3 official_attachment_unretrievable
+    h_diesel:
+      c7_status: 16 months semantic_definition_gap
+      c7_5_decision: not_ready_long_semantic_definition_gap

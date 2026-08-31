@@ -1,0 +1,258 @@
+# Task C6.5 — EPPO latest-vintage use decision and operational availability
+# contract.
+#
+# C6 found the values retrievable and the release timing unverifiable from the
+# sources it inspected. This file records the resulting POLICY decision, and
+# keeps the policy assumption strictly apart from anything measured.
+#
+# NO FEATURE, NO AGGREGATION, NO TARGET, NO MODEL, NO LOCKED TEST.
+
+schema_version: 1
+task: C6.5
+config_version: eppo_latest_vintage_policy_v1
+
+provenance:
+  target_joined: false
+  target_association_computed: false
+  model_trained: false
+  locked_test_accessed: false
+  feature_semantics_approved: false
+  model_feature_approved: false
+
+preserved_decisions:
+  c6_raw_inventory_or_parsed_values_changed: false
+  c5_structural_selection_changed: false
+  c3_or_c3r1_changed: false
+  c4_variants_changed: false
+  d3_contract_changed: false
+  d4_results_changed: false
+  d4_metrics_recalculated: false
+  b3_targets_changed: false
+  locked_test_protection_changed: false
+
+# ---------------------------------------------------------------------------
+# Evidence-boundary wording. Each field replaces a claim that would exceed what
+# C6 actually established.
+# ---------------------------------------------------------------------------
+evidence_boundaries:
+  legacy_archive_status: tested_legacy_urls_no_longer_expose_original_archive
+  historical_timing_status: not_reconstructable_from_sources_inspected_in_c6
+  monthly_presence_coverage: complete
+  complete_daily_document_validation: false
+  point_in_time_values_supported: false
+  absence_from_inspected_mechanisms_is_not_proof_of_universal_absence: true
+  statement: >-
+    Absence from the inspected mechanisms is not proof that no historical
+    publication evidence exists anywhere. C6 probed the current WordPress
+    archive, its REST index, sitemaps, RSS and the legacy Joomla paths; other
+    mechanisms, offline records or a direct request to EPPO were not exercised.
+  superseded_wording:
+    - "the legacy archive no longer exists"
+    - "historical timing can never be verified"
+    - "all daily values in the required window were validated"
+    - "65/65 month coverage means a complete daily archive"
+    - "archive depth alone makes every transformation feature-ready"
+
+# ---------------------------------------------------------------------------
+# Ingestion levels. These are five different things and were being conflated.
+# ---------------------------------------------------------------------------
+ingestion_levels:
+  monthly_document_presence_verified: true
+  complete_daily_inventory_discovered: true
+  complete_daily_documents_downloaded: false
+  complete_daily_documents_validated: false
+  monthly_aggregation_contract_approved: false
+  audited_sample_documents: 254
+  discovered_document_days_parity_window: 1315
+  discovered_document_days_operational_window: 1076
+  note: >-
+    The 254 validated documents are an AUDIT SAMPLE spanning all required
+    months. They are not a complete daily ingestion of the 1,315 discovered
+    document-days, and the 722-row partial audit table is not a production
+    price series.
+
+# ---------------------------------------------------------------------------
+# Capture-evidence interpretation.
+# ---------------------------------------------------------------------------
+capture_audit:
+  captures_total: 43
+  provider: internet_archive_cdx
+  # Preregistered CLASSIFICATION CONVENTION, not an empirical finding.
+  contemporaneous_window_days: 31
+  archived_bytes_fetched: false
+  source_identity_validated: false
+  evidence_classes:
+    - contemporaneous_capture_upper_bound
+    - retrospective_capture_not_timing_evidence
+    - capture_identity_unverified
+    - capture_after_effective_date_only
+    - unresolved
+  capture_date_is_first_publication_date: false
+  delay_statistics_from_upper_bounds_only: true
+  derive_minimum_lag_from_sparse_upper_bounds: false
+
+# ---------------------------------------------------------------------------
+# THE DECISION.
+# ---------------------------------------------------------------------------
+decision: proceed_exploratory_release_lag_aware_latest_vintage
+
+policy:
+  latest_vintage_values_used: true
+  historical_release_timing_verified: false
+  point_in_time_values_supported: false
+  fully_real_time_backtest: false
+
+  # Measured: does not exist. Policy: chosen conservatively by the project.
+  minimum_verified_publication_lag_months: null
+  operational_policy_lag_months: 2
+  operational_lag_is_measured: false
+  operational_lag_basis: conservative_project_policy
+
+  same_month_use_permitted: false
+  publication_lag_1m_use_permitted: false
+  operational_lag_2m_use_permitted: true
+
+  eligible_for_exploratory_development: true
+  eligible_for_confirmatory_claims: false
+  eligible_for_locked_test: false
+
+  feature_semantics_approved: false
+  model_feature_approved: false
+
+interpretation:
+  rule: "reference_month <= issue_month - 2"
+  meaning: >-
+    At forecast issue month t, an EPPO monthly source observation may refer at
+    latest to reference month t-2. This is a conservative policy assumption. It
+    is NOT a measured publication delay.
+
+# Availability fields stay separate so a policy date can never masquerade as
+# provenance.
+observation_availability_fields:
+  source_available_as_of: null
+  policy_available_month: reference_month + 2 months
+  availability_basis: conservative_policy_not_historical_measurement
+  historical_timing_verified: false
+  policy_date_may_populate_source_available_as_of: false
+
+# ---------------------------------------------------------------------------
+# Why this is allowed, and what argues against it. Both are recorded.
+# ---------------------------------------------------------------------------
+rationale_for:
+  - the overall evaluation is already latest-vintage on the MPI target side
+  - D3 is explicitly a release-lag-aware latest-vintage evaluation, not a real-time backtest
+  - EPPO has strong structural alignment with I/O sector 093 (C5)
+  - required-month document presence is complete (65/65 and 53/53)
+  - the exact ex-refinery fields can be parsed, stage-separated from wholesale and retail
+  - no same-date revision was observed in the audited sample
+  - the policy imposes a conservative two-month delay
+  - all future results must remain exploratory
+
+rationale_against:
+  - complete daily archive validation is unfinished (254 of 1,315 document-days)
+  - release timing is unverified; every upload timestamp is a 2026 migration stamp
+  - absence of observed revisions does not prove no historical revision occurred
+  - migration may have changed filenames, metadata or bytes
+  - a two-month lag does not make latest-vintage values point-in-time
+  - the target side remains latest-vintage as well
+  - the source cannot support a fully real-time claim
+
+# ---------------------------------------------------------------------------
+# Series-level decisions.
+# ---------------------------------------------------------------------------
+series_decisions:
+  eppo_ex_refinery_fo600_2s:
+    exact_label: "FO 600 (1) 2%S"
+    unit: BAHT/LITRE
+    eligible_for_c7_full_archive_ingestion: true
+    semantic_status: stable_in_audited_window
+    timing_basis: latest_vintage_policy_lag_2m
+    feature_semantics_approved: false
+    model_feature_approved: false
+
+  eppo_ex_refinery_fo1500_2s:
+    exact_label: "FO 1500 (2) 2%S"
+    unit: BAHT/LITRE
+    eligible_for_c7_full_archive_ingestion: true
+    semantic_status: stable_in_audited_window
+    timing_basis: latest_vintage_policy_lag_2m
+    feature_semantics_approved: false
+    model_feature_approved: false
+
+  eppo_ex_refinery_hsd:
+    exact_label: "H-DIESEL"
+    unit: BAHT/LITRE
+    eligible_for_c7_full_archive_ingestion: conditional
+    semantic_status: january_2024_definition_gap
+    ordinary_h_diesel_missing_days: 22
+    silent_blend_substitution_permitted: false
+    imputation_permitted: false
+    timing_basis: latest_vintage_policy_lag_2m
+    feature_semantics_approved: false
+    model_feature_approved: false
+    forbidden_substitutes: ["H-DIESEL B7", "H-DIESEL B10", "H-DIESEL B20"]
+    january_2024_handling: >-
+      The gap stands. January 2024 publishes only blend definitions, so ordinary
+      H-DIESEL has no value those days. It is neither filled with a blend nor
+      dropped silently.
+
+# ---------------------------------------------------------------------------
+# Transformation status. Two stages, never one ambiguous "eligible".
+# ---------------------------------------------------------------------------
+transformation_status:
+  price_level:
+    historical_depth_sufficient: true
+    source_ready_for_transformation: false
+  log_change_1m_pct:
+    historical_depth_sufficient: true
+    source_ready_for_transformation: false
+  log_change_3m_pct:
+    historical_depth_sufficient: true
+    source_ready_for_transformation: false
+  log_change_12m_pct:
+    historical_depth_sufficient: true
+    source_ready_for_transformation: false
+  realized_volatility_3m_pct:
+    historical_depth_sufficient: true
+    source_ready_for_transformation: false
+transformation_readiness_blockers:
+  - complete daily ingestion not performed
+  - monthly aggregation contract not approved
+  - availability policy not yet enforced in a built table
+transformations_created_in_c6_5: false
+
+# ---------------------------------------------------------------------------
+# C7 authorization boundary.
+# ---------------------------------------------------------------------------
+c7_authorization:
+  c7_full_archive_ingestion_authorized: true
+  c7_monthly_source_aggregation_authorized: conditional
+  c7_predictive_feature_creation_authorized: false
+  c7_target_join_authorized: false
+  c7_modeling_authorized: false
+  aggregation_condition: >-
+    Monthly aggregation stays conditional until C7 retrieves and validates the
+    complete required daily archive.
+
+# ---------------------------------------------------------------------------
+# Implementation status. Task C7 EXECUTED this policy; it did not re-decide it.
+# Every policy field above is unchanged.
+# ---------------------------------------------------------------------------
+implemented_by:
+  task: C7
+  config: configs/eppo_monthly_source.yaml
+  policy_fields_changed: false
+  selector: select_monthly_source_available_at_issue
+  daily_rows_stamped: 3625
+  monthly_rows_stamped: 195
+  source_available_as_of_non_null_rows: 0
+  policy_available_month_rule_applied: reference_month_plus_2_months
+  c7_full_archive_ingestion_completed: true
+  c7_monthly_source_aggregation_built: true
+  c7_monthly_aggregation_contract_approved: false
+  c7_predictive_feature_creation_authorized: false
+  c7_target_join_authorized: false
+  c7_modeling_authorized: false
+  note: >-
+    The two-month lag remains a conservative project policy. C7 measured no
+    publication delay and minimum_verified_publication_lag_months stays null.

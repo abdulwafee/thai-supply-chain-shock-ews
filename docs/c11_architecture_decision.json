@@ -1,0 +1,1354 @@
+{
+ "accounting": {
+  "coefficient_uncertainty_computed": false,
+  "cross_sectional_rows_create_additional_fuel_oil_histories": false,
+  "cross_sectional_rows_help_identify_exposure_heterogeneity": true,
+  "eligible_industries": 11,
+  "full_rank_is_evidence_of_predictive_usefulness": false,
+  "industry_fixed_effects": 11,
+  "interaction_slopes_per_horizon": 5,
+  "issue_month_clusters": 15,
+  "observed_full_design_rank": {
+   "fo1500_direct_sector093": 21,
+   "fo600_direct_sector093": 21
+  },
+  "observed_issue_month_clusters": 15,
+  "observed_panel_rows": {
+   "fo1500_direct_sector093": 165,
+   "fo600_direct_sector093": 165
+  },
+  "observed_total_candidate_c_columns": {
+   "fo1500_direct_sector093": 21,
+   "fo600_direct_sector093": 21
+  },
+  "outcome_related_effective_sample_size_computed": false,
+  "overlapping_monthly_transformations_remain": true,
+  "p_values_computed": false,
+  "panel_rows": 165,
+  "parameter_feasibility_equals_statistical_power": false,
+  "redundant_global_intercept": false,
+  "serial_dependence_remains": true,
+  "source_slopes_per_horizon": 5,
+  "unique_issue_months": 15
+ },
+ "authorization": {
+  "architecture_selected_from_outcomes": false,
+  "development_modeling_authorized": false,
+  "locked_test_accessed": false,
+  "locked_test_evaluation_authorized": false,
+  "model_feature_approved": false,
+  "model_fitted": false,
+  "modeling_architecture_selected": "pooled_common_effect_plus_centered_sector093_interaction",
+  "pooled_exposure_interaction_identifiable": true,
+  "predictive_estimand_defined": true,
+  "predictive_performance_computed": false,
+  "primary_channel_selected": false,
+  "separate_conditioned_architecture_rejected_as_reparameterization": true,
+  "target_join_authorized": false,
+  "target_joined": false,
+  "target_values_read": false
+ },
+ "availability": {
+  "development_issue_months": [
+   "2024-01",
+   "2025-03"
+  ],
+  "intact": true,
+  "issue_keys_and_metadata_may_be_inspected": true,
+  "lag_basis": "conservative_policy_not_historical_measurement",
+  "latest_vintage_source_values": true,
+  "locked_issue_months_inaccessible": true,
+  "operational_lag_is_measured": false,
+  "operational_source_lag_months": 2,
+  "point_in_time_source_support": false,
+  "purge_issue_months": [
+   "2025-04",
+   "2025-06"
+  ],
+  "purge_or_locked_feature_target_rows_materialised": false,
+  "source_available_as_of": null,
+  "structural_available_by": "2020-03-31"
+ },
+ "c10_fingerprint_discrepancy": {
+  "absolute_tolerance_equivalence_classes_fo1500": 1,
+  "absolute_tolerance_equivalence_classes_fo600": 1,
+  "c10_rewritten": false,
+  "discrepancy_suppressed": false,
+  "equivalence_rule_used_for_the_decision": "absolute_tolerance_equivalence_class",
+  "handled_by": "The preregistered absolute-tolerance equivalence rule decides. The rounded significant-digit fingerprint count is reported unchanged beside it and is not used as the equivalence rule. C10 is neither rewritten nor suppressed.",
+  "max_standardized_design_residual_fo1500": 2.6645352591003757e-15,
+  "max_standardized_design_residual_fo600": 4.385164106834871e-15,
+  "preserved": true,
+  "rounded_fingerprint_count_fo1500": 1,
+  "rounded_fingerprint_count_fo600": 11,
+  "rounded_fingerprint_count_used_for_the_decision": false,
+  "standardization_tolerance": 1e-09,
+  "thresholds_changed_after_observation": false
+ },
+ "candidate_b_equivalence": {
+  "fo1500_direct_sector093": {
+   "all_are_exact_column_rescalings": true,
+   "all_column_spaces_coincide": true,
+   "coefficient_map": "gamma[g,h,f] = beta[g,h,f] / E[g]",
+   "industries_checked": 11,
+   "max_column_space_projector_gap": 4.440892098500626e-16,
+   "max_per_industry_standardized_gap": 4.440892098500626e-16,
+   "per_industry": {
+    "IND-01": {
+     "coefficient_map": "gamma[g,h,f] = beta[g,h,f] / E[g]",
+     "column_space_projector_max_gap": 3.0878077872387166e-16,
+     "column_spaces_coincide": true,
+     "exact_column_rescaling_max_gap": 0.0,
+     "exposure": 0.008555722891035141,
+     "industry_id": "IND-01",
+     "is_exact_column_rescaling": true,
+     "per_industry_standardization_removes_exposure": true,
+     "per_industry_standardized_max_gap": 4.440892098500626e-16,
+     "reason": "Within one industry E_g is a positive scalar, so E_g x spans the same column space as x. The two designs are the same design in different coordinates: no data can distinguish them, and only the printed coefficients differ.",
+     "separate_conditioned_model_is_distinct_architecture": false
+    },
+    "IND-02": {
+     "coefficient_map": "gamma[g,h,f] = beta[g,h,f] / E[g]",
+     "column_space_projector_max_gap": 3.3306690738754696e-16,
+     "column_spaces_coincide": true,
+     "exact_column_rescaling_max_gap": 0.0,
+     "exposure": 0.011393463166295026,
+     "industry_id": "IND-02",
+     "is_exact_column_rescaling": true,
+     "per_industry_standardization_removes_exposure": true,
+     "per_industry_standardized_max_gap": 4.440892098500626e-16,
+     "reason": "Within one industry E_g is a positive scalar, so E_g x spans the same column space as x. The two designs are the same design in different coordinates: no data can distinguish them, and only the printed coefficients differ.",
+     "separate_conditioned_model_is_distinct_architecture": false
+    },
+    "IND-03": {
+     "coefficient_map": "gamma[g,h,f] = beta[g,h,f] / E[g]",
+     "column_space_projector_max_gap": 3.885780586188048e-16,
+     "column_spaces_coincide": true,
+     "exact_column_rescaling_max_gap": 0.0,
+     "exposure": 0.010065266373243752,
+     "industry_id": "IND-03",
+     "is_exact_column_rescaling": true,
+     "per_industry_standardization_removes_exposure": true,
+     "per_industry_standardized_max_gap": 4.440892098500626e-16,
+     "reason": "Within one industry E_g is a positive scalar, so E_g x spans the same column space as x. The two designs are the same design in different coordinates: no data can distinguish them, and only the printed coefficients differ.",
+     "separate_conditioned_model_is_distinct_architecture": false
+    },
+    "IND-05": {
+     "coefficient_map": "gamma[g,h,f] = beta[g,h,f] / E[g]",
+     "column_space_projector_max_gap": 4.440892098500626e-16,
+     "column_spaces_coincide": true,
+     "exact_column_rescaling_max_gap": 0.0,
+     "exposure": 0.06415595327542685,
+     "industry_id": "IND-05",
+     "is_exact_column_rescaling": true,
+     "per_industry_standardization_removes_exposure": true,
+     "per_industry_standardized_max_gap": 4.440892098500626e-16,
+     "reason": "Within one industry E_g is a positive scalar, so E_g x spans the same column space as x. The two designs are the same design in different coordinates: no data can distinguish them, and only the printed coefficients differ.",
+     "separate_conditioned_model_is_distinct_architecture": false
+    },
+    "IND-06": {
+     "coefficient_map": "gamma[g,h,f] = beta[g,h,f] / E[g]",
+     "column_space_projector_max_gap": 3.885780586188048e-16,
+     "column_spaces_coincide": true,
+     "exact_column_rescaling_max_gap": 0.0,
+     "exposure": 0.014320736404304002,
+     "industry_id": "IND-06",
+     "is_exact_column_rescaling": true,
+     "per_industry_standardization_removes_exposure": true,
+     "per_industry_standardized_max_gap": 4.440892098500626e-16,
+     "reason": "Within one industry E_g is a positive scalar, so E_g x spans the same column space as x. The two designs are the same design in different coordinates: no data can distinguish them, and only the printed coefficients differ.",
+     "separate_conditioned_model_is_distinct_architecture": false
+    },
+    "IND-07": {
+     "coefficient_map": "gamma[g,h,f] = beta[g,h,f] / E[g]",
+     "column_space_projector_max_gap": 2.220446049250313e-16,
+     "column_spaces_coincide": true,
+     "exact_column_rescaling_max_gap": 0.0,
+     "exposure": 0.03464829695362992,
+     "industry_id": "IND-07",
+     "is_exact_column_rescaling": true,
+     "per_industry_standardization_removes_exposure": true,
+     "per_industry_standardized_max_gap": 4.440892098500626e-16,
+     "reason": "Within one industry E_g is a positive scalar, so E_g x spans the same column space as x. The two designs are the same design in different coordinates: no data can distinguish them, and only the printed coefficients differ.",
+     "separate_conditioned_model_is_distinct_architecture": false
+    },
+    "IND-08": {
+     "coefficient_map": "gamma[g,h,f] = beta[g,h,f] / E[g]",
+     "column_space_projector_max_gap": 3.885780586188048e-16,
+     "column_spaces_coincide": true,
+     "exact_column_rescaling_max_gap": 0.0,
+     "exposure": 0.026906393544165897,
+     "industry_id": "IND-08",
+     "is_exact_column_rescaling": true,
+     "per_industry_standardization_removes_exposure": true,
+     "per_industry_standardized_max_gap": 4.440892098500626e-16,
+     "reason": "Within one industry E_g is a positive scalar, so E_g x spans the same column space as x. The two designs are the same design in different coordinates: no data can distinguish them, and only the printed coefficients differ.",
+     "separate_conditioned_model_is_distinct_architecture": false
+    },
+    "IND-09": {
+     "coefficient_map": "gamma[g,h,f] = beta[g,h,f] / E[g]",
+     "column_space_projector_max_gap": 2.7755575615628914e-16,
+     "column_spaces_coincide": true,
+     "exact_column_rescaling_max_gap": 0.0,
+     "exposure": 0.005070857229059201,
+     "industry_id": "IND-09",
+     "is_exact_column_rescaling": true,
+     "per_industry_standardization_removes_exposure": true,
+     "per_industry_standardized_max_gap": 4.440892098500626e-16,
+     "reason": "Within one industry E_g is a positive scalar, so E_g x spans the same column space as x. The two designs are the same design in different coordinates: no data can distinguish them, and only the printed coefficients differ.",
+     "separate_conditioned_model_is_distinct_architecture": false
+    },
+    "IND-10": {
+     "coefficient_map": "gamma[g,h,f] = beta[g,h,f] / E[g]",
+     "column_space_projector_max_gap": 3.400058012914542e-16,
+     "column_spaces_coincide": true,
+     "exact_column_rescaling_max_gap": 0.0,
+     "exposure": 0.007521158560093995,
+     "industry_id": "IND-10",
+     "is_exact_column_rescaling": true,
+     "per_industry_standardization_removes_exposure": true,
+     "per_industry_standardized_max_gap": 4.440892098500626e-16,
+     "reason": "Within one industry E_g is a positive scalar, so E_g x spans the same column space as x. The two designs are the same design in different coordinates: no data can distinguish them, and only the printed coefficients differ.",
+     "separate_conditioned_model_is_distinct_architecture": false
+    },
+    "IND-11": {
+     "coefficient_map": "gamma[g,h,f] = beta[g,h,f] / E[g]",
+     "column_space_projector_max_gap": 2.7755575615628914e-16,
+     "column_spaces_coincide": true,
+     "exact_column_rescaling_max_gap": 0.0,
+     "exposure": 0.008711171916442974,
+     "industry_id": "IND-11",
+     "is_exact_column_rescaling": true,
+     "per_industry_standardization_removes_exposure": true,
+     "per_industry_standardized_max_gap": 4.440892098500626e-16,
+     "reason": "Within one industry E_g is a positive scalar, so E_g x spans the same column space as x. The two designs are the same design in different coordinates: no data can distinguish them, and only the printed coefficients differ.",
+     "separate_conditioned_model_is_distinct_architecture": false
+    },
+    "IND-12": {
+     "coefficient_map": "gamma[g,h,f] = beta[g,h,f] / E[g]",
+     "column_space_projector_max_gap": 3.5735303605122226e-16,
+     "column_spaces_coincide": true,
+     "exact_column_rescaling_max_gap": 0.0,
+     "exposure": 0.004748292939321325,
+     "industry_id": "IND-12",
+     "is_exact_column_rescaling": true,
+     "per_industry_standardization_removes_exposure": true,
+     "per_industry_standardized_max_gap": 4.440892098500626e-16,
+     "reason": "Within one industry E_g is a positive scalar, so E_g x spans the same column space as x. The two designs are the same design in different coordinates: no data can distinguish them, and only the printed coefficients differ.",
+     "separate_conditioned_model_is_distinct_architecture": false
+    }
+   },
+   "separate_conditioned_model_is_distinct_architecture": false
+  },
+  "fo600_direct_sector093": {
+   "all_are_exact_column_rescalings": true,
+   "all_column_spaces_coincide": true,
+   "coefficient_map": "gamma[g,h,f] = beta[g,h,f] / E[g]",
+   "industries_checked": 11,
+   "max_column_space_projector_gap": 6.522560269672795e-16,
+   "max_per_industry_standardized_gap": 4.440892098500626e-16,
+   "per_industry": {
+    "IND-01": {
+     "coefficient_map": "gamma[g,h,f] = beta[g,h,f] / E[g]",
+     "column_space_projector_max_gap": 3.0531133177191805e-16,
+     "column_spaces_coincide": true,
+     "exact_column_rescaling_max_gap": 0.0,
+     "exposure": 0.008555722891035141,
+     "industry_id": "IND-01",
+     "is_exact_column_rescaling": true,
+     "per_industry_standardization_removes_exposure": true,
+     "per_industry_standardized_max_gap": 4.440892098500626e-16,
+     "reason": "Within one industry E_g is a positive scalar, so E_g x spans the same column space as x. The two designs are the same design in different coordinates: no data can distinguish them, and only the printed coefficients differ.",
+     "separate_conditioned_model_is_distinct_architecture": false
+    },
+    "IND-02": {
+     "coefficient_map": "gamma[g,h,f] = beta[g,h,f] / E[g]",
+     "column_space_projector_max_gap": 3.885780586188048e-16,
+     "column_spaces_coincide": true,
+     "exact_column_rescaling_max_gap": 0.0,
+     "exposure": 0.011393463166295026,
+     "industry_id": "IND-02",
+     "is_exact_column_rescaling": true,
+     "per_industry_standardization_removes_exposure": true,
+     "per_industry_standardized_max_gap": 4.440892098500626e-16,
+     "reason": "Within one industry E_g is a positive scalar, so E_g x spans the same column space as x. The two designs are the same design in different coordinates: no data can distinguish them, and only the printed coefficients differ.",
+     "separate_conditioned_model_is_distinct_architecture": false
+    },
+    "IND-03": {
+     "coefficient_map": "gamma[g,h,f] = beta[g,h,f] / E[g]",
+     "column_space_projector_max_gap": 2.5153490401663703e-16,
+     "column_spaces_coincide": true,
+     "exact_column_rescaling_max_gap": 0.0,
+     "exposure": 0.010065266373243752,
+     "industry_id": "IND-03",
+     "is_exact_column_rescaling": true,
+     "per_industry_standardization_removes_exposure": true,
+     "per_industry_standardized_max_gap": 2.220446049250313e-16,
+     "reason": "Within one industry E_g is a positive scalar, so E_g x spans the same column space as x. The two designs are the same design in different coordinates: no data can distinguish them, and only the printed coefficients differ.",
+     "separate_conditioned_model_is_distinct_architecture": false
+    },
+    "IND-05": {
+     "coefficient_map": "gamma[g,h,f] = beta[g,h,f] / E[g]",
+     "column_space_projector_max_gap": 4.718447854656915e-16,
+     "column_spaces_coincide": true,
+     "exact_column_rescaling_max_gap": 0.0,
+     "exposure": 0.06415595327542685,
+     "industry_id": "IND-05",
+     "is_exact_column_rescaling": true,
+     "per_industry_standardization_removes_exposure": true,
+     "per_industry_standardized_max_gap": 2.220446049250313e-16,
+     "reason": "Within one industry E_g is a positive scalar, so E_g x spans the same column space as x. The two designs are the same design in different coordinates: no data can distinguish them, and only the printed coefficients differ.",
+     "separate_conditioned_model_is_distinct_architecture": false
+    },
+    "IND-06": {
+     "coefficient_map": "gamma[g,h,f] = beta[g,h,f] / E[g]",
+     "column_space_projector_max_gap": 2.220446049250313e-16,
+     "column_spaces_coincide": true,
+     "exact_column_rescaling_max_gap": 0.0,
+     "exposure": 0.014320736404304002,
+     "industry_id": "IND-06",
+     "is_exact_column_rescaling": true,
+     "per_industry_standardization_removes_exposure": true,
+     "per_industry_standardized_max_gap": 4.440892098500626e-16,
+     "reason": "Within one industry E_g is a positive scalar, so E_g x spans the same column space as x. The two designs are the same design in different coordinates: no data can distinguish them, and only the printed coefficients differ.",
+     "separate_conditioned_model_is_distinct_architecture": false
+    },
+    "IND-07": {
+     "coefficient_map": "gamma[g,h,f] = beta[g,h,f] / E[g]",
+     "column_space_projector_max_gap": 4.570996359198887e-16,
+     "column_spaces_coincide": true,
+     "exact_column_rescaling_max_gap": 0.0,
+     "exposure": 0.03464829695362992,
+     "industry_id": "IND-07",
+     "is_exact_column_rescaling": true,
+     "per_industry_standardization_removes_exposure": true,
+     "per_industry_standardized_max_gap": 4.440892098500626e-16,
+     "reason": "Within one industry E_g is a positive scalar, so E_g x spans the same column space as x. The two designs are the same design in different coordinates: no data can distinguish them, and only the printed coefficients differ.",
+     "separate_conditioned_model_is_distinct_architecture": false
+    },
+    "IND-08": {
+     "coefficient_map": "gamma[g,h,f] = beta[g,h,f] / E[g]",
+     "column_space_projector_max_gap": 4.85722573273506e-16,
+     "column_spaces_coincide": true,
+     "exact_column_rescaling_max_gap": 0.0,
+     "exposure": 0.026906393544165897,
+     "industry_id": "IND-08",
+     "is_exact_column_rescaling": true,
+     "per_industry_standardization_removes_exposure": true,
+     "per_industry_standardized_max_gap": 4.440892098500626e-16,
+     "reason": "Within one industry E_g is a positive scalar, so E_g x spans the same column space as x. The two designs are the same design in different coordinates: no data can distinguish them, and only the printed coefficients differ.",
+     "separate_conditioned_model_is_distinct_architecture": false
+    },
+    "IND-09": {
+     "coefficient_map": "gamma[g,h,f] = beta[g,h,f] / E[g]",
+     "column_space_projector_max_gap": 4.718447854656915e-16,
+     "column_spaces_coincide": true,
+     "exact_column_rescaling_max_gap": 0.0,
+     "exposure": 0.005070857229059201,
+     "industry_id": "IND-09",
+     "is_exact_column_rescaling": true,
+     "per_industry_standardization_removes_exposure": true,
+     "per_industry_standardized_max_gap": 4.440892098500626e-16,
+     "reason": "Within one industry E_g is a positive scalar, so E_g x spans the same column space as x. The two designs are the same design in different coordinates: no data can distinguish them, and only the printed coefficients differ.",
+     "separate_conditioned_model_is_distinct_architecture": false
+    },
+    "IND-10": {
+     "coefficient_map": "gamma[g,h,f] = beta[g,h,f] / E[g]",
+     "column_space_projector_max_gap": 3.7470027081099033e-16,
+     "column_spaces_coincide": true,
+     "exact_column_rescaling_max_gap": 0.0,
+     "exposure": 0.007521158560093995,
+     "industry_id": "IND-10",
+     "is_exact_column_rescaling": true,
+     "per_industry_standardization_removes_exposure": true,
+     "per_industry_standardized_max_gap": 2.220446049250313e-16,
+     "reason": "Within one industry E_g is a positive scalar, so E_g x spans the same column space as x. The two designs are the same design in different coordinates: no data can distinguish them, and only the printed coefficients differ.",
+     "separate_conditioned_model_is_distinct_architecture": false
+    },
+    "IND-11": {
+     "coefficient_map": "gamma[g,h,f] = beta[g,h,f] / E[g]",
+     "column_space_projector_max_gap": 3.3306690738754696e-16,
+     "column_spaces_coincide": true,
+     "exact_column_rescaling_max_gap": 0.0,
+     "exposure": 0.008711171916442974,
+     "industry_id": "IND-11",
+     "is_exact_column_rescaling": true,
+     "per_industry_standardization_removes_exposure": true,
+     "per_industry_standardized_max_gap": 4.440892098500626e-16,
+     "reason": "Within one industry E_g is a positive scalar, so E_g x spans the same column space as x. The two designs are the same design in different coordinates: no data can distinguish them, and only the printed coefficients differ.",
+     "separate_conditioned_model_is_distinct_architecture": false
+    },
+    "IND-12": {
+     "coefficient_map": "gamma[g,h,f] = beta[g,h,f] / E[g]",
+     "column_space_projector_max_gap": 6.522560269672795e-16,
+     "column_spaces_coincide": true,
+     "exact_column_rescaling_max_gap": 0.0,
+     "exposure": 0.004748292939321325,
+     "industry_id": "IND-12",
+     "is_exact_column_rescaling": true,
+     "per_industry_standardization_removes_exposure": true,
+     "per_industry_standardized_max_gap": 4.440892098500626e-16,
+     "reason": "Within one industry E_g is a positive scalar, so E_g x spans the same column space as x. The two designs are the same design in different coordinates: no data can distinguish them, and only the printed coefficients differ.",
+     "separate_conditioned_model_is_distinct_architecture": false
+    }
+   },
+   "separate_conditioned_model_is_distinct_architecture": false
+  }
+ },
+ "candidates": {
+  "A_exposure_as_eligibility_gate": {
+   "all_eligible_industries_share_one_predictor_history": true,
+   "estimates_exposure_proportional_heterogeneity": false,
+   "exposure_enters_predictor_values": false,
+   "exposure_role": "eligibility_and_provenance_only",
+   "formula": "r[g,t,h] = alpha[g,h] + sum_f beta[g,h,f] * x[t,f]",
+   "retained_as_documented_alternative": true,
+   "retains_common_fuel_oil_time_series": true,
+   "separate_industry_slopes": true
+  },
+  "B_separate_conditioned_industry_models": {
+   "coefficient_map": "gamma[g,h,f] = beta[g,h,f] / E[g] for E[g] > 0",
+   "expected_distinct_architecture": false,
+   "expected_finding": "coefficient_reparameterization_of_candidate_A",
+   "exposure_role": "per_industry_positive_scalar",
+   "formula": "r[g,t,h] = alpha[g,h] + sum_f gamma[g,h,f] * E[g] * x[t,f]",
+   "must_not_be_selected_as_a_distinct_structural_architecture": true
+  },
+  "C_pooled_common_effect_plus_centered_exposure_interaction": {
+   "common_main_effect_required": true,
+   "exposure_role": "centered_cross_industry_interaction",
+   "formula": "r[g,t,h] = alpha[g,h] + sum_f beta[h,f] * xtilde[t,f] + sum_f theta[h,f] * ec[g] * xtilde[t,f]",
+   "identifies_constrained_cross_industry_slope_pattern": true,
+   "industry_fixed_effects_required": true,
+   "interaction_required": true
+  }
+ },
+ "channels": {
+  "co_equal_separate_structural_variants": true,
+  "described_as_independent_structural_channels": false,
+  "joint_design_refused": true,
+  "later_evaluation_rule": "A later development task that evaluates both must report them separately and must not promote the better result as a confirmatory channel selection.",
+  "outcome_based_channel_selection_permitted": false,
+  "parallel_exploratory_variants_permitted_in_future_design": true,
+  "primary_channel_selected": false,
+  "prohibited": [
+   "selection_by_rank",
+   "selection_by_condition_number",
+   "selection_by_variance",
+   "selection_by_correlation",
+   "selection_by_any_outcome",
+   "combination",
+   "averaging",
+   "pca_across_the_two_channels",
+   "simultaneous_entry_in_one_model"
+  ],
+  "shared_structural_exposure_group": "io_sector_093",
+  "simultaneous_channel_entry_permitted": false,
+  "structural_basis_for_channel_preference_available": false,
+  "variants": [
+   "fo600_direct_sector093",
+   "fo1500_direct_sector093"
+  ]
+ },
+ "config_version": "fuel_oil_modeling_architecture_v1",
+ "content_checksum": "6d525648f0e7e30860dc065c17a896426a0cf008f7ef62096974d4954c9f6d77",
+ "criteria_frozen_before_candidate_designs_built": true,
+ "criteria_reasserted_after_identification_audit": true,
+ "criteria_version": "c11_architecture_criteria_v1",
+ "decision_checksum": "001b1d901311c1da0de1e707ca10a97f91e54584b21e52ee8c943421fc068403",
+ "decision_criteria": {
+  "all_gates_must_pass": true,
+  "candidate_ids": [
+   "A_exposure_as_eligibility_gate",
+   "B_separate_conditioned_industry_models",
+   "C_pooled_common_effect_plus_centered_exposure_interaction"
+  ],
+  "causal_effect_claimed": false,
+  "channel_selection_permitted": false,
+  "criteria_version": "c11_architecture_criteria_v1",
+  "decision_ordering": [
+   "reject_candidate_b_as_reparameterization",
+   "evaluate_candidate_c_gates",
+   "select_candidate_c_if_every_gate_passes",
+   "otherwise_select_nothing_and_report_the_blocker"
+  ],
+  "duplicate_column_tolerance": 1e-12,
+  "equivalence_rule": "absolute_tolerance_equivalence_class",
+  "estimand_kind": "predictive_interaction",
+  "estimand_requires_exposure_heterogeneity": true,
+  "estimand_statement": "The incremental forecast correction associated with a common national ex-refinery fuel-oil signal, allowing the correction amplitude to vary across industries according to frozen direct purchases from NESDC sector 093.",
+  "estimated_elasticity_claimed": false,
+  "expectation_overrides_a_failed_gate": false,
+  "expected_combined_source_and_interaction_rank": 10,
+  "expected_eligible_industries": 11,
+  "expected_full_design_rank": 21,
+  "expected_interaction_block_rank": 5,
+  "expected_panel_rows": 165,
+  "expected_selection": "pooled_common_effect_plus_centered_sector093_interaction",
+  "expected_source_block_rank": 5,
+  "expected_unique_issue_months": 15,
+  "exposure_centering_rule": "subtract_the_mean_of_the_frozen_eligible_industry_exposure_vector",
+  "exposure_centering_universe": "eleven_eligible_industries",
+  "industry_fixed_effect_coding": "industry_indicators_no_global_intercept",
+  "interaction_per_industry_standardization": false,
+  "mandatory_gates": [
+   "matches_the_exposure_heterogeneity_estimand",
+   "exposure_varies_across_eligible_industries",
+   "pooled_interaction_survives_the_specified_preprocessing",
+   "combined_feature_only_design_is_identifiable",
+   "ind_04_excluded_without_conversion_to_zero",
+   "source_channels_remain_separate",
+   "no_outcome_or_model_result_used",
+   "interpretation_remains_predictive_and_non_causal",
+   "availability_and_lineage_intact"
+  ],
+  "monetary_cost_claimed": false,
+  "permitted_training_issue_months": [
+   "2024-01",
+   "2025-03"
+  ],
+  "prohibited_artifacts": [
+   "b3_target_values",
+   "forecast_target_raw",
+   "production_stress_month",
+   "industry_month_targets",
+   "industry_month_panel_with_target_outcomes",
+   "b4_walk_forward_predictions",
+   "d1_development_predictions",
+   "d1_development_results",
+   "d3_operational_baseline_results",
+   "d3_operational_predictions",
+   "d4_operational_model_predictions",
+   "d4_operational_model_results",
+   "locked_test_outcomes"
+  ],
+  "prohibited_statistics": [
+   "mae",
+   "rmse",
+   "predictive_performance",
+   "high_stress_outcome_rate",
+   "correlation_with_a_target",
+   "coefficient_estimate",
+   "p_value",
+   "confidence_interval"
+  ],
+  "rank_tolerance": 1e-10,
+  "redundant_global_intercept": false,
+  "rounded_fingerprint_count_used_for_the_decision": false,
+  "source_scaling_ddof": 0,
+  "source_scaling_rule": "standardize_across_permitted_training_issue_months_only",
+  "target_or_outcome_access_permitted": false,
+  "tie_handling": "There is no tie to break. Candidate B is rejected on an algebraic identity rather than a comparison, and Candidate A is retained as a documented alternative rather than ranked against C. If a mandatory gate fails, no architecture is selected; a failed gate is never broken in favour of the expected answer.",
+  "transformation_removal_permitted": false
+ },
+ "decision_criteria_checksum": "0f81513566f98d1d5047dcb298935607f5abdb35510cf0e3c53c1bc6998d8397",
+ "decision_rule": {
+  "all_gates_must_pass": true,
+  "candidate_a_retained_as_documented_alternative": true,
+  "candidate_b_rejected_as_reparameterization": true,
+  "expectation_overrides_a_failed_gate": false,
+  "expected_selection": "pooled_common_effect_plus_centered_sector093_interaction",
+  "mandatory_gates": [
+   "matches_the_exposure_heterogeneity_estimand",
+   "exposure_varies_across_eligible_industries",
+   "pooled_interaction_survives_the_specified_preprocessing",
+   "combined_feature_only_design_is_identifiable",
+   "ind_04_excluded_without_conversion_to_zero",
+   "source_channels_remain_separate",
+   "no_outcome_or_model_result_used",
+   "interpretation_remains_predictive_and_non_causal",
+   "availability_and_lineage_intact"
+  ],
+  "ordering": [
+   "reject_candidate_b_as_reparameterization",
+   "evaluate_candidate_c_gates",
+   "select_candidate_c_if_every_gate_passes",
+   "otherwise_select_nothing_and_report_the_blocker"
+  ],
+  "tie_handling": "There is no tie to break. Candidate B is rejected on an algebraic identity rather than a comparison, and Candidate A is retained as a documented alternative rather than ranked against C. If a mandatory gate fails, no architecture is selected; a failed gate is never broken in favour of the expected answer."
+ },
+ "estimand": {
+  "causal_effect": false,
+  "eppo_price_stage": "ex_refinery",
+  "estimated_elasticity": false,
+  "evaluation_basis_if_later_authorized": "release_lag_aware_latest_vintage",
+  "fuel_oil_determines_industrial_stress": false,
+  "io_coefficient_basis": "purchasers_price_import_inclusive",
+  "kind": "predictive_interaction",
+  "monetary_cost_per_unit_of_output": false,
+  "narrative": "The estimand is the incremental forecast correction associated with a common national ex-refinery fuel-oil signal, where the amplitude of that correction is allowed to vary across industries according to frozen direct purchases from NESDC sector 093. It is a predictive interaction. The sector-093 coefficient is a structural proxy taken as given, not a quantity this project estimates, and the interaction has no currency reading: the I/O coefficient is stated in purchasers' prices and is import-inclusive, while EPPO measures the ex-refinery stage. If a model is later authorized it would be evaluated on release-lag-aware latest-vintage data, which is not a point-in-time backtest. Nothing here asserts that fuel-oil prices drive industrial stress.",
+  "point_in_time_backtest": false,
+  "requires_exposure_associated_heterogeneity": true,
+  "sector_093_exposure_is_a_structural_proxy": true,
+  "statement": "The incremental forecast correction associated with a common national ex-refinery fuel-oil signal, allowing the correction amplitude to vary across industries according to frozen direct purchases from NESDC sector 093.",
+  "valuation_basis_alignment": "partial_mismatch_purchasers_price_coefficient_x_ex_refinery_price"
+ },
+ "gates": {
+  "availability_and_lineage_intact": true,
+  "combined_feature_only_design_is_identifiable": true,
+  "exposure_varies_across_eligible_industries": true,
+  "ind_04_excluded_without_conversion_to_zero": true,
+  "interpretation_remains_predictive_and_non_causal": true,
+  "matches_the_exposure_heterogeneity_estimand": true,
+  "no_outcome_or_model_result_used": true,
+  "pooled_interaction_survives_the_specified_preprocessing": true,
+  "source_channels_remain_separate": true
+ },
+ "gates_per_variant": {
+  "fo1500_direct_sector093": {
+   "availability_and_lineage_intact": true,
+   "combined_feature_only_design_is_identifiable": true,
+   "exposure_varies_across_eligible_industries": true,
+   "ind_04_excluded_without_conversion_to_zero": true,
+   "interpretation_remains_predictive_and_non_causal": true,
+   "matches_the_exposure_heterogeneity_estimand": true,
+   "no_outcome_or_model_result_used": true,
+   "pooled_interaction_survives_the_specified_preprocessing": true,
+   "source_channels_remain_separate": true
+  },
+  "fo600_direct_sector093": {
+   "availability_and_lineage_intact": true,
+   "combined_feature_only_design_is_identifiable": true,
+   "exposure_varies_across_eligible_industries": true,
+   "ind_04_excluded_without_conversion_to_zero": true,
+   "interpretation_remains_predictive_and_non_causal": true,
+   "matches_the_exposure_heterogeneity_estimand": true,
+   "no_outcome_or_model_result_used": true,
+   "pooled_interaction_survives_the_specified_preprocessing": true,
+   "source_channels_remain_separate": true
+  }
+ },
+ "generated_at_utc": "2026-08-30T01:24:26.741496+00:00",
+ "identification": {
+  "duplicate_column_tolerance": 1e-12,
+  "eligible_industries": 11,
+  "expected_combined_source_and_interaction_rank": 10,
+  "expected_constant_exposure_interaction_rank": 0,
+  "expected_exact_duplicate_columns": 0,
+  "expected_exposure_cross_industry_variance_positive": true,
+  "expected_full_design_rank": 21,
+  "expected_interaction_block_rank": 5,
+  "expected_invalid_coding_columns": 22,
+  "expected_invalid_coding_is_rank_deficient": true,
+  "expected_invalid_coding_rank": 21,
+  "expected_per_industry_standardized_combined_rank": 5,
+  "expected_source_block_rank": 5,
+  "industry_fixed_effect_columns": 11,
+  "interaction_columns": 5,
+  "interaction_columns_removed_by_preprocessing": 0,
+  "invalid_fixed_effect_coding": "global_intercept_plus_industry_indicators",
+  "near_zero_variance_threshold": 1e-12,
+  "observed": {
+   "fo1500_direct_sector093": {
+    "candidate_id": "C_pooled_common_effect_plus_centered_exposure_interaction",
+    "centered_exposure": {
+     "IND-01": -0.009271305586511956,
+     "IND-02": -0.0064335653112520715,
+     "IND-03": -0.007761762104303346,
+     "IND-05": 0.046328924797879756,
+     "IND-06": -0.003506292073243095,
+     "IND-07": 0.016821268476082823,
+     "IND-08": 0.0090793650666188,
+     "IND-09": -0.012756171248487897,
+     "IND-10": -0.010305869917453102,
+     "IND-11": -0.009115856561104124,
+     "IND-12": -0.013078735538225772
+    },
+    "column_blocks": {
+     "fixed_effects": [
+      "fe__IND-01",
+      "fe__IND-02",
+      "fe__IND-03",
+      "fe__IND-05",
+      "fe__IND-06",
+      "fe__IND-07",
+      "fe__IND-08",
+      "fe__IND-09",
+      "fe__IND-10",
+      "fe__IND-11",
+      "fe__IND-12"
+     ],
+     "interaction": [
+      "int__e093_x_log_change_12m_pct",
+      "int__e093_x_log_change_1m_pct",
+      "int__e093_x_log_change_3m_pct",
+      "int__e093_x_price_level",
+      "int__e093_x_realized_volatility_3m_pct"
+     ],
+     "source": [
+      "src__log_change_12m_pct",
+      "src__log_change_1m_pct",
+      "src__log_change_3m_pct",
+      "src__price_level",
+      "src__realized_volatility_3m_pct"
+     ]
+    },
+    "columns": 21,
+    "combined_source_and_interaction_rank": 10,
+    "constant_exposure_check": {
+     "all_zero": true,
+     "constant_exposure_interaction_rank": 0,
+     "identifies_heterogeneity": false,
+     "reason": "A constant exposure centres to zero for every industry, so the interaction block is identically zero. Reporting it as identifying slope heterogeneity would describe a column of zeros as evidence."
+    },
+    "design_checksum": "6807f4ca258b43bde4e4fced4cfddf1f53dccc350ccdeecb690f50fa4f4688a9",
+    "exact_duplicate_columns": [],
+    "exposure_cross_industry_spread": 0.059407660336105526,
+    "exposure_cross_industry_variance": 0.00029406628589472754,
+    "exposure_has_nonzero_cross_industry_variance": true,
+    "fixed_effect_block_rank": 11,
+    "full_design_is_full_column_rank": true,
+    "full_design_rank": 21,
+    "interaction_block_rank": 5,
+    "interaction_columns_removed_by_preprocessing": 0,
+    "invalid_fixed_effect_coding": {
+     "coding": "global_intercept_plus_industry_indicators",
+     "columns": 22,
+     "guard_raised": true,
+     "rank": 21,
+     "rank_deficient": true
+    },
+    "per_industry_standardization_check": {
+     "distinct_collapsed_interaction_blocks": 2,
+     "distinct_intended_interaction_blocks": 11,
+     "heterogeneity_collapses": true,
+     "intended_combined_rank": 10,
+     "interaction_magnitudes_lost": 9,
+     "per_industry_combined_rank_by_industry": {
+      "IND-01": 5,
+      "IND-02": 5,
+      "IND-03": 5,
+      "IND-05": 5,
+      "IND-06": 5,
+      "IND-07": 5,
+      "IND-08": 5,
+      "IND-09": 5,
+      "IND-10": 5,
+      "IND-11": 5,
+      "IND-12": 5
+     },
+     "per_industry_combined_ranks": [
+      5
+     ],
+     "per_industry_rank_lost": 5,
+     "reason": "Within industry g the interaction is e_g * xtilde, so per-industry standardisation returns sign(e_g) * standardize(xtilde) and that industry's combined block falls to rank 5 from 10. Stacking the industries does NOT show a global rank drop, because the centred exposures carry both signs and +xtilde and -xtilde span two directions. What is destroyed is the magnitude: 11 distinct exposure-proportional interaction blocks collapse to 2 sign groups. The preprocessing contract therefore forbids standardising the interaction inside an industry.",
+     "sign_identity_residual": 4.440892098500626e-16,
+     "stacked_per_industry_standardized_combined_rank": 10
+    },
+    "rank_tolerance": 1e-10,
+    "rows": 165,
+    "source_block_rank": 5,
+    "variant_id": "fo1500_direct_sector093"
+   },
+   "fo600_direct_sector093": {
+    "candidate_id": "C_pooled_common_effect_plus_centered_exposure_interaction",
+    "centered_exposure": {
+     "IND-01": -0.009271305586511956,
+     "IND-02": -0.0064335653112520715,
+     "IND-03": -0.007761762104303346,
+     "IND-05": 0.046328924797879756,
+     "IND-06": -0.003506292073243095,
+     "IND-07": 0.016821268476082823,
+     "IND-08": 0.0090793650666188,
+     "IND-09": -0.012756171248487897,
+     "IND-10": -0.010305869917453102,
+     "IND-11": -0.009115856561104124,
+     "IND-12": -0.013078735538225772
+    },
+    "column_blocks": {
+     "fixed_effects": [
+      "fe__IND-01",
+      "fe__IND-02",
+      "fe__IND-03",
+      "fe__IND-05",
+      "fe__IND-06",
+      "fe__IND-07",
+      "fe__IND-08",
+      "fe__IND-09",
+      "fe__IND-10",
+      "fe__IND-11",
+      "fe__IND-12"
+     ],
+     "interaction": [
+      "int__e093_x_log_change_12m_pct",
+      "int__e093_x_log_change_1m_pct",
+      "int__e093_x_log_change_3m_pct",
+      "int__e093_x_price_level",
+      "int__e093_x_realized_volatility_3m_pct"
+     ],
+     "source": [
+      "src__log_change_12m_pct",
+      "src__log_change_1m_pct",
+      "src__log_change_3m_pct",
+      "src__price_level",
+      "src__realized_volatility_3m_pct"
+     ]
+    },
+    "columns": 21,
+    "combined_source_and_interaction_rank": 10,
+    "constant_exposure_check": {
+     "all_zero": true,
+     "constant_exposure_interaction_rank": 0,
+     "identifies_heterogeneity": false,
+     "reason": "A constant exposure centres to zero for every industry, so the interaction block is identically zero. Reporting it as identifying slope heterogeneity would describe a column of zeros as evidence."
+    },
+    "design_checksum": "cd28fc267f197a6ee240f9eece2c8049535b8c4224f46e957a756c69aeb972ed",
+    "exact_duplicate_columns": [],
+    "exposure_cross_industry_spread": 0.059407660336105526,
+    "exposure_cross_industry_variance": 0.00029406628589472754,
+    "exposure_has_nonzero_cross_industry_variance": true,
+    "fixed_effect_block_rank": 11,
+    "full_design_is_full_column_rank": true,
+    "full_design_rank": 21,
+    "interaction_block_rank": 5,
+    "interaction_columns_removed_by_preprocessing": 0,
+    "invalid_fixed_effect_coding": {
+     "coding": "global_intercept_plus_industry_indicators",
+     "columns": 22,
+     "guard_raised": true,
+     "rank": 21,
+     "rank_deficient": true
+    },
+    "per_industry_standardization_check": {
+     "distinct_collapsed_interaction_blocks": 2,
+     "distinct_intended_interaction_blocks": 11,
+     "heterogeneity_collapses": true,
+     "intended_combined_rank": 10,
+     "interaction_magnitudes_lost": 9,
+     "per_industry_combined_rank_by_industry": {
+      "IND-01": 5,
+      "IND-02": 5,
+      "IND-03": 5,
+      "IND-05": 5,
+      "IND-06": 5,
+      "IND-07": 5,
+      "IND-08": 5,
+      "IND-09": 5,
+      "IND-10": 5,
+      "IND-11": 5,
+      "IND-12": 5
+     },
+     "per_industry_combined_ranks": [
+      5
+     ],
+     "per_industry_rank_lost": 5,
+     "reason": "Within industry g the interaction is e_g * xtilde, so per-industry standardisation returns sign(e_g) * standardize(xtilde) and that industry's combined block falls to rank 5 from 10. Stacking the industries does NOT show a global rank drop, because the centred exposures carry both signs and +xtilde and -xtilde span two directions. What is destroyed is the magnitude: 11 distinct exposure-proportional interaction blocks collapse to 2 sign groups. The preprocessing contract therefore forbids standardising the interaction inside an industry.",
+     "sign_identity_residual": 4.440892098500626e-16,
+     "stacked_per_industry_standardized_combined_rank": 10
+    },
+    "rank_tolerance": 1e-10,
+    "rows": 165,
+    "source_block_rank": 5,
+    "variant_id": "fo600_direct_sector093"
+   }
+  },
+  "on_failure": "select_no_architecture_and_report_the_blocker",
+  "panel_rows": 165,
+  "rank_tolerance": 1e-10,
+  "source_columns": 5,
+  "total_candidate_c_columns": 21,
+  "unique_issue_months": 15
+ },
+ "ind_04": {
+  "converted_to_observed_zero": false,
+  "direction_channel": "mixed_or_ambiguous",
+  "direction_forced_to_plus_one": false,
+  "direction_multiplier": null,
+  "excluded_from_fuel_oil_correction": true,
+  "exclusion_reason": "direction_is_mixed_not_zero_exposure",
+  "fuel_oil_residual_correction": "structurally_unavailable",
+  "industry_id": "IND-04",
+  "retains_operational_benchmark_prediction": true,
+  "silently_dropped_from_evaluation_denominators": false,
+  "used_to_estimate_the_cost_pressure_interaction": false,
+  "visible_in_audit_and_prediction_reconciliation": true
+ },
+ "inherited_c10": {
+  "c10_channel_selected": false,
+  "c10_content_checksum": "bb520f9e74f49afbf6f50d934dea6630c81ea366c24f78b548d03f4a95c24d1c",
+  "c10_diagnostic_contract_checksum": "1c88cdd7f2017aa94ee1b069be436c469ee08adcf649fe6ad4c981f995eb2041",
+  "c10_locked_test_accessed": false,
+  "c10_model_feature_approved": false,
+  "c10_model_trained": false,
+  "c10_target_joined": false,
+  "c9_phase_a_checksum": "d528aba4aedcb8b8051ad618d66d49c71239267fb26fd2ead292ee90b12c9703",
+  "conditioning_adds_cross_industry_scale": true,
+  "conditioning_adds_temporal_degrees_of_freedom": false,
+  "cross_sectional_rank_per_issue_month": 1,
+  "eligible_industries": 11,
+  "masked_cells_per_variant": 75,
+  "masked_industries": [
+   "IND-04"
+  ],
+  "matrix_columns_per_variant": 5,
+  "matrix_rows_per_variant": 180,
+  "normalized_equivalence_classes": 1,
+  "numeric_cells_per_variant": 825,
+  "per_industry_standardization_removes_exposure_scale": true,
+  "raw_industry_designs": 11,
+  "source_time_rank": 5,
+  "stacked_panel_rank": 5,
+  "standardized_equivalence_classes": 1,
+  "unique_issue_months": 15,
+  "variants": [
+   "fo600_direct_sector093",
+   "fo1500_direct_sector093"
+  ],
+  "variants_strictly_separate": true
+ },
+ "lineage": {
+  "candidate_design_checksums": {
+   "fo1500_direct_sector093": "6807f4ca258b43bde4e4fced4cfddf1f53dccc350ccdeecb690f50fa4f4688a9",
+   "fo600_direct_sector093": "cd28fc267f197a6ee240f9eece2c8049535b8c4224f46e957a756c69aeb972ed"
+  },
+  "criteria_checksum": "0f81513566f98d1d5047dcb298935607f5abdb35510cf0e3c53c1bc6998d8397",
+  "lineage_checksum": "73a3b1e6f680e2ea2be1f9f50d5fbcb7b21e53d0064dcfee222c725b49e33a4b",
+  "lineage_version": "c11_fuel_oil_architecture_decision_v1",
+  "re_derived_independently": true,
+  "references": {
+   "c10_content_checksum": "bb520f9e74f49afbf6f50d934dea6630c81ea366c24f78b548d03f4a95c24d1c",
+   "c10_diagnostic_contract_checksum": "1c88cdd7f2017aa94ee1b069be436c469ee08adcf649fe6ad4c981f995eb2041",
+   "c7_5_semantic_checksum": "8b36fd6e9ce7798905cb2b903b263908489a5632fdf54f41ba12b0a12b6bd24a",
+   "c8_transformation_formula_version": "c8_eppo_fuel_oil_transformations_v1",
+   "c9_conditioned_lineage_version": "c9_fuel_oil_direct_sector093_v1",
+   "c9_phase_a_checksum": "d528aba4aedcb8b8051ad618d66d49c71239267fb26fd2ead292ee90b12c9703",
+   "candidate_design_formula_version": "c11_fuel_oil_candidate_design_v1",
+   "channel_separation_policy": "co_equal_separate_variants_never_combined",
+   "exposure_centering_rule": "subtract_the_mean_of_the_frozen_eligible_industry_exposure_vector",
+   "industry_crosswalk_version": "c3_industry_exposure_v1",
+   "industry_fixed_effect_coding": "industry_indicators_no_global_intercept",
+   "nesdc_workbook_sha256": "7da4b4dca118af760844abd6c78ae01a83f313c8898321ac69e72be730e93c81",
+   "sector_093_exposure_vector_checksum": "94a6f07df433e101747d45ec50e4ab1caaa6fcb7d320db7308c2eeb742c824bb",
+   "source_scaling_rule": "standardize_across_permitted_training_issue_months_only",
+   "structural_available_month": "2020-03"
+  }
+ },
+ "outputs": {
+  "candidate_design": "data/features/c11_fuel_oil_candidate_c_design.parquet",
+  "candidate_design_blocks": "data/features/c11_fuel_oil_candidate_blocks.parquet",
+  "metric_artifact_created": false,
+  "model_artifact_created": false,
+  "prediction_artifact_created": false,
+  "target_joined_artifact_created": false
+ },
+ "preprocessing": {
+  "exposure_centering": {
+   "complete_vector_use_is_not_target_leakage": true,
+   "recomputed_from_targets": false,
+   "recomputed_per_model_fold": false,
+   "rule": "subtract_the_mean_of_the_frozen_eligible_industry_exposure_vector",
+   "source": "c9_phase_a_frozen_decision_table",
+   "structurally_available_before_development": true,
+   "time_invariant": true,
+   "universe": "eleven_eligible_industries"
+  },
+  "horizons": {
+   "fitted_separately": true
+  },
+  "industry_fixed_effects": {
+   "coding": "industry_indicators_no_global_intercept",
+   "kept_separate_from_source_and_interaction_terms": true,
+   "redundant_global_intercept": false
+  },
+  "interaction": {
+   "constructed_after_source_standardization": true,
+   "per_industry_standardization_applied_to_the_interaction": false,
+   "per_industry_standardization_would_collapse_the_heterogeneity": true
+  },
+  "source_feature_scaling": {
+   "applied_before_replication_across_industries": true,
+   "ddof": 0,
+   "fitted_on_targets_or_folds": false,
+   "formula": "(x - mean) / std",
+   "permitted_training_issue_months": [
+    "2024-01",
+    "2025-03"
+   ],
+   "rule": "standardize_across_permitted_training_issue_months_only",
+   "same_scaling_applied_to_every_eligible_industry": true
+  },
+  "validation": {
+   "issue_month_clustering_preserved": true,
+   "panel_rows_treated_as_independent_temporal_observations": false
+  }
+ },
+ "preregistered_expectation_discrepancies": {
+  "count": 2,
+  "expectations_relaxed_to_obtain_a_pass": false,
+  "gate_correction": {
+   "correct_independently_of_the_outcome": true,
+   "gate": "pooled_interaction_survives_the_specified_preprocessing",
+   "note": "The correction was made after observing the result and is recorded as such. It is reported here rather than absorbed silently, because a gate edited after a failure is exactly the pattern this project treats as suspect.",
+   "what_changed": "The gate originally required the per-industry-standardisation COUNTERFACTUAL to show a stacked rank drop. That made a gate about the specified preprocessing depend on a construction the preprocessing contract forbids. It now tests the specified preprocessing only: the interaction block is present at its expected rank, the combined rank is the sum of the two block ranks, per-industry standardisation is not applied, and a constant exposure would be detected as a rank-zero interaction."
+  },
+  "gate_implementation_corrected_after_observation": true,
+  "items": [
+   {
+    "corrected_measurement": {
+     "distinct_collapsed_interaction_blocks": 2,
+     "distinct_intended_interaction_blocks": 11,
+     "intended_combined_rank": 10,
+     "per_industry_combined_ranks": [
+      5
+     ],
+     "sign_identity_residual": 4.440892098500626e-16
+    },
+    "explanation": "The preregistered number measured the STACKED rank, and the stacked rank cannot see this collapse. Per-industry standardisation maps e_g*xtilde to sign(e_g)*xtilde, so each industry's combined block does fall from rank 10 to rank 5; but the centred exposures carry both signs, so +xtilde and -xtilde span two directions and the stacked rank stays 10. What is destroyed is the magnitude: eleven distinct exposure-proportional interaction blocks collapse to two sign groups, so theta could be identified only up to a two-group split. The per-industry rank and the distinct-block count are the correct measurements and both confirm the collapse.",
+    "observed_value": 10,
+    "preregistered_field": "expected_per_industry_standardized_combined_rank",
+    "preregistered_value": 5,
+    "preregistered_value_changed": false,
+    "variant_id": "fo1500_direct_sector093"
+   },
+   {
+    "corrected_measurement": {
+     "distinct_collapsed_interaction_blocks": 2,
+     "distinct_intended_interaction_blocks": 11,
+     "intended_combined_rank": 10,
+     "per_industry_combined_ranks": [
+      5
+     ],
+     "sign_identity_residual": 4.440892098500626e-16
+    },
+    "explanation": "The preregistered number measured the STACKED rank, and the stacked rank cannot see this collapse. Per-industry standardisation maps e_g*xtilde to sign(e_g)*xtilde, so each industry's combined block does fall from rank 10 to rank 5; but the centred exposures carry both signs, so +xtilde and -xtilde span two directions and the stacked rank stays 10. What is destroyed is the magnitude: eleven distinct exposure-proportional interaction blocks collapse to two sign groups, so theta could be identified only up to a two-group split. The per-industry rank and the distinct-block count are the correct measurements and both confirm the collapse.",
+    "observed_value": 10,
+    "preregistered_field": "expected_per_industry_standardized_combined_rank",
+    "preregistered_value": 5,
+    "preregistered_value_changed": false,
+    "variant_id": "fo600_direct_sector093"
+   }
+  ],
+  "preregistered_values_changed": false
+ },
+ "prohibited_inputs": {
+  "alternate_path_to_locked_data": false,
+  "artifacts": [
+   "b3_target_values",
+   "forecast_target_raw",
+   "production_stress_month",
+   "industry_month_targets",
+   "industry_month_panel_with_target_outcomes",
+   "b4_walk_forward_predictions",
+   "d1_development_predictions",
+   "d1_development_results",
+   "d3_operational_baseline_results",
+   "d3_operational_predictions",
+   "d4_operational_model_predictions",
+   "d4_operational_model_results",
+   "locked_test_outcomes"
+  ],
+  "statistics": [
+   "mae",
+   "rmse",
+   "predictive_performance",
+   "high_stress_outcome_rate",
+   "correlation_with_a_target",
+   "coefficient_estimate",
+   "p_value",
+   "confidence_interval"
+  ],
+  "target_derived_field_in_configuration": false
+ },
+ "selection": {
+  "all_gates_passed": true,
+  "blocker": null,
+  "expectation_overridden": false,
+  "failed_gates": [],
+  "modeling_architecture_selected": "pooled_common_effect_plus_centered_sector093_interaction",
+  "narrative": "Within a single industry the sector-093 exposure is a positive scalar, so Candidate B spans exactly the same column space as Candidate A and is a coefficient reparameterisation rather than a second architecture. In a pooled panel the same product varies across industry and time, so the centred interaction is not proportional to the main effect and can carry a constrained cross-industry slope pattern. That change of dimension, not of scale, is the whole basis for the selection.",
+  "reason": "All nine mandatory gates passed. Candidate B is rejected as a coefficient reparameterisation of Candidate A rather than compared against it, and Candidate A is retained as a documented alternative that does not meet the exposure-heterogeneity estimand.",
+  "selected_architecture": "pooled_common_effect_plus_centered_sector093_interaction"
+ },
+ "source_scaling": {
+  "fo1500_direct_sector093": {
+   "applied_before_replication_across_industries": true,
+   "ddof": 0,
+   "fitted_on_targets_or_folds": false,
+   "means": [
+    5.802889153320043,
+    -0.5794742208909268,
+    -3.327851289824544,
+    16.616077013873067,
+    4.2124024274807494
+   ],
+   "same_scaling_for_every_eligible_industry": true,
+   "standard_deviations": [
+    15.313177337680937,
+    6.683180815298871,
+    13.8705887418395,
+    1.4155541394258504,
+    2.049374129694421
+   ],
+   "training_issue_months": [
+    "2024-01",
+    "2025-03"
+   ],
+   "training_rows": 15
+  },
+  "fo600_direct_sector093": {
+   "applied_before_replication_across_industries": true,
+   "ddof": 0,
+   "fitted_on_targets_or_folds": false,
+   "means": [
+    2.4207740762407295,
+    -0.853564604847851,
+    -3.9759899886281502,
+    17.398873159894684,
+    4.169727140136073
+   ],
+   "same_scaling_for_every_eligible_industry": true,
+   "standard_deviations": [
+    15.575411333670441,
+    6.520400880841513,
+    13.0126656090898,
+    1.4201313952893215,
+    2.1129870160411346
+   ],
+   "training_issue_months": [
+    "2024-01",
+    "2025-03"
+   ],
+   "training_rows": 15
+  }
+ },
+ "task": "C11",
+ "transformations": {
+  "feature_only_collinearity_reported": true,
+  "later_reduction_requires": "preregistered_decision_or_authorized_nested_procedure",
+  "outcome_based_removal_permitted": false,
+  "parameter_burden_reported": true,
+  "realized_volatility_interpretation": "nonnegative_disruption_magnitude",
+  "realized_volatility_is_a_price_increase_direction": false,
+  "removed": [],
+  "retained": [
+   "price_level",
+   "log_change_1m_pct",
+   "log_change_3m_pct",
+   "log_change_12m_pct",
+   "realized_volatility_3m_pct"
+  ]
+ },
+ "upstream_invariants": {
+  "all_reproduced": true,
+  "checks": {
+   "c10_channel_selected": {
+    "actual": false,
+    "expected": false,
+    "reproduced": true
+   },
+   "c10_columns_per_variant": {
+    "actual": [
+     5
+    ],
+    "expected": [
+     5
+    ],
+    "reproduced": true
+   },
+   "c10_conditioning_adds_cross_industry_scale": {
+    "actual": true,
+    "expected": true,
+    "reproduced": true
+   },
+   "c10_conditioning_adds_temporal_degrees_of_freedom": {
+    "actual": false,
+    "expected": false,
+    "reproduced": true
+   },
+   "c10_content_checksum": {
+    "actual": "bb520f9e74f49afbf6f50d934dea6630c81ea366c24f78b548d03f4a95c24d1c",
+    "expected": "bb520f9e74f49afbf6f50d934dea6630c81ea366c24f78b548d03f4a95c24d1c",
+    "reproduced": true
+   },
+   "c10_content_checksum_recomputes": {
+    "actual": "bb520f9e74f49afbf6f50d934dea6630c81ea366c24f78b548d03f4a95c24d1c",
+    "expected": "bb520f9e74f49afbf6f50d934dea6630c81ea366c24f78b548d03f4a95c24d1c",
+    "reproduced": true
+   },
+   "c10_cross_sectional_rank": {
+    "actual": [
+     1
+    ],
+    "expected": [
+     1
+    ],
+    "reproduced": true
+   },
+   "c10_diagnostic_contract_checksum": {
+    "actual": "1c88cdd7f2017aa94ee1b069be436c469ee08adcf649fe6ad4c981f995eb2041",
+    "expected": "1c88cdd7f2017aa94ee1b069be436c469ee08adcf649fe6ad4c981f995eb2041",
+    "reproduced": true
+   },
+   "c10_eligible_industries": {
+    "actual": [
+     11
+    ],
+    "expected": [
+     11
+    ],
+    "reproduced": true
+   },
+   "c10_locked_test_accessed": {
+    "actual": false,
+    "expected": false,
+    "reproduced": true
+   },
+   "c10_masked_cells_per_variant": {
+    "actual": [
+     75
+    ],
+    "expected": [
+     75
+    ],
+    "reproduced": true
+   },
+   "c10_masked_industries": {
+    "actual": [
+     [
+      "IND-04"
+     ]
+    ],
+    "expected": [
+     [
+      "IND-04"
+     ]
+    ],
+    "reproduced": true
+   },
+   "c10_model_feature_approved": {
+    "actual": false,
+    "expected": false,
+    "reproduced": true
+   },
+   "c10_model_trained": {
+    "actual": false,
+    "expected": false,
+    "reproduced": true
+   },
+   "c10_normalized_equivalence_classes": {
+    "actual": [
+     1
+    ],
+    "expected": [
+     1
+    ],
+    "reproduced": true
+   },
+   "c10_numeric_cells_per_variant": {
+    "actual": [
+     825
+    ],
+    "expected": [
+     825
+    ],
+    "reproduced": true
+   },
+   "c10_per_industry_standardization_removes_exposure_scale": {
+    "actual": true,
+    "expected": true,
+    "reproduced": true
+   },
+   "c10_raw_industry_designs": {
+    "actual": [
+     11
+    ],
+    "expected": [
+     11
+    ],
+    "reproduced": true
+   },
+   "c10_rounded_fingerprint_fo1500": {
+    "actual": 1,
+    "expected": 1,
+    "reproduced": true
+   },
+   "c10_rounded_fingerprint_fo600": {
+    "actual": 11,
+    "expected": 11,
+    "reproduced": true
+   },
+   "c10_rows_per_variant": {
+    "actual": [
+     180
+    ],
+    "expected": [
+     180
+    ],
+    "reproduced": true
+   },
+   "c10_source_time_rank": {
+    "actual": [
+     5
+    ],
+    "expected": [
+     5
+    ],
+    "reproduced": true
+   },
+   "c10_stacked_panel_rank": {
+    "actual": [
+     5
+    ],
+    "expected": [
+     5
+    ],
+    "reproduced": true
+   },
+   "c10_standardized_equivalence_classes": {
+    "actual": [
+     1
+    ],
+    "expected": [
+     1
+    ],
+    "reproduced": true
+   },
+   "c10_standardized_residual_fo600": {
+    "actual": 4.385164106834871e-15,
+    "expected": 4.385164106834871e-15,
+    "reproduced": true
+   },
+   "c10_target_joined": {
+    "actual": false,
+    "expected": false,
+    "reproduced": true
+   },
+   "c10_thresholds_unchanged_after_observation": {
+    "actual": false,
+    "expected": false,
+    "reproduced": true
+   },
+   "c10_tolerance_classes_fo600": {
+    "actual": 1,
+    "expected": 1,
+    "reproduced": true
+   },
+   "c10_unique_issue_months": {
+    "actual": [
+     15
+    ],
+    "expected": [
+     15
+    ],
+    "reproduced": true
+   },
+   "c10_variants": {
+    "actual": [
+     "fo1500_direct_sector093",
+     "fo600_direct_sector093"
+    ],
+    "expected": [
+     "fo1500_direct_sector093",
+     "fo600_direct_sector093"
+    ],
+    "reproduced": true
+   },
+   "c9_phase_a_checksum": {
+    "actual": "d528aba4aedcb8b8051ad618d66d49c71239267fb26fd2ead292ee90b12c9703",
+    "expected": "d528aba4aedcb8b8051ad618d66d49c71239267fb26fd2ead292ee90b12c9703",
+    "reproduced": true
+   }
+  },
+  "failed": []
+ }
+}

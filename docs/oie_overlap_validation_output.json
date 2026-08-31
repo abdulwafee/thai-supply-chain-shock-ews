@@ -1,0 +1,1459 @@
+{
+  "bridge_version": "oie_overlap_bridge_v1_2026-08-26",
+  "estimation_window": {
+    "start": "2021-01-01",
+    "end": "2023-12-01"
+  },
+  "provisional_approval_criteria": {
+    "rebased_level_min_pearson": 0.9,
+    "mom_min_pearson": 0.7,
+    "mom_max_abs_bias_pp": 2.0,
+    "yoy_min_pearson": 0.85,
+    "yoy_max_abs_bias_pp": 3.0,
+    "min_year_rebased_pearson": 0.75,
+    "discontinuity_multiplier": 4.0,
+    "discontinuity_abs_floor_rebased": 1.0,
+    "discontinuity_abs_floor_pct": 1.0,
+    "min_valid_pairs_full_confidence": 30
+  },
+  "evaluation_framing": "latest_vintage_historical_evaluation",
+  "results": [
+    {
+      "industry_id": "IND-01",
+      "component": "MPI",
+      "edition_a": "current",
+      "edition_b": "2016_based",
+      "source_checksums": {
+        "current": "19cec1fd781b3a9098c393721b56548817d8275df71e235783864477de2b6389",
+        "2016_based": "35e207aaa66081232be96c9673625874abd862c1ebd95041d76dda5483157f82"
+      },
+      "overlap_start": "2021-01-01",
+      "overlap_end": "2023-12-01",
+      "overlap_months": 36,
+      "division_set": [
+        10,
+        11
+      ],
+      "weights_current_own": {
+        "10": 0.8137949885299866,
+        "11": 0.18620501147001348
+      },
+      "weights_2016_based_own": {
+        "10": 0.8084645108006332,
+        "11": 0.1915354891993668
+      },
+      "raw_pearson_r": 0.9583054945658909,
+      "rebased_pearson_r": 0.9583054945658904,
+      "rebased_spearman_r": 0.9626769626769627,
+      "rebased_mean_abs_diff": 8.882413952251053,
+      "rebased_median_abs_diff": 9.340380493168794,
+      "rebased_mean_signed_diff": 8.882413952251053,
+      "rebased_max_abs_diff": 13.616377696898738,
+      "rebased_n_valid": 36,
+      "rebased_per_year": {
+        "2021": {
+          "pearson_r": 0.9600037191760125,
+          "n_valid": 12
+        },
+        "2022": {
+          "pearson_r": 0.9786512579753123,
+          "n_valid": 12
+        },
+        "2023": {
+          "pearson_r": 0.9856416228602568,
+          "n_valid": 12
+        }
+      },
+      "rebased_discontinuity_months": [],
+      "mom_pearson_r": 0.959079117209055,
+      "mom_mean_signed_diff_pp": 0.13955616637224244,
+      "mom_mean_abs_diff_pp": 2.000514188653451,
+      "mom_n_valid": 35,
+      "yoy_pearson_r": 0.9736123207358489,
+      "yoy_mean_signed_diff_pp": 1.8334052357134787,
+      "yoy_mean_abs_diff_pp": 1.8995961985433354,
+      "yoy_n_valid": 24,
+      "level_link_factor_own_weights": 0.9939558640537478,
+      "level_link_factor_fixed_weights": 0.9939669354038094,
+      "rebasing_vs_weight_revision_gap": 1.1071350061619967e-05,
+      "candidate_linking_method": "level_link_median_ratio",
+      "approval_status": "Approved",
+      "reasons": [
+        "All provisional criteria met."
+      ],
+      "bridge_version": "oie_overlap_bridge_v1_2026-08-26"
+    },
+    {
+      "industry_id": "IND-02",
+      "component": "MPI",
+      "edition_a": "current",
+      "edition_b": "2016_based",
+      "source_checksums": {
+        "current": "19cec1fd781b3a9098c393721b56548817d8275df71e235783864477de2b6389",
+        "2016_based": "35e207aaa66081232be96c9673625874abd862c1ebd95041d76dda5483157f82"
+      },
+      "overlap_start": "2021-01-01",
+      "overlap_end": "2023-12-01",
+      "overlap_months": 36,
+      "division_set": [
+        13,
+        14,
+        15
+      ],
+      "weights_current_own": {
+        "13": 0.43944138744289135,
+        "14": 0.3787243858902163,
+        "15": 0.18183422666689236
+      },
+      "weights_2016_based_own": {
+        "13": 0.36712642645341004,
+        "14": 0.419691796208105,
+        "15": 0.21318177733848503
+      },
+      "raw_pearson_r": 0.9678123271154514,
+      "rebased_pearson_r": 0.9678123271154511,
+      "rebased_spearman_r": 0.9474903474903474,
+      "rebased_mean_abs_diff": 8.47913723672364,
+      "rebased_median_abs_diff": 8.501334840719103,
+      "rebased_mean_signed_diff": 8.47913723672364,
+      "rebased_max_abs_diff": 14.307815579368224,
+      "rebased_n_valid": 36,
+      "rebased_per_year": {
+        "2021": {
+          "pearson_r": 0.8860686728881122,
+          "n_valid": 12
+        },
+        "2022": {
+          "pearson_r": 0.9194769208441721,
+          "n_valid": 12
+        },
+        "2023": {
+          "pearson_r": 0.9743146347225929,
+          "n_valid": 12
+        }
+      },
+      "rebased_discontinuity_months": [],
+      "mom_pearson_r": 0.9338560849246722,
+      "mom_mean_signed_diff_pp": 0.22714578974562322,
+      "mom_mean_abs_diff_pp": 2.8054398672548286,
+      "mom_n_valid": 35,
+      "yoy_pearson_r": 0.9832718353277775,
+      "yoy_mean_signed_diff_pp": 0.29840918259236243,
+      "yoy_mean_abs_diff_pp": 2.368739392428713,
+      "yoy_n_valid": 24,
+      "level_link_factor_own_weights": 1.4103662105965755,
+      "level_link_factor_fixed_weights": 1.4225248353759552,
+      "rebasing_vs_weight_revision_gap": 0.012158624779379679,
+      "candidate_linking_method": "level_link_median_ratio",
+      "approval_status": "Approved",
+      "reasons": [
+        "All provisional criteria met."
+      ],
+      "bridge_version": "oie_overlap_bridge_v1_2026-08-26"
+    },
+    {
+      "industry_id": "IND-04",
+      "component": "MPI",
+      "edition_a": "current",
+      "edition_b": "2016_based",
+      "source_checksums": {
+        "current": "19cec1fd781b3a9098c393721b56548817d8275df71e235783864477de2b6389",
+        "2016_based": "35e207aaa66081232be96c9673625874abd862c1ebd95041d76dda5483157f82"
+      },
+      "overlap_start": "2021-01-01",
+      "overlap_end": "2023-12-01",
+      "overlap_months": 36,
+      "division_set": [
+        19
+      ],
+      "weights_current_own": {
+        "19": 1.0
+      },
+      "weights_2016_based_own": {
+        "19": 1.0
+      },
+      "raw_pearson_r": 0.992656366756519,
+      "rebased_pearson_r": 0.9926563667565191,
+      "rebased_spearman_r": 0.9827541827541829,
+      "rebased_mean_abs_diff": 2.0772651276934195,
+      "rebased_median_abs_diff": 1.7939481588701298,
+      "rebased_mean_signed_diff": 1.1929800110650217,
+      "rebased_max_abs_diff": 4.9498703035825855,
+      "rebased_n_valid": 36,
+      "rebased_per_year": {
+        "2021": {
+          "pearson_r": 0.9946520883945091,
+          "n_valid": 12
+        },
+        "2022": {
+          "pearson_r": 0.9928777915037592,
+          "n_valid": 12
+        },
+        "2023": {
+          "pearson_r": 0.99413813527797,
+          "n_valid": 12
+        }
+      },
+      "rebased_discontinuity_months": [],
+      "mom_pearson_r": 0.9932263314929736,
+      "mom_mean_signed_diff_pp": 0.17827404732234803,
+      "mom_mean_abs_diff_pp": 1.0285241882489988,
+      "mom_n_valid": 35,
+      "yoy_pearson_r": 0.9935118723062494,
+      "yoy_mean_signed_diff_pp": 2.481863072823378,
+      "yoy_mean_abs_diff_pp": 2.6906385535348014,
+      "yoy_n_valid": 24,
+      "level_link_factor_own_weights": 1.0693558618992385,
+      "level_link_factor_fixed_weights": 1.0693558618992385,
+      "rebasing_vs_weight_revision_gap": 0.0,
+      "candidate_linking_method": "level_link_median_ratio",
+      "approval_status": "Approved",
+      "reasons": [
+        "All provisional criteria met."
+      ],
+      "bridge_version": "oie_overlap_bridge_v1_2026-08-26"
+    },
+    {
+      "industry_id": "IND-05",
+      "component": "MPI",
+      "edition_a": "current",
+      "edition_b": "2016_based",
+      "source_checksums": {
+        "current": "19cec1fd781b3a9098c393721b56548817d8275df71e235783864477de2b6389",
+        "2016_based": "35e207aaa66081232be96c9673625874abd862c1ebd95041d76dda5483157f82"
+      },
+      "overlap_start": "2021-01-01",
+      "overlap_end": "2023-12-01",
+      "overlap_months": 36,
+      "division_set": [
+        20,
+        21
+      ],
+      "weights_current_own": {
+        "20": 0.8823811088093892,
+        "21": 0.1176188911906108
+      },
+      "weights_2016_based_own": {
+        "20": 0.8729805563471361,
+        "21": 0.12701944365286397
+      },
+      "raw_pearson_r": 0.9687058154296776,
+      "rebased_pearson_r": 0.9687058154296774,
+      "rebased_spearman_r": 0.9513513513513513,
+      "rebased_mean_abs_diff": 1.2800858403517599,
+      "rebased_median_abs_diff": 0.8781735339829524,
+      "rebased_mean_signed_diff": 0.2688163133159682,
+      "rebased_max_abs_diff": 4.4481276831867405,
+      "rebased_n_valid": 36,
+      "rebased_per_year": {
+        "2021": {
+          "pearson_r": 0.9539184385890297,
+          "n_valid": 12
+        },
+        "2022": {
+          "pearson_r": 0.9803210903107216,
+          "n_valid": 12
+        },
+        "2023": {
+          "pearson_r": 0.9661333422582797,
+          "n_valid": 12
+        }
+      },
+      "rebased_discontinuity_months": [
+        "2023-01-01",
+        "2023-08-01"
+      ],
+      "mom_pearson_r": 0.9512281244277236,
+      "mom_mean_signed_diff_pp": 0.09244253271888184,
+      "mom_mean_abs_diff_pp": 1.7405237481138327,
+      "mom_n_valid": 35,
+      "yoy_pearson_r": 0.9545794563968093,
+      "yoy_mean_signed_diff_pp": 0.04938506877145913,
+      "yoy_mean_abs_diff_pp": 1.4469399357655341,
+      "yoy_n_valid": 24,
+      "level_link_factor_own_weights": 0.9542412255730445,
+      "level_link_factor_fixed_weights": 0.954740101030404,
+      "rebasing_vs_weight_revision_gap": 0.0004988754573594933,
+      "candidate_linking_method": "level_link_median_ratio",
+      "approval_status": "Rejected",
+      "reasons": [
+        "Unexplained discontinuity in: ['2023-01-01', '2023-08-01']"
+      ],
+      "bridge_version": "oie_overlap_bridge_v1_2026-08-26"
+    },
+    {
+      "industry_id": "IND-06",
+      "component": "MPI",
+      "edition_a": "current",
+      "edition_b": "2016_based",
+      "source_checksums": {
+        "current": "19cec1fd781b3a9098c393721b56548817d8275df71e235783864477de2b6389",
+        "2016_based": "35e207aaa66081232be96c9673625874abd862c1ebd95041d76dda5483157f82"
+      },
+      "overlap_start": "2021-01-01",
+      "overlap_end": "2023-12-01",
+      "overlap_months": 36,
+      "division_set": [
+        22
+      ],
+      "weights_current_own": {
+        "22": 1.0
+      },
+      "weights_2016_based_own": {
+        "22": 1.0
+      },
+      "raw_pearson_r": 0.8426278639908971,
+      "rebased_pearson_r": 0.8426278639908971,
+      "rebased_spearman_r": 0.7953667953667953,
+      "rebased_mean_abs_diff": 4.921878488212934,
+      "rebased_median_abs_diff": 4.717616527225552,
+      "rebased_mean_signed_diff": 4.703384770758998,
+      "rebased_max_abs_diff": 10.965076654045205,
+      "rebased_n_valid": 36,
+      "rebased_per_year": {
+        "2021": {
+          "pearson_r": 0.8567383460133637,
+          "n_valid": 12
+        },
+        "2022": {
+          "pearson_r": 0.9278177363956726,
+          "n_valid": 12
+        },
+        "2023": {
+          "pearson_r": 0.9176507984589829,
+          "n_valid": 12
+        }
+      },
+      "rebased_discontinuity_months": [],
+      "mom_pearson_r": 0.9383516616610844,
+      "mom_mean_signed_diff_pp": 0.23748174397961047,
+      "mom_mean_abs_diff_pp": 2.355745351995657,
+      "mom_n_valid": 35,
+      "yoy_pearson_r": 0.9025650211439246,
+      "yoy_mean_signed_diff_pp": 2.8865631092074118,
+      "yoy_mean_abs_diff_pp": 3.4183266705941797,
+      "yoy_n_valid": 24,
+      "level_link_factor_own_weights": 1.0582273179141088,
+      "level_link_factor_fixed_weights": 1.0582273179141088,
+      "rebasing_vs_weight_revision_gap": 0.0,
+      "candidate_linking_method": "level_link_median_ratio",
+      "approval_status": "Conditional",
+      "reasons": [
+        "Rebased-level Pearson r=0.843 < 0.9"
+      ],
+      "bridge_version": "oie_overlap_bridge_v1_2026-08-26"
+    },
+    {
+      "industry_id": "IND-07",
+      "component": "MPI",
+      "edition_a": "current",
+      "edition_b": "2016_based",
+      "source_checksums": {
+        "current": "19cec1fd781b3a9098c393721b56548817d8275df71e235783864477de2b6389",
+        "2016_based": "35e207aaa66081232be96c9673625874abd862c1ebd95041d76dda5483157f82"
+      },
+      "overlap_start": "2021-01-01",
+      "overlap_end": "2023-12-01",
+      "overlap_months": 36,
+      "division_set": [
+        23
+      ],
+      "weights_current_own": {
+        "23": 1.0
+      },
+      "weights_2016_based_own": {
+        "23": 1.0
+      },
+      "raw_pearson_r": 0.8933859934318529,
+      "rebased_pearson_r": 0.8933859934318535,
+      "rebased_spearman_r": 0.8671814671814673,
+      "rebased_mean_abs_diff": 5.117557289767962,
+      "rebased_median_abs_diff": 5.882876545017361,
+      "rebased_mean_signed_diff": 5.0208792857934235,
+      "rebased_max_abs_diff": 9.880065501543527,
+      "rebased_n_valid": 36,
+      "rebased_per_year": {
+        "2021": {
+          "pearson_r": 0.988088366164792,
+          "n_valid": 12
+        },
+        "2022": {
+          "pearson_r": 0.9916062801175543,
+          "n_valid": 12
+        },
+        "2023": {
+          "pearson_r": 0.9760122049571213,
+          "n_valid": 12
+        }
+      },
+      "rebased_discontinuity_months": [],
+      "mom_pearson_r": 0.985216677268587,
+      "mom_mean_signed_diff_pp": 0.18917430945732078,
+      "mom_mean_abs_diff_pp": 1.1868967893649225,
+      "mom_n_valid": 35,
+      "yoy_pearson_r": 0.9053280459557238,
+      "yoy_mean_signed_diff_pp": 3.1840856326056883,
+      "yoy_mean_abs_diff_pp": 3.480278551373605,
+      "yoy_n_valid": 24,
+      "level_link_factor_own_weights": 1.1040596853626816,
+      "level_link_factor_fixed_weights": 1.1040596853626816,
+      "rebasing_vs_weight_revision_gap": 0.0,
+      "candidate_linking_method": "level_link_median_ratio",
+      "approval_status": "Conditional",
+      "reasons": [
+        "Rebased-level Pearson r=0.893 < 0.9",
+        "YoY mean bias=3.18pp exceeds 3.0pp"
+      ],
+      "bridge_version": "oie_overlap_bridge_v1_2026-08-26"
+    },
+    {
+      "industry_id": "IND-08",
+      "component": "MPI",
+      "edition_a": "current",
+      "edition_b": "2016_based",
+      "source_checksums": {
+        "current": "19cec1fd781b3a9098c393721b56548817d8275df71e235783864477de2b6389",
+        "2016_based": "35e207aaa66081232be96c9673625874abd862c1ebd95041d76dda5483157f82"
+      },
+      "overlap_start": "2021-01-01",
+      "overlap_end": "2023-12-01",
+      "overlap_months": 36,
+      "division_set": [
+        24,
+        25
+      ],
+      "weights_current_own": {
+        "24": 0.5962781474134149,
+        "25": 0.403721852586585
+      },
+      "weights_2016_based_own": {
+        "24": 0.6480158513751795,
+        "25": 0.35198414862482047
+      },
+      "raw_pearson_r": 0.9701721250152036,
+      "rebased_pearson_r": 0.9701721250152028,
+      "rebased_spearman_r": 0.9724581724581726,
+      "rebased_mean_abs_diff": 6.420691789861714,
+      "rebased_median_abs_diff": 6.895791355966921,
+      "rebased_mean_signed_diff": 6.420691789861714,
+      "rebased_max_abs_diff": 11.244162038167246,
+      "rebased_n_valid": 36,
+      "rebased_per_year": {
+        "2021": {
+          "pearson_r": 0.9641095521600448,
+          "n_valid": 12
+        },
+        "2022": {
+          "pearson_r": 0.9770649917118218,
+          "n_valid": 12
+        },
+        "2023": {
+          "pearson_r": 0.9628785465478715,
+          "n_valid": 12
+        }
+      },
+      "rebased_discontinuity_months": [],
+      "mom_pearson_r": 0.9626529907399954,
+      "mom_mean_signed_diff_pp": 0.48624900982776936,
+      "mom_mean_abs_diff_pp": 1.9507105884005458,
+      "mom_n_valid": 35,
+      "yoy_pearson_r": 0.863405051721036,
+      "yoy_mean_signed_diff_pp": 3.506130940422794,
+      "yoy_mean_abs_diff_pp": 3.664787084735012,
+      "yoy_n_valid": 24,
+      "level_link_factor_own_weights": 1.0604462699284443,
+      "level_link_factor_fixed_weights": 1.0603209585459459,
+      "rebasing_vs_weight_revision_gap": 0.00012531138249838314,
+      "candidate_linking_method": "level_link_median_ratio",
+      "approval_status": "Conditional",
+      "reasons": [
+        "YoY mean bias=3.51pp exceeds 3.0pp"
+      ],
+      "bridge_version": "oie_overlap_bridge_v1_2026-08-26"
+    },
+    {
+      "industry_id": "IND-09",
+      "component": "MPI",
+      "edition_a": "current",
+      "edition_b": "2016_based",
+      "source_checksums": {
+        "current": "19cec1fd781b3a9098c393721b56548817d8275df71e235783864477de2b6389",
+        "2016_based": "35e207aaa66081232be96c9673625874abd862c1ebd95041d76dda5483157f82"
+      },
+      "overlap_start": "2021-01-01",
+      "overlap_end": "2023-12-01",
+      "overlap_months": 36,
+      "division_set": [
+        26,
+        27
+      ],
+      "weights_current_own": {
+        "26": 0.7298117120655144,
+        "27": 0.2701882879344856
+      },
+      "weights_2016_based_own": {
+        "26": 0.7475895606522068,
+        "27": 0.25241043934779317
+      },
+      "raw_pearson_r": 0.9916308128268299,
+      "rebased_pearson_r": 0.9916308128268296,
+      "rebased_spearman_r": 0.9881595881595883,
+      "rebased_mean_abs_diff": 1.7291161804452686,
+      "rebased_median_abs_diff": 1.6965629771478135,
+      "rebased_mean_signed_diff": -0.706517692941125,
+      "rebased_max_abs_diff": 5.425073615828836,
+      "rebased_n_valid": 36,
+      "rebased_per_year": {
+        "2021": {
+          "pearson_r": 0.9879184802907418,
+          "n_valid": 12
+        },
+        "2022": {
+          "pearson_r": 0.969473753577987,
+          "n_valid": 12
+        },
+        "2023": {
+          "pearson_r": 0.9841717753896183,
+          "n_valid": 12
+        }
+      },
+      "rebased_discontinuity_months": [],
+      "mom_pearson_r": 0.990240242140429,
+      "mom_mean_signed_diff_pp": -0.2543609476373646,
+      "mom_mean_abs_diff_pp": 1.1521142029075588,
+      "mom_n_valid": 35,
+      "yoy_pearson_r": 0.9598055430199035,
+      "yoy_mean_signed_diff_pp": -1.5620512086212297,
+      "yoy_mean_abs_diff_pp": 2.1356369420722037,
+      "yoy_n_valid": 24,
+      "level_link_factor_own_weights": 0.9637090820580931,
+      "level_link_factor_fixed_weights": 0.9625006011039238,
+      "rebasing_vs_weight_revision_gap": 0.0012084809541693664,
+      "candidate_linking_method": "level_link_median_ratio",
+      "approval_status": "Approved",
+      "reasons": [
+        "All provisional criteria met."
+      ],
+      "bridge_version": "oie_overlap_bridge_v1_2026-08-26"
+    },
+    {
+      "industry_id": "IND-10",
+      "component": "MPI",
+      "edition_a": "current",
+      "edition_b": "2016_based",
+      "source_checksums": {
+        "current": "19cec1fd781b3a9098c393721b56548817d8275df71e235783864477de2b6389",
+        "2016_based": "35e207aaa66081232be96c9673625874abd862c1ebd95041d76dda5483157f82"
+      },
+      "overlap_start": "2021-01-01",
+      "overlap_end": "2023-12-01",
+      "overlap_months": 36,
+      "division_set": [
+        28
+      ],
+      "weights_current_own": {
+        "28": 1.0
+      },
+      "weights_2016_based_own": {
+        "28": 1.0
+      },
+      "raw_pearson_r": 0.9763208217805417,
+      "rebased_pearson_r": 0.9763208217805417,
+      "rebased_spearman_r": 0.972972972972973,
+      "rebased_mean_abs_diff": 4.674917743701245,
+      "rebased_median_abs_diff": 4.205983138016023,
+      "rebased_mean_signed_diff": 3.804828168668335,
+      "rebased_max_abs_diff": 12.23450364889429,
+      "rebased_n_valid": 36,
+      "rebased_per_year": {
+        "2021": {
+          "pearson_r": 0.9891999909899994,
+          "n_valid": 12
+        },
+        "2022": {
+          "pearson_r": 0.9536546878402185,
+          "n_valid": 12
+        },
+        "2023": {
+          "pearson_r": 0.9798153592012842,
+          "n_valid": 12
+        }
+      },
+      "rebased_discontinuity_months": [],
+      "mom_pearson_r": 0.986813724853843,
+      "mom_mean_signed_diff_pp": 0.3211443084034682,
+      "mom_mean_abs_diff_pp": 2.5530839281115814,
+      "mom_n_valid": 35,
+      "yoy_pearson_r": 0.9594641476432686,
+      "yoy_mean_signed_diff_pp": -1.091507534371941,
+      "yoy_mean_abs_diff_pp": 4.025229844846645,
+      "yoy_n_valid": 24,
+      "level_link_factor_own_weights": 0.9820347774512688,
+      "level_link_factor_fixed_weights": 0.9820347774512688,
+      "rebasing_vs_weight_revision_gap": 0.0,
+      "candidate_linking_method": "level_link_median_ratio",
+      "approval_status": "Approved",
+      "reasons": [
+        "All provisional criteria met."
+      ],
+      "bridge_version": "oie_overlap_bridge_v1_2026-08-26"
+    },
+    {
+      "industry_id": "IND-11",
+      "component": "MPI",
+      "edition_a": "current",
+      "edition_b": "2016_based",
+      "source_checksums": {
+        "current": "19cec1fd781b3a9098c393721b56548817d8275df71e235783864477de2b6389",
+        "2016_based": "35e207aaa66081232be96c9673625874abd862c1ebd95041d76dda5483157f82"
+      },
+      "overlap_start": "2021-01-01",
+      "overlap_end": "2023-12-01",
+      "overlap_months": 36,
+      "division_set": [
+        29,
+        30
+      ],
+      "weights_current_own": {
+        "29": 0.9112708913484349,
+        "30": 0.08872910865156507
+      },
+      "weights_2016_based_own": {
+        "29": 0.9261538255069585,
+        "30": 0.07384617449304148
+      },
+      "raw_pearson_r": 0.9863862321943333,
+      "rebased_pearson_r": 0.9863862321943331,
+      "rebased_spearman_r": 0.9667953667953669,
+      "rebased_mean_abs_diff": 1.8343563642771978,
+      "rebased_median_abs_diff": 1.5327615162661559,
+      "rebased_mean_signed_diff": 0.3045769401033007,
+      "rebased_max_abs_diff": 6.483776151815235,
+      "rebased_n_valid": 36,
+      "rebased_per_year": {
+        "2021": {
+          "pearson_r": 0.9972761315611852,
+          "n_valid": 12
+        },
+        "2022": {
+          "pearson_r": 0.9956144611423399,
+          "n_valid": 12
+        },
+        "2023": {
+          "pearson_r": 0.9833610385943607,
+          "n_valid": 12
+        }
+      },
+      "rebased_discontinuity_months": [
+        "2023-11-01"
+      ],
+      "mom_pearson_r": 0.9952571718398229,
+      "mom_mean_signed_diff_pp": 0.23725701721483747,
+      "mom_mean_abs_diff_pp": 1.1043632385364655,
+      "mom_n_valid": 35,
+      "yoy_pearson_r": 0.9902869771314691,
+      "yoy_mean_signed_diff_pp": 2.1118966897486042,
+      "yoy_mean_abs_diff_pp": 2.8389319843337533,
+      "yoy_n_valid": 24,
+      "level_link_factor_own_weights": 1.133432896605291,
+      "level_link_factor_fixed_weights": 1.1339206341647592,
+      "rebasing_vs_weight_revision_gap": 0.0004877375594682931,
+      "candidate_linking_method": "level_link_median_ratio",
+      "approval_status": "Rejected",
+      "reasons": [
+        "Unexplained discontinuity in: ['2023-11-01']"
+      ],
+      "bridge_version": "oie_overlap_bridge_v1_2026-08-26"
+    },
+    {
+      "industry_id": "IND-12",
+      "component": "MPI",
+      "edition_a": "current",
+      "edition_b": "2016_based",
+      "source_checksums": {
+        "current": "19cec1fd781b3a9098c393721b56548817d8275df71e235783864477de2b6389",
+        "2016_based": "35e207aaa66081232be96c9673625874abd862c1ebd95041d76dda5483157f82"
+      },
+      "overlap_start": "2021-01-01",
+      "overlap_end": "2023-12-01",
+      "overlap_months": 36,
+      "division_set": [
+        31,
+        32
+      ],
+      "weights_current_own": {
+        "31": 0.28358546802998696,
+        "32": 0.716414531970013
+      },
+      "weights_2016_based_own": {
+        "31": 0.39113795527322903,
+        "32": 0.608862044726771
+      },
+      "raw_pearson_r": 0.956189703245645,
+      "rebased_pearson_r": 0.9561897032456443,
+      "rebased_spearman_r": 0.9444015444015444,
+      "rebased_mean_abs_diff": 4.24444996879862,
+      "rebased_median_abs_diff": 3.815798279686746,
+      "rebased_mean_signed_diff": 1.5407540882005182,
+      "rebased_max_abs_diff": 10.706081441368767,
+      "rebased_n_valid": 36,
+      "rebased_per_year": {
+        "2021": {
+          "pearson_r": 0.950880851423637,
+          "n_valid": 12
+        },
+        "2022": {
+          "pearson_r": 0.9686912334105168,
+          "n_valid": 12
+        },
+        "2023": {
+          "pearson_r": 0.9524902535446823,
+          "n_valid": 12
+        }
+      },
+      "rebased_discontinuity_months": [],
+      "mom_pearson_r": 0.9432191366381216,
+      "mom_mean_signed_diff_pp": 0.27057050792432374,
+      "mom_mean_abs_diff_pp": 2.8791493717277477,
+      "mom_n_valid": 35,
+      "yoy_pearson_r": 0.9662056103585126,
+      "yoy_mean_signed_diff_pp": 4.877839799446092,
+      "yoy_mean_abs_diff_pp": 5.454332021738234,
+      "yoy_n_valid": 24,
+      "level_link_factor_own_weights": 1.0262308680630727,
+      "level_link_factor_fixed_weights": 1.0396512678757488,
+      "rebasing_vs_weight_revision_gap": 0.013420399812676065,
+      "candidate_linking_method": "level_link_median_ratio",
+      "approval_status": "Conditional",
+      "reasons": [
+        "YoY mean bias=4.88pp exceeds 3.0pp"
+      ],
+      "bridge_version": "oie_overlap_bridge_v1_2026-08-26"
+    },
+    {
+      "industry_id": "IND-01",
+      "component": "CapU",
+      "edition_a": "current",
+      "edition_b": "2016_based",
+      "source_checksums": {
+        "current": "0432b1627424e59a5bf9f56c5c4a498d0b636cba60800b1c8a5b307c79c0824f",
+        "2016_based": "b2615c27211e4f6e407a92e903c7c355c7e76c92e8f8d999e6886dac06a6e1be"
+      },
+      "overlap_start": "2021-01-01",
+      "overlap_end": "2023-12-01",
+      "overlap_months": 36,
+      "division_set": [
+        10,
+        11
+      ],
+      "weights_current_own": {
+        "10": 0.8137951469348483,
+        "11": 0.18620485306515158
+      },
+      "weights_2016_based_own": {
+        "10": 0.8084645108006332,
+        "11": 0.1915354891993668
+      },
+      "raw_pearson_r": 0.9565726723269798,
+      "rebased_pearson_r": 0.9565726723269796,
+      "rebased_spearman_r": 0.9500643500643502,
+      "rebased_mean_abs_diff": 3.445754787504196,
+      "rebased_median_abs_diff": 3.41711693982883,
+      "rebased_mean_signed_diff": 2.9619447367323057,
+      "rebased_max_abs_diff": 7.373392720602965,
+      "rebased_n_valid": 36,
+      "rebased_per_year": {
+        "2021": {
+          "pearson_r": 0.9710981477030397,
+          "n_valid": 12
+        },
+        "2022": {
+          "pearson_r": 0.9863902219707001,
+          "n_valid": 12
+        },
+        "2023": {
+          "pearson_r": 0.9938991496417129,
+          "n_valid": 12
+        }
+      },
+      "rebased_discontinuity_months": [],
+      "mom_pearson_r": 0.9724614944594674,
+      "mom_mean_signed_diff_pp": -0.10323553607500242,
+      "mom_mean_abs_diff_pp": 1.4495939100226904,
+      "mom_n_valid": 35,
+      "yoy_pearson_r": 0.9435337930701283,
+      "yoy_mean_signed_diff_pp": -1.8450533080395939,
+      "yoy_mean_abs_diff_pp": 2.023773969707809,
+      "yoy_n_valid": 24,
+      "level_link_factor_own_weights": 1.0512577309672881,
+      "level_link_factor_fixed_weights": 1.0515687644106224,
+      "rebasing_vs_weight_revision_gap": 0.0003110334433342743,
+      "candidate_linking_method": "level_link_median_ratio",
+      "approval_status": "Approved",
+      "reasons": [
+        "All provisional criteria met."
+      ],
+      "bridge_version": "oie_overlap_bridge_v1_2026-08-26"
+    },
+    {
+      "industry_id": "IND-02",
+      "component": "CapU",
+      "edition_a": "current",
+      "edition_b": "2016_based",
+      "source_checksums": {
+        "current": "0432b1627424e59a5bf9f56c5c4a498d0b636cba60800b1c8a5b307c79c0824f",
+        "2016_based": "b2615c27211e4f6e407a92e903c7c355c7e76c92e8f8d999e6886dac06a6e1be"
+      },
+      "overlap_start": "2021-01-01",
+      "overlap_end": "2023-12-01",
+      "overlap_months": 36,
+      "division_set": [
+        13,
+        14,
+        15
+      ],
+      "weights_current_own": {
+        "13": 0.43944098657084824,
+        "14": 0.3787239284336375,
+        "15": 0.18183508499551435
+      },
+      "weights_2016_based_own": {
+        "13": 0.36712642645341004,
+        "14": 0.419691796208105,
+        "15": 0.21318177733848503
+      },
+      "raw_pearson_r": 0.9677777541711031,
+      "rebased_pearson_r": 0.9677777541711035,
+      "rebased_spearman_r": 0.9595881595881596,
+      "rebased_mean_abs_diff": 7.661881052233513,
+      "rebased_median_abs_diff": 7.286110183232424,
+      "rebased_mean_signed_diff": 7.661881052233513,
+      "rebased_max_abs_diff": 13.56515064015855,
+      "rebased_n_valid": 36,
+      "rebased_per_year": {
+        "2021": {
+          "pearson_r": 0.934884674663493,
+          "n_valid": 12
+        },
+        "2022": {
+          "pearson_r": 0.938449265357128,
+          "n_valid": 12
+        },
+        "2023": {
+          "pearson_r": 0.9834454482529581,
+          "n_valid": 12
+        }
+      },
+      "rebased_discontinuity_months": [],
+      "mom_pearson_r": 0.9558830261458429,
+      "mom_mean_signed_diff_pp": 0.11988300723950245,
+      "mom_mean_abs_diff_pp": 2.1266665325172958,
+      "mom_n_valid": 35,
+      "yoy_pearson_r": 0.9835955362832705,
+      "yoy_mean_signed_diff_pp": -0.1397210382828262,
+      "yoy_mean_abs_diff_pp": 2.0838252235703227,
+      "yoy_n_valid": 24,
+      "level_link_factor_own_weights": 1.2585455266512016,
+      "level_link_factor_fixed_weights": 1.276856121084108,
+      "rebasing_vs_weight_revision_gap": 0.018310594432906502,
+      "candidate_linking_method": "level_link_median_ratio",
+      "approval_status": "Approved",
+      "reasons": [
+        "All provisional criteria met."
+      ],
+      "bridge_version": "oie_overlap_bridge_v1_2026-08-26"
+    },
+    {
+      "industry_id": "IND-04",
+      "component": "CapU",
+      "edition_a": "current",
+      "edition_b": "2016_based",
+      "source_checksums": {
+        "current": "0432b1627424e59a5bf9f56c5c4a498d0b636cba60800b1c8a5b307c79c0824f",
+        "2016_based": "b2615c27211e4f6e407a92e903c7c355c7e76c92e8f8d999e6886dac06a6e1be"
+      },
+      "overlap_start": "2021-01-01",
+      "overlap_end": "2023-12-01",
+      "overlap_months": 36,
+      "division_set": [
+        19
+      ],
+      "weights_current_own": {
+        "19": 1.0
+      },
+      "weights_2016_based_own": {
+        "19": 1.0
+      },
+      "raw_pearson_r": 0.9998815418115208,
+      "rebased_pearson_r": 0.9998815418115211,
+      "rebased_spearman_r": 0.9989059805741619,
+      "rebased_mean_abs_diff": 0.01880286018463906,
+      "rebased_median_abs_diff": 5.684341886080802e-14,
+      "rebased_mean_signed_diff": 0.018802609424529493,
+      "rebased_max_abs_diff": 0.5942874035535795,
+      "rebased_n_valid": 36,
+      "rebased_per_year": {
+        "2021": {
+          "pearson_r": 1.0,
+          "n_valid": 12
+        },
+        "2022": {
+          "pearson_r": 1.0,
+          "n_valid": 12
+        },
+        "2023": {
+          "pearson_r": 0.9989787130809606,
+          "n_valid": 12
+        }
+      },
+      "rebased_discontinuity_months": [],
+      "mom_pearson_r": 0.9999186946765631,
+      "mom_mean_signed_diff_pp": 0.016704177579615072,
+      "mom_mean_abs_diff_pp": 0.02126315873441256,
+      "mom_n_valid": 35,
+      "yoy_pearson_r": 0.9999450370978692,
+      "yoy_mean_signed_diff_pp": 0.028474738702939484,
+      "yoy_mean_abs_diff_pp": 0.028475102506942702,
+      "yoy_n_valid": 24,
+      "level_link_factor_own_weights": 1.0000041896398588,
+      "level_link_factor_fixed_weights": 1.0000041896398588,
+      "rebasing_vs_weight_revision_gap": 0.0,
+      "candidate_linking_method": "level_link_median_ratio",
+      "approval_status": "Approved",
+      "reasons": [
+        "All provisional criteria met."
+      ],
+      "bridge_version": "oie_overlap_bridge_v1_2026-08-26"
+    },
+    {
+      "industry_id": "IND-05",
+      "component": "CapU",
+      "edition_a": "current",
+      "edition_b": "2016_based",
+      "source_checksums": {
+        "current": "0432b1627424e59a5bf9f56c5c4a498d0b636cba60800b1c8a5b307c79c0824f",
+        "2016_based": "b2615c27211e4f6e407a92e903c7c355c7e76c92e8f8d999e6886dac06a6e1be"
+      },
+      "overlap_start": "2021-01-01",
+      "overlap_end": "2023-12-01",
+      "overlap_months": 36,
+      "division_set": [
+        20,
+        21
+      ],
+      "weights_current_own": {
+        "20": 0.882381106775787,
+        "21": 0.11761889322421298
+      },
+      "weights_2016_based_own": {
+        "20": 0.8729805563471361,
+        "21": 0.12701944365286397
+      },
+      "raw_pearson_r": 0.983106676280007,
+      "rebased_pearson_r": 0.9831066762800068,
+      "rebased_spearman_r": 0.9752895752895753,
+      "rebased_mean_abs_diff": 1.0579914677744096,
+      "rebased_median_abs_diff": 1.0467064461386926,
+      "rebased_mean_signed_diff": 0.052748728602985295,
+      "rebased_max_abs_diff": 2.638124467537722,
+      "rebased_n_valid": 36,
+      "rebased_per_year": {
+        "2021": {
+          "pearson_r": 0.9741214051507622,
+          "n_valid": 12
+        },
+        "2022": {
+          "pearson_r": 0.9846987915837686,
+          "n_valid": 12
+        },
+        "2023": {
+          "pearson_r": 0.9767978068988372,
+          "n_valid": 12
+        }
+      },
+      "rebased_discontinuity_months": [],
+      "mom_pearson_r": 0.9621689997854821,
+      "mom_mean_signed_diff_pp": 0.05925669148175101,
+      "mom_mean_abs_diff_pp": 1.4207043487686655,
+      "mom_n_valid": 35,
+      "yoy_pearson_r": 0.9557188444751911,
+      "yoy_mean_signed_diff_pp": -0.12350314478911943,
+      "yoy_mean_abs_diff_pp": 1.4400539080800991,
+      "yoy_n_valid": 24,
+      "level_link_factor_own_weights": 0.9772818824648557,
+      "level_link_factor_fixed_weights": 0.9742514964435418,
+      "rebasing_vs_weight_revision_gap": 0.003030386021313891,
+      "candidate_linking_method": "level_link_median_ratio",
+      "approval_status": "Approved",
+      "reasons": [
+        "All provisional criteria met."
+      ],
+      "bridge_version": "oie_overlap_bridge_v1_2026-08-26"
+    },
+    {
+      "industry_id": "IND-06",
+      "component": "CapU",
+      "edition_a": "current",
+      "edition_b": "2016_based",
+      "source_checksums": {
+        "current": "0432b1627424e59a5bf9f56c5c4a498d0b636cba60800b1c8a5b307c79c0824f",
+        "2016_based": "b2615c27211e4f6e407a92e903c7c355c7e76c92e8f8d999e6886dac06a6e1be"
+      },
+      "overlap_start": "2021-01-01",
+      "overlap_end": "2023-12-01",
+      "overlap_months": 36,
+      "division_set": [
+        22
+      ],
+      "weights_current_own": {
+        "22": 1.0
+      },
+      "weights_2016_based_own": {
+        "22": 1.0
+      },
+      "raw_pearson_r": 0.9488484188416183,
+      "rebased_pearson_r": 0.9488484188416185,
+      "rebased_spearman_r": 0.9330759330759332,
+      "rebased_mean_abs_diff": 3.7235136367176818,
+      "rebased_median_abs_diff": 3.4497891814230854,
+      "rebased_mean_signed_diff": 3.528855563105457,
+      "rebased_max_abs_diff": 7.539208666657217,
+      "rebased_n_valid": 36,
+      "rebased_per_year": {
+        "2021": {
+          "pearson_r": 0.9173072316396608,
+          "n_valid": 12
+        },
+        "2022": {
+          "pearson_r": 0.9631969228327997,
+          "n_valid": 12
+        },
+        "2023": {
+          "pearson_r": 0.9487082378527245,
+          "n_valid": 12
+        }
+      },
+      "rebased_discontinuity_months": [],
+      "mom_pearson_r": 0.9552378665623444,
+      "mom_mean_signed_diff_pp": 0.0975149109876666,
+      "mom_mean_abs_diff_pp": 1.9775016929497404,
+      "mom_n_valid": 35,
+      "yoy_pearson_r": 0.9271817862760025,
+      "yoy_mean_signed_diff_pp": 2.2737640106561927,
+      "yoy_mean_abs_diff_pp": 2.5797340635622716,
+      "yoy_n_valid": 24,
+      "level_link_factor_own_weights": 1.224635673873987,
+      "level_link_factor_fixed_weights": 1.224635673873987,
+      "rebasing_vs_weight_revision_gap": 0.0,
+      "candidate_linking_method": "level_link_median_ratio",
+      "approval_status": "Approved",
+      "reasons": [
+        "All provisional criteria met."
+      ],
+      "bridge_version": "oie_overlap_bridge_v1_2026-08-26"
+    },
+    {
+      "industry_id": "IND-07",
+      "component": "CapU",
+      "edition_a": "current",
+      "edition_b": "2016_based",
+      "source_checksums": {
+        "current": "0432b1627424e59a5bf9f56c5c4a498d0b636cba60800b1c8a5b307c79c0824f",
+        "2016_based": "b2615c27211e4f6e407a92e903c7c355c7e76c92e8f8d999e6886dac06a6e1be"
+      },
+      "overlap_start": "2021-01-01",
+      "overlap_end": "2023-12-01",
+      "overlap_months": 36,
+      "division_set": [
+        23
+      ],
+      "weights_current_own": {
+        "23": 1.0
+      },
+      "weights_2016_based_own": {
+        "23": 1.0
+      },
+      "raw_pearson_r": 0.8398941110492897,
+      "rebased_pearson_r": 0.839894111049289,
+      "rebased_spearman_r": 0.8051480051480052,
+      "rebased_mean_abs_diff": 3.7950029762338056,
+      "rebased_median_abs_diff": 3.4963514803638205,
+      "rebased_mean_signed_diff": 3.521576212085572,
+      "rebased_max_abs_diff": 10.36730918395682,
+      "rebased_n_valid": 36,
+      "rebased_per_year": {
+        "2021": {
+          "pearson_r": 0.9424757104918761,
+          "n_valid": 12
+        },
+        "2022": {
+          "pearson_r": 0.9123224866105053,
+          "n_valid": 12
+        },
+        "2023": {
+          "pearson_r": 0.8659083119087261,
+          "n_valid": 12
+        }
+      },
+      "rebased_discontinuity_months": [],
+      "mom_pearson_r": 0.9271076893315113,
+      "mom_mean_signed_diff_pp": 0.06373194222900036,
+      "mom_mean_abs_diff_pp": 2.3013998736022816,
+      "mom_n_valid": 35,
+      "yoy_pearson_r": 0.8055199698763743,
+      "yoy_mean_signed_diff_pp": 2.4254186889809057,
+      "yoy_mean_abs_diff_pp": 2.9556945395670944,
+      "yoy_n_valid": 24,
+      "level_link_factor_own_weights": 0.9872520847876678,
+      "level_link_factor_fixed_weights": 0.9872520847876678,
+      "rebasing_vs_weight_revision_gap": 0.0,
+      "candidate_linking_method": "level_link_median_ratio",
+      "approval_status": "Conditional",
+      "reasons": [
+        "Rebased-level Pearson r=0.840 < 0.9",
+        "YoY Pearson r=0.806 < 0.85"
+      ],
+      "bridge_version": "oie_overlap_bridge_v1_2026-08-26"
+    },
+    {
+      "industry_id": "IND-08",
+      "component": "CapU",
+      "edition_a": "current",
+      "edition_b": "2016_based",
+      "source_checksums": {
+        "current": "0432b1627424e59a5bf9f56c5c4a498d0b636cba60800b1c8a5b307c79c0824f",
+        "2016_based": "b2615c27211e4f6e407a92e903c7c355c7e76c92e8f8d999e6886dac06a6e1be"
+      },
+      "overlap_start": "2021-01-01",
+      "overlap_end": "2023-12-01",
+      "overlap_months": 36,
+      "division_set": [
+        24,
+        25
+      ],
+      "weights_current_own": {
+        "24": 0.5962786312461871,
+        "25": 0.40372136875381287
+      },
+      "weights_2016_based_own": {
+        "24": 0.6480158513751795,
+        "25": 0.35198414862482047
+      },
+      "raw_pearson_r": 0.9767068451416484,
+      "rebased_pearson_r": 0.9767068451416481,
+      "rebased_spearman_r": 0.9711711711711712,
+      "rebased_mean_abs_diff": 3.072820941632689,
+      "rebased_median_abs_diff": 3.1013707093403156,
+      "rebased_mean_signed_diff": 2.6379178650694053,
+      "rebased_max_abs_diff": 7.8820625459768365,
+      "rebased_n_valid": 36,
+      "rebased_per_year": {
+        "2021": {
+          "pearson_r": 0.965689790304297,
+          "n_valid": 12
+        },
+        "2022": {
+          "pearson_r": 0.9759314498369492,
+          "n_valid": 12
+        },
+        "2023": {
+          "pearson_r": 0.966524056380491,
+          "n_valid": 12
+        }
+      },
+      "rebased_discontinuity_months": [],
+      "mom_pearson_r": 0.96487562220517,
+      "mom_mean_signed_diff_pp": 0.33512153869424915,
+      "mom_mean_abs_diff_pp": 1.8735050296415108,
+      "mom_n_valid": 35,
+      "yoy_pearson_r": 0.8727161245916526,
+      "yoy_mean_signed_diff_pp": 2.794641143434898,
+      "yoy_mean_abs_diff_pp": 3.281416042223865,
+      "yoy_n_valid": 24,
+      "level_link_factor_own_weights": 1.0550491315759314,
+      "level_link_factor_fixed_weights": 1.0405018866777405,
+      "rebasing_vs_weight_revision_gap": 0.014547244898190925,
+      "candidate_linking_method": "level_link_median_ratio",
+      "approval_status": "Approved",
+      "reasons": [
+        "All provisional criteria met."
+      ],
+      "bridge_version": "oie_overlap_bridge_v1_2026-08-26"
+    },
+    {
+      "industry_id": "IND-09",
+      "component": "CapU",
+      "edition_a": "current",
+      "edition_b": "2016_based",
+      "source_checksums": {
+        "current": "0432b1627424e59a5bf9f56c5c4a498d0b636cba60800b1c8a5b307c79c0824f",
+        "2016_based": "b2615c27211e4f6e407a92e903c7c355c7e76c92e8f8d999e6886dac06a6e1be"
+      },
+      "overlap_start": "2021-01-01",
+      "overlap_end": "2023-12-01",
+      "overlap_months": 36,
+      "division_set": [
+        26,
+        27
+      ],
+      "weights_current_own": {
+        "26": 0.7298119958652542,
+        "27": 0.2701880041347457
+      },
+      "weights_2016_based_own": {
+        "26": 0.7475895606522068,
+        "27": 0.25241043934779317
+      },
+      "raw_pearson_r": 0.9882287084394065,
+      "rebased_pearson_r": 0.9882287084394065,
+      "rebased_spearman_r": 0.9866151866151867,
+      "rebased_mean_abs_diff": 1.6984462112066592,
+      "rebased_median_abs_diff": 1.4973798324416876,
+      "rebased_mean_signed_diff": -0.4766623217431633,
+      "rebased_max_abs_diff": 5.606225634528272,
+      "rebased_n_valid": 36,
+      "rebased_per_year": {
+        "2021": {
+          "pearson_r": 0.9893567334979582,
+          "n_valid": 12
+        },
+        "2022": {
+          "pearson_r": 0.951985768967505,
+          "n_valid": 12
+        },
+        "2023": {
+          "pearson_r": 0.9600718847097431,
+          "n_valid": 12
+        }
+      },
+      "rebased_discontinuity_months": [],
+      "mom_pearson_r": 0.9883592237986873,
+      "mom_mean_signed_diff_pp": -0.2521768554227173,
+      "mom_mean_abs_diff_pp": 1.1093571359615038,
+      "mom_n_valid": 35,
+      "yoy_pearson_r": 0.9220141944348255,
+      "yoy_mean_signed_diff_pp": -1.1930270420179954,
+      "yoy_mean_abs_diff_pp": 2.594882912887806,
+      "yoy_n_valid": 24,
+      "level_link_factor_own_weights": 0.9668616008963646,
+      "level_link_factor_fixed_weights": 0.9698797785960803,
+      "rebasing_vs_weight_revision_gap": 0.003018177699715685,
+      "candidate_linking_method": "level_link_median_ratio",
+      "approval_status": "Approved",
+      "reasons": [
+        "All provisional criteria met."
+      ],
+      "bridge_version": "oie_overlap_bridge_v1_2026-08-26"
+    },
+    {
+      "industry_id": "IND-10",
+      "component": "CapU",
+      "edition_a": "current",
+      "edition_b": "2016_based",
+      "source_checksums": {
+        "current": "0432b1627424e59a5bf9f56c5c4a498d0b636cba60800b1c8a5b307c79c0824f",
+        "2016_based": "b2615c27211e4f6e407a92e903c7c355c7e76c92e8f8d999e6886dac06a6e1be"
+      },
+      "overlap_start": "2021-01-01",
+      "overlap_end": "2023-12-01",
+      "overlap_months": 36,
+      "division_set": [
+        28
+      ],
+      "weights_current_own": {
+        "28": 1.0
+      },
+      "weights_2016_based_own": {
+        "28": 1.0
+      },
+      "raw_pearson_r": 0.9672391380667167,
+      "rebased_pearson_r": 0.9672391380667165,
+      "rebased_spearman_r": 0.960875160875161,
+      "rebased_mean_abs_diff": 4.069473797950997,
+      "rebased_median_abs_diff": 3.7054094619364903,
+      "rebased_mean_signed_diff": -0.9323027067009106,
+      "rebased_max_abs_diff": 9.166544677601024,
+      "rebased_n_valid": 36,
+      "rebased_per_year": {
+        "2021": {
+          "pearson_r": 0.9936143379777597,
+          "n_valid": 12
+        },
+        "2022": {
+          "pearson_r": 0.913339859525852,
+          "n_valid": 12
+        },
+        "2023": {
+          "pearson_r": 0.9782081068775531,
+          "n_valid": 12
+        }
+      },
+      "rebased_discontinuity_months": [],
+      "mom_pearson_r": 0.9830940265946116,
+      "mom_mean_signed_diff_pp": 0.15838028200243842,
+      "mom_mean_abs_diff_pp": 2.391987773173593,
+      "mom_n_valid": 35,
+      "yoy_pearson_r": 0.97323708116612,
+      "yoy_mean_signed_diff_pp": -2.131457597985625,
+      "yoy_mean_abs_diff_pp": 3.7136793324199417,
+      "yoy_n_valid": 24,
+      "level_link_factor_own_weights": 0.9665015639934669,
+      "level_link_factor_fixed_weights": 0.9665015639934669,
+      "rebasing_vs_weight_revision_gap": 0.0,
+      "candidate_linking_method": "level_link_median_ratio",
+      "approval_status": "Approved",
+      "reasons": [
+        "All provisional criteria met."
+      ],
+      "bridge_version": "oie_overlap_bridge_v1_2026-08-26"
+    },
+    {
+      "industry_id": "IND-11",
+      "component": "CapU",
+      "edition_a": "current",
+      "edition_b": "2016_based",
+      "source_checksums": {
+        "current": "0432b1627424e59a5bf9f56c5c4a498d0b636cba60800b1c8a5b307c79c0824f",
+        "2016_based": "b2615c27211e4f6e407a92e903c7c355c7e76c92e8f8d999e6886dac06a6e1be"
+      },
+      "overlap_start": "2021-01-01",
+      "overlap_end": "2023-12-01",
+      "overlap_months": 36,
+      "division_set": [
+        29,
+        30
+      ],
+      "weights_current_own": {
+        "29": 0.9112708329093833,
+        "30": 0.0887291670906168
+      },
+      "weights_2016_based_own": {
+        "29": 0.9261538255069585,
+        "30": 0.07384617449304148
+      },
+      "raw_pearson_r": 0.9875835278671606,
+      "rebased_pearson_r": 0.9875835278671617,
+      "rebased_spearman_r": 0.980952380952381,
+      "rebased_mean_abs_diff": 3.3136436346188805,
+      "rebased_median_abs_diff": 3.341594738841117,
+      "rebased_mean_signed_diff": -3.3136436346188805,
+      "rebased_max_abs_diff": 8.761611638158868,
+      "rebased_n_valid": 36,
+      "rebased_per_year": {
+        "2021": {
+          "pearson_r": 0.997548089054092,
+          "n_valid": 12
+        },
+        "2022": {
+          "pearson_r": 0.99213176849132,
+          "n_valid": 12
+        },
+        "2023": {
+          "pearson_r": 0.9915379604889384,
+          "n_valid": 12
+        }
+      },
+      "rebased_discontinuity_months": [],
+      "mom_pearson_r": 0.9967198909246716,
+      "mom_mean_signed_diff_pp": -0.16469655242753325,
+      "mom_mean_abs_diff_pp": 0.84386683387875,
+      "mom_n_valid": 35,
+      "yoy_pearson_r": 0.9966929999150717,
+      "yoy_mean_signed_diff_pp": -1.747084527931113,
+      "yoy_mean_abs_diff_pp": 1.8320253292576503,
+      "yoy_n_valid": 24,
+      "level_link_factor_own_weights": 1.0068574396834558,
+      "level_link_factor_fixed_weights": 1.0103144632562762,
+      "rebasing_vs_weight_revision_gap": 0.0034570235728204057,
+      "candidate_linking_method": "level_link_median_ratio",
+      "approval_status": "Approved",
+      "reasons": [
+        "All provisional criteria met."
+      ],
+      "bridge_version": "oie_overlap_bridge_v1_2026-08-26"
+    },
+    {
+      "industry_id": "IND-12",
+      "component": "CapU",
+      "edition_a": "current",
+      "edition_b": "2016_based",
+      "source_checksums": {
+        "current": "0432b1627424e59a5bf9f56c5c4a498d0b636cba60800b1c8a5b307c79c0824f",
+        "2016_based": "b2615c27211e4f6e407a92e903c7c355c7e76c92e8f8d999e6886dac06a6e1be"
+      },
+      "overlap_start": "2021-01-01",
+      "overlap_end": "2023-12-01",
+      "overlap_months": 36,
+      "division_set": [
+        31,
+        32
+      ],
+      "weights_current_own": {
+        "31": 0.2835850081477458,
+        "32": 0.7164149918522542
+      },
+      "weights_2016_based_own": {
+        "31": 0.39113795527322903,
+        "32": 0.608862044726771
+      },
+      "raw_pearson_r": 0.8692567989739877,
+      "rebased_pearson_r": 0.869256798973988,
+      "rebased_spearman_r": 0.8324324324324325,
+      "rebased_mean_abs_diff": 4.889729727036199,
+      "rebased_median_abs_diff": 3.738999040359971,
+      "rebased_mean_signed_diff": 2.5441904044139623,
+      "rebased_max_abs_diff": 17.862283470217818,
+      "rebased_n_valid": 36,
+      "rebased_per_year": {
+        "2021": {
+          "pearson_r": 0.9286562364466941,
+          "n_valid": 12
+        },
+        "2022": {
+          "pearson_r": 0.9480106546997306,
+          "n_valid": 12
+        },
+        "2023": {
+          "pearson_r": 0.7614882336527834,
+          "n_valid": 12
+        }
+      },
+      "rebased_discontinuity_months": [
+        "2023-03-01",
+        "2023-05-01",
+        "2023-06-01"
+      ],
+      "mom_pearson_r": 0.8969981571583667,
+      "mom_mean_signed_diff_pp": 0.2720439814851048,
+      "mom_mean_abs_diff_pp": 4.034540801517924,
+      "mom_n_valid": 35,
+      "yoy_pearson_r": 0.8646033724664324,
+      "yoy_mean_signed_diff_pp": 3.949089712000967,
+      "yoy_mean_abs_diff_pp": 6.196829398032416,
+      "yoy_n_valid": 24,
+      "level_link_factor_own_weights": 1.1652027938472587,
+      "level_link_factor_fixed_weights": 1.1710106947182104,
+      "rebasing_vs_weight_revision_gap": 0.005807900870951732,
+      "candidate_linking_method": "level_link_median_ratio",
+      "approval_status": "Rejected",
+      "reasons": [
+        "Rebased-level Pearson r=0.869 < 0.9",
+        "Unexplained discontinuity in: ['2023-03-01', '2023-05-01', '2023-06-01']",
+        "YoY mean bias=3.95pp exceeds 3.0pp"
+      ],
+      "bridge_version": "oie_overlap_bridge_v1_2026-08-26"
+    }
+  ],
+  "ind03_excluded": {
+    "industry_id": "IND-03",
+    "status": "excluded_from_bridge_validation",
+    "reason": "Composition differs across editions (current: TSIC {16,17}; 2016-based: TSIC {17} only) — docs/task_a1_report.md §7.4. Not redefined automatically.",
+    "current_edition_only_max_months": 66,
+    "future_choices": [
+      "1. Keep current definition (TSIC 16+17) and accept the shorter 66-month history.",
+      "2. Narrow the definition to TSIC 17 only, for a consistent long history.",
+      "3. Use an unbalanced panel with explicit safeguards."
+    ],
+    "decision_made_in_this_task": false
+  }
+}

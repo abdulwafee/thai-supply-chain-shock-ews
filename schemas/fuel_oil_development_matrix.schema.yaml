@@ -1,0 +1,241 @@
+# Schema definition (documentation-level, not yet enforced by code) for the
+# three Task C10 development-matrix artifacts:
+#
+#   data/features/c10_fuel_oil_development_wide.parquet   (one row per design row)
+#   data/features/c10_fuel_oil_development_mask.parquet   (one row per design cell)
+#   data/features/c10_fuel_oil_diagnostics.parquet        (one row per statistic)
+#
+# All three are generated and git-ignored; docs/c10_design_matrix_audit.json is
+# the committed record.
+#
+# The wide table is DEVELOPMENT-ONLY (issue months 2024-01 .. 2025-03) and holds
+# no target, prediction, residual or metric column. It never will: C10 is an
+# outcome-free structural audit, and a target column here would make the
+# separation unverifiable.
+#
+# The two variants are separate row groups, never separate column groups. A
+# ten-column table holding both fuel oils would present ONE sector-093
+# coefficient as two independent measurements.
+
+schema_version: 1
+task: C10
+
+tables:
+  # -------------------------------------------------------------------------
+  - table: features/c10_fuel_oil_development_wide
+    grain: [variant_id, issue_month, industry_id]
+    primary_key: [variant_id, issue_month, industry_id]
+    expected_rows: 360          # 2 variants x 15 issue months x 12 industries
+    foreign_keys:
+      - column: industry_id
+        references: mapping/industry_map.csv#industry_id
+      - column: variant_id
+        references: "configs/fuel_oil_development_matrix.yaml#diagnostic_contract.expected_variants"
+      - columns: [variant_id, issue_month, industry_id]
+        references: features/c9_fuel_oil_development_snapshot
+    columns:
+      - name: variant_id
+        type: string
+        nullable: false
+        allowed_values: [fo600_direct_sector093, fo1500_direct_sector093]
+        note: >-
+          Mutually exclusive. Both are conditioned on the same sector-093
+          exposure vector, so they may not be added, averaged, jointly
+          decomposed, or concatenated into one modeling matrix.
+      - name: issue_month
+        type: string
+        nullable: false
+        format: "YYYY-MM"
+        range: ["2024-01", "2025-03"]
+      - name: industry_id
+        type: string
+        nullable: false
+        note: >-
+          All twelve industries are present. IND-04 is retained with masked
+          rows; it is neither dropped nor zero-filled.
+      - name: reference_month
+        type: string
+        nullable: false
+        format: "YYYY-MM"
+        rule: "reference_month = issue_month - 2 months (recorded, never inferred by shifting)"
+      - name: row_state
+        type: string
+        nullable: false
+        allowed_values: [numeric, masked_ineligible, rejected_source_null]
+        note: >-
+          A structural mask applies to a whole row or to none of it. Mixed
+          states within one row raise at assembly.
+      - name: masked
+        type: bool
+        nullable: false
+      - name: log_change_12m_pct
+        type: float64
+        nullable: true
+        unit: percentage_point_log_change_x_io_coefficient
+        null_meaning: "row_state is not `numeric`; the design is unresolved, not zero"
+      - name: log_change_1m_pct
+        type: float64
+        nullable: true
+        unit: percentage_point_log_change_x_io_coefficient
+        null_meaning: "row_state is not `numeric`; the design is unresolved, not zero"
+      - name: log_change_3m_pct
+        type: float64
+        nullable: true
+        unit: percentage_point_log_change_x_io_coefficient
+        null_meaning: "row_state is not `numeric`; the design is unresolved, not zero"
+      - name: price_level
+        type: float64
+        nullable: true
+        unit: baht_per_litre_x_io_coefficient
+        null_meaning: "row_state is not `numeric`; the design is unresolved, not zero"
+      - name: realized_volatility_3m_pct
+        type: float64
+        nullable: true
+        unit: percentage_point_log_change_volatility_x_io_coefficient
+        null_meaning: "row_state is not `numeric`; the design is unresolved, not zero"
+
+  # -------------------------------------------------------------------------
+  - table: features/c10_fuel_oil_development_mask
+    grain: [variant_id, issue_month, industry_id, transformation_id]
+    primary_key: [variant_id, issue_month, industry_id, transformation_id]
+    expected_rows: 1800         # 360 design rows x 5 transformations
+    columns:
+      - name: variant_id
+        type: string
+        nullable: false
+      - name: issue_month
+        type: string
+        nullable: false
+      - name: industry_id
+        type: string
+        nullable: false
+      - name: transformation_id
+        type: string
+        nullable: false
+        allowed_values:
+          - log_change_12m_pct
+          - log_change_1m_pct
+          - log_change_3m_pct
+          - price_level
+          - realized_volatility_3m_pct
+      - name: reference_month
+        type: string
+        nullable: false
+      - name: cell_state
+        type: string
+        nullable: false
+        allowed_values: [numeric, structural_zero, masked_ineligible, rejected_source_null]
+        note: >-
+          Four distinct states. An observed zero, an unresolved structure, an
+          ineligible pair and an absent source are different facts and are
+          never collapsed into one another.
+      - name: masked
+        type: bool
+        nullable: false
+      - name: mask_reason
+        type: string
+        nullable: true
+        null_meaning: "the cell is numeric; a masked cell without a reason raises"
+      - name: conditioned_status
+        type: string
+        nullable: false
+        references: features/c9_fuel_oil_conditioned#conditioned_status
+      - name: conditioned_lineage_checksum
+        type: string
+        nullable: false
+        references: features/c9_fuel_oil_conditioned#conditioned_lineage_checksum
+      - name: matrix_cell_lineage_checksum
+        type: string
+        nullable: false
+        note: >-
+          SHA-256 over BOTH provenance branches and the selection rule. The
+          source branch carries the C8 transformation checksum, its required
+          input window, its status and the C7.5 semantic checksum; the
+          structural branch carries the sector-093 exposure row, the NESDC
+          workbook SHA-256, the crosswalk version, the gross-output weights,
+          the proxy fit, the direction decision, the frozen C9 Phase-A
+          checksum and the structural availability month. A digest over one
+          branch would let the other change invisibly, so both are required —
+          for masked cells too, which have no value but do have a reason.
+
+  # -------------------------------------------------------------------------
+  - table: features/c10_fuel_oil_diagnostics
+    grain: [variant_id, statistic, key]
+    primary_key: [variant_id, statistic, key]
+    columns:
+      - name: variant_id
+        type: string
+        nullable: false
+      - name: statistic
+        type: string
+        nullable: false
+        allowed_values:
+          - singular_value
+          - numerical_rank
+          - raw_condition_number
+          - standardized_condition_number
+          - stacked_panel_rank
+          - unique_issue_months
+          - pearson
+          - spearman
+      - name: key
+        type: string
+        nullable: false
+      - name: value
+        type: float64
+        nullable: false
+
+# ---------------------------------------------------------------------------
+invariants:
+  primary_diagnostic_input: source_time_matrix_15x5
+  primary_diagnostic_input_note: >-
+    Every rank, condition-number, variance and correlation figure is computed
+    on the 15 x 5 source-time matrix. The 165-row stacked eligible panel is
+    that same matrix scaled once per industry; reporting a diagnostic on it
+    would present fifteen distinct temporal rows as though there were 165.
+  stacked_rows_are_independent_claim_permitted: false
+  temporal_independence_claim_permitted: false
+  significance_tests_reported: false
+  feature_removal_permitted: false
+  channel_selection_permitted: false
+
+prohibited_columns:
+  reason: >-
+    C10 is an outcome-free structural audit. None of these may appear in any
+    C10 table, under any name.
+  columns:
+    - stress_score
+    - risk_level
+    - target
+    - y_true
+    - y_pred
+    - prediction
+    - residual
+    - mae
+    - rmse
+    - metric
+    - locked_test_outcome
+
+interpretation:
+  structural_interaction_only: true
+  currency_cost_per_unit_of_industrial_output: false
+  elasticity: false
+  pass_through: false
+  causal_effect: false
+  forecast_coefficient: false
+  valuation_basis_alignment: partial_mismatch_purchasers_price_coefficient_x_ex_refinery_price
+  valuation_note: >-
+    EPPO measures the ex-refinery stage; the I/O coefficient is stated in
+    purchasers' prices. Their product is a structural interaction, and this
+    mismatch stays visible in every matrix's metadata.
+
+availability:
+  source_available_as_of: null
+  source_available_as_of_note: >-
+    Evidence, and there is none. Never to be filled from
+    `policy_available_month`, which is an assumption.
+  operational_policy_lag_months: 2
+  operational_lag_is_measured: false
+  latest_vintage_used: true
+  point_in_time_supported: false
+  fully_real_time_backtest: false

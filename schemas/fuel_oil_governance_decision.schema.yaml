@@ -1,0 +1,241 @@
+# Schema definition (documentation-level, not yet enforced by code) for the
+# Task C11-R1 governance artifacts:
+#
+#   docs/c11r1_governance_decision.json      (the committed record)
+#   docs/c11r1_governance_decision.md
+#   docs/c11_architecture_decision.errata.md (sidecar over the C11 documents)
+#
+# C11-R1 produces NO tabular artifact. It fits nothing, joins nothing and
+# computes no metric, so there is no design matrix, no prediction table and no
+# score table to describe here.
+#
+# The governing rule of this schema: a dependency-clean DECISION and an
+# outcome-blind EXECUTION HISTORY are different facts, and no field may merge
+# them. `outcome_free` is prohibited outright as a field name.
+
+schema_version: 1
+task: C11-R1
+document: docs/c11r1_governance_decision.json
+supersedes_status_of: C11
+supersedes_findings_of: none
+
+# ---------------------------------------------------------------------------
+required_sections:
+  - preserved_c11_record
+  - corrected_gate_specification
+  - gate_status
+  - outcome_access_incident
+  - information_flow
+  - reproduction
+  - decision_status
+  - architecture_scope
+  - closure_gates
+  - d5_authorization
+
+# ---------------------------------------------------------------------------
+sections:
+  preserved_c11_record:
+    purpose: >-
+      Prove that C11 was preserved rather than rewritten. Two kinds of pin,
+      answering different questions.
+    fields:
+      - name: artifacts.<name>.byte_sha256
+        type: string
+        pattern: "^[0-9a-f]{64}$"
+        meaning: >-
+          FORWARD integrity baseline only. The decision Markdown and JSON carry
+          a generation timestamp, so a legitimate C11 rerun moves this digest.
+          A byte drift on a file with no timestamp is an edit, not a
+          regeneration, and must raise.
+      - name: durable_checksums.<name>
+        type: string
+        pattern: "^[0-9a-f]{64}$"
+        meaning: >-
+          DURABLE identity, computed with generation timestamps excluded. A
+          change here means the record itself changed and must raise.
+      - name: c11_rewritten
+        type: bool
+        required_value: false
+      - name: decision_log_entries_modified
+        type: bool
+        required_value: false
+      - name: preserved_disclosures
+        type: list
+        must_contain:
+          - original_gate_expectation
+          - original_observed_gate_result
+          - gate_correction_disclosure
+          - d3_result_file_access_disclosure
+
+  gate_status:
+    purpose: >-
+      Keep the ORIGINAL preregistered gate set and the CORRECTED gate set
+      separate. The original nine gates may never be described as passing
+      without qualification.
+    required_fields:
+      original_preregistered_stacked_rank_expectation: 5
+      observed_stacked_rank_under_prohibited_preprocessing: 10
+      original_gate_implementation_valid: false
+      original_preregistered_gate_set_passed: false
+      gate_implementation_corrected_after_observation: true
+      corrected_gate_set_passed: true
+      thresholds_changed_after_observation: false
+      expectations_rewritten_as_preregistered: false
+      architecture_decision_cleanly_preregistered: false
+
+  corrected_gate_specification:
+    purpose: >-
+      Record what was preregistered, what was observed, and what the correct
+      measurement is - in that order, without collapsing them.
+    required_correct_measurements:
+      - within_industry_combined_rank            # 5, and < intended
+      - intended_combined_rank                   # 10
+      - interaction_blocks_intended              # 11
+      - interaction_blocks_after_prohibited_preprocessing   # 2
+      - sign_equivalence_groups                  # 2
+      - sign_identity_residual_approx            # ~4.44e-16
+      - selected_preprocessing_retains_interaction_rank
+      - prohibited_preprocessing_destroys_continuous_exposure_magnitude
+    invariants:
+      numerical_tolerance_changed: false
+      note: >-
+        The correction changed WHICH QUANTITY the gate measured. No rank
+        tolerance, duplicate-column tolerance or residual tolerance moved, and
+        describing it as a tolerance change must raise.
+
+  outcome_access_incident:
+    purpose: Record the access exactly, in both directions.
+    required_fields:
+      development_metric_artifact_accessed: true
+      development_target_values_accessed: false
+      locked_test_accessed: false
+      metric_values_used_in_architecture_decision: false
+      metric_artifact_required_for_decision: false
+      outcome_free_execution: false
+      decision_reproducible_without_metric_artifact: true
+      later_guard_retroactively_erases_access: false
+      clean_rerun_restores_original_outcome_blindness: false
+    per_file_fields:
+      - path
+      - contains_development_metric_values
+      - metric_values_displayed
+      - required_for_that_purpose
+    note: >-
+      Every D-series document opened is listed, not only the one that displayed
+      metric values. A partial incident record is not an incident record.
+
+  information_flow:
+    purpose: >-
+      Establish that the DECISION does not depend on any outcome, using three
+      instruments because each alone is weak.
+    instruments:
+      - name: controlled_path_guard
+        rule: allowlist_by_name
+        note: >-
+          An input is admitted because it is named, not because it matched no
+          forbidden pattern. A denylist admits every artifact nobody
+          anticipated, which is how the original access happened.
+      - name: static_dependency_inspection
+        rule: ast_read_call_sites_with_module_constant_resolution
+        note: >-
+          Only call sites of reading functions are examined, so a prohibition
+          list never registers as a read. Arguments that cannot be resolved
+          (a bare parameter inside a helper) are counted and reported rather
+          than passed silently.
+      - name: metric_substitution_invariance
+        rule: fabricated_metrics_injected_into_an_isolated_fixture
+        note: >-
+          Arbitrary metric values are injected and the architecture must not
+          move. The values are never written to disk and never read from an
+          artifact.
+    required_fields:
+      d_series_paths_opened: 0
+      architecture_decision_dependency_clean: true
+      original_execution_outcome_blind: false
+    must_state_its_limit: true
+    limit_field: does_not_prove
+
+  decision_status:
+    required_fields:
+      architecture_decision_status:
+        exploratory_supported_after_documented_specification_correction
+      architecture_mathematically_supported: true
+      architecture_confirmatorily_selected: false
+      architecture_selection_outcome_independence_proven_by_dependency: true
+      original_process_outcome_blind: false
+      eligible_for_confirmatory_claims: false
+      eligible_for_locked_test: false
+    note: >-
+      An imperfect process does not invalidate a reproduced identity, and a
+      convincing correction does not upgrade an exploratory selection.
+
+  d5_authorization:
+    required_fields:
+      d5_protocol_preregistration_authorized: true
+      d5_development_target_join_authorized: true
+      d5_exploratory_modeling_authorized: true
+      d5_channel_selection_authorized: false
+      d5_confirmatory_claims_authorized: false
+      d5_purge_evaluation_authorized: false
+      d5_locked_test_evaluation_authorized: false
+    rule: >-
+      Every field is false unless every closure gate passes. There is no partial
+      authorization: a failed dependency-clean reconstruction voids the grant.
+
+# ---------------------------------------------------------------------------
+prohibited_fields:
+  reason: >-
+    Each of these would merge two facts that C11-R1 exists to keep apart, or
+    would assert something C11-R1 did not do.
+  fields:
+    - outcome_free
+    - c11_superseded
+    - original_gates_passed
+    - process_was_clean
+    - retroactively_compliant
+    - mae
+    - rmse
+    - stress_score
+    - prediction
+    - residual
+    - target_value
+    - coefficient_estimate
+    - locked_test_outcome
+
+prohibited_artifacts_created:
+  model_artifact_created: false
+  prediction_artifact_created: false
+  metric_artifact_created: false
+  target_joined_artifact_created: false
+
+# ---------------------------------------------------------------------------
+checksums:
+  correction_checksum:
+    scope: the frozen corrected-gate specification
+    pattern: "^[0-9a-f]{64}$"
+  flow_checksum:
+    scope: the information-flow argument and its conclusion
+    pattern: "^[0-9a-f]{64}$"
+  governance_checksum:
+    scope: preservation, correction, incident, dependency, gates, authorization
+    pattern: "^[0-9a-f]{64}$"
+  content_checksum:
+    scope: the whole payload, generation timestamps excluded
+    pattern: "^[0-9a-f]{64}$"
+
+reproduction:
+  performed_without_d_series_access: true
+  expected:
+    source_block_rank: 5
+    interaction_block_rank: 5
+    combined_source_and_interaction_rank: 10
+    full_design_rank: 21
+    full_design_columns: 21
+    constant_exposure_interaction_rank: 0
+    invalid_coding_rank: 21
+    invalid_coding_columns: 22
+    panel_rows: 165
+    unique_issue_months: 15
+    eligible_industries: 11
+    ind_04_eligible: false
+  architecture_stands_only_if_reproduced_without_d_series: true

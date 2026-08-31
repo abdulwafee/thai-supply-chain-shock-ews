@@ -1,0 +1,889 @@
+{
+ "closure": {
+  "applied_identically_to_both_variants": true,
+  "channel_id": "eppo_sector093_fuel_oil",
+  "closure_checksum": "33991fe41a242e5f202fdcb4c67965c2765ade10c1370c3e56b99ccc4f866657",
+  "either_variant_labelled_preferred_primary_or_less_bad": false,
+  "fields": {
+   "absence_of_effect_proven": false,
+   "additional_model_grid_authorized": false,
+   "carried_forward_to_operational_modeling": false,
+   "channel_selection_authorized": false,
+   "channel_status": "closed_after_registered_development_evaluation",
+   "confirmatory_claim_authorized": false,
+   "development_candidate_supported": false,
+   "development_evidence_status": "incremental_signal_not_demonstrated",
+   "locked_test_evaluation_authorized": false,
+   "locked_test_should_be_opened_for_this_channel": false,
+   "model_feature_approved": false,
+   "purge_evaluation_authorized": false,
+   "source_pipeline_remains_valid": true,
+   "structural_audit_remains_valid": true
+  },
+  "variants": [
+   "fo600_direct_sector093",
+   "fo1500_direct_sector093"
+  ]
+ },
+ "closure_version": "c12_eppo_fuel_oil_channel_closure_v1",
+ "conclusion": {
+  "explicit_record": {
+   "absence_of_effect_proven": false,
+   "closure_is_a_population_level_scientific_conclusion": false,
+   "closure_is_a_project_governance_decision": true,
+   "development_evidence_is_inconclusive_not_proof_of_absence": true,
+   "event_safety_fails_in_all_four_registered_evaluations": true,
+   "fifteen_issue_month_clusters_limit_uncertainty_resolution": true,
+   "point_estimates_provide_no_positive_development_support": true,
+   "preregistered_stop_rule_supports_closing_further_investment": true
+  },
+  "narrative": "The registered development evaluation did not demonstrate incremental signal for either fuel-oil variant at either horizon. No point estimate beat its benchmark, every paired interval straddled zero, and event safety failed in all four cases. Fifteen issue-month clusters cannot settle the question either way, so this is a failure to demonstrate rather than a demonstration of failure. The preregistered stop rule nevertheless supports closing further investment in this channel: that is a project-governance decision about where to spend effort, and it is not a population-level scientific conclusion.",
+  "prohibited_conclusions": [
+   "fuel_oil_has_no_effect",
+   "fuel_oil_is_unrelated_to_industrial_stress",
+   "null_hypothesis_proven",
+   "structural_exposure_is_invalid",
+   "EPPO_data_is_invalid",
+   "no_predictive_relationship_exists"
+  ],
+  "statement": "incremental_signal_not_demonstrated_in_registered_development_evaluation"
+ },
+ "config_version": "fuel_oil_channel_closure_v1",
+ "content_checksum": "ee26a8552d595544c72340aa1ad78987582ad3d266f0e5acc4240d09124f8320",
+ "enforcement": {
+  "alters_generic_upstream_feature_creation": false,
+  "blocked_purposes": [
+   "modeling",
+   "model_training",
+   "target_assembly",
+   "feature_selection",
+   "operational_modeling",
+   "locked_test_evaluation"
+  ],
+  "closed_aliases": [
+   "fo600",
+   "fo1500",
+   "fuel_oil_600",
+   "fuel_oil_1500",
+   "fo_600_2s",
+   "fo_1500_2s",
+   "eppo_ex_refinery_fo600_2s",
+   "eppo_ex_refinery_fo1500_2s"
+  ],
+  "closed_composite_forms": [
+   "fuel_oil_composite",
+   "fuel_oil_index",
+   "fo_blend",
+   "fo_average",
+   "fo_pca",
+   "sector093_fuel_oil_composite"
+  ],
+  "closed_feature_ids": [
+   "fo600_direct_sector093",
+   "fo1500_direct_sector093",
+   "eppo_fo600_channel",
+   "eppo_fo1500_channel",
+   "eppo_sector093_fuel_oil"
+  ],
+  "closed_upstream_feature_tables": [
+   "c8_eppo_fuel_oil_transformations",
+   "c9_fuel_oil_conditioned",
+   "c9_fuel_oil_development_snapshot",
+   "c10_fuel_oil_development_wide",
+   "c11_fuel_oil_candidate_c_design"
+  ],
+  "exercised": {
+   "blocked_purposes_all_refused": true,
+   "closed_features_reported_as_missing": false,
+   "closure_reason_is_specific": true,
+   "generic_upstream_feature_creation_altered": false,
+   "historical_d5_reproducibility_preserved": true,
+   "permitted_purposes_all_allowed": true,
+   "probes": [
+    {
+     "feature_group": "closed_feature_ids",
+     "permitted": true,
+     "purpose": "audit",
+     "reason": "permitted_purpose_closure_applies_to_modeling_only"
+    },
+    {
+     "feature_group": "closed_feature_ids",
+     "permitted": true,
+     "purpose": "reproduction",
+     "reason": "permitted_purpose_closure_applies_to_modeling_only"
+    },
+    {
+     "feature_group": "closed_feature_ids",
+     "permitted": true,
+     "purpose": "documentation",
+     "reason": "permitted_purpose_closure_applies_to_modeling_only"
+    },
+    {
+     "feature_group": "closed_feature_ids",
+     "permitted": true,
+     "purpose": "source_quality",
+     "reason": "permitted_purpose_closure_applies_to_modeling_only"
+    },
+    {
+     "feature_group": "closed_feature_ids",
+     "permitted": true,
+     "purpose": "provenance_verification",
+     "reason": "permitted_purpose_closure_applies_to_modeling_only"
+    },
+    {
+     "feature_group": "closed_feature_ids",
+     "permitted": true,
+     "purpose": "historical_d5_reproduction",
+     "reason": "permitted_purpose_closure_applies_to_modeling_only"
+    },
+    {
+     "feature_group": "closed_feature_ids",
+     "permitted": false,
+     "purpose": "modeling",
+     "reason": "closed_channel",
+     "reason_is_specific": true,
+     "reported_as_missing": false
+    },
+    {
+     "feature_group": "closed_aliases",
+     "permitted": false,
+     "purpose": "modeling",
+     "reason": "closed_channel",
+     "reason_is_specific": true,
+     "reported_as_missing": false
+    },
+    {
+     "feature_group": "closed_composite_forms",
+     "permitted": false,
+     "purpose": "modeling",
+     "reason": "closed_channel",
+     "reason_is_specific": true,
+     "reported_as_missing": false
+    },
+    {
+     "feature_group": "closed_upstream_feature_tables",
+     "permitted": false,
+     "purpose": "modeling",
+     "reason": "closed_channel",
+     "reason_is_specific": true,
+     "reported_as_missing": false
+    },
+    {
+     "feature_group": "closed_feature_ids",
+     "permitted": false,
+     "purpose": "model_training",
+     "reason": "closed_channel",
+     "reason_is_specific": true,
+     "reported_as_missing": false
+    },
+    {
+     "feature_group": "closed_aliases",
+     "permitted": false,
+     "purpose": "model_training",
+     "reason": "closed_channel",
+     "reason_is_specific": true,
+     "reported_as_missing": false
+    },
+    {
+     "feature_group": "closed_composite_forms",
+     "permitted": false,
+     "purpose": "model_training",
+     "reason": "closed_channel",
+     "reason_is_specific": true,
+     "reported_as_missing": false
+    },
+    {
+     "feature_group": "closed_upstream_feature_tables",
+     "permitted": false,
+     "purpose": "model_training",
+     "reason": "closed_channel",
+     "reason_is_specific": true,
+     "reported_as_missing": false
+    },
+    {
+     "feature_group": "closed_feature_ids",
+     "permitted": false,
+     "purpose": "target_assembly",
+     "reason": "closed_channel",
+     "reason_is_specific": true,
+     "reported_as_missing": false
+    },
+    {
+     "feature_group": "closed_aliases",
+     "permitted": false,
+     "purpose": "target_assembly",
+     "reason": "closed_channel",
+     "reason_is_specific": true,
+     "reported_as_missing": false
+    },
+    {
+     "feature_group": "closed_composite_forms",
+     "permitted": false,
+     "purpose": "target_assembly",
+     "reason": "closed_channel",
+     "reason_is_specific": true,
+     "reported_as_missing": false
+    },
+    {
+     "feature_group": "closed_upstream_feature_tables",
+     "permitted": false,
+     "purpose": "target_assembly",
+     "reason": "closed_channel",
+     "reason_is_specific": true,
+     "reported_as_missing": false
+    },
+    {
+     "feature_group": "closed_feature_ids",
+     "permitted": false,
+     "purpose": "feature_selection",
+     "reason": "closed_channel",
+     "reason_is_specific": true,
+     "reported_as_missing": false
+    },
+    {
+     "feature_group": "closed_aliases",
+     "permitted": false,
+     "purpose": "feature_selection",
+     "reason": "closed_channel",
+     "reason_is_specific": true,
+     "reported_as_missing": false
+    },
+    {
+     "feature_group": "closed_composite_forms",
+     "permitted": false,
+     "purpose": "feature_selection",
+     "reason": "closed_channel",
+     "reason_is_specific": true,
+     "reported_as_missing": false
+    },
+    {
+     "feature_group": "closed_upstream_feature_tables",
+     "permitted": false,
+     "purpose": "feature_selection",
+     "reason": "closed_channel",
+     "reason_is_specific": true,
+     "reported_as_missing": false
+    },
+    {
+     "feature_group": "closed_feature_ids",
+     "permitted": false,
+     "purpose": "operational_modeling",
+     "reason": "closed_channel",
+     "reason_is_specific": true,
+     "reported_as_missing": false
+    },
+    {
+     "feature_group": "closed_aliases",
+     "permitted": false,
+     "purpose": "operational_modeling",
+     "reason": "closed_channel",
+     "reason_is_specific": true,
+     "reported_as_missing": false
+    },
+    {
+     "feature_group": "closed_composite_forms",
+     "permitted": false,
+     "purpose": "operational_modeling",
+     "reason": "closed_channel",
+     "reason_is_specific": true,
+     "reported_as_missing": false
+    },
+    {
+     "feature_group": "closed_upstream_feature_tables",
+     "permitted": false,
+     "purpose": "operational_modeling",
+     "reason": "closed_channel",
+     "reason_is_specific": true,
+     "reported_as_missing": false
+    },
+    {
+     "feature_group": "closed_feature_ids",
+     "permitted": false,
+     "purpose": "locked_test_evaluation",
+     "reason": "closed_channel",
+     "reason_is_specific": true,
+     "reported_as_missing": false
+    },
+    {
+     "feature_group": "closed_aliases",
+     "permitted": false,
+     "purpose": "locked_test_evaluation",
+     "reason": "closed_channel",
+     "reason_is_specific": true,
+     "reported_as_missing": false
+    },
+    {
+     "feature_group": "closed_composite_forms",
+     "permitted": false,
+     "purpose": "locked_test_evaluation",
+     "reason": "closed_channel",
+     "reason_is_specific": true,
+     "reported_as_missing": false
+    },
+    {
+     "feature_group": "closed_upstream_feature_tables",
+     "permitted": false,
+     "purpose": "locked_test_evaluation",
+     "reason": "closed_channel",
+     "reason_is_specific": true,
+     "reported_as_missing": false
+    }
+   ],
+   "unrelated_features_unaffected": true
+  },
+  "historical_d5_reproducibility_preserved": true,
+  "permitted_purposes": [
+   "audit",
+   "reproduction",
+   "documentation",
+   "source_quality",
+   "provenance_verification",
+   "historical_d5_reproduction"
+  ],
+  "prohibited_reopening_reasons": [
+   "trying_another_alpha",
+   "expanding_an_alpha_grid",
+   "replacing_ridge_with_another_estimator",
+   "adding_nonlinear_terms_after_seeing_d5",
+   "feature_selection_based_on_d5",
+   "removing_transformations_based_on_d5_coefficients",
+   "selecting_fo600_or_fo1500_from_observed_mae",
+   "combining_the_two_channels",
+   "using_pca_or_a_composite_index",
+   "tuning_high_stress_thresholds",
+   "evaluating_a_favorable_subgroup",
+   "removing_ind_04_from_denominators",
+   "switching_direct_exposure_to_total_requirement_because_d5_failed",
+   "reducing_publication_lag",
+   "opening_purge_or_locked_origins",
+   "rephrasing_an_inconclusive_result_as_evidence_for_another_specification"
+  ],
+  "returns_specific_closure_reason": true,
+  "treats_closed_features_as_missing": false
+ },
+ "evidence_chain": {
+  "attribution": {
+   "c10_established": "a_design_limitation",
+   "d5_supplied": "the_development_evidence",
+   "note": "C10 established that the industry conditioning contributes cross-industry scale and no temporal degrees of freedom - a property of the design matrix, established without reading any target. It did not and could not show that the channel has no predictive value. D5 is what supplied the development evidence, and D5's evidence is inconclusive rather than negative."
+  },
+  "c10": {
+   "c10_alone_demonstrates_predictive_uselessness": false,
+   "conditioning_adds_cross_industry_scale": true,
+   "conditioning_adds_temporal_degrees_of_freedom": false,
+   "industry_conditioned_histories_are_scalar_copies_of_one_source_time_matrix": true,
+   "per_industry_standardization_removes_exposure_magnitude": true
+  },
+  "c11_c11r1": {
+   "alternative_architecture_authorized_from_development_outcomes": false,
+   "mathematical_identification_supported": true,
+   "preserves_exposure_associated_heterogeneity": true,
+   "selected_architecture": "pooled_common_effect_plus_centered_sector093_interaction",
+   "selection_status": "exploratory_supported_after_documented_specification_correction"
+  },
+  "c7_c7_5": {
+   "fo600_and_fo1500_are_distinct_products": true,
+   "fo600_and_fo1500_remain_separate_variants": true,
+   "latest_vintage_values": true,
+   "publication_timing_basis": "policy_not_historically_measured",
+   "semantic_mapping_remains_valid": true,
+   "source_documents_remain_valid": true
+  },
+  "c8": {
+   "five_source_transformations_constructed_correctly": true,
+   "missing_source_months_propagated_without_imputation": true,
+   "source_level_transformation_validity_unchanged": true
+  },
+  "c9": {
+   "exposure_is_a_broad_refinery_product_proxy": true,
+   "exposure_is_product_specific_fuel_oil_consumption": false,
+   "ind_04_direction_ambiguous": true,
+   "sector_093_exposure_constructed_correctly": true,
+   "valuation_basis_alignment": "partial_mismatch_purchasers_price_coefficient_x_ex_refinery_price"
+  },
+  "d5": {
+   "any_variant_horizon_point_estimate_beat_the_benchmark": false,
+   "event_safety_failed_everywhere": true,
+   "selected_architecture_demonstrated_improvement": false,
+   "uncertainty_intervals_inconclusive": true
+  },
+  "narrative": "C10 established a design limitation - the industry conditioning contributes cross-industry scale and no temporal degrees of freedom - as a property of the design matrix, without reading any target. That is not the same as showing the channel carries nothing. D5 supplied the development evidence, and D5 was inconclusive. Attributing the closure to C10 alone would overstate what a rank identity can establish, and attributing it to D5 alone would lose the reason the architecture was constrained to begin with."
+ },
+ "final_declaration": [
+  "eppo_fuel_oil_modeling_channel_closed",
+  "incremental_signal_was_not_demonstrated",
+  "absence_of_an_effect_was_not_proven",
+  "official_source_and_structural_artifacts_remain_preserved_and_valid_within_their_stated_limitations",
+  "neither_fuel_oil_variant_is_selected",
+  "no_further_specification_search_is_authorized",
+  "locked_final_test_remains_unopened",
+  "reopening_requires_genuinely_new_external_evidence"
+ ],
+ "generated_at_utc": "2026-08-30T08:02:30.372046+00:00",
+ "new_specification_alone_is_new_evidence": false,
+ "outputs": {
+  "closure_json": "docs/c12_channel_closure.json",
+  "closure_markdown": "docs/c12_channel_closure.md",
+  "closure_schema": "schemas/fuel_oil_channel_closure.schema.yaml",
+  "metric_artifact_created": false,
+  "model_artifact_created": false,
+  "prediction_artifact_created": false,
+  "reopening_evidence_schema": "schemas/fuel_oil_reopening_evidence.schema.yaml",
+  "target_joined_artifact_created": false
+ },
+ "permitted_reopening_evidence": {
+  "categories": {
+   "longer_compatible_target_history": "A materially longer compatible development target history obtained without using purge or locked origins.",
+   "new_external_hypothesis": "A genuinely new external hypothesis registered BEFORE inspecting any corresponding development result.",
+   "newer_compatible_io_table": "A newer compatible I/O table materially changing sector-093 exposure and available before the evaluation period.",
+   "point_in_time_release_evidence": "Verified point-in-time EPPO release evidence or historical vintages that change the availability contract.",
+   "product_specific_consumption_crosswalk": "An official product-specific industrial fuel-consumption crosswalk distinguishing FO 600 or FO 1500 use by industry.",
+   "proven_implementation_error": "A proven source, target, alignment or implementation error that materially affected D5."
+  },
+  "modeling_entry_without_these_fields": "raise",
+  "required_fields": [
+   "new_evidence_id",
+   "source",
+   "checksum",
+   "availability_date",
+   "why_unavailable_to_d5",
+   "affected_assumption",
+   "expected_artifact_impact",
+   "not_selected_from_d5_outcomes",
+   "superseding_decision_log_entry"
+  ]
+ },
+ "preservation": {
+  "all_unchanged": true,
+  "artifacts_deleted": 0,
+  "artifacts_modified": 0,
+  "artifacts_pinned": 19,
+  "byte_checksums": {
+   "data/features/c8_eppo_fuel_oil_transformations.parquet": "7d6ca77a7c1c35634a06ed116c8b2938b65bf3f7ee57075f28a3150cc7d76076",
+   "data/features/c9_fuel_oil_conditioned.parquet": "6e1b78c3758c70315b2c5c67978ed88ae3fa18c4b7a20198195a2eeb3c576985",
+   "data/features/c9_fuel_oil_development_snapshot.parquet": "1afb62ce0548c14d305b5bc9f886d14b47f3734bba2f30b370bb40003f5b1deb",
+   "data/interim/c7_5_eppo_monthly_semantic.parquet": "16e9747c5b2c1315cb6c1977321270e44bf0548fdf2ec07565b73e278b8baf4b",
+   "data/interim/c7_eppo_daily_prices.parquet": "1b77aa7fb370716adebf0dc1ab54fb174df96545b25352802c1ddfb1b3bd07f5",
+   "data/interim/c7_eppo_monthly_source.parquet": "97c484da0e290827f623a9e50c7d3769724e9b872006cf491b85f4e6f5f666f5",
+   "data/model_input/d5_fuel_oil_coefficients.parquet": "26b3234ca6a4150ea93f0801ffa1461a88a7d60d18e0150c7d750176ef90b4c4",
+   "data/model_input/d5_fuel_oil_predictions.parquet": "930f348d0b66b293ee9f3a892c22d58d7307f2c9ea6f8a07730cf825826184ed",
+   "docs/d5_frozen_protocol.json": "22e37b46693d4934432aa19da80888b9fe7304a2f7ecf39f3639601768113198"
+  },
+  "content_checksums": {
+   "c10_design_matrix_audit": "bb520f9e74f49afbf6f50d934dea6630c81ea366c24f78b548d03f4a95c24d1c",
+   "c11_architecture_decision": "6d525648f0e7e30860dc065c17a896426a0cf008f7ef62096974d4954c9f6d77",
+   "c11r1_governance_decision": "a536dbb85444add1051e589e170bcc10756ff335ba1283723ac1644b4d36dbca",
+   "c7_5_eppo_semantic_decision": "8b36fd6e9ce7798905cb2b903b263908489a5632fdf54f41ba12b0a12b6bd24a",
+   "c7_eppo_full_archive_audit": "79f8d35579c14e8d16eea868a837e12d21f6c42162cf09d41057865648953a7d",
+   "c8_eppo_transformation_audit": "89195c01ba56b0b30c6bcd68eb9af069bf80da49da1192b03b899445379c46fe",
+   "c9_fuel_oil_conditioning_audit": "711461e78ff83048b13ed4852211fccd6008f87dfd4276312a2b26754064527e",
+   "c9_sector093_exposure_decision": "8cb4209b8c93f9d1f478452791dfda25bfbc9b73ec148aee2d6773de431373e1",
+   "d5_assembly_audit": "77877c1dac708cb8d573aabd43253887b8295d4227c8f34f34e48e83f5258396",
+   "d5_development_results": "0eb3d613d34fdde2274a56c2bcd97695b652991da663ce6390b70d9e53deaf0e"
+  },
+  "historical_runners_remain_able_to_reproduce_their_outputs": true,
+  "narrative": "Every artifact from C7 through D5 is preserved unchanged and pinned here. Preservation supports audit and portfolio reproducibility; it does not imply continued modeling eligibility, and the existing runners remain able to reproduce their historical outputs under their own frozen contracts.",
+  "preservation_implies_continued_modeling_eligibility": false,
+  "preservation_supports": [
+   "audit",
+   "portfolio_reproducibility"
+  ]
+ },
+ "prohibited_in_c12": [
+  "rerunning_modeling",
+  "calculating_new_metrics",
+  "tuning_another_specification",
+  "selecting_a_fuel_oil_channel",
+  "evaluating_purge_origins",
+  "accessing_the_locked_final_test",
+  "deleting_or_rewriting_historical_artifacts",
+  "modifying_prior_decision_log_entries"
+ ],
+ "prohibited_reopening_reasons": [
+  "trying_another_alpha",
+  "expanding_an_alpha_grid",
+  "replacing_ridge_with_another_estimator",
+  "adding_nonlinear_terms_after_seeing_d5",
+  "feature_selection_based_on_d5",
+  "removing_transformations_based_on_d5_coefficients",
+  "selecting_fo600_or_fo1500_from_observed_mae",
+  "combining_the_two_channels",
+  "using_pca_or_a_composite_index",
+  "tuning_high_stress_thresholds",
+  "evaluating_a_favorable_subgroup",
+  "removing_ind_04_from_denominators",
+  "switching_direct_exposure_to_total_requirement_because_d5_failed",
+  "reducing_publication_lag",
+  "opening_purge_or_locked_origins",
+  "rephrasing_an_inconclusive_result_as_evidence_for_another_specification"
+ ],
+ "superseded_by": "none",
+ "supersedes": "none",
+ "task": "C12",
+ "terminal_evidence": {
+  "aggregate_expectations": {
+   "any_result_reached_supported": false,
+   "confirmatory_evaluation": false,
+   "event_safety_gates_failed": 4,
+   "h1_benchmark_false_negatives": 8,
+   "h1_model_false_negatives": {
+    "fo1500_direct_sector093": 11,
+    "fo600_direct_sector093": 11
+   },
+   "ind_04_benchmark_passthrough": 60,
+   "locked_test_accessed": false,
+   "model_worse_than_benchmark_on_point_estimate": 4,
+   "modeled_predictions": 660,
+   "paired_intervals_including_zero": 4,
+   "prediction_rows": 720,
+   "protocol_frozen_before_target_access": true,
+   "purge_evaluated": false,
+   "target_reads_before_prediction_freeze": 0,
+   "variant_horizons_evaluated": 4,
+   "variant_selected": false,
+   "variants_combined": false
+  },
+  "d5_assembly_audit_content_checksum": "77877c1dac708cb8d573aabd43253887b8295d4227c8f34f34e48e83f5258396",
+  "d5_frozen_protocol_checksum": "13a0b1846df33f2d81eae8be8415b66bdeaef1bb20642e0a07645774c624483a",
+  "d5_rerun_in_c12": false,
+  "d5_results_content_checksum": "0eb3d613d34fdde2274a56c2bcd97695b652991da663ce6390b70d9e53deaf0e",
+  "expected": {
+   "fo1500_direct_sector093": {
+    "1": {
+     "benchmark_macro_mae": 17.094,
+     "event_safety_passed": false,
+     "mae_evidence": "inconclusive",
+     "model_macro_mae": 17.111,
+     "paired_ci_high": 0.847,
+     "paired_ci_low": -0.822
+    },
+    "3": {
+     "benchmark_macro_mae": 16.634,
+     "event_safety_passed": false,
+     "mae_evidence": "inconclusive",
+     "model_macro_mae": 18.21,
+     "paired_ci_high": 3.589,
+     "paired_ci_low": -0.096
+    }
+   },
+   "fo600_direct_sector093": {
+    "1": {
+     "benchmark_macro_mae": 17.094,
+     "event_safety_passed": false,
+     "mae_evidence": "inconclusive",
+     "model_macro_mae": 17.167,
+     "paired_ci_high": 0.907,
+     "paired_ci_low": -0.761
+    },
+    "3": {
+     "benchmark_macro_mae": 16.634,
+     "event_safety_passed": false,
+     "mae_evidence": "inconclusive",
+     "model_macro_mae": 18.207,
+     "paired_ci_high": 3.525,
+     "paired_ci_low": -0.016
+    }
+   }
+  },
+  "metric_tolerance": 0.001,
+  "metrics_recomputed_in_c12": false,
+  "reproduction": {
+   "all_reproduced": true,
+   "checks": {
+    "any_result_reached_supported": {
+     "actual": false,
+     "expected": false,
+     "reproduced": true
+    },
+    "confirmatory_evaluation": {
+     "actual": false,
+     "expected": false,
+     "reproduced": true
+    },
+    "d5_assembly_audit_content_checksum": {
+     "actual": "77877c1dac708cb8d573aabd43253887b8295d4227c8f34f34e48e83f5258396",
+     "expected": "77877c1dac708cb8d573aabd43253887b8295d4227c8f34f34e48e83f5258396",
+     "reproduced": true
+    },
+    "d5_frozen_protocol_checksum": {
+     "actual": "13a0b1846df33f2d81eae8be8415b66bdeaef1bb20642e0a07645774c624483a",
+     "expected": "13a0b1846df33f2d81eae8be8415b66bdeaef1bb20642e0a07645774c624483a",
+     "reproduced": true
+    },
+    "d5_results_content_checksum": {
+     "actual": "0eb3d613d34fdde2274a56c2bcd97695b652991da663ce6390b70d9e53deaf0e",
+     "expected": "0eb3d613d34fdde2274a56c2bcd97695b652991da663ce6390b70d9e53deaf0e",
+     "reproduced": true
+    },
+    "event_safety_gates_failed": {
+     "actual": 4,
+     "expected": 4,
+     "reproduced": true
+    },
+    "fo1500_direct_sector093.h1_benchmark_false_negatives": {
+     "actual": 8,
+     "expected": 8,
+     "reproduced": true
+    },
+    "fo1500_direct_sector093.h1_model_false_negatives": {
+     "actual": 11,
+     "expected": 11,
+     "reproduced": true
+    },
+    "fo1500_direct_sector093|h1.benchmark_macro_mae": {
+     "actual": 17.094469420180285,
+     "expected": 17.094,
+     "reproduced": true
+    },
+    "fo1500_direct_sector093|h1.event_safety_passed": {
+     "actual": false,
+     "expected": false,
+     "reproduced": true
+    },
+    "fo1500_direct_sector093|h1.mae_evidence": {
+     "actual": "inconclusive",
+     "expected": "inconclusive",
+     "reproduced": true
+    },
+    "fo1500_direct_sector093|h1.model_macro_mae": {
+     "actual": 17.111366681133678,
+     "expected": 17.111,
+     "reproduced": true
+    },
+    "fo1500_direct_sector093|h1.paired_ci_high": {
+     "actual": 0.8473833595603321,
+     "expected": 0.847,
+     "reproduced": true
+    },
+    "fo1500_direct_sector093|h1.paired_ci_low": {
+     "actual": -0.8220711763509774,
+     "expected": -0.822,
+     "reproduced": true
+    },
+    "fo1500_direct_sector093|h3.benchmark_macro_mae": {
+     "actual": 16.63380109495526,
+     "expected": 16.634,
+     "reproduced": true
+    },
+    "fo1500_direct_sector093|h3.event_safety_passed": {
+     "actual": false,
+     "expected": false,
+     "reproduced": true
+    },
+    "fo1500_direct_sector093|h3.mae_evidence": {
+     "actual": "inconclusive",
+     "expected": "inconclusive",
+     "reproduced": true
+    },
+    "fo1500_direct_sector093|h3.model_macro_mae": {
+     "actual": 18.210334751652116,
+     "expected": 18.21,
+     "reproduced": true
+    },
+    "fo1500_direct_sector093|h3.paired_ci_high": {
+     "actual": 3.5889469085083716,
+     "expected": 3.589,
+     "reproduced": true
+    },
+    "fo1500_direct_sector093|h3.paired_ci_low": {
+     "actual": -0.09612187202358172,
+     "expected": -0.096,
+     "reproduced": true
+    },
+    "fo600_direct_sector093.h1_benchmark_false_negatives": {
+     "actual": 8,
+     "expected": 8,
+     "reproduced": true
+    },
+    "fo600_direct_sector093.h1_model_false_negatives": {
+     "actual": 11,
+     "expected": 11,
+     "reproduced": true
+    },
+    "fo600_direct_sector093|h1.benchmark_macro_mae": {
+     "actual": 17.094469420180285,
+     "expected": 17.094,
+     "reproduced": true
+    },
+    "fo600_direct_sector093|h1.event_safety_passed": {
+     "actual": false,
+     "expected": false,
+     "reproduced": true
+    },
+    "fo600_direct_sector093|h1.mae_evidence": {
+     "actual": "inconclusive",
+     "expected": "inconclusive",
+     "reproduced": true
+    },
+    "fo600_direct_sector093|h1.model_macro_mae": {
+     "actual": 17.167471407256464,
+     "expected": 17.167,
+     "reproduced": true
+    },
+    "fo600_direct_sector093|h1.paired_ci_high": {
+     "actual": 0.9070858358614486,
+     "expected": 0.907,
+     "reproduced": true
+    },
+    "fo600_direct_sector093|h1.paired_ci_low": {
+     "actual": -0.7610100281741401,
+     "expected": -0.761,
+     "reproduced": true
+    },
+    "fo600_direct_sector093|h3.benchmark_macro_mae": {
+     "actual": 16.63380109495526,
+     "expected": 16.634,
+     "reproduced": true
+    },
+    "fo600_direct_sector093|h3.event_safety_passed": {
+     "actual": false,
+     "expected": false,
+     "reproduced": true
+    },
+    "fo600_direct_sector093|h3.mae_evidence": {
+     "actual": "inconclusive",
+     "expected": "inconclusive",
+     "reproduced": true
+    },
+    "fo600_direct_sector093|h3.model_macro_mae": {
+     "actual": 18.207297070717235,
+     "expected": 18.207,
+     "reproduced": true
+    },
+    "fo600_direct_sector093|h3.paired_ci_high": {
+     "actual": 3.524518307959796,
+     "expected": 3.525,
+     "reproduced": true
+    },
+    "fo600_direct_sector093|h3.paired_ci_low": {
+     "actual": -0.016408728547358406,
+     "expected": -0.016,
+     "reproduced": true
+    },
+    "ind_04_benchmark_passthrough": {
+     "actual": 60,
+     "expected": 60,
+     "reproduced": true
+    },
+    "locked_test_accessed": {
+     "actual": false,
+     "expected": false,
+     "reproduced": true
+    },
+    "model_worse_than_benchmark_on_point_estimate": {
+     "actual": 4,
+     "expected": 4,
+     "reproduced": true
+    },
+    "modeled_predictions": {
+     "actual": 660,
+     "expected": 660,
+     "reproduced": true
+    },
+    "paired_intervals_including_zero": {
+     "actual": 4,
+     "expected": 4,
+     "reproduced": true
+    },
+    "prediction_rows": {
+     "actual": 720,
+     "expected": 720,
+     "reproduced": true
+    },
+    "protocol_frozen_before_target_access": {
+     "actual": true,
+     "expected": true,
+     "reproduced": true
+    },
+    "purge_evaluated": {
+     "actual": false,
+     "expected": false,
+     "reproduced": true
+    },
+    "target_reads_before_prediction_freeze": {
+     "actual": 0,
+     "expected": 0,
+     "reproduced": true
+    },
+    "variant_horizons_evaluated": {
+     "actual": 4,
+     "expected": 4,
+     "reproduced": true
+    },
+    "variant_selected": {
+     "actual": false,
+     "expected": false,
+     "reproduced": true
+    },
+    "variants_combined": {
+     "actual": false,
+     "expected": false,
+     "reproduced": true
+    }
+   },
+   "d5_rerun_in_c12": false,
+   "failed": [],
+   "metrics_recomputed_in_c12": false,
+   "per_variant_horizon": {
+    "fo1500_direct_sector093|h1": {
+     "benchmark_false_negatives": 8,
+     "benchmark_macro_mae": 17.094469420180285,
+     "event_safety_passed": false,
+     "mae_evidence": "inconclusive",
+     "model_false_negatives": 11,
+     "model_macro_mae": 17.111366681133678,
+     "overall_status": "inconclusive",
+     "paired_ci_high": 0.8473833595603321,
+     "paired_ci_low": -0.8220711763509774
+    },
+    "fo1500_direct_sector093|h3": {
+     "benchmark_false_negatives": 4,
+     "benchmark_macro_mae": 16.63380109495526,
+     "event_safety_passed": false,
+     "mae_evidence": "inconclusive",
+     "model_false_negatives": 10,
+     "model_macro_mae": 18.210334751652116,
+     "overall_status": "inconclusive",
+     "paired_ci_high": 3.5889469085083716,
+     "paired_ci_low": -0.09612187202358172
+    },
+    "fo600_direct_sector093|h1": {
+     "benchmark_false_negatives": 8,
+     "benchmark_macro_mae": 17.094469420180285,
+     "event_safety_passed": false,
+     "mae_evidence": "inconclusive",
+     "model_false_negatives": 11,
+     "model_macro_mae": 17.167471407256464,
+     "overall_status": "inconclusive",
+     "paired_ci_high": 0.9070858358614486,
+     "paired_ci_low": -0.7610100281741401
+    },
+    "fo600_direct_sector093|h3": {
+     "benchmark_false_negatives": 4,
+     "benchmark_macro_mae": 16.63380109495526,
+     "event_safety_passed": false,
+     "mae_evidence": "inconclusive",
+     "model_false_negatives": 10,
+     "model_macro_mae": 18.207297070717235,
+     "overall_status": "inconclusive",
+     "paired_ci_high": 3.524518307959796,
+     "paired_ci_low": -0.016408728547358406
+    }
+   }
+  },
+  "source_task": "D5"
+ },
+ "validity_versus_eligibility": {
+  "c7_c7_5_semantic_decisions_retained": true,
+  "c8_transformations_reproducible": true,
+  "exposures_marked_erroneous_because_the_model_failed": false,
+  "interaction_architecture_mathematically_identifiable": true,
+  "may_enter_further_operational_modeling": false,
+  "may_open_the_locked_test_for_this_channel": false,
+  "official_eppo_source_documents_still_valid_evidence": true,
+  "predictive_utility_demonstrated_on_development_data": false,
+  "sector_093_exposure_reproducible": true,
+  "source_rows_marked_erroneous_because_the_model_failed": false,
+  "transformations_marked_erroneous_because_the_model_failed": false
+ }
+}

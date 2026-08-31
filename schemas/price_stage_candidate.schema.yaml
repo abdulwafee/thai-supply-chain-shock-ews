@@ -1,0 +1,143 @@
+# Schema for the C5 price-stage candidate table.
+# Describes what the code ACTUALLY writes
+# (docs/c5_price_stage_source_audit.json -> probes / price_stage_alignment),
+# verified by tests/test_c5_price_stage_alignment.py.
+#
+# SOURCE SEMANTICS ONLY. No target join, no feature matrix, no model input.
+
+schema_version: 1
+task: C5
+written_by: scripts/audit_c5_price_stage_alignment.py
+output: docs/c5_price_stage_source_audit.json
+
+selection_provenance:
+  selection_used_target_outcomes: false
+  d4_metrics_used_for_source_ranking: false
+  locked_test_accessed: false
+  note: >-
+    Ranking sees structural and provenance evidence only. The gate raises if a
+    candidate carries any performance field, so a series can never be preferred
+    because it once produced a lower MAE.
+
+price_stages:
+  - raw_commodity_direct_purchase
+  - processed_material_purchase
+  - refined_energy_purchase
+  - electricity_purchase
+  - transport_or_logistics_purchase
+  - exchange_rate_passthrough
+  - broad_or_unresolved_proxy
+
+alignment_statuses:
+  - stage_aligned
+  - broad_proxy_with_caution
+  - stage_misaligned
+  - unresolved
+
+probe_states:
+  - reachable
+  - verified
+  - reachable_but_out_of_scope
+  - http_forbidden
+  - http_error
+  - dns_failure
+  - tls_error
+  - timeout
+  - connection_error
+  - not_executed_source_unreachable
+absence_may_be_concluded_from_a_probe: false
+
+price_stage_alignment_row:
+  grain: [commodity_series_id, industry_id]
+  columns:
+    - {name: commodity_series_id, type: string, nullable: false}
+    - {name: industry_id, type: string, nullable: false}
+    - {name: world_bank_series, type: string, nullable: false}
+    - {name: mapped_raw_io_sector, type: string, nullable: false}
+    - {name: mapped_raw_io_sector_label, type: string, nullable: false}
+    - {name: leading_purchased_sectors, type: list, nullable: false}
+    - {name: direct_exposure, type: float, nullable: false}
+    - {name: indirect_exposure, type: float, nullable: false}
+    - {name: total_exposure, type: float, nullable: false}
+    - {name: price_stage, type: string, nullable: false}
+    - {name: world_bank_price_represents_purchased_stage, type: boolean, nullable: false}
+    - {name: alignment_status, type: string, nullable: false}
+    - {name: evidence, type: string, nullable: false}
+    - {name: limitations, type: string, nullable: false}
+    - {name: additional_series_could_close_gap, type: boolean, nullable: false}
+    - name: shared_source_sector_warning
+      type: string
+      nullable: true
+      note: >-
+        Non-null for aluminum and copper, which share I/O sector 107. The
+        coefficient cannot separate them, so they are NOT independent
+        measurements and their exposures must never be summed.
+    - {name: proxy_fitness_status, type: string, nullable: true}
+
+candidate_row:
+  grain: [candidate_id]
+  columns:
+    - {name: candidate_id, type: string, nullable: false}
+    - {name: source_family, type: string, nullable: false}
+    - {name: publisher, type: string, nullable: false}
+    - {name: official_url, type: string, nullable: false}
+    - name: published_label
+      type: string
+      nullable: true
+      note: "The EXACT label as published. Null when the probe could not verify it."
+    - {name: unit, type: string, nullable: true}
+    - name: price_basis
+      type: string
+      nullable: true
+      note: >-
+        Must state the stage explicitly. A retail price described as a producer
+        price is a defect the tests raise on.
+    - {name: geography, type: string, nullable: true}
+    - {name: taxes_and_margins, type: string, nullable: true}
+    - {name: frequency, type: string, nullable: true}
+    - {name: first_observation, type: string, nullable: true}
+    - {name: last_observation, type: string, nullable: true}
+    - {name: required_window_coverage, type: string, nullable: true}
+    - {name: missingness, type: string, nullable: true}
+    - {name: definition_breaks, type: string, nullable: true}
+    - name: publication_timing_evidence
+      type: string
+      nullable: true
+      note: "Never the download timestamp."
+    - {name: revision_characteristics, type: string, nullable: true}
+    - {name: archived_first_release_available, type: boolean, nullable: true}
+    - {name: mapped_io_sector, type: string, nullable: true}
+    - {name: mapped_io_sector_label, type: string, nullable: true}
+    - {name: structural_gap_addressed, type: string, nullable: true}
+    - {name: proxy_limitations, type: string, nullable: true}
+    - {name: probe_state, type: string, nullable: false}
+    - {name: gate_results, type: object, nullable: false}
+    - {name: gate_passed, type: boolean, nullable: false}
+    - {name: rejection_reasons, type: list, nullable: false}
+    - {name: recommended_for_c6, type: boolean, nullable: false}
+
+gate_criteria:
+  - official_publisher
+  - series_definition_and_unit_documented
+  - maps_to_purchased_intermediate_sector
+  - addresses_documented_structural_gap
+  - operational_timing_establishable
+  - coverage_adequate_or_limitations_explicit
+  - no_unresolved_definition_break
+  - availability_representable_without_download_time
+  - not_duplicative_without_semantic_distinction
+  - selection_free_of_target_outcomes
+all_criteria_required: true
+
+recommendation_meaning:
+  source_selected_for_c6_audit: true
+  feature_semantics_approved: false
+  model_feature_approved: false
+  ingested_into_production: false
+
+invariants:
+  - "Exactly one family carries recommended_for_c6 true."
+  - "A candidate with gate_passed false is never recommended."
+  - "No probe state is ever read as evidence that a source does not exist."
+  - "No candidate field name contains an outcome or performance term."
+  - "An exchange rate is never mapped to an I/O commodity sector."

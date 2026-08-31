@@ -1,0 +1,162 @@
+# Schema for the C1.5 publication-timing and first-release vintage evidence.
+# Describes what the code ACTUALLY writes
+# (thai_supply_chain_ews.data.commodity_timing.TimingRow and
+#  world_bank_pink_sheet_vintages.SeriesObservation), verified by
+# tests/test_c1_5_commodity_timing.py.
+#
+# EVIDENCE ONLY. No feature, no target join, no model input.
+
+schema_version: 1
+task: C1.5
+written_by: scripts/audit_c1_5_commodity_timing.py
+output: docs/c1_5_commodity_timing_audit.json
+
+publication_timing_row:
+  grain: [reference_month]
+  columns:
+    - name: reference_month
+      type: date
+      nullable: false
+      format: first-of-month
+    - name: first_seen_issue
+      type: string
+      nullable: true
+      note: "Earliest ARCHIVED issue containing this reference month; null if none."
+    - name: first_seen_issue_date
+      type: date
+      nullable: true
+      note: "From the PDF's own /CreationDate. NEVER the download timestamp."
+    - name: web_publish_date
+      type: date
+      nullable: true
+      rule: "Null — not exposed independently of the PDF; never assumed equal to it."
+    - name: reference_month_end
+      type: date
+      nullable: false
+    - name: calendar_delay_days
+      type: int
+      nullable: true
+      note: "issue_date - reference_month_end. Null when no archived issue exists."
+    - name: available_month
+      type: date
+      nullable: true
+    - name: availability_evidence_url
+      type: string
+      nullable: true
+    - name: availability_status
+      type: string
+      nullable: false
+      allowed_values:
+        - verified_from_archived_issue
+        - upper_bound_only
+        - issue_found_publication_date_missing
+        - no_archived_issue
+    - name: quality_flag
+      type: string
+      nullable: false
+    - name: is_true_first_release
+      type: bool
+      nullable: false
+      rule: >-
+        True only when first_seen_issue is the month immediately following the
+        reference month. Otherwise the delay is an UPPER BOUND, and the row is
+        excluded from delay statistics.
+
+first_release_observation:
+  grain: [issue_name, series_id, reference_month]
+  columns:
+    - name: series_id
+      type: string
+      nullable: false
+    - name: pdf_label
+      type: string
+      nullable: false
+      note: "Label as displayed in that issue, e.g. 'Coal, Australia' (workbook says 'Coal, Australian')."
+    - name: unit
+      type: string
+      nullable: false
+    - name: reference_month
+      type: date
+      nullable: false
+    - name: displayed_value
+      type: float64
+      nullable: false
+    - name: displayed_text
+      type: string
+      nullable: false
+      note: "Verbatim printed text, so display precision is auditable."
+    - name: decimal_places
+      type: int
+      nullable: false
+      note: "Used to round the latest-vintage value before comparison."
+    # C1.5-R3: `estimate_marker` (a bool set from the "a/" token) is REPLACED.
+    # The token means "included in the energy index" and never implied estimate
+    # status; the two concepts now live in separate fields.
+    - name: source_footnote_marker
+      type: string
+      nullable: false
+      note: >-
+        Raw table token(s) exactly as displayed, ';'-joined ("a/", "b/", ...).
+        Index membership only. Empty when the row prints no token.
+    - name: source_footnote_meaning
+      type: string
+      nullable: false
+      allowed_meanings:
+        a/: included_in_the_energy_index
+        b/: included_in_the_non_energy_index
+        c/: included_in_the_precious_metals_index
+        d/: index_definition_footnote
+    - name: estimate_status
+      type: string
+      nullable: false
+      allowed:
+        - source_documented_estimate
+        - not_covered_by_current_estimate_rule
+        - not_documented_as_estimate
+        - unknown
+      note: >-
+        Derived from an independent Description statement, never from a footnote
+        token. `unknown` when the evidence is absent — never `false`.
+    - name: estimate_evidence_type
+      type: string
+      nullable: false
+      note: "e.g. description_note_two_most_recent_months, description_note_absent, none."
+    - name: estimate_evidence_text
+      type: string
+      nullable: true
+      note: "The matched Description sentence, verbatim."
+    - name: estimate_rule_version
+      type: string
+      nullable: false
+    - name: estimate_evidence_url
+      type: string
+      nullable: false
+      note: "The archived issue the evidence was read from."
+    - name: definition_marker
+      type: bool
+      nullable: false
+
+revision_record:
+  grain: [series_id, reference_month]
+  status_values:
+    - first_release_observed
+    - first_release_documented_estimate # renamed in C1.5-R3
+    - latest_vintage_revised
+    - rounding_only_difference
+    - revision_status_unresolved
+  rules:
+    - "Latest value is rounded to the PDF's displayed precision before comparison."
+    - "Definition breaks are NEVER classified as numerical revisions."
+    - >-
+      When the archived issue and the workbook are the same vintage, an apparent
+      zero difference is recorded as revision_status_unresolved, because the
+      value has had no opportunity to be revised.
+
+snapshot_expectations:
+  note: Tied to the archived issues discoverable on 2026-08-27.
+  issues_total: 3
+  issues_officially_linked: 2
+  issues_pattern_probed: 1
+  required_window_months: 65
+  months_with_true_first_release_evidence: 1
+  minimum_safe_lag_months: null

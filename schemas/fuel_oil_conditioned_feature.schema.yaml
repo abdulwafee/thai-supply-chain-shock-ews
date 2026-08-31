@@ -1,0 +1,188 @@
+# Schema for the C9 industry-conditioned fuel-oil feature table.
+# Describes what the code ACTUALLY writes
+# (data/features/c9_fuel_oil_conditioned.parquet, git-ignored), verified by
+# tests/test_c9_fuel_oil_conditioning.py.
+#
+# STRUCTURALLY CONDITIONED SOURCE DATA. Not a model feature. No MPI target is
+# joined, no outcome is read, and model_feature_approved is false on every row.
+
+schema_version: 1
+task: C9
+phase: B
+written_by: scripts/run_c9_fuel_oil_conditioning.py
+output: data/features/c9_fuel_oil_conditioned.parquet
+conditioning_formula_version: c9_fuel_oil_direct_sector093_v1
+lineage_version: c9_fuel_oil_conditioned_lineage_v1
+
+formula:
+  expression: "z[g,c,m,f] = x[c,m,f] * E093[g] * s[g,c]"
+  x: C8 source transformation value
+  E093: direct sector-093 exposure, frozen in Phase A
+  s: frozen direction multiplier
+  normalisation_across_industries: false
+  normalisation_across_channels: false
+  normalisation_across_transformations: false
+  total_requirement_exposure_used: false
+
+meaning:
+  structural_interaction_only: true
+  monetary_cost_measure: false
+  not_a_currency_cost: true
+  not_an_elasticity: true
+  not_a_forecast_coefficient: true
+  valuation_basis_alignment:
+    partial_mismatch_purchasers_price_coefficient_x_ex_refinery_price
+  note: >-
+    EPPO measures the ex-refinery stage; the I/O coefficient is in purchasers'
+    prices. Their product is a structural interaction and is NOT baht of cost per
+    unit of industrial output.
+
+grid:
+  variants: 2
+  industries: 12
+  reference_months: 65
+  transformations: 5
+  rows: 7800
+  ineligible_pairs_omitted: false
+  source_gaps_omitted: false
+  insufficient_history_omitted: false
+  observed_zero_exposure_omitted: false
+
+observation:
+  grain: [variant_id, industry_id, reference_month, transformation_id]
+  ordering: [variant_id, industry_id, reference_month, transformation_id]
+  columns:
+    - {name: variant_id, type: string, nullable: false,
+       enum: [fo600_direct_sector093, fo1500_direct_sector093]}
+    - {name: channel_id, type: string, nullable: false}
+    - {name: shared_structural_exposure_group, type: string, nullable: false,
+       const: io_sector_093}
+    - {name: industry_id, type: string, nullable: false}
+    - {name: industry_name, type: string, nullable: false}
+    - {name: io_sector_code, type: string, nullable: false, const: "093"}
+    - {name: reference_month, type: string, nullable: false, format: "YYYY-MM"}
+    - {name: transformation_id, type: string, nullable: false}
+    - {name: conditioning_formula_version, type: string, nullable: false}
+    - name: conditioned_value
+      type: float
+      nullable: true
+      note: >-
+        Null for an ineligible pair and for a missing source month, INCLUDING
+        when the exposure is zero. Exactly 0.0 only where the exposure is an
+        observed zero AND the source value exists.
+    - {name: conditioned_unit, type: string, nullable: false}
+    - name: conditioned_status
+      type: string
+      nullable: false
+      enum:
+        - available_nonzero
+        - zero_due_to_observed_zero_exposure
+        - source_insufficient_history
+        - source_current_month_gap
+        - source_input_window_gap
+        - not_generated_due_to_direction_ambiguity
+        - not_generated_due_to_proxy_ineligibility
+        - structural_exposure_unresolved
+    - {name: source_feature_value, type: float, nullable: true}
+    - {name: source_transformation_status, type: string, nullable: false}
+    - {name: source_unit, type: string, nullable: false}
+    - {name: direct_exposure, type: float, nullable: false}
+    - {name: direction_channel, type: string, nullable: false}
+    - {name: direction_multiplier, type: integer, nullable: true}
+    - name: direction_interpretation
+      type: string
+      nullable: false
+      note: >-
+        Cost pressure for a level or a change; disruption magnitude for realized
+        volatility. The two readings are never merged.
+    - {name: proxy_fit, type: string, nullable: false}
+    - {name: proxy_confidence, type: string, nullable: false}
+    - {name: eligible, type: boolean, nullable: false}
+    - {name: exclusion_reason, type: string, nullable: true}
+    - {name: quality_flag, type: string, nullable: false}
+    - {name: valuation_basis_alignment, type: string, nullable: false}
+    - {name: structural_interaction_only, type: boolean, nullable: false, const: true}
+    - {name: monetary_cost_measure, type: boolean, nullable: false, const: false}
+    - {name: not_a_currency_cost, type: boolean, nullable: false, const: true}
+    - {name: not_an_elasticity, type: boolean, nullable: false, const: true}
+    - {name: not_a_forecast_coefficient, type: boolean, nullable: false, const: true}
+    - {name: source_required_input_months, type: list_of_string, nullable: false}
+    - {name: source_missing_input_months, type: list_of_string, nullable: false}
+    - {name: source_policy_available_month, type: string, nullable: false}
+    - {name: structural_available_month, type: string, nullable: false, const: "2020-03"}
+    - name: conditioned_policy_available_month
+      type: string
+      nullable: false
+      note: "max(source policy month, structural available month)."
+    - {name: source_available_as_of, type: date, nullable: true, const: null}
+    - {name: availability_basis, type: string, nullable: false,
+       const: conservative_policy_not_historical_measurement}
+    - {name: latest_vintage_used, type: boolean, nullable: false, const: true}
+    - {name: point_in_time_supported, type: boolean, nullable: false, const: false}
+    - {name: fully_real_time_backtest, type: boolean, nullable: false, const: false}
+    - {name: additive_aggregation_allowed, type: boolean, nullable: false, const: false}
+    - {name: simultaneous_model_entry_approved, type: boolean, nullable: false,
+       const: false}
+    - {name: source_transformation_lineage_checksum, type: string, nullable: false}
+    - {name: phase_a_decision_checksum, type: string, nullable: false}
+    - name: conditioned_lineage_checksum
+      type: string
+      nullable: false
+      note: >-
+        SHA-256 over BOTH provenance chains: the C8 transformation digest, its
+        declared input window and the C7.5 semantic digest on one side; the
+        sector-093 row, the NESDC workbook checksum, the crosswalk, the
+        gross-output weights, the exposure arithmetic, the proxy and direction
+        decisions, the frozen Phase-A digest and the structural availability
+        evidence on the other.
+    - {name: model_feature_approved, type: boolean, nullable: false, const: false}
+
+status_precedence:
+  - structural_ineligibility
+  - source_transformation_null
+  - structural_exposure_zero
+  - available_nonzero
+
+variant_restrictions:
+  shared_structural_exposure_group: io_sector_093
+  additive_aggregation_allowed: false
+  simple_average_allowed: false
+  automatic_composite_index_allowed: false
+  simultaneous_model_entry_approved: false
+  outcome_based_variant_selection_allowed: false
+  reason: >-
+    Both variants carry the SAME sector-093 exposure vector. Summing or averaging
+    them double-counts one coefficient while presenting it as two independent
+    measurements.
+
+development_snapshot:
+  output: data/features/c9_fuel_oil_development_snapshot.parquet
+  issue_months: 15
+  variants: 2
+  industries: 12
+  transformations: 5
+  cells: 1800
+  cell_states: [numeric, structural_zero, masked_ineligible, rejected_source_null]
+  channels_combined_in_one_model_ready_row: false
+  targets_read: false
+
+prohibited_columns:
+  - any MPI target column
+  - any model prediction or metric column
+  - any combined or averaged fuel-oil column
+  - any total-requirement exposure column
+industry_conditioned_features_created: true
+feature_semantics_approved: false
+model_feature_approved: false
+target_joined: false
+
+invariants:
+  - "Exactly 7,800 rows, unique on (variant_id, industry_id, reference_month, transformation_id)."
+  - "An ineligible pair is null, never zero."
+  - "A missing source month is null, never zero, even where exposure is zero."
+  - "A numeric value implies zero missing source input months and an eligible pair."
+  - "source_available_as_of is null in every row."
+  - "conditioned_policy_available_month equals max(source policy, 2020-03)."
+  - "structural_available_month is 2020-03, never the 2015 reference year."
+  - "Every row carries a lineage checksum, including null and ineligible rows."
+  - "model_feature_approved is false in every row."

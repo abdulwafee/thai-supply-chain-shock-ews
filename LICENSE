@@ -1,0 +1,49 @@
+MIT License
+
+Copyright (c) 2026 Thai Supply Chain Shock EWS contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+SCOPE OF THIS LICENSE
+
+This MIT License covers the original code and original documentation of this
+project only: everything under src/, scripts/, tests/, configs/, schemas/,
+docs/, data/mapping/, and the retrieval manifests under
+data/raw/_manifests/, all of which are this project's own work.
+
+It does NOT cover, and does not purport to relicense, any third-party
+material. In particular it grants no rights whatsoever in:
+
+  - World Bank documents and datasets (Pink Sheet workbooks and archived
+    monthly issues);
+  - Office of the National Economic and Social Development Council (NESDC)
+    workbooks and publications, including the 2015 input-output table;
+  - Office of Industrial Economics (OIE) documents, index workbooks and the
+    Manufacturing Production Index and Capacity Utilisation data derived from
+    them;
+  - Energy Policy and Planning Office (EPPO) price-structure workbooks;
+  - any other third-party dataset or publication.
+
+No file from any of those publishers is redistributed in this repository. What
+is published instead is the code that retrieves them, their source URLs, and a
+SHA-256 checksum for each file that was retrieved. Their terms are the
+publishers' to state and are recorded, unresolved where they are unresolved, in
+DATA_SOURCES.md and docs/e2_data_license_review.md.

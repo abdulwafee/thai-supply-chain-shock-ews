@@ -1,0 +1,222 @@
+{
+  "task": "C4",
+  "transformation_version": "c4_industry_conditioning_v1",
+  "generated_at": "2026-08-27T16:26:45Z",
+  "inputs": {
+    "c2": {
+      "commodity_series": 4,
+      "base_features": [
+        "log_change_12m_pct",
+        "log_change_1m_pct",
+        "log_change_3m_pct",
+        "price_level",
+        "realized_volatility_3m_pct"
+      ],
+      "observations_per_series": 306,
+      "rows_per_policy": {
+        "operational_lag_2m": 1224,
+        "publication_lag_1m": 1224
+      },
+      "point_in_time_first_release_only": true
+    },
+    "c3": {
+      "pairs": 48,
+      "industries": 12,
+      "commodities": 4,
+      "eligible": 43,
+      "ineligible": 5,
+      "shared_rows": 24,
+      "direction_ambiguous": 3,
+      "proxy_ineligible": 2
+    },
+    "c3_matrix_checksum": "50e63b0139c9bd6e112be96d3bc532baddb88e1b4724c9f4782e82b0df6a2358"
+  },
+  "structural_availability": {
+    "structural_reference_year": "2015",
+    "structural_available_by": "2020-03-31",
+    "status": "verified_before_development",
+    "evidence_type": "official_download_page_publication_date",
+    "evidence_url": "https://www.nesdc.go.th/download/i-o-table-of-thailand-2015/",
+    "document_date": "2020-03-31",
+    "publication_date": "2020-03-31",
+    "evidence_checksum": "7da4b4dca118af760844abd6c78ae01a83f313c8898321ac69e72be730e93c81",
+    "byte_identity_verified_at_that_date": false,
+    "reference_year_treated_as_publication_date": false,
+    "download_timestamp_used_as_availability": false,
+    "first_development_origin": "2024-01-01",
+    "primary_matrix_permitted": true,
+    "fully_real_time": false,
+    "notes": "What is verified is that the 2015 Final TABLE was published by 2020-03-31. The bytes now held were re-hosted during NESDC's 2025 site migration, so byte-level identity as of 2020 is NOT established. The distinction is recorded rather than glossed."
+  },
+  "matrix_variants": [
+    {
+      "name": "primary_direct_lag2",
+      "availability_policy": "operational_lag_2m",
+      "exposure_field": "direct_exposure",
+      "is_primary": true,
+      "label": "primary",
+      "varies_from_primary": "none",
+      "rows": 13158
+    },
+    {
+      "name": "timing_sensitivity_direct_lag1",
+      "availability_policy": "publication_lag_1m",
+      "exposure_field": "direct_exposure",
+      "is_primary": false,
+      "label": "sensitivity_only",
+      "varies_from_primary": "availability_policy",
+      "rows": 13158
+    },
+    {
+      "name": "structural_sensitivity_total_lag2",
+      "availability_policy": "operational_lag_2m",
+      "exposure_field": "total_requirement_exposure",
+      "is_primary": false,
+      "label": "sensitivity_only",
+      "varies_from_primary": "exposure_field",
+      "rows": 13158
+    }
+  ],
+  "combined_double_sensitivity_variant_created": false,
+  "canonical_row_count": 39474,
+  "expected_canonical_row_count": 39474,
+  "rows_per_variant": {
+    "primary_direct_lag2": 13158,
+    "timing_sensitivity_direct_lag1": 13158,
+    "structural_sensitivity_total_lag2": 13158
+  },
+  "eligible_pairs": 43,
+  "excluded_pairs": [
+    {
+      "industry_id": "IND-06",
+      "commodity_series_id": "rubber_rss3_usd_kg",
+      "exclusion_reason": "mixed_or_ambiguous_direction",
+      "commodity_proxy_fit_status": "fit_for_structural_use",
+      "direction_channel": "mixed_or_ambiguous",
+      "direct_exposure_retained": 0.08308758272904367,
+      "total_requirement_exposure_retained": 0.08435952230567835,
+      "converted_to_zero": false,
+      "conditioned_features_generated": 0
+    },
+    {
+      "industry_id": "IND-08",
+      "commodity_series_id": "aluminum_usd_mt",
+      "exclusion_reason": "mixed_or_ambiguous_direction",
+      "commodity_proxy_fit_status": "broad_proxy_use_with_caution",
+      "direction_channel": "mixed_or_ambiguous",
+      "direct_exposure_retained": 0.10280119322445584,
+      "total_requirement_exposure_retained": 0.16184895143522227,
+      "converted_to_zero": false,
+      "conditioned_features_generated": 0
+    },
+    {
+      "industry_id": "IND-08",
+      "commodity_series_id": "copper_usd_mt",
+      "exclusion_reason": "mixed_or_ambiguous_direction",
+      "commodity_proxy_fit_status": "broad_proxy_use_with_caution",
+      "direction_channel": "mixed_or_ambiguous",
+      "direct_exposure_retained": 0.10280119322445584,
+      "total_requirement_exposure_retained": 0.16184895143522227,
+      "converted_to_zero": false,
+      "conditioned_features_generated": 0
+    },
+    {
+      "industry_id": "IND-12",
+      "commodity_series_id": "aluminum_usd_mt",
+      "exclusion_reason": "commodity_proxy_fitness",
+      "commodity_proxy_fit_status": "not_fit_for_commodity_specific_use",
+      "direction_channel": "cost_pressure",
+      "direct_exposure_retained": 0.2096368360020942,
+      "total_requirement_exposure_retained": 0.5062194424079614,
+      "converted_to_zero": false,
+      "conditioned_features_generated": 0
+    },
+    {
+      "industry_id": "IND-12",
+      "commodity_series_id": "copper_usd_mt",
+      "exclusion_reason": "commodity_proxy_fitness",
+      "commodity_proxy_fit_status": "not_fit_for_commodity_specific_use",
+      "direction_channel": "cost_pressure",
+      "direct_exposure_retained": 0.2096368360020942,
+      "total_requirement_exposure_retained": 0.5062194424079614,
+      "converted_to_zero": false,
+      "conditioned_features_generated": 0
+    }
+  ],
+  "zero_reason_counts": {
+    "not_zero": 28381,
+    "zero_due_to_base_feature": 77,
+    "zero_due_to_exposure": 11000,
+    "zero_due_to_both": 16
+  },
+  "lineage_rows_verified": 39474,
+  "shared_sector": {
+    "shared_exposure_group": "io_sector_107",
+    "rows_flagged": 18360,
+    "additive_aggregation_allowed": false,
+    "duplicate_aggregate_validator_fires": true,
+    "combined_non_ferrous_index_created": false,
+    "pca_or_weighted_average_created": false
+  },
+  "development_snapshot": {
+    "matrix_variant": "primary_direct_lag2",
+    "dimensions": {
+      "origins": 15,
+      "industries": 12,
+      "industry_origin_rows": 180,
+      "commodity_feature_columns": 20,
+      "eligible_feature_cells": 3225,
+      "ineligible_feature_cells": 375,
+      "total_cells": 3600
+    },
+    "cell_status_counts": {
+      "observed": 3225,
+      "no_observation_available_at_origin": 0,
+      "insufficient_feature_history": 0,
+      "structurally_ineligible": 375
+    },
+    "selection_rule": "latest reference month with conditioned_available_month <= forecast_origin_month",
+    "positional_shift_used": false,
+    "target_columns_attached": false,
+    "first_origin": "2024-01-01",
+    "last_origin": "2025-03-01"
+  },
+  "wide_reconciliation": {
+    "rows": 780,
+    "mismatches": 0,
+    "reconciled": true,
+    "derived_from_long_table": true
+  },
+  "outputs": {
+    "canonical_long": {
+      "path": "data/features/c4_canonical_long.parquet",
+      "rows": 39474,
+      "file_sha256": "969f4b68bbb6250a45487dabdfe2f8f115457f4f927c057f4b28f642c8f1d195"
+    },
+    "wide_primary": {
+      "path": "data/features/c4_wide_primary.parquet",
+      "rows": 780,
+      "file_sha256": "148a3b534d2192af50108c76bc906f4443d1cea2dfeef324a88900408ffb4746"
+    },
+    "development_snapshot": {
+      "path": "data/features/c4_development_snapshot.parquet",
+      "rows": 180,
+      "file_sha256": "fb9a0af6647648dfe3426144e8cbcf9b36c31f300a40fbdb9e31fab55b6f5656"
+    }
+  },
+  "content_checksums": {
+    "canonical_long": "0f48186b8906225d795317ada4716c31930bbe2532b73e847986debf0e51b8a8",
+    "wide_primary": "d2e46b5814e3796d246ce0d7d53a35f08f6960a072b51f2d22b9a315edbdb894",
+    "development_snapshot": "802fb68a83f1f5af5a59d1da00562ca0ec952c43bb9cfcb41b3b9858808e5de4",
+    "development_mask": "60b976b4fe51d887cbeb078a091ce86f35f2f37f9f196b8d905b8dc3050cdbe3"
+  },
+  "normalized_across_commodities": false,
+  "normalized_across_industries": false,
+  "joined_to_mpi_targets": false,
+  "target_association_computed": false,
+  "feature_selection_using_outcomes": false,
+  "model_trained": false,
+  "b4_baselines_compared": false,
+  "locked_test_accessed": false,
+  "model_feature_approved_set": false
+}

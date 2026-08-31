@@ -1,0 +1,462 @@
+# Task E1 — project-wide development evidence synthesis and baseline-reference
+# closeout.
+#
+# FROZEN BEFORE ANY NUMERICAL RESULT ARTIFACT IS READ. The included tasks, the
+# evidence-status vocabulary, the required tables, the claim-registry schema,
+# the supersession rules, the prohibited claims, the portfolio wording
+# constraints, the locked-test guards and the expected project-status fields are
+# all hashed first. A synthesis rule changed after inspecting a task metric
+# raises.
+#
+# E1 SYNTHESISES; IT DOES NOT EVALUATE. It reruns no model, recomputes no metric
+# from raw predictions, fits nothing, compares no new estimator, selects no
+# commodity or channel, mines no subgroup, changes no published decision status,
+# reads no purge outcome, and never opens, hashes, summarises or infers a locked
+# outcome.
+#
+# THE FINAL CONCLUSION: a leakage-aware, release-aware research pipeline was
+# built successfully; D3 supplies the registered operational reference
+# benchmarks; no commodity model candidate earned locked-test access; no
+# production model was selected or deployed; the locked final test remains
+# sealed.
+
+schema_version: 1
+task: E1
+config_version: e1_evidence_synthesis_v1
+synthesis_contract_version: e1_synthesis_contract_v1
+
+# ---------------------------------------------------------------------------
+# 1. Evidence-status vocabulary. Exactly one per material claim, and the
+#    collapses that would flatter the record are named and forbidden.
+# ---------------------------------------------------------------------------
+evidence_status_vocabulary:
+  - verified
+  - supported_with_limitations
+  - inconclusive
+  - not_supported
+  - unresolved
+  - not_attempted
+  - superseded
+prohibited_collapses:
+  inconclusive_into_no_effect: >-
+    An interval that crosses zero is a failure to demonstrate, not a
+    demonstration of failure.
+  not_supported_into_disproven: >-
+    A model that did not beat its benchmark has not disproved the hypothesis it
+    encoded.
+  unresolved_into_absent: >-
+    A quantity nobody measured is unresolved. Recording it as zero asserts a
+    measurement that was never made.
+  selected_reference_into_proven_superiority: >-
+    D3's persistence benchmarks are the REGISTERED reference. The paired
+    comparison against no-contraction was inconclusive at both horizons.
+  development_evaluation_into_production_validation: >-
+    A development walk-forward is not a production validation, and no model was
+    deployed.
+  latest_vintage_into_real_time_backtesting: >-
+    Latest-vintage targets cannot reproduce what was knowable at the time. The
+    project is release-aware, not point-in-time on the target side.
+
+# ---------------------------------------------------------------------------
+# 2. Required project status. The engineering programme completed; the
+#    candidate models did not earn promotion. Those are different sentences.
+# ---------------------------------------------------------------------------
+project_status:
+  development_program_status: closed_without_supported_incremental_commodity_model
+  registered_operational_reference_available: true
+  registered_operational_reference_source: D3
+  operational_model_selected: false
+  production_deployment_authorized: false
+  commodity_incremental_signal_supported: false
+  model_feature_approved: false
+  confirmatory_claim_authorized: false
+  locked_test_status: sealed_unopened
+  locked_test_outcomes_read: false
+  fully_real_time_backtest: false
+  latest_vintage_target_evaluation: true
+  future_reopening_requires_new_external_evidence: true
+project_failed_language_permitted: false
+
+# ---------------------------------------------------------------------------
+# 3. Included tasks and their artifacts.
+# ---------------------------------------------------------------------------
+included_tasks:
+  foundation:
+    B1: {artifact: docs/b1_ingestion_metadata.json, role: source ingestion}
+    B3: {artifact: docs/b3_target_build_metadata.json, role: target definition}
+    B4: {artifact: docs/b4_baseline_results.json, role: split and baselines}
+    D2: {artifact: docs/d2_target_timing_decision.json, role: release timing}
+    D3: {artifact: docs/d3_operational_baseline_results.json,
+         role: operational contract and reference baselines}
+    D3R1: {artifact: docs/d3r1_benchmark_interpretation.json,
+           role: benchmark-selection correction}
+    D3_LOCKED: {artifact: docs/d3_locked_test_manifest.json,
+                role: key-only locked-test reservation}
+  world_bank_path:
+    C1: {artifact: docs/c1_commodity_source_audit.json, role: source timing}
+    C2: {artifact: docs/c2_commodity_feature_audit.json, role: transformations}
+    C3: {artifact: docs/c3_commodity_exposure_matrix.json, role: I/O exposure}
+    C4: {artifact: docs/c4_industry_conditioned_feature_audit.json,
+         role: conditioned matrix}
+    D1: {artifact: docs/d1_development_results.json,
+         role: original development evaluation}
+    D4: {artifact: docs/d4_operational_model_results.json,
+         role: operational fixed-specification evaluation}
+  eppo_path:
+    C5: {artifact: docs/c5_price_stage_source_audit.json, role: stage alignment}
+    C7: {artifact: docs/c7_eppo_full_archive_audit.json, role: full ingestion}
+    C7_5: {artifact: docs/c7_5_eppo_semantic_decision.json,
+           role: semantic closure}
+    C8: {artifact: docs/c8_eppo_transformation_audit.json,
+         role: source transformations}
+    C9: {artifact: docs/c9_fuel_oil_conditioning_audit.json,
+         role: structural conditioning}
+    C9_EXPOSURE: {artifact: docs/c9_sector093_exposure_decision.json,
+                  role: sector-093 structural decision}
+    C10: {artifact: docs/c10_design_matrix_audit.json,
+          role: identifiability audit}
+    C11: {artifact: docs/c11_architecture_decision.json,
+          role: architecture decision}
+    C11R1: {artifact: docs/c11r1_governance_decision.json,
+            role: governance correction}
+    D5: {artifact: docs/d5_development_results.json,
+         role: authorized development evaluation}
+    C12: {artifact: docs/c12_channel_closure.json, role: channel closure}
+
+# ---------------------------------------------------------------------------
+# 4. Supersession. A superseded result stays in the ledger; it is marked, not
+#    removed, because deleting a negative result is how a record starts lying.
+# ---------------------------------------------------------------------------
+supersession:
+  rules:
+    superseded_results_remain_in_the_ledger: true
+    superseded_results_presented_as_current: false
+    supersession_marker_required: superseded_by
+    graph_must_be_acyclic: true
+  edges:
+    - {superseded: D1, superseded_by: D3, scope: operational_interpretation,
+       reason: "D1's evaluation was not operationally release-timing correct"}
+    - {superseded: D1, superseded_by: D4, scope: operational_interpretation,
+       reason: "D4 re-evaluated the commodity model under the D3 contract"}
+    - {superseded: D3, superseded_by: D3R1, scope: benchmark_selection_wording,
+       reason: "D3-R1 corrected the benchmark-selection and verification claims"}
+    - {superseded: C11, superseded_by: C11R1, scope: methodological_status,
+       reason: "C11-R1 corrected the status without changing the findings"}
+
+# ---------------------------------------------------------------------------
+# 5. Required numeric claims, frozen with their source pointers. Every one is
+#    reconciled against its artifact; a mismatch stops the run.
+# ---------------------------------------------------------------------------
+numeric_reconciliation:
+  tolerance: 0.001
+  claims:
+    - {id: D1_H1_MODEL, value: 15.3073,
+       artifact: docs/d1_development_results.json,
+       pointer: "results.h1.model.macro_industry_mae"}
+    - {id: D1_H1_BENCH, value: 14.5287,
+       artifact: docs/d1_development_results.json,
+       pointer: "results.h1.benchmark.macro_industry_mae"}
+    - {id: D1_H3_MODEL, value: 16.1072,
+       artifact: docs/d1_development_results.json,
+       pointer: "results.h3.model.macro_industry_mae"}
+    - {id: D1_H3_BENCH, value: 14.6985,
+       artifact: docs/d1_development_results.json,
+       pointer: "results.h3.benchmark.macro_industry_mae"}
+    - {id: D3_H1_PERSISTENCE, value: 17.0945,
+       artifact: docs/d3_operational_baseline_results.json,
+       pointer: "metrics.1.baselines.operational_persistence_latest_published.macro_industry_mae"}
+    - {id: D3_H3_TRAILING_MAX, value: 16.6338,
+       artifact: docs/d3_operational_baseline_results.json,
+       pointer: "metrics.3.baselines.operational_persistence_trailing_3m_max.macro_industry_mae"}
+    - {id: D3_H1_NO_CONTRACTION, value: 19.4453,
+       artifact: docs/d3_operational_baseline_results.json,
+       pointer: "metrics.1.baselines.operational_no_contraction.macro_industry_mae"}
+    - {id: D3_H3_NO_CONTRACTION, value: 16.9791,
+       artifact: docs/d3_operational_baseline_results.json,
+       pointer: "metrics.3.baselines.operational_no_contraction.macro_industry_mae"}
+    - {id: D4_H1_MODEL, value: 17.5616,
+       artifact: docs/d4_operational_model_results.json,
+       pointer: "evaluation.1.model.macro_industry_mae"}
+    - {id: D4_H1_REFERENCE, value: 17.0945,
+       artifact: docs/d4_operational_model_results.json,
+       pointer: "evaluation.1.operational_persistence.macro_industry_mae"}
+    - {id: D4_H1_CI_LOW, value: -0.2060,
+       artifact: docs/d4_operational_model_results.json,
+       pointer: "evaluation.1.vs_operational_persistence.paired_difference_model_minus_comparator.ci_low"}
+    - {id: D4_H1_CI_HIGH, value: 1.3736,
+       artifact: docs/d4_operational_model_results.json,
+       pointer: "evaluation.1.vs_operational_persistence.paired_difference_model_minus_comparator.ci_high"}
+    - {id: D4_H3_MODEL, value: 17.9051,
+       artifact: docs/d4_operational_model_results.json,
+       pointer: "evaluation.3.model.macro_industry_mae"}
+    - {id: D4_H3_REFERENCE, value: 16.6338,
+       artifact: docs/d4_operational_model_results.json,
+       pointer: "evaluation.3.operational_persistence.macro_industry_mae"}
+    - {id: D4_H3_CI_LOW, value: 0.4317,
+       artifact: docs/d4_operational_model_results.json,
+       pointer: "evaluation.3.vs_operational_persistence.paired_difference_model_minus_comparator.ci_low"}
+    - {id: D4_H3_CI_HIGH, value: 2.1098,
+       artifact: docs/d4_operational_model_results.json,
+       pointer: "evaluation.3.vs_operational_persistence.paired_difference_model_minus_comparator.ci_high"}
+    - {id: D5_FO1500_H1_MODEL, value: 17.111,
+       artifact: docs/d5_development_results.json,
+       pointer: "results.fo1500_direct_sector093|h1.model.macro_industry_mae"}
+    - {id: D5_FO600_H1_MODEL, value: 17.167,
+       artifact: docs/d5_development_results.json,
+       pointer: "results.fo600_direct_sector093|h1.model.macro_industry_mae"}
+    - {id: D5_FO1500_H3_MODEL, value: 18.210,
+       artifact: docs/d5_development_results.json,
+       pointer: "results.fo1500_direct_sector093|h3.model.macro_industry_mae"}
+    - {id: D5_FO600_H3_MODEL, value: 18.207,
+       artifact: docs/d5_development_results.json,
+       pointer: "results.fo600_direct_sector093|h3.model.macro_industry_mae"}
+    - {id: D5_H1_REFERENCE, value: 17.094,
+       artifact: docs/d5_development_results.json,
+       pointer: "results.fo600_direct_sector093|h1.benchmark.macro_industry_mae"}
+    - {id: D5_H3_REFERENCE, value: 16.634,
+       artifact: docs/d5_development_results.json,
+       pointer: "results.fo600_direct_sector093|h3.benchmark.macro_industry_mae"}
+    - {id: D1_FALLBACK_COUNT, value: 6,
+       artifact: docs/d1_development_results.json,
+       pointer: "__fallback_selection_count__"}
+    - {id: D1_SELECTION_COUNT, value: 30,
+       artifact: docs/d1_development_results.json,
+       pointer: "__selection_count__"}
+    - {id: D4_DEGENERATE_ROWS, value: 180,
+       artifact: docs/d4_operational_model_results.json,
+       pointer: "degenerate_design_summary.primary_direct_lag2.rows_degenerate"}
+    - {id: D4_TOTAL_ROWS, value: 360,
+       artifact: docs/d4_operational_model_results.json,
+       pointer: "degenerate_design_summary.primary_direct_lag2.rows_total"}
+
+# ---------------------------------------------------------------------------
+# 6. Source and timing evidence. Evidence quality is NOT equal across sources
+#    merely because the formulas match.
+# ---------------------------------------------------------------------------
+source_timing_table:
+  - source_family: OIE MPI target
+    values: latest vintage
+    historical_timing: "month t+1 timing supported for the audited period"
+    point_in_time_status: target vintages unavailable
+    main_limitation: not a real-time target panel
+  - source_family: World Bank Pink Sheet
+    values: archived first release
+    historical_timing: verified monthly publication timing
+    point_in_time_status: feature side supported
+    main_limitation: target side remains latest vintage
+  - source_family: NESDC I/O
+    values: official 2015 Final structure
+    historical_timing: structurally available by 2020-03-31
+    point_in_time_status: time-invariant structural input
+    main_limitation: old benchmark and broad sectors
+  - source_family: EPPO refinery prices
+    values: historical latest-vintage documents
+    historical_timing: historical first-release timing unverified
+    point_in_time_status: not point-in-time
+    main_limitation: policy lag 2 and broad proxy
+equivalent_evidence_quality_implied_across_sources: false
+
+# ---------------------------------------------------------------------------
+# 7. Structural evidence. Attribution, never causal transmission.
+# ---------------------------------------------------------------------------
+structural_synthesis:
+  nesdc_2015_final_uses_purchasers_prices: true
+  nesdc_2015_final_is_import_inclusive: true
+  structural_coefficients_treated_as_time_invariant: true
+  world_bank_commodity_mappings_are_broad_proxies: true
+  aluminum_and_copper_share_sector_107: true
+  aluminum_and_copper_are_independent_exposure_measurements: false
+  sector_031_crude_exposure_often_direct_zero: true
+  sector_093_refinery_product_exposure_positive_for_all_12_industries: true
+  eppo_ex_refinery_versus_purchasers_price_partial_mismatch: true
+  fo600_and_fo1500_are_distinct_channels_sharing_one_exposure: true
+  ind_04_producer_consumer_direction_ambiguous: true
+  c10_conditioning_adds_scale_not_temporal_degrees_of_freedom: true
+  c11_pooled_interaction_identifiable: true
+  c11_selection_status: exploratory_supported_after_documented_specification_correction
+  structural_attribution_described_as_causal_transmission: false
+
+# ---------------------------------------------------------------------------
+# 8. Cross-task conclusions, in order.
+# ---------------------------------------------------------------------------
+cross_task_conclusions:
+  - id: X1
+    text: >-
+      D1 did not support the original commodity residual model and carried a
+      protocol limitation: the nested selection was not fully executed and six
+      of thirty origin-horizon cases used the conservative fallback.
+    status: not_supported
+  - id: X2
+    text: >-
+      D3 corrected the issue-month timing contract and established the
+      registered operational reference baselines.
+    status: verified
+  - id: X3
+    text: >-
+      D4 did not demonstrate incremental World Bank commodity signal under the
+      fixed operational specification.
+    status: not_supported
+  - id: X4
+    text: >-
+      D5 did not demonstrate incremental EPPO fuel-oil signal under the only
+      structurally supported pooled interaction architecture.
+    status: inconclusive
+  - id: X5
+    text: >-
+      No candidate satisfied the conditions required to open the locked test.
+    status: verified
+  - id: X6
+    text: >-
+      The appropriate final system reference is therefore baseline-only.
+    status: verified
+  - id: X7
+    text: >-
+      Baseline-only means a registered evaluation reference - not a production
+      deployment, and not proof of superiority over every trivial forecast.
+    status: verified
+
+# ---------------------------------------------------------------------------
+# 9. Locked-test closeout. Verified WITHOUT opening outcome contents.
+# ---------------------------------------------------------------------------
+locked_test:
+  manifest: docs/d3_locked_test_manifest.json
+  manifest_is_key_only: true
+  horizon_1_range: ["2025-07", "2026-04"]
+  horizon_3_range: ["2025-07", "2026-02"]
+  reserved_months: 10
+  purge_months: ["2025-04", "2025-06"]
+  outcomes_read_by_any_task: false
+  prediction_or_metric_exists_for_locked_origins: false
+  any_candidate_locked_test_evaluation_authorized: false
+  c12_reopening_rules_active: true
+  required_language: >-
+    The locked final test was intentionally left unopened because no
+    independently preregistered candidate earned access through development
+    evidence.
+  prohibited_language:
+    - locked test passed
+    - locked test validated
+    - unused data proving generalization
+    - held-out validation confirms
+    - out-of-sample performance confirmed
+
+# ---------------------------------------------------------------------------
+# 10. Claim registry.
+# ---------------------------------------------------------------------------
+claim_registry:
+  required_fields:
+    - claim_id
+    - claim_text
+    - status
+    - scope
+    - audience
+    - evidence_artifact
+    - evidence_json_pointer
+    - limitations
+    - locked_test_dependency
+  conditional_fields:
+    superseded_by: required_when_status_is_superseded
+  locked_test_dependency_required_value: false
+  audiences: [technical, portfolio, both]
+  scopes: [foundation, world_bank_path, eppo_path, cross_task, project_status,
+           locked_test, structural, source_timing]
+  failure_conditions:
+    - numerical_claim_cannot_be_reconciled_with_its_source_artifact
+    - superseded_result_presented_as_current
+    - claim_depends_on_locked_outcomes
+    - limitation_required_by_its_source_artifact_omitted
+    - two_incompatible_evaluation_contracts_compared_without_qualification
+  incompatible_contract_pairs:
+    - [D1, D3]
+    - [D1, D4]
+    - [D1, D5]
+  qualification_required_phrase: different evaluation contract
+
+# ---------------------------------------------------------------------------
+# 11. Portfolio wording constraints.
+# ---------------------------------------------------------------------------
+portfolio:
+  audience: computer_science_ml_internship
+  internal_task_codes_in_main_narrative: false
+  task_codes_permitted_in: [technical_appendix, evidence_links]
+  must_explain:
+    - business_problem_motivation
+    - why_random_splitting_would_leak
+    - publication_timing_and_vintage_handling
+    - how_official_io_data_connected_prices_to_industries
+    - why_reasonable_features_became_degenerate
+    - how_operational_baselines_were_rebuilt
+    - what_the_development_experiments_found
+    - why_not_opening_the_locked_test_is_a_positive_result
+    - technical_skills_demonstrated
+    - what_would_be_required_to_reopen
+  prohibited_claims:
+    - beat the baseline
+    - beats the baseline
+    - outperformed the benchmark
+    - deployable early-warning model
+    - production ready
+    - fully real-time
+    - real-time backtest
+    - commodities have no predictive value
+    - proved commodities do not predict
+    - validated on unseen final-test outcomes
+    - locked test confirms
+  cv_bullets: 3
+  cv_bullets_may_imply_positive_predictive_performance: false
+
+# ---------------------------------------------------------------------------
+# 12. Prohibited actions and required outputs.
+# ---------------------------------------------------------------------------
+prohibited_actions:
+  - rerun_d1_d3_d4_or_d5_models
+  - recompute_development_metrics_from_raw_predictions
+  - fit_a_new_model
+  - compare_another_estimator
+  - select_a_commodity_or_channel
+  - subgroup_mining
+  - change_a_published_decision_status
+  - access_purge_outcomes
+  - open_hash_summarise_or_infer_locked_outcomes
+  - delete_negative_result_artifacts
+  - rewrite_prior_decision_log_entries
+  - describe_an_inconclusive_result_as_no_effect
+  - describe_d3_as_a_production_model
+metrics_verified_against_registered_artifacts: true
+alternative_metrics_generated: false
+
+reproducibility_manifest:
+  test_count_source: measured_from_an_actual_pytest_run
+  test_count_copied: false
+  ruff_result_source: measured_from_an_actual_ruff_run
+  raw_file_manifests_referenced_not_duplicated: true
+  referenced_raw_manifests:
+    - data/raw/_manifests/EPPO_PRICE_STRUCTURE_manifest.jsonl
+    - data/raw/_manifests/OIE_MPI_manifest.jsonl
+  environment:
+    python: "3.14"
+    dependency_file: pyproject.toml
+    virtualenv: .venv
+  commands:
+    tests: python -m pytest -q
+    lint: python -m ruff check .
+    synthesis: python scripts/run_e1_evidence_synthesis.py
+
+outputs:
+  technical_closeout: docs/e1_technical_closeout.md
+  portfolio_case_study: docs/e1_portfolio_case_study.md
+  executive_summary: docs/e1_executive_summary.md
+  evidence_ledger: docs/e1_evidence_ledger.json
+  reproducibility_manifest: docs/e1_reproducibility_manifest.json
+  model_artifact_created: false
+  prediction_artifact_created: false
+  metric_artifact_created: false
+
+final_declaration:
+  - development_program_is_complete
+  - data_timing_lineage_and_evaluation_infrastructure_is_reproducible
+  - d3_persistence_forecasts_remain_the_registered_operational_reference
+  - no_commodity_model_demonstrated_sufficient_incremental_development_evidence
+  - no_model_or_feature_was_approved_for_operational_deployment
+  - locked_final_test_remains_sealed
+  - future_reopening_requires_new_external_evidence_and_a_new_independent_preregistration

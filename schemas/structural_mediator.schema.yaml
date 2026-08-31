@@ -1,0 +1,105 @@
+# Schema for the C5 structural mediator table.
+# Describes what the code ACTUALLY writes
+# (docs/c5_structural_path_audit.json -> mediator_table), verified by
+# tests/test_c5_price_stage_alignment.py.
+#
+# STRUCTURAL EVIDENCE ONLY. No target join, no feature matrix, no model input.
+
+schema_version: 1
+task: C5
+written_by: scripts/audit_c5_price_stage_alignment.py
+output: docs/c5_structural_path_audit.json
+
+decomposition:
+  identity: "T = A + TA"
+  formulas:
+    direct: "direct(c,j) = A[c,j]"
+    indirect_via: "indirect_via(c,k,j) = T[c,k] * A[k,j]"
+    indirect: "indirect(c,j) = sum_k T[c,k] * A[k,j]"
+    total: "total(c,j) = A[c,j] + sum_k T[c,k] * A[k,j] = T[c,j]"
+  aggregation: "via(c,IND,k) = sum_{j in IND} w_j * T[c,k] * A[k,j]"
+  weights: official_gross_output_shares
+  tolerance: 1.0e-12
+  causal_claim: false
+  note: >-
+    An exact attribution of the Leontief identity, not a causal claim. T[c,k]
+    already contains every production round including cycles; splitting on the
+    first purchased sector k assigns each unit of requirement to the door it
+    came through, nothing more.
+
+sector_scope:
+  level: 179
+  excluded_zero_output_sector: "179"
+  final_demand_rows_included: false
+  import_rows_included: false
+  value_added_rows_included: false
+
+mediator_row:
+  grain: [commodity_series_id, industry_id, intermediate_sector_code]
+  ordering: [commodity_series_id, industry_id, rank]
+  columns:
+    - name: commodity_series_id
+      type: string
+      nullable: false
+    - name: commodity_sector_code
+      type: string
+      nullable: false
+      note: "Official 2015 NESDC sector code the commodity maps to."
+    - name: industry_id
+      type: string
+      nullable: false
+    - name: intermediate_sector_code
+      type: string
+      nullable: false
+      note: "The FIRST intermediate sector purchased, k."
+    - name: intermediate_sector_label
+      type: string
+      nullable: false
+      note: "Resolved from the official sector definitions; UNKNOWN is never silently accepted."
+    - name: direct_exposure
+      type: float
+      nullable: false
+      note: "A[c,j] aggregated with gross-output weights. An observed zero stays zero."
+    - name: indirect_via_sector
+      type: float
+      nullable: false
+      minimum: 0.0
+    - name: share_of_indirect
+      type: float
+      nullable: false
+    - name: rank
+      type: integer
+      nullable: false
+      minimum: 1
+    - name: cumulative_share
+      type: float
+      nullable: false
+    - name: indirect_exposure_total
+      type: float
+      nullable: false
+    - name: total_exposure
+      type: float
+      nullable: false
+    - name: gross_output_weight_sum
+      type: float
+      nullable: false
+      note: "Must equal 1.0 within 1e-12 for every industry."
+    - name: direct_is_observed_zero
+      type: boolean
+      nullable: false
+      note: >-
+        An OBSERVED zero, distinct from missing. C3 records it as a real
+        coefficient value and C5 must never rewrite it as null or as indirect.
+    - name: indirect_material_despite_direct_zero
+      type: boolean
+      nullable: false
+      note: "Uses the preregistered materiality threshold, never one chosen after inspection."
+
+invariants:
+  - "sum of indirect_via_sector over k equals indirect_exposure_total within 1e-12."
+  - "direct_exposure + indirect_exposure_total equals total_exposure within 1e-12."
+  - "direct_exposure and total_exposure reconcile with the published C3 values."
+  - "gross_output_weight_sum == 1.0 within 1e-12."
+  - "An observed direct zero remains exactly 0.0 and is never converted to indirect."
+  - "Indirect exposure is never rewritten as direct exposure."
+  - "Aluminum and copper share sector 107; their exposures are never summed."

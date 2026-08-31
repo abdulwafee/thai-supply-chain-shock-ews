@@ -1,0 +1,667 @@
+# Pinned source configuration — Task B1 production ingestion
+#
+# Files are resolved through their retrieval manifests
+# (data/raw/_manifests/<source_id>_manifest.jsonl), never through a hard-coded
+# absolute path or a hard-coded retrieval date. The manifest supplies the path;
+# this file supplies the expectations that path must satisfy.
+#
+# If a resolved file's SHA-256 or edition does not match what is pinned here,
+# ingestion FAILS LOUDLY (SourceIntegrityError). It does not warn and continue.
+# Refreshing the data is therefore a deliberate act: re-download, then update
+# the checksum here in the same commit.
+
+schema_version: 1
+
+# MVP data policy — see docs/architecture/decision_log.md AD-R5..AD-R13
+mvp_policy:
+  edition_scope: current_edition_only
+  edition: "2021_based"
+  base_year: 2021
+  bridge_older_editions: false
+  preliminary_rows: retained_but_model_ineligible
+  evaluation_framing: latest_vintage_historical_data
+  historical_bridging: deferred_to_phase_2
+  bridge_evidence_status: >-
+    Task A1/A2 bridge validation (oie_overlap_bridge_v1 and v2) is preserved as
+    research documentation only. It does not feed the MVP core panel.
+
+# Target publication timing — measured in Task D2 (docs/d2_target_timing_decision.md).
+# Recorded here as a property of the source. Nothing in this block changes the
+# pinned checksums above, the B4 split, or any model; D2 was an audit.
+target_publication_timing:
+  measured_by: D2
+  source_of_truth: docs/d2_target_timing_decision.json
+  evidence_outcome: timing_only_supported
+  credible_months: 111
+  credible_coverage: "2017-04..2026-07"
+  publication_lag_days: {min: 23, median: 29, max: 66}
+  publishes_in_month_after_reference: true
+  availability_lag_months: 1
+  same_month_availability_supported: false
+  b4_current_month_assumption: violated
+  b4_split_changed: false
+  live_workbook_overwritten_in_place: true
+  point_in_time_vintages_available: false
+  # The newest month carries a trailing glyph in the workbook header, and the
+  # glyph moves forward on each release. The workbook defines no legend for it,
+  # so its meaning is NOT asserted to be "preliminary".
+  newest_month_marker_observed: true
+  marker_semantics_documented: false
+  historical_extension_feasible: false
+  base_year_splice_admissible: false
+
+  # Task D3 consumes the timing above to build an operational forecast-origin
+  # contract. See configs/operational_evaluation.yaml and
+  # docs/d3_operational_evaluation_protocol.md. Nothing in D3 changes this
+  # block, the pinned checksums above, or any B3 target.
+  consumed_by:
+    task: D3
+    contract: operational_contract_v1
+    framing: release_lag_aware_latest_vintage_evaluation
+    b4_assumption_resolution: >-
+      D3 replaces the violated current-month assumption with issue-at-t /
+      observe-t-1. B4 and D1 are preserved unchanged and relabelled
+      non_operational_calendar_boundary_experiment.
+    downstream_model: >-
+      Task D4 evaluates one frozen commodity residual model under this contract
+      (configs/d4_operational_model.yaml). Exploratory only; it changes no
+      source, no target and no feature eligibility.
+
+# Task C5 recommended ONE additional source family for a later C6 ingestion
+# audit. Nothing is ingested here and no feature is approved.
+# See configs/price_stage_source_candidates.yaml.
+price_stage_gap:
+  audited_by: C5
+  finding: >-
+    Brent direct exposure is zero for 10 of 12 industries; indirect exposure of
+    7-17% is mediated by Electricity (135), Petroleum refineries (093) and
+    Petrochemical products (086). Industries buy refined fuel and power, not
+    crude, so the current Brent series is stage-misaligned wherever direct
+    exposure is zero.
+  recommended_family_for_c6: EPPO_PETROLEUM
+  recommended_series: "PRICE STRUCTURE OF PETROLEUM PRODUCTS - EX-REFIN."
+  mapped_io_sector: "093"
+  source_selected_for_c6_audit: true
+  feature_semantics_approved: false
+  model_feature_approved: false
+  ingested_into_production: false
+  selection_used_target_outcomes: false
+
+# Task C6 audited the EPPO archive selected by C5. Values are retrievable with
+# complete monthly coverage; release timing is NOT established, so nothing is
+# ingested into production and no feature is approved.
+eppo_archive_audit:
+  audited_by: C6
+  discovery_mechanism: official_wordpress_rest
+  documents_discovered: 5233
+  archive_span: "2002-02-03..2026-08-28"
+  operational_window_months: "53/53"
+  transformation_parity_window_months: "65/65"
+  documents_validated: "254/256"
+  point_in_time_values_supported: not_supported
+  availability_evidence: migration_timestamp_only
+  outcome: values_retrievable_timing_unresolved
+  # Task C6.5 use policy. The lag is a project assumption, not a measurement.
+  use_policy:
+    decided_by: C6.5
+    decision: proceed_exploratory_release_lag_aware_latest_vintage
+    latest_vintage_values_used: true
+    minimum_verified_publication_lag_months: null
+    operational_policy_lag_months: 2
+    operational_lag_is_measured: false
+    latest_permitted_reference_month_rule: "reference_month <= issue_month - 2"
+    eligible_for_exploratory_development: true
+    eligible_for_confirmatory_claims: false
+    eligible_for_locked_test: false
+    c7_full_archive_ingestion_authorized: true
+    c7_monthly_source_aggregation_authorized: conditional
+    c7_predictive_feature_creation_authorized: false
+  # Task C7 ingested the full daily archive for the required window. The
+  # numbers below are the ingestion outcome, not an approval: the dataset-level
+  # aggregation contract remains UNAPPROVED and no feature exists.
+  full_archive_ingestion:
+    ingested_by: C7
+    raw_source_id: EPPO_PRICE_STRUCTURE
+    raw_directory: data/raw/EPPO_PRICE_STRUCTURE
+    manifest: data/raw/_manifests/EPPO_PRICE_STRUCTURE_manifest.jsonl
+    window: "2021-01-01..2026-05-31"
+    discovered_document_days: 1315
+    retrieval_attempts: 1336
+    content_valid_documents: 1331
+    valid_canonical_document_days: 1310
+    unresolved_document_days: 5
+    daily_table: data/interim/c7_eppo_daily_prices.parquet
+    daily_rows: 3625
+    monthly_table: data/interim/c7_eppo_monthly_source.parquet
+    monthly_rows: 195
+    aggregation_rule: arithmetic_mean_of_validated_observed_official_document_days
+    aggregation_rule_version: c7_v1
+    approved_product_months: 162
+    audit: docs/c7_eppo_full_archive_audit.md
+    # Recorded here rather than under `sources:` on purpose. That block is the
+    # pinned TARGET-COMPONENT registry consumed by ingest.py; EPPO is an
+    # upstream predictor-side source and mixing the two is exactly the
+    # confusion this file separates elsewhere.
+    manifest_note: >-
+      One line per discovered attachment, 1,336 lines, about 1 MB. Larger than
+      the other manifests because the raw workbooks are git-ignored and this
+      file is the only durable record of what was retrieved and what each file
+      hashed to.
+  # Task C7.5 replaced the single approval boolean with three separate fields
+  # and resolved two of the four blockers. The C7 numbers are unchanged.
+  semantic_closure:
+    decided_by: C7.5
+    config: configs/eppo_product_semantics.yaml
+    fuel_oil_label_equivalence: equivalence_established
+    equivalence_rule_id: fo_ordinal_index_dropped_v1
+    equivalence_basis: source_controlled_bilingual_sheet_formula_bound
+    numeric_evidence_load_bearing: false
+    ordinal_marker_meaning: not_established_from_inspected_sources
+    documents_recovered: 2
+    documents_still_unretrievable: 3
+    semantic_overlay: data/interim/c7_5_eppo_monthly_semantic.parquet
+    audit: docs/c7_5_eppo_semantic_decision.md
+  aggregation_method_semantics_approved: true
+  full_requested_window_coverage_complete: false
+  series_ready_for_transformation_with_explicit_gaps:
+    eppo_ex_refinery_fo600_2s: true
+    eppo_ex_refinery_fo1500_2s: true
+    eppo_ex_refinery_hsd: false
+  remaining_incomplete_months:
+    - april_2026_three_official_attachments_unretrievable
+    - h_diesel_2023_09_to_2024_12_ordinary_label_not_published
+  shared_price_stage_group: io_sector_093_fuel_oil
+  fuel_oils_additive_or_averaged: false
+  # Task C8 built the source-level transformations the C7.5 gate authorized.
+  # Source-level only: no exposure multiplication, no MPI join, no model.
+  source_transformations:
+    created_by: C8
+    config: configs/eppo_fuel_oil_transformations.yaml
+    formula_version: c8_eppo_fuel_oil_transformations_v1
+    input_field: monthly_value_strict
+    channels: [eppo_fo600_channel, eppo_fo1500_channel]
+    transformations:
+      [price_level, log_change_1m_pct, log_change_3m_pct, log_change_12m_pct,
+       realized_volatility_3m_pct]
+    feature_grid_rows: 650
+    finite_feature_rows: 598
+    null_feature_rows: 52
+    table: data/features/c8_eppo_fuel_oil_transformations.parquet
+    audit: docs/c8_eppo_transformation_audit.md
+    formula_compatible_with_c2: true
+    source_timing_contract_differs_from_c2: true
+    source_transformations_ready_for_structural_conditioning:
+      eppo_fo600_channel: true
+      eppo_fo1500_channel: true
+    industry_conditioned_features_created: false
+  # Task C9 conditioned the C8 transformations on DIRECT exposure to I/O sector
+  # 093, Petroleum refineries. Structural only: no MPI join, no model.
+  industry_conditioning:
+    created_by: C9
+    config: configs/fuel_oil_industry_conditioning.yaml
+    io_sector_code: "093"
+    io_sector_label: Petroleum refineries
+    exposure_kind: direct_only
+    total_requirement_used: false
+    crude_sector_031_reused: false
+    phase_a_decision_checksum:
+      d528aba4aedcb8b8051ad618d66d49c71239267fb26fd2ead292ee90b12c9703
+    structural_audit_rows: 24
+    eligible_industries_per_channel: 11
+    ineligible_industries: [IND-04]
+    ineligible_reason: industry_contains_sector_093_so_direction_is_mixed
+    observed_zero_exposures: 0
+    variants: [fo600_direct_sector093, fo1500_direct_sector093]
+    shared_structural_exposure_group: io_sector_093
+    conditioned_grid_rows: 7800
+    conditioned_numeric_rows: 6578
+    conditioned_null_rows: 1222
+    conditioned_table: data/features/c9_fuel_oil_conditioned.parquet
+    development_snapshot: data/features/c9_fuel_oil_development_snapshot.parquet
+    development_snapshot_cells: 1800
+    valuation_basis_alignment:
+      partial_mismatch_purchasers_price_coefficient_x_ex_refinery_price
+    structural_interaction_only: true
+    monetary_cost_measure: false
+    audit: docs/c9_fuel_oil_conditioning_audit.md
+    industry_conditioned_features_created: true
+    ready_for_development_only_assembly:
+      fo600_direct_sector093: true
+      fo1500_direct_sector093: true
+  # Task C10 audited the design matrix the C9 snapshot implies. Development
+  # only, outcome free: no MPI join, no target association, no channel
+  # selection, no model, and the locked test stays unopened.
+  design_matrix_audit:
+    created_by: C10
+    config: configs/fuel_oil_development_matrix.yaml
+    schema: schemas/fuel_oil_development_matrix.schema.yaml
+    protocol: docs/c10_design_matrix_protocol.md
+    audit: docs/c10_design_matrix_audit.md
+    diagnostic_contract_checksum:
+      1c88cdd7f2017aa94ee1b069be436c469ee08adcf649fe6ad4c981f995eb2041
+    contract_frozen_before_values_loaded: true
+    development_window: ["2024-01", "2025-03"]
+    matrices_per_variant: {rows: 180, columns: 5, numeric_cells: 825, masked_cells: 75}
+    variants_horizontally_concatenated: false
+    ind_04_rows_dropped: false
+    ind_04_masks_converted_to_zero: false
+    primary_diagnostic_input: source_time_matrix_15x5
+    unique_temporal_rows: 15
+    source_time_rank: {fo600_direct_sector093: 5, fo1500_direct_sector093: 5}
+    stacked_panel_rank: {fo600_direct_sector093: 5, fo1500_direct_sector093: 5}
+    cross_sectional_rank_per_issue_month: 1
+    stacked_rows_are_independent_claim_permitted: false
+    temporal_independence_claim_permitted: false
+    zero_variance_columns: []
+    transformations_removed: []
+    conditioning_adds_cross_industry_scale: true
+    conditioning_adds_temporal_degrees_of_freedom: false
+    per_industry_standardization_removes_exposure_scale: true
+    predictive_utility_assessed: false
+    channel_selected: false
+    variant_promoted_to_modeling_readiness: false
+    generated_tables_git_ignored: true
+  # Task C11 chose the modeling architecture the C10 finding implies. Decision
+  # only, outcome free: no target read, no model fit, no predictive performance,
+  # no channel selection, and the locked test stays unopened. Selecting an
+  # architecture grants NO permission to execute it.
+  modeling_architecture_decision:
+    created_by: C11
+    config: configs/fuel_oil_modeling_architecture.yaml
+    schema: schemas/fuel_oil_candidate_design.schema.yaml
+    protocol: docs/c11_architecture_decision_protocol.md
+    decision: docs/c11_architecture_decision.md
+    decision_criteria_checksum:
+      0f81513566f98d1d5047dcb298935607f5abdb35510cf0e3c53c1bc6998d8397
+    decision_checksum:
+      001b1d901311c1da0de1e707ca10a97f91e54584b21e52ee8c943421fc068403
+    criteria_frozen_before_candidate_designs_built: true
+    estimand_kind: predictive_interaction
+    estimand_is_causal: false
+    estimand_is_an_elasticity: false
+    selected_architecture: pooled_common_effect_plus_centered_sector093_interaction
+    candidate_a_retained_as_documented_alternative: true
+    candidate_b_rejected_as_reparameterization: true
+    separate_conditioned_model_is_distinct_architecture: false
+    mandatory_gates: 9
+    all_gates_passed: true
+    candidate_c_panel_rows_per_variant: 165
+    candidate_c_columns: {source: 5, interaction: 5, industry_fixed_effects: 11}
+    source_block_rank: 5
+    interaction_block_rank: 5
+    combined_source_and_interaction_rank: 10
+    full_design_rank: 21
+    redundant_global_intercept: false
+    exposure_centering_universe: eleven_eligible_industries
+    exposure_centering_source: c9_phase_a_frozen_decision_table
+    per_industry_standardization_of_the_interaction: false
+    ind_04_excluded_from_the_correction: true
+    ind_04_converted_to_observed_zero: false
+    ind_04_retains_operational_benchmark_prediction: true
+    primary_channel_selected: false
+    structural_basis_for_channel_preference_available: false
+    parallel_exploratory_variants_permitted_in_future_design: true
+    simultaneous_channel_entry_permitted: false
+    transformations_removed: []
+    architecture_selected_from_outcomes: false
+    model_fitted: false
+    predictive_performance_computed: false
+    target_join_authorized: false
+    development_modeling_authorized: false
+    locked_test_evaluation_authorized: false
+    generated_tables_git_ignored: true
+  # Task C11-R1 corrected the STATUS of the C11 decision above without changing
+  # its mathematics. `all_gates_passed: true` in that block refers to the
+  # CORRECTED gate set; one gate did not pass as originally preregistered. The
+  # C11 artifacts are preserved byte-identical and pinned here.
+  architecture_governance_closure:
+    created_by: C11-R1
+    config: configs/fuel_oil_architecture_governance.yaml
+    schema: schemas/fuel_oil_governance_decision.schema.yaml
+    decision: docs/c11r1_governance_decision.md
+    erratum: docs/c11_architecture_decision.errata.md
+    supersedes_status_of: C11
+    supersedes_findings_of: none
+    c11_artifacts_modified: false
+    prior_decision_log_entries_modified: false
+    original_preregistered_stacked_rank_expectation: 5
+    observed_stacked_rank_under_prohibited_preprocessing: 10
+    original_gate_implementation_valid: false
+    original_preregistered_gate_set_passed: false
+    gate_implementation_corrected_after_observation: true
+    corrected_gate_set_passed: true
+    thresholds_changed_after_observation: false
+    numerical_tolerance_changed: false
+    expectations_rewritten_as_preregistered: false
+    architecture_decision_cleanly_preregistered: false
+    development_metric_artifact_accessed: true
+    development_target_values_accessed: false
+    locked_test_accessed: false
+    metric_values_used_in_architecture_decision: false
+    metric_artifact_required_for_decision: false
+    outcome_free_execution: false
+    decision_reproducible_without_metric_artifact: true
+    later_guard_retroactively_erases_access: false
+    clean_rerun_restores_original_outcome_blindness: false
+    d_series_paths_opened_during_c11r1: 0
+    architecture_decision_dependency_clean: true
+    architecture_decision_status:
+      exploratory_supported_after_documented_specification_correction
+    architecture_mathematically_supported: true
+    architecture_confirmatorily_selected: false
+    original_process_outcome_blind: false
+    eligible_for_confirmatory_claims: false
+    eligible_for_locked_test: false
+    all_closure_gates_passed: true
+    d5_protocol_preregistration_authorized: true
+    d5_development_target_join_authorized: true
+    d5_exploratory_modeling_authorized: true
+    d5_channel_selection_authorized: false
+    d5_confirmatory_claims_authorized: false
+    d5_purge_evaluation_authorized: false
+    d5_locked_test_evaluation_authorized: false
+  # Task D5 executed the development-only exploratory evaluation C11-R1
+  # authorized. The result is INCONCLUSIVE for all four variant-horizons and
+  # event safety failed in all four. Nothing is approved, no channel is chosen,
+  # no purge origin was evaluated and the locked test stays closed.
+  development_evaluation:
+    created_by: D5
+    config: configs/d5_fuel_oil_interaction.yaml
+    protocol: docs/d5_modeling_protocol.md
+    frozen_protocol: docs/d5_frozen_protocol.json
+    assembly_audit: docs/d5_assembly_audit.md
+    results: docs/d5_development_results.md
+    prediction_schema: schemas/d5_fuel_oil_prediction.schema.yaml
+    results_schema: schemas/d5_fuel_oil_results.schema.yaml
+    frozen_protocol_checksum:
+      13a0b1846df33f2d81eae8be8415b66bdeaef1bb20642e0a07645774c624483a
+    results_content_checksum:
+      0eb3d613d34fdde2274a56c2bcd97695b652991da663ce6390b70d9e53deaf0e
+    assembly_audit_content_checksum:
+      77877c1dac708cb8d573aabd43253887b8295d4227c8f34f34e48e83f5258396
+    protocol_frozen_before_any_target_read: true
+    target_reads: 720
+    target_reads_before_prediction_freeze: 0
+    estimator: fixed_pooled_partial_ridge_v1
+    lambda: 1.0
+    loss_normalised_by_n: true
+    hyperparameter_search: false
+    industry_fixed_effects_penalized: false
+    redundant_global_intercept: false
+    max_normal_equation_residual: 8.881784197001252e-16
+    operational_contract_version: operational_contract_v1
+    development_issue_months: ["2024-01", "2025-03"]
+    predictions: 720
+    distinct_keys: 720
+    distinct_lineage_checksums: 720
+    pooled_model_predictions: 660
+    ind_04_benchmark_passthrough: 60
+    training_issues_h1: {at_2024_01: 21, at_2025_03: 35}
+    training_issues_h3: {at_2024_01: 18, at_2025_03: 32}
+    counts_reconciled: true
+    benchmarks_reproduced_from_registered_formulas: true
+    d3_result_metrics_used_as_model_input: false
+    macro_industry_mae:
+      fo600_direct_sector093: {h1: 17.167471, h3: 18.207297}
+      fo1500_direct_sector093: {h1: 17.111367, h3: 18.210335}
+    primary_benchmark_macro_industry_mae: {h1: 17.094469, h3: 16.633801}
+    mae_evidence: {fo600_h1: inconclusive, fo600_h3: inconclusive,
+                   fo1500_h1: inconclusive, fo1500_h3: inconclusive}
+    event_safety_passed: {fo600_h1: false, fo600_h3: false,
+                          fo1500_h1: false, fo1500_h3: false}
+    overall_status: {fo600_h1: inconclusive, fo600_h3: inconclusive,
+                     fo1500_h1: inconclusive, fo1500_h3: inconclusive}
+    bootstrap: {cluster_unit: issue_month, seed: 20260830, replications: 1000,
+                block_length_h1: 1, block_length_h3: 3, issue_month_clusters: 15}
+    evaluation_scope: development_only
+    confirmatory_evaluation: false
+    latest_vintage_evaluation: true
+    fully_real_time_backtest: false
+    channel_selected: false
+    purge_evaluated: false
+    locked_test_accessed: false
+    locked_test_evaluation_authorized: false
+    model_feature_approved: false
+    generated_tables_git_ignored: true
+  # Task C12 closed the EPPO fuel-oil channel for further predictive modeling
+  # after D5 failed to demonstrate incremental signal. CLOSURE APPLIES TO
+  # MODELING USE: the source pipeline, the semantic decisions, the
+  # transformations and the structural exposure above all remain valid and
+  # reproducible within their stated limitations.
+  modeling_channel_closure:
+    created_by: C12
+    config: configs/fuel_oil_channel_closure.yaml
+    closure_schema: schemas/fuel_oil_channel_closure.schema.yaml
+    reopening_evidence_schema: schemas/fuel_oil_reopening_evidence.schema.yaml
+    decision: docs/c12_channel_closure.md
+    channel_id: eppo_sector093_fuel_oil
+    variants: [fo600_direct_sector093, fo1500_direct_sector093]
+    applied_identically_to_both_variants: true
+    channel_status: closed_after_registered_development_evaluation
+    conclusion:
+      incremental_signal_not_demonstrated_in_registered_development_evaluation
+    development_evidence_status: incremental_signal_not_demonstrated
+    absence_of_effect_proven: false
+    development_evidence_is_inconclusive_not_proof_of_absence: true
+    closure_is_a_project_governance_decision: true
+    closure_is_a_population_level_scientific_conclusion: false
+    carried_forward_to_operational_modeling: false
+    development_candidate_supported: false
+    model_feature_approved: false
+    confirmatory_claim_authorized: false
+    purge_evaluation_authorized: false
+    locked_test_evaluation_authorized: false
+    locked_test_should_be_opened_for_this_channel: false
+    additional_model_grid_authorized: false
+    channel_selection_authorized: false
+    source_pipeline_remains_valid: true
+    structural_audit_remains_valid: true
+    terminal_evidence_checks: 46
+    metrics_recomputed_in_c12: false
+    d5_rerun_in_c12: false
+    artifacts_pinned: 19
+    artifacts_deleted: 0
+    artifacts_modified: 0
+    preservation_implies_continued_modeling_eligibility: false
+    historical_runners_remain_able_to_reproduce_their_outputs: true
+    enforcement_guard_probes: 30
+    enforcement_blocked_purposes:
+      [modeling, model_training, target_assembly, feature_selection,
+       operational_modeling, locked_test_evaluation]
+    enforcement_permitted_purposes:
+      [audit, reproduction, documentation, source_quality,
+       provenance_verification, historical_d5_reproduction]
+    closed_features_reported_as_missing: false
+    unrelated_features_unaffected: true
+    generic_upstream_feature_creation_altered: false
+    prohibited_reopening_reasons: 16
+    new_specification_alone_is_new_evidence: false
+    reopening_requires_external_evidence_with_required_fields: 9
+    closure_checksum:
+      33991fe41a242e5f202fdcb4c67965c2765ade10c1370c3e56b99ccc4f866657
+  feature_semantics_approved: false
+  model_feature_approved: false
+  ingested_into_production: false
+
+sources:
+  OIE_MPI:
+    component: MPI
+    description: Manufacturing Production Index, current 2021-based edition
+    manifest: data/raw/_manifests/OIE_MPI_manifest.jsonl
+    expected_sha256: "19cec1fd781b3a9098c393721b56548817d8275df71e235783864477de2b6389"
+    expected_edition: "2021_based"
+    expected_base_year: 2021
+    expected_classification: TSIC
+    source_url: "https://www.oie.go.th/view/1/industrial_index/TH-TH"
+    source_url_verified: false
+    source_url_note: >-
+      Portal landing page for the industrial index series. The manifest entry
+      for this retrieval recorded no direct file URL, so this is documented as
+      the portal, not asserted as the exact download link.
+    # Snapshot expectations — tied to expected_sha256 above, NOT universal.
+    # A future re-retrieval will change these; they are integration assertions
+    # for the currently verified snapshot only.
+    snapshot:
+      first_month: "2021-01"
+      last_month: "2026-06"
+      month_count: 66
+      division_count: 22
+      preliminary_months: ["2026-06"]
+
+  OIE_CAPU:
+    component: CapU
+    description: Capacity Utilization rate, current 2021-based edition
+    manifest: data/raw/_manifests/OIE_CAPU_manifest.jsonl
+    expected_sha256: "0432b1627424e59a5bf9f56c5c4a498d0b636cba60800b1c8a5b307c79c0824f"
+    expected_edition: "2021_based"
+    expected_base_year: 2021
+    expected_classification: TSIC
+    source_url: "https://www.oie.go.th/view/1/industrial_index/TH-TH"
+    source_url_verified: false
+    source_url_note: Same portal as OIE_MPI; published alongside it.
+    snapshot:
+      first_month: "2021-01"
+      last_month: "2026-06"
+      month_count: 66
+      division_count: 22
+      preliminary_months: ["2026-06"]
+
+# --- temporal fields that could NOT be verified ------------------------------
+# Deliberately null. The OIE workbooks carry no per-month publication date, and
+# no archived release calendar was located. Fabricating a release_date or
+# available_as_of per historical month would manufacture point-in-time
+# information this project does not have.
+temporal_verification:
+  release_date:
+    verified: false
+    value: null
+    note: >-
+      Not present in the source workbooks and no archived OIE release calendar
+      was found. Emitted as null for every month. A single press release
+      observed during A1 suggested a ~30-day lag, which is recorded in
+      configs/data.yaml release_lag as an observation, not applied here as a
+      per-month fact.
+  available_as_of:
+    verified: false
+    value: null
+    note: >-
+      Cannot be derived without release_date. Emitted as null. Any future
+      point-in-time work must obtain real vintage/release metadata first —
+      see docs/task_a1_report.md §6.
+
+# --- upstream shock sources (Task C1) ----------------------------------------
+# Target-side sources are defined above. UPSTREAM (predictor-side) sources live
+# in their own config so a source-verification decision on a commodity price can
+# never be confused with a target-component approval.
+upstream_sources_config: configs/upstream_commodity_sources.yaml
+upstream_sources_status:
+  WB_PINKSHEET:
+    source_verified_candidates: 5
+    conditional_candidates: 2
+    rejected_candidates: 0
+    model_feature_approved: false # C1 verifies sources only
+    audit: docs/c1_commodity_source_audit.md
+  FRED_BRENT:
+    role: cross_check_only
+    may_enter_production_feature_table: false
+    status: not_executed_source_unreachable
+
+# --- C2 commodity feature table ----------------------------------------------
+# Feature DEFINITIONS live in configs/commodity_features.yaml, for the same
+# reason the upstream source decisions live in their own file: a construction
+# approval must never be mistaken for a model-feature approval.
+commodity_feature_config: configs/commodity_features.yaml
+commodity_feature_status:
+  task: C2
+  feature_definition_version: c2_commodity_features_v1
+  input_dataset: docs/c1_5_commodity_timing_audit.json # C1.5-R2 first releases
+  primary_series: 4 # brent, aluminum, copper, rubber RSS3
+  excluded_series: 3 # LNG, coal, palm oil - no substitutes introduced
+  canonical_rows: 1224
+  minimum_publication_lag_months: 1 # MEASURED
+  operational_lag_months: 2 # POLICY
+  sensitivity_policy: publication_lag_1m # labelled sensitivity_only
+  feature_construction_approved: true
+  feature_semantics_approved: false # industry exposure/direction is C3
+  model_feature_approved: false # C2 does not approve model inputs
+  target_association_computed: false
+  audit: docs/c2_commodity_feature_audit.md
+
+# --- C3 structural exposure source -------------------------------------------
+# The official Thai I/O table, used to build a STRUCTURAL PRIOR only.
+industry_exposure_config: configs/industry_exposure.yaml
+structural_source_status:
+  task: C3
+  source_id: NESDC_IO
+  publisher: National Economic and Social Development Council (NESDC)
+  primary_table: Input-Output Table of Thailand 2015 (Final)
+  structural_reference_year: 2015
+  sector_count: 180 # the brief expected 58; NESDC publishes 180
+  discovery_method: official_sitemap_then_download_page_ddl
+  hard_coded_file_url_used: false
+  valuation_basis: purchasers_prices
+  import_treatment: import_inclusive
+  newer_2021_table: audited_not_substituted
+  canonical_rows: 48 # 12 industries x 4 commodities
+  structural_exposure_approved: true
+  feature_semantics_approved: false
+  model_feature_approved: false # C3 does not approve model inputs
+  target_association_computed: false
+  audit: docs/c3_commodity_exposure_matrix.md
+
+# --- C4 industry-conditioned features -----------------------------------------
+# Combines C2 point-in-time commodity features with C3-R1 structural exposures.
+# Predictors only; no target is read.
+industry_conditioned_features_config: configs/industry_conditioned_features.yaml
+industry_conditioned_feature_status:
+  task: C4
+  transformation_version: c4_industry_conditioning_v1
+  eligible_pairs: 43 # of 48; five excluded by C3-R1
+  observations_per_pair: 306
+  rows_per_variant: 13158
+  matrix_variants: 3
+  canonical_rows: 39474
+  primary_variant: primary_direct_lag2
+  structural_available_by: 2020-03-31 # NOT the 2015 reference year
+  structural_availability_status: verified_before_development
+  development_snapshot_rows: 180
+  development_eligible_cells: 3225
+  development_ineligible_cells: 375
+  conditioned_construction_approved: true
+  feature_semantics_approved: false
+  model_feature_approved: false # C4 does not approve model inputs
+  target_association_computed: false
+  audit: docs/c4_industry_conditioned_feature_audit.md
+
+# --- D1 development model -----------------------------------------------------
+# The first predictive model. Development evidence only; the locked test is
+# reserved and unopened.
+d1_model_config: configs/d1_development_models.yaml
+d1_development_model_status:
+  task: D1
+  model_version: d1_residual_ridge_v1
+  family: industry_specific_ridge_residual_correction
+  split: development
+  origins: 15
+  predictions_per_variant_horizon: 180
+  total_model_predictions: 1080
+  benchmark_h1: persistence_current_month
+  benchmark_h3: persistence_trailing_3m_max
+  evidence_status_h1: incremental_signal_not_supported
+  evidence_status_h3: incremental_signal_not_supported
+  model_macro_mae_h1: 15.3073
+  benchmark_macro_mae_h1: 14.5287
+  model_macro_mae_h3: 16.1072
+  benchmark_macro_mae_h3: 14.6985
+  locked_test_outcomes_read: false
+  approved_for_locked_test: false
+  model_feature_approved: false
+  audit: docs/d1_development_results.md
+
+# --- panel-level snapshot expectations ---------------------------------------
+panel_snapshot:
+  industries: 12
+  months_total: 66
+  rows_total: 792 # 12 x 66, preliminary retained
+  non_preliminary_months: 65 # through 2026-05
+  model_eligible_rows: 780 # 12 x 65, assuming no other quality failure

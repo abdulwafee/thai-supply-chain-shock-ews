@@ -1,0 +1,113 @@
+# Schema for data/processed/industry_month_panel.parquet.
+#
+# schema_version 2 (Task B1) — this now describes what the code ACTUALLY writes
+# (src/thai_supply_chain_ews/data/build_panel.py::PANEL_COLUMNS), verified by
+# tests/test_b1_ingestion.py.
+#
+# Changes from the schema_version 1 design draft, and why:
+#   * `reference_period` -> `reference_month` (the implemented column name).
+#   * `mpi_value`/`capu_value` -> `mpi_level`/`capacity_utilization_rate`, so the
+#     column name states the unit: MPI is an index level, CapU is a percent rate.
+#     Task A2.1 showed that treating these two as the same kind of quantity is a
+#     real source of error.
+#   * The per-variable `*_available_as_of` columns are NOT emitted. The draft
+#     required them non-null whenever the value was non-null; that rule cannot
+#     be satisfied honestly, because no release calendar was ever verified. B1
+#     records the limitation instead of fabricating dates
+#     (docs/b1_data_dictionary.md §4).
+#   * `ppi_value` / `export_value_usd` columns are deferred: those sources are
+#     not yet approved (configs/targets.yaml `source_verified`/`target_approved`).
+#     They will be appended under the same convention when onboarded.
+#   * `vintage_policy` is replaced by table-level `data_framing`, since the MVP
+#     has exactly one framing and a per-row column would imply a choice that is
+#     not actually available.
+
+schema_version: 2
+table: processed/industry_month_panel
+grain: [reference_month, industry_id]
+primary_key: [reference_month, industry_id]
+foreign_keys:
+  - column: industry_id
+    references: configs/industry_mapping.yaml#industries
+written_by: thai_supply_chain_ews.data.build_panel.build_industry_panel
+edition_scope: current_2021_based_only
+data_framing: latest_vintage_historical_data
+balanced_panel: true # exactly 12 industries in every month
+
+columns:
+  - name: reference_month
+    type: date
+    nullable: false
+    format: first-of-month
+  - name: industry_id
+    type: string
+    nullable: false
+    allowed_values: [IND-01, IND-02, IND-03, IND-04, IND-05, IND-06,
+                     IND-07, IND-08, IND-09, IND-10, IND-11, IND-12]
+  - name: industry_name_en
+    type: string
+    nullable: false
+  - name: industry_name_th
+    type: string
+    nullable: false
+  - name: mpi_level
+    type: float64
+    nullable: true
+    unit: index_level
+    note: "Official-weight aggregate of constituent divisions, weights renormalized to 1."
+  - name: capacity_utilization_rate
+    type: float64
+    nullable: true
+    unit: percent
+  - name: mpi_is_preliminary
+    type: bool
+    nullable: false
+  - name: capu_is_preliminary
+    type: bool
+    nullable: false
+  - name: is_model_eligible
+    type: bool
+    nullable: false
+    rule: >-
+      False if either component is preliminary, a required value is missing, a
+      division is missing, a duplicate exists, or source integrity failed.
+  - name: source_edition
+    type: string
+    nullable: false
+    allowed_values: ["2021_based"]
+  - name: source_base_year
+    type: int16
+    nullable: false
+    allowed_values: [2021]
+  - name: mpi_source_sha256
+    type: string
+    nullable: false
+  - name: capu_source_sha256
+    type: string
+    nullable: false
+  - name: retrieved_at
+    type: string
+    nullable: false
+  - name: data_quality_flag
+    type: string
+    nullable: false
+    note: "'ok', 'preliminary', or a ';'-joined list of aggregation failures."
+
+not_computed_in_this_layer:
+  - mom_change
+  - yoy_change
+  - robust_z_score
+  - industry_stress_score
+  - forecast_target
+  - risk_level
+
+snapshot_expectations:
+  note: >-
+    Tied to the source checksums pinned in configs/sources.yaml — integration
+    assertions for the current snapshot, not universal invariants.
+  row_count: 792 # 12 industries x 66 months
+  industries: 12
+  month_count: 66
+  model_eligible_rows: 780
+  preliminary_rows: 12 # 2026-06 x 12 industries
+  non_preliminary_months: 65 # through 2026-05

@@ -1,0 +1,978 @@
+{
+  "task": "C6.5",
+  "generated_at_utc": "2026-08-28T16:51:31.234074+00:00",
+  "config_version": "eppo_latest_vintage_policy_v1",
+  "provenance": {
+    "target_joined": false,
+    "target_association_computed": false,
+    "model_trained": false,
+    "locked_test_accessed": false,
+    "feature_semantics_approved": false,
+    "model_feature_approved": false
+  },
+  "preserved_decisions": {
+    "c6_raw_inventory_or_parsed_values_changed": false,
+    "c5_structural_selection_changed": false,
+    "c3_or_c3r1_changed": false,
+    "c4_variants_changed": false,
+    "d3_contract_changed": false,
+    "d4_results_changed": false,
+    "d4_metrics_recalculated": false,
+    "b3_targets_changed": false,
+    "locked_test_protection_changed": false
+  },
+  "c6_invariants": {
+    "all_reproduced": true,
+    "checks": {
+      "discovered_media_documents": {
+        "actual": 5233,
+        "expected": 5233,
+        "reproduced": true
+      },
+      "distinct_effective_dates": {
+        "actual": 4976,
+        "expected": 4976,
+        "reproduced": true
+      },
+      "discovery_earliest": {
+        "actual": "2002-02-03",
+        "expected": "2002-02-03",
+        "reproduced": true
+      },
+      "discovery_latest": {
+        "actual": "2026-08-28",
+        "expected": "2026-08-28",
+        "reproduced": true
+      },
+      "retrieved_documents": {
+        "actual": 256,
+        "expected": 256,
+        "reproduced": true
+      },
+      "validated_documents": {
+        "actual": 254,
+        "expected": 254,
+        "reproduced": true
+      },
+      "parity_months": {
+        "actual": 65,
+        "expected": 65,
+        "reproduced": true
+      },
+      "operational_months": {
+        "actual": 53,
+        "expected": 53,
+        "reproduced": true
+      },
+      "parity_document_days": {
+        "actual": 1315,
+        "expected": 1315,
+        "reproduced": true
+      },
+      "operational_document_days": {
+        "actual": 1076,
+        "expected": 1076,
+        "reproduced": true
+      },
+      "canonical_partial_rows": {
+        "actual": 722,
+        "expected": 722,
+        "reproduced": true
+      },
+      "independent_captures": {
+        "actual": 43,
+        "expected": 43,
+        "reproduced": true
+      },
+      "capture_overlap_with_validated": {
+        "actual": 0,
+        "expected": 0,
+        "reproduced": true
+      },
+      "verified_available_as_of": {
+        "actual": 0,
+        "expected": 0,
+        "reproduced": true
+      },
+      "single_vintage_only": {
+        "actual": 707,
+        "expected": 707,
+        "reproduced": true
+      },
+      "duplicate_document": {
+        "actual": 15,
+        "expected": 15,
+        "reproduced": true
+      },
+      "same_date_revised_value": {
+        "actual": 0,
+        "expected": 0,
+        "reproduced": true
+      },
+      "hsd_missing_days_january_2024": {
+        "actual": 22,
+        "expected": 22,
+        "reproduced": true
+      },
+      "hsd_gaps_all_in_january_2024": {
+        "actual": true,
+        "expected": true,
+        "reproduced": true
+      },
+      "fo600_label_stable": {
+        "actual": [
+          "FO 600 (1) 2%S"
+        ],
+        "expected": [
+          "FO 600 (1) 2%S"
+        ],
+        "reproduced": true
+      },
+      "fo1500_label_stable": {
+        "actual": [
+          "FO 1500 (2) 2%S"
+        ],
+        "expected": [
+          "FO 1500 (2) 2%S"
+        ],
+        "reproduced": true
+      }
+    },
+    "hsd_missing_days": [
+      "2024-01-02",
+      "2024-01-03",
+      "2024-01-04",
+      "2024-01-05",
+      "2024-01-08",
+      "2024-01-09",
+      "2024-01-10",
+      "2024-01-11",
+      "2024-01-12",
+      "2024-01-15",
+      "2024-01-16",
+      "2024-01-17",
+      "2024-01-18",
+      "2024-01-19",
+      "2024-01-22",
+      "2024-01-23",
+      "2024-01-24",
+      "2024-01-25",
+      "2024-01-26",
+      "2024-01-29",
+      "2024-01-30",
+      "2024-01-31"
+    ]
+  },
+  "evidence_boundaries": {
+    "legacy_archive_status": "tested_legacy_urls_no_longer_expose_original_archive",
+    "historical_timing_status": "not_reconstructable_from_sources_inspected_in_c6",
+    "monthly_presence_coverage": "complete",
+    "complete_daily_document_validation": false,
+    "point_in_time_values_supported": false,
+    "absence_from_inspected_mechanisms_is_not_proof_of_universal_absence": true,
+    "statement": "Absence from the inspected mechanisms is not proof that no historical publication evidence exists anywhere. C6 probed the current WordPress archive, its REST index, sitemaps, RSS and the legacy Joomla paths; other mechanisms, offline records or a direct request to EPPO were not exercised.",
+    "superseded_wording": [
+      "the legacy archive no longer exists",
+      "historical timing can never be verified",
+      "all daily values in the required window were validated",
+      "65/65 month coverage means a complete daily archive",
+      "archive depth alone makes every transformation feature-ready"
+    ]
+  },
+  "ingestion_levels": {
+    "monthly_document_presence_verified": true,
+    "complete_daily_inventory_discovered": true,
+    "complete_daily_documents_downloaded": false,
+    "complete_daily_documents_validated": false,
+    "monthly_aggregation_contract_approved": false,
+    "audited_sample_documents": 254,
+    "discovered_document_days_parity_window": 1315,
+    "discovered_document_days_operational_window": 1076,
+    "note": "The 254 validated documents are an AUDIT SAMPLE spanning all required months. They are not a complete daily ingestion of the 1,315 discovered document-days, and the 722-row partial audit table is not a production price series."
+  },
+  "capture_audit": {
+    "captures_total": 43,
+    "evidence_class_counts": {
+      "capture_identity_unverified": 43
+    },
+    "usable_upper_bounds": 0,
+    "any_capture_proves_first_release": false,
+    "minimum_verified_publication_lag_months": null,
+    "note": "No first-release date is established by any capture, so the minimum verified publication lag stays null. Delay statistics below, if any, describe upper bounds only and are never used to set the operational lag.",
+    "records": [
+      {
+        "effective_date": "2020-06-25",
+        "capture_date": "2021-07-27",
+        "capture_provider": "internet_archive_cdx",
+        "captured_url": null,
+        "delay_days": 397,
+        "contemporaneous": false,
+        "original_bytes_available": false,
+        "source_identity_validated": false,
+        "proves_first_release_date": false,
+        "provides_upper_bound_only": false,
+        "evidence_class": "capture_identity_unverified",
+        "note": "The capture record was read from the index only; the archived bytes were not fetched and the document identity was not validated, so the record cannot be relied on even as an upper bound."
+      },
+      {
+        "effective_date": "2020-07-16",
+        "capture_date": "2021-01-20",
+        "capture_provider": "internet_archive_cdx",
+        "captured_url": null,
+        "delay_days": 188,
+        "contemporaneous": false,
+        "original_bytes_available": false,
+        "source_identity_validated": false,
+        "proves_first_release_date": false,
+        "provides_upper_bound_only": false,
+        "evidence_class": "capture_identity_unverified",
+        "note": "The capture record was read from the index only; the archived bytes were not fetched and the document identity was not validated, so the record cannot be relied on even as an upper bound."
+      },
+      {
+        "effective_date": "2020-07-17",
+        "capture_date": "2021-01-20",
+        "capture_provider": "internet_archive_cdx",
+        "captured_url": null,
+        "delay_days": 187,
+        "contemporaneous": false,
+        "original_bytes_available": false,
+        "source_identity_validated": false,
+        "proves_first_release_date": false,
+        "provides_upper_bound_only": false,
+        "evidence_class": "capture_identity_unverified",
+        "note": "The capture record was read from the index only; the archived bytes were not fetched and the document identity was not validated, so the record cannot be relied on even as an upper bound."
+      },
+      {
+        "effective_date": "2020-07-23",
+        "capture_date": "2021-01-20",
+        "capture_provider": "internet_archive_cdx",
+        "captured_url": null,
+        "delay_days": 181,
+        "contemporaneous": false,
+        "original_bytes_available": false,
+        "source_identity_validated": false,
+        "proves_first_release_date": false,
+        "provides_upper_bound_only": false,
+        "evidence_class": "capture_identity_unverified",
+        "note": "The capture record was read from the index only; the archived bytes were not fetched and the document identity was not validated, so the record cannot be relied on even as an upper bound."
+      },
+      {
+        "effective_date": "2022-06-06",
+        "capture_date": "2022-07-11",
+        "capture_provider": "internet_archive_cdx",
+        "captured_url": null,
+        "delay_days": 35,
+        "contemporaneous": false,
+        "original_bytes_available": false,
+        "source_identity_validated": false,
+        "proves_first_release_date": false,
+        "provides_upper_bound_only": false,
+        "evidence_class": "capture_identity_unverified",
+        "note": "The capture record was read from the index only; the archived bytes were not fetched and the document identity was not validated, so the record cannot be relied on even as an upper bound."
+      },
+      {
+        "effective_date": "2022-06-07",
+        "capture_date": "2022-07-11",
+        "capture_provider": "internet_archive_cdx",
+        "captured_url": null,
+        "delay_days": 34,
+        "contemporaneous": false,
+        "original_bytes_available": false,
+        "source_identity_validated": false,
+        "proves_first_release_date": false,
+        "provides_upper_bound_only": false,
+        "evidence_class": "capture_identity_unverified",
+        "note": "The capture record was read from the index only; the archived bytes were not fetched and the document identity was not validated, so the record cannot be relied on even as an upper bound."
+      },
+      {
+        "effective_date": "2022-06-08",
+        "capture_date": "2022-07-11",
+        "capture_provider": "internet_archive_cdx",
+        "captured_url": null,
+        "delay_days": 33,
+        "contemporaneous": false,
+        "original_bytes_available": false,
+        "source_identity_validated": false,
+        "proves_first_release_date": false,
+        "provides_upper_bound_only": false,
+        "evidence_class": "capture_identity_unverified",
+        "note": "The capture record was read from the index only; the archived bytes were not fetched and the document identity was not validated, so the record cannot be relied on even as an upper bound."
+      },
+      {
+        "effective_date": "2022-06-09",
+        "capture_date": "2022-07-11",
+        "capture_provider": "internet_archive_cdx",
+        "captured_url": null,
+        "delay_days": 32,
+        "contemporaneous": false,
+        "original_bytes_available": false,
+        "source_identity_validated": false,
+        "proves_first_release_date": false,
+        "provides_upper_bound_only": false,
+        "evidence_class": "capture_identity_unverified",
+        "note": "The capture record was read from the index only; the archived bytes were not fetched and the document identity was not validated, so the record cannot be relied on even as an upper bound."
+      },
+      {
+        "effective_date": "2022-06-10",
+        "capture_date": "2022-07-11",
+        "capture_provider": "internet_archive_cdx",
+        "captured_url": null,
+        "delay_days": 31,
+        "contemporaneous": true,
+        "original_bytes_available": false,
+        "source_identity_validated": false,
+        "proves_first_release_date": false,
+        "provides_upper_bound_only": false,
+        "evidence_class": "capture_identity_unverified",
+        "note": "The capture record was read from the index only; the archived bytes were not fetched and the document identity was not validated, so the record cannot be relied on even as an upper bound."
+      },
+      {
+        "effective_date": "2022-06-13",
+        "capture_date": "2022-07-11",
+        "capture_provider": "internet_archive_cdx",
+        "captured_url": null,
+        "delay_days": 28,
+        "contemporaneous": true,
+        "original_bytes_available": false,
+        "source_identity_validated": false,
+        "proves_first_release_date": false,
+        "provides_upper_bound_only": false,
+        "evidence_class": "capture_identity_unverified",
+        "note": "The capture record was read from the index only; the archived bytes were not fetched and the document identity was not validated, so the record cannot be relied on even as an upper bound."
+      },
+      {
+        "effective_date": "2022-06-14",
+        "capture_date": "2022-07-11",
+        "capture_provider": "internet_archive_cdx",
+        "captured_url": null,
+        "delay_days": 27,
+        "contemporaneous": true,
+        "original_bytes_available": false,
+        "source_identity_validated": false,
+        "proves_first_release_date": false,
+        "provides_upper_bound_only": false,
+        "evidence_class": "capture_identity_unverified",
+        "note": "The capture record was read from the index only; the archived bytes were not fetched and the document identity was not validated, so the record cannot be relied on even as an upper bound."
+      },
+      {
+        "effective_date": "2022-06-15",
+        "capture_date": "2022-07-11",
+        "capture_provider": "internet_archive_cdx",
+        "captured_url": null,
+        "delay_days": 26,
+        "contemporaneous": true,
+        "original_bytes_available": false,
+        "source_identity_validated": false,
+        "proves_first_release_date": false,
+        "provides_upper_bound_only": false,
+        "evidence_class": "capture_identity_unverified",
+        "note": "The capture record was read from the index only; the archived bytes were not fetched and the document identity was not validated, so the record cannot be relied on even as an upper bound."
+      },
+      {
+        "effective_date": "2022-06-16",
+        "capture_date": "2022-07-11",
+        "capture_provider": "internet_archive_cdx",
+        "captured_url": null,
+        "delay_days": 25,
+        "contemporaneous": true,
+        "original_bytes_available": false,
+        "source_identity_validated": false,
+        "proves_first_release_date": false,
+        "provides_upper_bound_only": false,
+        "evidence_class": "capture_identity_unverified",
+        "note": "The capture record was read from the index only; the archived bytes were not fetched and the document identity was not validated, so the record cannot be relied on even as an upper bound."
+      },
+      {
+        "effective_date": "2022-06-17",
+        "capture_date": "2022-07-11",
+        "capture_provider": "internet_archive_cdx",
+        "captured_url": null,
+        "delay_days": 24,
+        "contemporaneous": true,
+        "original_bytes_available": false,
+        "source_identity_validated": false,
+        "proves_first_release_date": false,
+        "provides_upper_bound_only": false,
+        "evidence_class": "capture_identity_unverified",
+        "note": "The capture record was read from the index only; the archived bytes were not fetched and the document identity was not validated, so the record cannot be relied on even as an upper bound."
+      },
+      {
+        "effective_date": "2022-06-20",
+        "capture_date": "2022-08-12",
+        "capture_provider": "internet_archive_cdx",
+        "captured_url": null,
+        "delay_days": 53,
+        "contemporaneous": false,
+        "original_bytes_available": false,
+        "source_identity_validated": false,
+        "proves_first_release_date": false,
+        "provides_upper_bound_only": false,
+        "evidence_class": "capture_identity_unverified",
+        "note": "The capture record was read from the index only; the archived bytes were not fetched and the document identity was not validated, so the record cannot be relied on even as an upper bound."
+      },
+      {
+        "effective_date": "2022-06-21",
+        "capture_date": "2022-08-12",
+        "capture_provider": "internet_archive_cdx",
+        "captured_url": null,
+        "delay_days": 52,
+        "contemporaneous": false,
+        "original_bytes_available": false,
+        "source_identity_validated": false,
+        "proves_first_release_date": false,
+        "provides_upper_bound_only": false,
+        "evidence_class": "capture_identity_unverified",
+        "note": "The capture record was read from the index only; the archived bytes were not fetched and the document identity was not validated, so the record cannot be relied on even as an upper bound."
+      },
+      {
+        "effective_date": "2022-06-22",
+        "capture_date": "2022-08-12",
+        "capture_provider": "internet_archive_cdx",
+        "captured_url": null,
+        "delay_days": 51,
+        "contemporaneous": false,
+        "original_bytes_available": false,
+        "source_identity_validated": false,
+        "proves_first_release_date": false,
+        "provides_upper_bound_only": false,
+        "evidence_class": "capture_identity_unverified",
+        "note": "The capture record was read from the index only; the archived bytes were not fetched and the document identity was not validated, so the record cannot be relied on even as an upper bound."
+      },
+      {
+        "effective_date": "2022-06-23",
+        "capture_date": "2022-08-12",
+        "capture_provider": "internet_archive_cdx",
+        "captured_url": null,
+        "delay_days": 50,
+        "contemporaneous": false,
+        "original_bytes_available": false,
+        "source_identity_validated": false,
+        "proves_first_release_date": false,
+        "provides_upper_bound_only": false,
+        "evidence_class": "capture_identity_unverified",
+        "note": "The capture record was read from the index only; the archived bytes were not fetched and the document identity was not validated, so the record cannot be relied on even as an upper bound."
+      },
+      {
+        "effective_date": "2022-06-24",
+        "capture_date": "2022-08-12",
+        "capture_provider": "internet_archive_cdx",
+        "captured_url": null,
+        "delay_days": 49,
+        "contemporaneous": false,
+        "original_bytes_available": false,
+        "source_identity_validated": false,
+        "proves_first_release_date": false,
+        "provides_upper_bound_only": false,
+        "evidence_class": "capture_identity_unverified",
+        "note": "The capture record was read from the index only; the archived bytes were not fetched and the document identity was not validated, so the record cannot be relied on even as an upper bound."
+      },
+      {
+        "effective_date": "2022-06-27",
+        "capture_date": "2022-08-12",
+        "capture_provider": "internet_archive_cdx",
+        "captured_url": null,
+        "delay_days": 46,
+        "contemporaneous": false,
+        "original_bytes_available": false,
+        "source_identity_validated": false,
+        "proves_first_release_date": false,
+        "provides_upper_bound_only": false,
+        "evidence_class": "capture_identity_unverified",
+        "note": "The capture record was read from the index only; the archived bytes were not fetched and the document identity was not validated, so the record cannot be relied on even as an upper bound."
+      },
+      {
+        "effective_date": "2022-06-28",
+        "capture_date": "2022-08-12",
+        "capture_provider": "internet_archive_cdx",
+        "captured_url": null,
+        "delay_days": 45,
+        "contemporaneous": false,
+        "original_bytes_available": false,
+        "source_identity_validated": false,
+        "proves_first_release_date": false,
+        "provides_upper_bound_only": false,
+        "evidence_class": "capture_identity_unverified",
+        "note": "The capture record was read from the index only; the archived bytes were not fetched and the document identity was not validated, so the record cannot be relied on even as an upper bound."
+      },
+      {
+        "effective_date": "2022-06-29",
+        "capture_date": "2022-08-12",
+        "capture_provider": "internet_archive_cdx",
+        "captured_url": null,
+        "delay_days": 44,
+        "contemporaneous": false,
+        "original_bytes_available": false,
+        "source_identity_validated": false,
+        "proves_first_release_date": false,
+        "provides_upper_bound_only": false,
+        "evidence_class": "capture_identity_unverified",
+        "note": "The capture record was read from the index only; the archived bytes were not fetched and the document identity was not validated, so the record cannot be relied on even as an upper bound."
+      },
+      {
+        "effective_date": "2022-06-30",
+        "capture_date": "2022-08-12",
+        "capture_provider": "internet_archive_cdx",
+        "captured_url": null,
+        "delay_days": 43,
+        "contemporaneous": false,
+        "original_bytes_available": false,
+        "source_identity_validated": false,
+        "proves_first_release_date": false,
+        "provides_upper_bound_only": false,
+        "evidence_class": "capture_identity_unverified",
+        "note": "The capture record was read from the index only; the archived bytes were not fetched and the document identity was not validated, so the record cannot be relied on even as an upper bound."
+      },
+      {
+        "effective_date": "2022-07-01",
+        "capture_date": "2022-08-12",
+        "capture_provider": "internet_archive_cdx",
+        "captured_url": null,
+        "delay_days": 42,
+        "contemporaneous": false,
+        "original_bytes_available": false,
+        "source_identity_validated": false,
+        "proves_first_release_date": false,
+        "provides_upper_bound_only": false,
+        "evidence_class": "capture_identity_unverified",
+        "note": "The capture record was read from the index only; the archived bytes were not fetched and the document identity was not validated, so the record cannot be relied on even as an upper bound."
+      },
+      {
+        "effective_date": "2022-07-04",
+        "capture_date": "2022-08-16",
+        "capture_provider": "internet_archive_cdx",
+        "captured_url": null,
+        "delay_days": 43,
+        "contemporaneous": false,
+        "original_bytes_available": false,
+        "source_identity_validated": false,
+        "proves_first_release_date": false,
+        "provides_upper_bound_only": false,
+        "evidence_class": "capture_identity_unverified",
+        "note": "The capture record was read from the index only; the archived bytes were not fetched and the document identity was not validated, so the record cannot be relied on even as an upper bound."
+      },
+      {
+        "effective_date": "2022-07-05",
+        "capture_date": "2022-08-16",
+        "capture_provider": "internet_archive_cdx",
+        "captured_url": null,
+        "delay_days": 42,
+        "contemporaneous": false,
+        "original_bytes_available": false,
+        "source_identity_validated": false,
+        "proves_first_release_date": false,
+        "provides_upper_bound_only": false,
+        "evidence_class": "capture_identity_unverified",
+        "note": "The capture record was read from the index only; the archived bytes were not fetched and the document identity was not validated, so the record cannot be relied on even as an upper bound."
+      },
+      {
+        "effective_date": "2022-07-06",
+        "capture_date": "2022-08-16",
+        "capture_provider": "internet_archive_cdx",
+        "captured_url": null,
+        "delay_days": 41,
+        "contemporaneous": false,
+        "original_bytes_available": false,
+        "source_identity_validated": false,
+        "proves_first_release_date": false,
+        "provides_upper_bound_only": false,
+        "evidence_class": "capture_identity_unverified",
+        "note": "The capture record was read from the index only; the archived bytes were not fetched and the document identity was not validated, so the record cannot be relied on even as an upper bound."
+      },
+      {
+        "effective_date": "2022-07-07",
+        "capture_date": "2022-08-16",
+        "capture_provider": "internet_archive_cdx",
+        "captured_url": null,
+        "delay_days": 40,
+        "contemporaneous": false,
+        "original_bytes_available": false,
+        "source_identity_validated": false,
+        "proves_first_release_date": false,
+        "provides_upper_bound_only": false,
+        "evidence_class": "capture_identity_unverified",
+        "note": "The capture record was read from the index only; the archived bytes were not fetched and the document identity was not validated, so the record cannot be relied on even as an upper bound."
+      },
+      {
+        "effective_date": "2022-07-08",
+        "capture_date": "2022-08-16",
+        "capture_provider": "internet_archive_cdx",
+        "captured_url": null,
+        "delay_days": 39,
+        "contemporaneous": false,
+        "original_bytes_available": false,
+        "source_identity_validated": false,
+        "proves_first_release_date": false,
+        "provides_upper_bound_only": false,
+        "evidence_class": "capture_identity_unverified",
+        "note": "The capture record was read from the index only; the archived bytes were not fetched and the document identity was not validated, so the record cannot be relied on even as an upper bound."
+      },
+      {
+        "effective_date": "2022-07-11",
+        "capture_date": "2022-08-16",
+        "capture_provider": "internet_archive_cdx",
+        "captured_url": null,
+        "delay_days": 36,
+        "contemporaneous": false,
+        "original_bytes_available": false,
+        "source_identity_validated": false,
+        "proves_first_release_date": false,
+        "provides_upper_bound_only": false,
+        "evidence_class": "capture_identity_unverified",
+        "note": "The capture record was read from the index only; the archived bytes were not fetched and the document identity was not validated, so the record cannot be relied on even as an upper bound."
+      },
+      {
+        "effective_date": "2022-07-27",
+        "capture_date": "2022-08-12",
+        "capture_provider": "internet_archive_cdx",
+        "captured_url": null,
+        "delay_days": 16,
+        "contemporaneous": true,
+        "original_bytes_available": false,
+        "source_identity_validated": false,
+        "proves_first_release_date": false,
+        "provides_upper_bound_only": false,
+        "evidence_class": "capture_identity_unverified",
+        "note": "The capture record was read from the index only; the archived bytes were not fetched and the document identity was not validated, so the record cannot be relied on even as an upper bound."
+      },
+      {
+        "effective_date": "2022-08-01",
+        "capture_date": "2022-08-12",
+        "capture_provider": "internet_archive_cdx",
+        "captured_url": null,
+        "delay_days": 11,
+        "contemporaneous": true,
+        "original_bytes_available": false,
+        "source_identity_validated": false,
+        "proves_first_release_date": false,
+        "provides_upper_bound_only": false,
+        "evidence_class": "capture_identity_unverified",
+        "note": "The capture record was read from the index only; the archived bytes were not fetched and the document identity was not validated, so the record cannot be relied on even as an upper bound."
+      },
+      {
+        "effective_date": "2022-08-02",
+        "capture_date": "2022-08-16",
+        "capture_provider": "internet_archive_cdx",
+        "captured_url": null,
+        "delay_days": 14,
+        "contemporaneous": true,
+        "original_bytes_available": false,
+        "source_identity_validated": false,
+        "proves_first_release_date": false,
+        "provides_upper_bound_only": false,
+        "evidence_class": "capture_identity_unverified",
+        "note": "The capture record was read from the index only; the archived bytes were not fetched and the document identity was not validated, so the record cannot be relied on even as an upper bound."
+      },
+      {
+        "effective_date": "2022-08-03",
+        "capture_date": "2022-08-12",
+        "capture_provider": "internet_archive_cdx",
+        "captured_url": null,
+        "delay_days": 9,
+        "contemporaneous": true,
+        "original_bytes_available": false,
+        "source_identity_validated": false,
+        "proves_first_release_date": false,
+        "provides_upper_bound_only": false,
+        "evidence_class": "capture_identity_unverified",
+        "note": "The capture record was read from the index only; the archived bytes were not fetched and the document identity was not validated, so the record cannot be relied on even as an upper bound."
+      },
+      {
+        "effective_date": "2022-08-04",
+        "capture_date": "2022-08-12",
+        "capture_provider": "internet_archive_cdx",
+        "captured_url": null,
+        "delay_days": 8,
+        "contemporaneous": true,
+        "original_bytes_available": false,
+        "source_identity_validated": false,
+        "proves_first_release_date": false,
+        "provides_upper_bound_only": false,
+        "evidence_class": "capture_identity_unverified",
+        "note": "The capture record was read from the index only; the archived bytes were not fetched and the document identity was not validated, so the record cannot be relied on even as an upper bound."
+      },
+      {
+        "effective_date": "2022-08-05",
+        "capture_date": "2022-08-12",
+        "capture_provider": "internet_archive_cdx",
+        "captured_url": null,
+        "delay_days": 7,
+        "contemporaneous": true,
+        "original_bytes_available": false,
+        "source_identity_validated": false,
+        "proves_first_release_date": false,
+        "provides_upper_bound_only": false,
+        "evidence_class": "capture_identity_unverified",
+        "note": "The capture record was read from the index only; the archived bytes were not fetched and the document identity was not validated, so the record cannot be relied on even as an upper bound."
+      },
+      {
+        "effective_date": "2022-08-08",
+        "capture_date": "2022-08-12",
+        "capture_provider": "internet_archive_cdx",
+        "captured_url": null,
+        "delay_days": 4,
+        "contemporaneous": true,
+        "original_bytes_available": false,
+        "source_identity_validated": false,
+        "proves_first_release_date": false,
+        "provides_upper_bound_only": false,
+        "evidence_class": "capture_identity_unverified",
+        "note": "The capture record was read from the index only; the archived bytes were not fetched and the document identity was not validated, so the record cannot be relied on even as an upper bound."
+      },
+      {
+        "effective_date": "2022-08-09",
+        "capture_date": "2022-08-12",
+        "capture_provider": "internet_archive_cdx",
+        "captured_url": null,
+        "delay_days": 3,
+        "contemporaneous": true,
+        "original_bytes_available": false,
+        "source_identity_validated": false,
+        "proves_first_release_date": false,
+        "provides_upper_bound_only": false,
+        "evidence_class": "capture_identity_unverified",
+        "note": "The capture record was read from the index only; the archived bytes were not fetched and the document identity was not validated, so the record cannot be relied on even as an upper bound."
+      },
+      {
+        "effective_date": "2022-08-11",
+        "capture_date": "2022-08-12",
+        "capture_provider": "internet_archive_cdx",
+        "captured_url": null,
+        "delay_days": 1,
+        "contemporaneous": true,
+        "original_bytes_available": false,
+        "source_identity_validated": false,
+        "proves_first_release_date": false,
+        "provides_upper_bound_only": false,
+        "evidence_class": "capture_identity_unverified",
+        "note": "The capture record was read from the index only; the archived bytes were not fetched and the document identity was not validated, so the record cannot be relied on even as an upper bound."
+      },
+      {
+        "effective_date": "2022-08-15",
+        "capture_date": "2022-08-16",
+        "capture_provider": "internet_archive_cdx",
+        "captured_url": null,
+        "delay_days": 1,
+        "contemporaneous": true,
+        "original_bytes_available": false,
+        "source_identity_validated": false,
+        "proves_first_release_date": false,
+        "provides_upper_bound_only": false,
+        "evidence_class": "capture_identity_unverified",
+        "note": "The capture record was read from the index only; the archived bytes were not fetched and the document identity was not validated, so the record cannot be relied on even as an upper bound."
+      },
+      {
+        "effective_date": "2022-08-16",
+        "capture_date": "2022-08-16",
+        "capture_provider": "internet_archive_cdx",
+        "captured_url": null,
+        "delay_days": 0,
+        "contemporaneous": true,
+        "original_bytes_available": false,
+        "source_identity_validated": false,
+        "proves_first_release_date": false,
+        "provides_upper_bound_only": false,
+        "evidence_class": "capture_identity_unverified",
+        "note": "The capture record was read from the index only; the archived bytes were not fetched and the document identity was not validated, so the record cannot be relied on even as an upper bound."
+      },
+      {
+        "effective_date": "2026-08-06",
+        "capture_date": "2026-08-25",
+        "capture_provider": "internet_archive_cdx",
+        "captured_url": null,
+        "delay_days": 19,
+        "contemporaneous": true,
+        "original_bytes_available": false,
+        "source_identity_validated": false,
+        "proves_first_release_date": false,
+        "provides_upper_bound_only": false,
+        "evidence_class": "capture_identity_unverified",
+        "note": "The capture record was read from the index only; the archived bytes were not fetched and the document identity was not validated, so the record cannot be relied on even as an upper bound."
+      },
+      {
+        "effective_date": "2026-08-21",
+        "capture_date": "2026-08-21",
+        "capture_provider": "internet_archive_cdx",
+        "captured_url": null,
+        "delay_days": 0,
+        "contemporaneous": true,
+        "original_bytes_available": false,
+        "source_identity_validated": false,
+        "proves_first_release_date": false,
+        "provides_upper_bound_only": false,
+        "evidence_class": "capture_identity_unverified",
+        "note": "The capture record was read from the index only; the archived bytes were not fetched and the document identity was not validated, so the record cannot be relied on even as an upper bound."
+      }
+    ],
+    "capture_date_is_first_publication_date": false,
+    "archived_bytes_fetched": false,
+    "source_identity_validated": false,
+    "contemporaneous_window_days": 31,
+    "window_is_a_convention_not_a_measurement": true
+  },
+  "decision": "proceed_exploratory_release_lag_aware_latest_vintage",
+  "policy": {
+    "latest_vintage_values_used": true,
+    "historical_release_timing_verified": false,
+    "point_in_time_values_supported": false,
+    "fully_real_time_backtest": false,
+    "minimum_verified_publication_lag_months": null,
+    "operational_policy_lag_months": 2,
+    "operational_lag_is_measured": false,
+    "operational_lag_basis": "conservative_project_policy",
+    "same_month_use_permitted": false,
+    "publication_lag_1m_use_permitted": false,
+    "operational_lag_2m_use_permitted": true,
+    "eligible_for_exploratory_development": true,
+    "eligible_for_confirmatory_claims": false,
+    "eligible_for_locked_test": false,
+    "feature_semantics_approved": false,
+    "model_feature_approved": false
+  },
+  "interpretation": {
+    "rule": "reference_month <= issue_month - 2",
+    "meaning": "At forecast issue month t, an EPPO monthly source observation may refer at latest to reference month t-2. This is a conservative policy assumption. It is NOT a measured publication delay."
+  },
+  "observation_availability_fields": {
+    "source_available_as_of": null,
+    "policy_available_month": "reference_month + 2 months",
+    "availability_basis": "conservative_policy_not_historical_measurement",
+    "historical_timing_verified": false,
+    "policy_date_may_populate_source_available_as_of": false
+  },
+  "availability_examples": [
+    {
+      "reference_month": "2022-01",
+      "source_available_as_of": null,
+      "policy_available_month": "2022-03",
+      "availability_basis": "conservative_policy_not_historical_measurement",
+      "historical_timing_verified": false
+    },
+    {
+      "reference_month": "2024-01",
+      "source_available_as_of": null,
+      "policy_available_month": "2024-03",
+      "availability_basis": "conservative_policy_not_historical_measurement",
+      "historical_timing_verified": false
+    },
+    {
+      "reference_month": "2026-05",
+      "source_available_as_of": null,
+      "policy_available_month": "2026-07",
+      "availability_basis": "conservative_policy_not_historical_measurement",
+      "historical_timing_verified": false
+    }
+  ],
+  "permitted_reference_months": [
+    {
+      "issue_month": "2024-01",
+      "latest_permitted_reference_month": "2023-11",
+      "same_month_permitted": false,
+      "lag_1m_permitted": false
+    },
+    {
+      "issue_month": "2025-03",
+      "latest_permitted_reference_month": "2025-01",
+      "same_month_permitted": false,
+      "lag_1m_permitted": false
+    },
+    {
+      "issue_month": "2026-05",
+      "latest_permitted_reference_month": "2026-03",
+      "same_month_permitted": false,
+      "lag_1m_permitted": false
+    }
+  ],
+  "rationale_for": [
+    "the overall evaluation is already latest-vintage on the MPI target side",
+    "D3 is explicitly a release-lag-aware latest-vintage evaluation, not a real-time backtest",
+    "EPPO has strong structural alignment with I/O sector 093 (C5)",
+    "required-month document presence is complete (65/65 and 53/53)",
+    "the exact ex-refinery fields can be parsed, stage-separated from wholesale and retail",
+    "no same-date revision was observed in the audited sample",
+    "the policy imposes a conservative two-month delay",
+    "all future results must remain exploratory"
+  ],
+  "rationale_against": [
+    "complete daily archive validation is unfinished (254 of 1,315 document-days)",
+    "release timing is unverified; every upload timestamp is a 2026 migration stamp",
+    "absence of observed revisions does not prove no historical revision occurred",
+    "migration may have changed filenames, metadata or bytes",
+    "a two-month lag does not make latest-vintage values point-in-time",
+    "the target side remains latest-vintage as well",
+    "the source cannot support a fully real-time claim"
+  ],
+  "series_decisions": {
+    "eppo_ex_refinery_fo600_2s": {
+      "exact_label": "FO 600 (1) 2%S",
+      "unit": "BAHT/LITRE",
+      "eligible_for_c7_full_archive_ingestion": true,
+      "semantic_status": "stable_in_audited_window",
+      "timing_basis": "latest_vintage_policy_lag_2m",
+      "feature_semantics_approved": false,
+      "model_feature_approved": false
+    },
+    "eppo_ex_refinery_fo1500_2s": {
+      "exact_label": "FO 1500 (2) 2%S",
+      "unit": "BAHT/LITRE",
+      "eligible_for_c7_full_archive_ingestion": true,
+      "semantic_status": "stable_in_audited_window",
+      "timing_basis": "latest_vintage_policy_lag_2m",
+      "feature_semantics_approved": false,
+      "model_feature_approved": false
+    },
+    "eppo_ex_refinery_hsd": {
+      "exact_label": "H-DIESEL",
+      "unit": "BAHT/LITRE",
+      "eligible_for_c7_full_archive_ingestion": "conditional",
+      "semantic_status": "january_2024_definition_gap",
+      "ordinary_h_diesel_missing_days": 22,
+      "silent_blend_substitution_permitted": false,
+      "imputation_permitted": false,
+      "timing_basis": "latest_vintage_policy_lag_2m",
+      "feature_semantics_approved": false,
+      "model_feature_approved": false,
+      "forbidden_substitutes": [
+        "H-DIESEL B7",
+        "H-DIESEL B10",
+        "H-DIESEL B20"
+      ],
+      "january_2024_handling": "The gap stands. January 2024 publishes only blend definitions, so ordinary H-DIESEL has no value those days. It is neither filled with a blend nor dropped silently."
+    }
+  },
+  "transformation_status": {
+    "price_level": {
+      "historical_depth_sufficient": true,
+      "source_ready_for_transformation": false
+    },
+    "log_change_1m_pct": {
+      "historical_depth_sufficient": true,
+      "source_ready_for_transformation": false
+    },
+    "log_change_3m_pct": {
+      "historical_depth_sufficient": true,
+      "source_ready_for_transformation": false
+    },
+    "log_change_12m_pct": {
+      "historical_depth_sufficient": true,
+      "source_ready_for_transformation": false
+    },
+    "realized_volatility_3m_pct": {
+      "historical_depth_sufficient": true,
+      "source_ready_for_transformation": false
+    }
+  },
+  "transformation_readiness_blockers": [
+    "complete daily ingestion not performed",
+    "monthly aggregation contract not approved",
+    "availability policy not yet enforced in a built table"
+  ],
+  "c7_authorization": {
+    "c7_full_archive_ingestion_authorized": true,
+    "c7_monthly_source_aggregation_authorized": "conditional",
+    "c7_predictive_feature_creation_authorized": false,
+    "c7_target_join_authorized": false,
+    "c7_modeling_authorized": false,
+    "aggregation_condition": "Monthly aggregation stays conditional until C7 retrieves and validates the complete required daily archive."
+  },
+  "content_checksum": "69a8d7021b89cc8fe94033574ea92cf26efa241a3554cd24aa96a064c6cb33e1"
+}

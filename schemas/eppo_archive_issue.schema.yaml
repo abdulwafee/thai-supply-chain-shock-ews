@@ -1,0 +1,123 @@
+# Schema for the C6 EPPO archive issue inventory.
+# Describes what the code ACTUALLY writes
+# (thai_supply_chain_ews.data.eppo_archive_inventory.ArchiveIssue), verified by
+# tests/test_c6_eppo_archive.py.
+#
+# SOURCE AUDIT ONLY. No feature, no target join, no model input.
+
+schema_version: 1
+task: C6
+written_by: scripts/audit_c6_eppo_archive.py
+output: docs/c6_eppo_archive_audit.json
+
+# ---------------------------------------------------------------------------
+# Date concepts are NOT interchangeable. Each answers a different question and
+# collapsing any two is how a migration timestamp becomes a release date.
+# ---------------------------------------------------------------------------
+date_concepts:
+  reference_date: the day the archive entry is filed under
+  effective_date: the day the price structure takes effect, per the document
+  page_first_published_at: when the containing page was first published
+  page_modified_at: when the page or media record was last written
+  attachment_last_modified: HTTP Last-Modified of the attachment
+  embedded_document_date: the date written INSIDE the workbook
+  downloaded_at_utc: when THIS audit fetched it
+  available_as_of: the earliest date the document is EVIDENCED to be public
+download_time_is_availability: false
+
+archive_issue:
+  grain: [effective_date, sha256]
+  columns:
+    - {name: reference_date, type: date, nullable: true}
+    - {name: effective_date, type: date, nullable: true}
+    - {name: page_title, type: string, nullable: true}
+    - {name: detail_page_url, type: string, nullable: true}
+    - name: discovery_method
+      type: string
+      nullable: false
+      enum: [official_current_archive_href, official_current_detail_href,
+             official_wordpress_rest, official_wordpress_sitemap,
+             official_rss_feed, official_legacy_archive_href,
+             official_legacy_item_href, official_attachment_href,
+             search_engine_seed_only, pattern_probe]
+      note: >-
+        search_engine_seed_only and pattern_probe are NOT official provenance.
+        An issue discovered only that way is not a discovered issue.
+    - {name: attachment_url, type: string, nullable: true}
+    - {name: attachment_filename, type: string, nullable: true}
+    - {name: page_first_published_at, type: datetime, nullable: true}
+    - {name: page_modified_at, type: datetime, nullable: true}
+    - {name: attachment_last_modified, type: string, nullable: true}
+    - name: filename_embedded_timestamp
+      type: date
+      nullable: true
+      note: "A CLAIM by the filename, validated against the document, never trusted alone."
+    - name: embedded_document_date
+      type: date
+      nullable: true
+      note: "The date inside the workbook. Must agree with the archive item date."
+    - {name: file_size_bytes, type: integer, nullable: true}
+    - {name: mime_type, type: string, nullable: true}
+    - name: magic_format
+      type: string
+      nullable: true
+      enum: [xlsx_zip, xls_ole2, html_masquerade, unknown]
+      note: "Determined from magic bytes, never from the file extension."
+    - {name: sha256, type: string, nullable: true}
+    - name: duplicate_content_group
+      type: string
+      nullable: true
+      note: >-
+        Set when two or more documents are byte-identical. Identical bytes under
+        the SAME effective date is a duplicate document; under DIFFERENT
+        effective dates it is a defect and is rejected.
+    - {name: retrieval_status, type: string, nullable: true}
+    - name: validation_status
+      type: string
+      nullable: false
+      enum: [valid, rejected]
+    - {name: rejection_reason, type: string, nullable: true}
+    - {name: downloaded_at_utc, type: datetime, nullable: true}
+    - {name: available_as_of, type: date, nullable: true}
+    - name: availability_evidence_status
+      type: string
+      nullable: false
+      enum: [direct_original_publication_evidence, attachment_timestamp_corroborated,
+             legacy_listing_corroborated, current_and_legacy_listing_corroborated,
+             rehosted_with_original_date_evidence, migration_timestamp_only,
+             attachment_last_modified_only, reference_date_only, unresolved]
+    - {name: available_as_of_verified, type: boolean, nullable: false}
+    - {name: historical_point_in_time_value_supported, type: boolean, nullable: false}
+
+rejection_reasons:
+  - zero_byte_file
+  - html_page_served_as_document
+  - unaccepted_format
+  - internal_title_is_not_a_price_structure
+  - internal_date_not_parseable
+  - wrong_date_attachment
+  - no_audited_product_observations
+  - formula_template_without_observations
+  - retrieval_failed
+
+gap_statuses:
+  - weekend
+  - verified_public_holiday
+  - no_new_issue_expected
+  - possible_missing_issue
+  - schedule_unresolved
+  - document_retrieval_failure
+
+point_in_time_statuses: [full, partial, not_supported]
+
+invariants:
+  - "A migration upload timestamp never populates available_as_of."
+  - "downloaded_at_utc never populates available_as_of."
+  - "availability_evidence_status migration_timestamp_only,
+     attachment_last_modified_only, reference_date_only and unresolved all imply
+     historical_point_in_time_value_supported false."
+  - "Dataset status full requires EVERY observation to be supported."
+  - "A document whose embedded date disagrees with its archive item date is
+     rejected as wrong_date_attachment."
+  - "Byte-identical documents under different effective dates are a defect."
+  - "expected_issue_count is null whenever the publication schedule is unverified."

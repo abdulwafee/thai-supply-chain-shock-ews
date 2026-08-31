@@ -1,0 +1,75 @@
+{
+  "task": "D3",
+  "purpose": "Key-only reservation of the locked final test. Contains no target outcome, no prediction and no metric.",
+  "operational_contract_version": "operational_contract_v1",
+  "locked_test_evaluated": false,
+  "locked_test_outcomes_read": false,
+  "runner_can_reach_locked_origins": false,
+  "horizons": {
+    "1": {
+      "start": "2025-07",
+      "end": "2026-04",
+      "issue_months": [
+        "2025-07",
+        "2025-08",
+        "2025-09",
+        "2025-10",
+        "2025-11",
+        "2025-12",
+        "2026-01",
+        "2026-02",
+        "2026-03",
+        "2026-04"
+      ]
+    },
+    "3": {
+      "start": "2025-07",
+      "end": "2026-02",
+      "issue_months": [
+        "2025-07",
+        "2025-08",
+        "2025-09",
+        "2025-10",
+        "2025-11",
+        "2025-12",
+        "2026-01",
+        "2026-02"
+      ]
+    }
+  },
+  "reserved_months": [
+    "2025-07",
+    "2025-08",
+    "2025-09",
+    "2025-10",
+    "2025-11",
+    "2025-12",
+    "2026-01",
+    "2026-02",
+    "2026-03",
+    "2026-04"
+  ],
+  "purge_months": [
+    "2025-04",
+    "2025-05",
+    "2025-06"
+  ],
+  "development_months_evaluated": [
+    "2024-01",
+    "2024-02",
+    "2024-03",
+    "2024-04",
+    "2024-05",
+    "2024-06",
+    "2024-07",
+    "2024-08",
+    "2024-09",
+    "2024-10",
+    "2024-11",
+    "2024-12",
+    "2025-01",
+    "2025-02",
+    "2025-03"
+  ],
+  "note": "Locked months are rejected inside build_origin_contracts, before any data is read. There is no argument, environment variable or alternate code path in the D3 runner that evaluates them."
+}

@@ -1,0 +1,271 @@
+# Target (Industry Stress Score) configuration — Thai Supply Chain Shock Early Warning System
+#
+# DRAFT. No target pipeline is implemented yet (src/thai_supply_chain_ews/targets/stress_index.py
+# is a stub). This file only records settings that logic will read once implemented.
+# See docs/target_definition.md for the full design and reasoning behind every
+# field below — this file is the machine-readable counterpart of that document,
+# the same relationship configs/data.yaml has to docs/data_source_inventory.md.
+
+schema_version: 6   # bumped by Task B3: adds target_role /
+                     # included_in_primary_target per component and the
+                     # target_definition block. B2's K=2 rejection below is
+                     # PRESERVED unchanged, not reopened.
+# schema_version 5 note (retained): bumped by Task B2: `source_verified` / `target_approved` are
+                     # further split so component-semantics approval and
+                     # composite-rule approval are never carried by one boolean.
+                     # See `component_semantics_approved`, `redundancy_status`,
+                     # and the `aggregation.equal_weight_composite_status` field.
+# schema_version 4 note (retained): the ambiguous single `enabled` flag was replaced by two
+                     # explicit fields, `source_verified` and `target_approved` — a
+                     # quality-gate finding (docs/task_a1_report.md, revision 2) that
+                     # `enabled: true` was conflating two different claims: "we can
+                     # read this source" is not "this is approved for the Stress
+                     # Index." See docs/target_definition.md §1.4.
+
+# --- component eligibility criteria (docs/target_definition.md §1.1) --------
+# `source_verified` may only be set true once ALL of these are independently
+# confirmed for SOURCE ACCESS. `target_approved` is a SEPARATE, later gate —
+# source_verified: true does not imply target_approved: true. See the
+# `components` block below for what still blocks target_approved even for a
+# source-verified component.
+eligibility_criteria:
+  minimum_time_coverage_months: 60      # placeholder, not yet validated against real data
+  minimum_industry_coverage: 11         # of 12 — "ANY coverage" (full or partial), the
+                                          # original, coarser source-access bar. Passing
+                                          # this is necessary but NOT sufficient for
+                                          # target_approved — see full_coverage_count in
+                                          # docs/task_a1_audit_output.json.
+  maximum_missingness_pct: 10           # of industry-months within the eligible window
+  requires_documented_mapping: true      # official OR documented-manual with recorded confidence
+  requires_no_unadjusted_structural_break: true
+  preferred_history_months: 120          # NOT an eligibility gate — a target-construction
+                                           # preference for credible time-based ML evaluation
+                                           # (docs/task_a1_report.md §7). 60 is the prototype
+                                           # minimum; 120 is the preferred target.
+
+# --- target components (docs/target_definition.md §1-2) ---------------------
+# Each component's source_id refers to configs/data.yaml's release_lag keys.
+# direction confirms every component is already sign-aligned so higher = more
+# stress; this is documentation, not a runtime flip switch.
+#
+# weight is unresolved for all four until the approved set (and therefore K)
+# is fixed; per the confirmed equal-weight policy, weight is NEVER hand-tuned
+# once set — it is always exactly 1/K for whatever K ends up approved.
+components:
+  - component_id: mpi_decline
+    name: mpi_contraction
+    source_id: OIE_MPI
+    source_verified: true    # Task A1 quality-gated re-audit, 2026-08-26: 66 months
+                               # (2021-01-01..2026-06-01), chronological, no duplicate
+                               # months, no gaps, 0.00% missingness across all 22 found
+                               # TSIC divisions, no duplicate division labels (checked,
+                               # not assumed). Real file:
+                               # data/raw/OIE_MPI/2026-08-26/Prodidx1.xlsx
+    target_approved: true    # APPROVED by Task B3 as the SOLE primary target component
+                               # (K=1). The K=2 composite stayed rejected, so the target
+                               # was redefined around MPI alone rather than forcing a
+                               # duplicative second component. Definition:
+                               # docs/b3_target_definition.md. Still latest-vintage only —
+                               # no point-in-time backtest is supported
+                               # (docs/task_a1_report.md §6).
+    # --- Task B2 (2026-08-27), gate component_redundancy_gate_v1 ---
+    component_semantics_approved: true   # formula, direction, unit, coverage and
+                                           # stability checks all pass. Adverse transform
+                                           # -100*(mpi_t/mpi_t-12 - 1), unit percent,
+                                           # positive = deterioration.
+    component_semantics_evidence: docs/b2_component_validation.md
+    # --- Task B3 (2026-08-27) ---
+    included_in_primary_target: true
+    target_role: primary
+    weight: unresolved   # still depends on the final approved K once Export/PPI resolve
+    direction: higher_is_more_stress
+    seasonal_transform: yoy_change
+    formula: "r_MPI(i,t) = -YoY%change(MPI(i,t))"
+    eligibility_status: "source_verified; target_approved=false — see docs/task_a1_report.md"
+
+  - component_id: capu_decline
+    name: capacity_utilization_decline
+    source_id: OIE_CAPU
+    source_verified: true    # Task A1 quality-gated re-audit, 2026-08-26: same evidence
+                               # pattern as mpi_decline. Real file:
+                               # data/raw/OIE_CAPU/2026-08-26/capidx.xlsx
+    target_approved: false   # same status as mpi_decline after B2.
+    # --- Task B2 (2026-08-27), gate component_redundancy_gate_v1 ---
+    component_semantics_approved: true   # adverse transform -(capu_t - capu_t-12),
+                                           # unit PERCENTAGE POINTS (additive, never a
+                                           # relative percentage change), positive =
+                                           # deterioration.
+    component_semantics_evidence: docs/b2_component_validation.md
+    # --- Task B3 (2026-08-27) ---
+    # CapU stays in the B1 panel and is NOT deleted. It is simply not part of the
+    # primary target.
+    included_in_primary_target: false
+    target_role: auxiliary
+    allowed_future_use: robustness_outcome_or_lagged_feature
+    contemporaneous_or_future_use_prohibited: true   # CapU at t+1/t+2/t+3 must never be
+                                                       # added to an MPI-derived target
+    lagged_use_vintage_caveat: >-
+      release_date and available_as_of are null throughout the B1 panel, so any later use
+      of lagged CapU supports latest-vintage historical evaluation only, until publication
+      timing is independently verified.
+    weight: unresolved
+    direction: higher_is_more_stress
+    seasonal_transform: trailing_12mo_mean_deviation   # CapU is a level, not a growth rate
+    formula: "r_CapU(i,t) = -(CapU(i,t) - trailing_12mo_mean(CapU(i,t)))"
+    eligibility_status: "source_verified; target_approved=false — see docs/task_a1_report.md"
+
+  - component_id: export_decline
+    name: export_contraction
+    source_id: MOC_EXPORT
+    source_verified: false   # CONDITIONAL, not yet verified — Task A1: live POST endpoint
+                               # confirmed real (tradereport.moc.go.th/stat/reportcomcodeexport01/result),
+                               # but classification is MOC ComCode (not TSIC-aligned) and monthly
+                               # time-series depth was not confirmed. See docs/task_a1_report.md.
+    target_approved: false
+    weight: unresolved
+    direction: higher_is_more_stress
+    seasonal_transform: yoy_change
+    formula: "r_Export(i,t) = -YoY%change(Export(i,t))"
+    eligibility_status: "CONDITIONAL — live endpoint verified real; mapping and monthly depth still open (docs/task_a1_report.md)"
+
+  - component_id: cost_pressure
+    name: input_cost_pressure
+    source_id: MOC_PPI
+    source_verified: false   # CONDITIONAL, not yet verified — Task A1: real live PPI data
+                               # viewed (NSO StatHub, CPA classification, monthly, CC-BY-4.0), but
+                               # true historical depth, exact publication lag, and whether bulk
+                               # access needs registration are unconfirmed. See docs/task_a1_report.md.
+    target_approved: false
+    weight: unresolved
+    direction: higher_is_more_stress
+    seasonal_transform: yoy_change_excess_over_trend   # abnormal increase, not raw YoY inflation
+    formula: "r_PPI(i,t) = YoY%change(PPI(i,t)) - trailing_12mo_avg(YoY%change(PPI(i,t)))"
+    eligibility_status: "CONDITIONAL — real data viewed live; depth/lag/auth still open; ALSO unresolved target-vs-feature status, see docs/target_definition.md §1.3"
+
+minimum_components_required: 2   # below this the row's stress index is not computed at all
+
+# --- industry-relative normalization (docs/target_definition.md §4) ---------
+normalization:
+  method: robust_z_score          # median and MAD, not mean/std — see §4 for why
+  mad_consistency_constant: 1.4826
+  winsorize_bounds: [-3, 3]
+  mad_degeneracy_epsilon: null    # UNRESOLVED placeholder — not yet tuned, see §12
+  fallback_order: [mad, std, missing]   # try MAD; if degenerate, try std; if that's also
+                                          # degenerate, treat the component as missing
+  minimum_history_months: 24      # UNRESOLVED placeholder — not yet tuned against real history length
+  cross_industry_pooled_fallback: false   # not adopted for the MVP — see §4's Phase 2 note
+
+# --- target definition (Task B3) ---------------------------------------------
+# The MVP outcome after B2 rejected the K=2 equal-weight composite. Naming is
+# deliberate: this is a PRODUCTION-stress outcome, not a comprehensive
+# "Supply Chain Stress Index". MPI alone does not measure every dimension of
+# supply-chain disruption; the upstream shocks themselves will be represented by
+# input FEATURES in a later phase.
+target_definition:
+  target_name: industry_production_stress_score
+  target_name_th: คะแนนความเครียดด้านการผลิตของอุตสาหกรรม
+  primary_component_count: 1
+  primary_component: mpi_adverse_yoy
+  normalization: industry_relative_training_only_ecdf
+  risk_threshold_scope: global
+  horizons_months: [1, 3]
+  three_month_aggregation: maximum
+  latest_vintage_only: true
+  point_in_time_backtest_supported: false
+  definition_status: approved
+  definition_config: configs/production_stress_target.yaml
+  definition_doc: docs/b3_target_definition.md
+  supersedes: k2_equal_weight_mpi_plus_capu
+  supersede_reason: >-
+    Task B2 classified MPI and CapU as `redundant` under a preregistered gate, so the
+    K=2 equal-weight composite was rejected. B3 redefines the target around MPI alone
+    rather than retaining a duplicative second component or tuning B2's thresholds.
+
+# --- component aggregation (docs/target_definition.md §5) -------------------
+# REVISED from an earlier 0.6*max + 0.4*mean blend — see §5 for why. This is
+# the confirmed component-weighting policy: equal weights, and only equal
+# weights, for the MVP. PCA-derived and validation/test-optimized weights are
+# explicitly Phase-2-only and must not appear in this file for the MVP.
+aggregation:
+  method: equal_weight
+  # --- Task B2 decision (2026-08-27) ------------------------------------------
+  # Separate from source_verified and from component_semantics_approved. This
+  # field governs the COMPOSITE RULE only.
+  redundancy_status: redundant   # gate component_redundancy_gate_v1, pre-registered
+                                   # before results: pooled |Spearman| on industry-relative
+                                   # ranks 0.8601 >= 0.85; 10/12 industries |rho| >= 0.75
+                                   # (>= 9 required); median Jaccard of top-20% stress
+                                   # months 0.6319 >= 0.60. All three redundant conditions
+                                   # met. NOTE: `redundant` here means empirically
+                                   # duplicative under this gate — it is a project-wide
+                                   # verdict that hides real heterogeneity (IND-12 rho=0.40,
+                                   # IND-02/IND-03 Jaccard=1.00).
+  equal_weight_composite_status: rejected   # K=2 equal weighting is NOT approved, because
+                                              # redundancy_status is `redundant`. Both
+                                              # components individually passed semantics.
+  equal_weight_is_design_choice_not_estimated: true   # equal weighting was never fitted or
+                                                        # optimized; it is an MVP design
+                                                        # choice applied only AFTER
+                                                        # industry-relative normalization
+  composite_index_built: false   # B2 decided the rule only; no Stress Index exists yet
+  formula: "raw_stress(i,t) = (1/K_available(i,t)) * sum(z_tilde_k(i,t) for k in available)"
+  require_weights_sum_to_one: true
+  allow_industry_specific_weights: false
+  allow_dynamic_weights: false   # "dynamic" here means "changing silently month to month" —
+                                   # NOT the same thing as K_available varying by row's data
+                                   # availability, which is documented explicitly (see
+                                   # missing_component_denominator below), not a silent change
+  weights_are_fit_from_data: false   # never PCA-derived, never optimized against any split —
+                                       # confirmed policy, not a placeholder
+  missing_component_denominator: dynamic   # recommended (docs/target_definition.md §5.3) but
+                                              # STILL FLAGGED AS REQUIRING FINAL CONFIRMATION
+                                              # before implementation — see that section and §12
+  components_used_field_required: true   # every computed row must record which components
+                                            # contributed, so a partial-K row is never
+                                            # indistinguishable from a full-K row
+
+# --- global score calibration (docs/target_definition.md §6) ----------------
+# REVISED from an earlier empirical-CDF design — see §6 for why (must handle
+# values beyond the training range gracefully, which empirical CDF cannot
+# without added machinery).
+global_calibration:
+  method: logistic
+  location_estimator: median        # robust, pooled across all 12 industries
+  scale_estimator: mad_scaled       # 1.4826 * MAD, pooled; see §12 for the open
+                                      # question of whether an IQR-based scale is better
+  formula: "Score(i,t) = 100 / (1 + exp(-(RawStress(i,t) - c) / s))"
+  output_range: [0, 100]
+
+# --- risk thresholds (docs/target_definition.md §7) --------------------------
+risk_thresholds:
+  scheme: training_percentile_of_calibrated_score
+  cut_points:
+    normal_watch: 60    # percentile
+    watch_high: 85       # percentile
+    high_severe: 97       # percentile
+  severe_requires_absolute_floor_gate: true
+  absolute_floor_gate:
+    min_components_exceeding_bound: 2   # of the approved K
+    component_bounds: {}   # UNRESOLVED — pending domain-expert input, see §12; empty
+                             # means the gate is currently undefined, NOT that it is disabled
+  identical_across_industries: true   # hard requirement, not configurable per industry
+  never_tuned_on: [validation, test]   # hard rule
+
+# --- walk-forward calibration behavior (docs/target_definition.md §8) -------
+walk_forward:
+  refit_cadence: annual   # matches docs/modeling_strategy.md §6's expanding-window cadence
+  historical_targets_are_frozen_once_computed: true   # hard rule — see §8 for the full reasoning;
+                                                          # never recompute an already-scored row
+                                                          # under a later fold's recalibration
+  calibration_version_field: calibration_version   # column name in
+                                                       # targets/industry_month_targets.parquet
+                                                       # (schemas/targets_table.schema.yaml)
+
+# --- missing-data policy (docs/target_definition.md §9) ---------------------
+missing_data_policy:
+  degenerate_normalizer: treat_as_missing_component
+  insufficient_history: treat_as_missing_component
+  below_minimum_components: exclude_row
+  incomplete_future_window: exclude_row   # 3-month horizon; see docs/modeling_strategy.md §7
+  never_impute: true
+  never_default_to_zero_stress: true

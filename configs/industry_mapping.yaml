@@ -1,0 +1,103 @@
+# Final current-edition target taxonomy — Task B1
+#
+# This REPLACES the earlier draft mapping (previously in configs/data.yaml's
+# `industries:` block and mirrored in scripts/audit_target_sources.py). The
+# draft is retained, frozen, only inside the A1/A2 audit scripts so that the
+# preserved bridge-validation evidence stays reproducible — see
+# docs/architecture/decision_log.md AD-R12. Production code reads THIS file.
+#
+# Three substantive changes from the draft:
+#   * TSIC 12 (tobacco) was assigned to NO industry in the draft — a real gap.
+#     It is now part of IND-01, and IND-01 is renamed to include tobacco.
+#   * TSIC 18 (printing/recorded media) removed from IND-03.
+#   * TSIC 33 (repair/installation of machinery) removed from IND-12.
+#     Both are excluded because they are not reported in the verified current
+#     OIE files — see `excluded_divisions` below.
+#
+# Coverage contract, asserted in code and in tests: the union of
+# tsic_divisions below must equal exactly the 22 divisions the current OIE
+# edition reports (10-17 and 19-32), each division appearing in exactly one
+# industry.
+
+schema_version: 1
+taxonomy_version: b1_current_edition_2021_base
+classification: TSIC 2009 Section C (Manufacturing)
+
+industries:
+  IND-01:
+    name_en: Food, Beverages and Tobacco
+    name_th: อาหาร เครื่องดื่ม และยาสูบ
+    tsic_divisions: [10, 11, 12]
+
+  IND-02:
+    name_en: Textiles, Apparel and Leather
+    name_th: สิ่งทอ เครื่องนุ่งห่ม และเครื่องหนัง
+    tsic_divisions: [13, 14, 15]
+
+  IND-03:
+    name_en: Wood and Paper
+    name_th: ไม้และกระดาษ
+    tsic_divisions: [16, 17]
+
+  IND-04:
+    name_en: Refined Petroleum Products
+    name_th: ผลิตภัณฑ์ปิโตรเลียมกลั่น
+    tsic_divisions: [19]
+
+  IND-05:
+    name_en: Chemicals and Pharmaceuticals
+    name_th: เคมีภัณฑ์และเภสัชภัณฑ์
+    tsic_divisions: [20, 21]
+
+  IND-06:
+    name_en: Rubber and Plastics
+    name_th: ยางและพลาสติก
+    tsic_divisions: [22]
+
+  IND-07:
+    name_en: Non-metallic Mineral Products
+    name_th: ผลิตภัณฑ์แร่อโลหะ
+    tsic_divisions: [23]
+
+  IND-08:
+    name_en: Basic and Fabricated Metals
+    name_th: โลหะขั้นมูลฐานและผลิตภัณฑ์โลหะ
+    tsic_divisions: [24, 25]
+
+  IND-09:
+    name_en: Computer, Electronics and Electrical Equipment
+    name_th: คอมพิวเตอร์ อิเล็กทรอนิกส์ และเครื่องใช้ไฟฟ้า
+    tsic_divisions: [26, 27]
+
+  IND-10:
+    name_en: Machinery and Equipment
+    name_th: เครื่องจักรและอุปกรณ์
+    tsic_divisions: [28]
+
+  IND-11:
+    name_en: Motor Vehicles and Other Transport Equipment
+    name_th: ยานยนต์และอุปกรณ์ขนส่งอื่น
+    tsic_divisions: [29, 30]
+
+  IND-12:
+    name_en: Furniture and Other Manufacturing
+    name_th: เฟอร์นิเจอร์และการผลิตอื่น ๆ
+    tsic_divisions: [31, 32]
+
+# The complete set the mapping must cover, asserted at load time.
+expected_division_coverage: [10, 11, 12, 13, 14, 15, 16, 17, 19, 20, 21, 22,
+                             23, 24, 25, 26, 27, 28, 29, 30, 31, 32]
+
+excluded_divisions:
+  18:
+    name_en: Printing and reproduction of recorded media
+    reason: >-
+      Not reported as a division-total row in either verified current-edition
+      OIE workbook (MPI or Capacity Utilization). Excluded from the target
+      taxonomy rather than imputed. Whether the activity is folded into
+      another category by OIE is unknown — no methodology document has been
+      located (docs/task_a1_report.md §4.2).
+  33:
+    name_en: Repair and installation of machinery and equipment
+    reason: >-
+      Same as TSIC 18 — absent from both verified current-edition workbooks.
