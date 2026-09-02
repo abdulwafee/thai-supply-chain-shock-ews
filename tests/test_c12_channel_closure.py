@@ -36,6 +36,7 @@ from pathlib import Path
 import pytest
 import yaml
 
+from thai_supply_chain_ews.release import byte_provenance as BP
 from thai_supply_chain_ews.structure import fuel_oil_channel_closure as CL
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -252,10 +253,29 @@ def test_the_pinned_artifacts_are_all_present_and_unchanged():
         path = ROOT / "docs" / f"{name}.json"
         assert path.is_file(), name
         assert json.loads(path.read_text(encoding="utf-8"))["content_checksum"] == digest
+    provenance = BP.provenance_entries(ROOT)
     for relative, digest in preservation["byte_checksums"].items():
         path = ROOT / relative
         assert path.is_file(), relative
-        assert hashlib.sha256(path.read_bytes()).hexdigest() == digest
+        content = path.read_bytes()
+        if hashlib.sha256(content).hexdigest() == digest:
+            continue
+        # One of these pins was taken from a Windows working tree, where the
+        # file was CRLF on disk while Git stored LF. The Parquet rows beside it
+        # are binary and keep raw-byte hashing, which is correct for them. The
+        # pinned literals in docs/c12_channel_closure.json are untouched: a path
+        # may fall back only to the single representation it declares, and its
+        # canonical content must agree first, so a real edit still fails.
+        matched = BP.match_declared_representation(
+            content, digest, provenance.get(relative)
+        )
+        assert matched is not None, (
+            f"{relative} does not match its pinned digest, and no declared "
+            "line-ending provenance explains it. That is a content change to a "
+            "preserved artifact"
+        )
+        assert BP.canonical_digest(content) == provenance[relative][
+            "canonical_git_blob_content_sha256"], relative
 
 
 # ---------------------------------------------------------------------------

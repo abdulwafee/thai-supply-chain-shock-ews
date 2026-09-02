@@ -29,6 +29,8 @@ from dataclasses import dataclass
 from functools import lru_cache
 from pathlib import Path
 
+from . import byte_provenance as BP
+
 __all__ = [
     "DEFAULT_SKIP_DIRECTORIES",
     "FileRecord",
@@ -67,6 +69,7 @@ class FileRecord:
     reason: str = ""
     locked: bool = False
     sha256: str = None
+    digest_representation: str = None
 
     def to_dict(self) -> dict:
         return {
@@ -310,6 +313,13 @@ def release_manifest(records, root: Path, config: dict,
     manifest checksum is a statement about *content*, not about when the tree
     was assembled.
 
+    Text digests are canonical: CRLF is normalised to LF before hashing, so a
+    row means the same thing on Windows and on Linux. Binary content is hashed
+    raw, because normalising it would corrupt it. Each row says which of the two
+    it is rather than leaving a reader to infer it -- the digests that had to be
+    corrected by ``docs/e2r1_release_manifest_errata.json`` are precisely the
+    ones that did not.
+
     ``self_referential`` names the documents that record this manifest's own
     checksum. They ship, but their digests are not rows: a manifest that listed
     the report quoting its own digest could never reach a fixed point, and its
@@ -326,11 +336,15 @@ def release_manifest(records, root: Path, config: dict,
         if record.path in excluded:
             continue
         assert_no_locked_path([record.path], locked_fragments, "manifest hashing")
-        digest = hashlib.sha256((root / record.path).read_bytes()).hexdigest()
+        digest, representation = BP.release_digest(
+            (root / record.path).read_bytes()
+        )
         record.sha256 = digest
+        record.digest_representation = representation
         rows.append({
             "path": record.path,
             "sha256": digest,
+            "digest_representation": representation,
             "size_bytes": record.size_bytes,
             "category": record.category,
             "redistribution_status": redistribution.get(

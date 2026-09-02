@@ -34,6 +34,7 @@ from pathlib import Path
 import pytest
 import yaml
 
+from thai_supply_chain_ews.release import byte_provenance as BP
 from thai_supply_chain_ews.structure import fuel_oil_architecture_decision as AD
 from thai_supply_chain_ews.structure import fuel_oil_architecture_governance as GV
 from thai_supply_chain_ews.structure import fuel_oil_candidate_designs as CD
@@ -259,15 +260,44 @@ def test_the_dependency_conclusion_must_state_its_limit():
 # ---------------------------------------------------------------------------
 @requires_run
 def test_the_c11_record_is_preserved_byte_for_byte():
+    """The C11 record is unchanged -- as content, on any platform.
+
+    Three of these four pins were taken from a Windows working tree, where the
+    file was CRLF on disk while Git stored LF. On a Linux checkout the text is
+    identical and the bytes are not, so hashing the working tree would report
+    the record as edited when nothing had been edited. Only one of the three was
+    ever visible: this loop stops at the first mismatch, so CI reported the
+    decision JSON and never reached the two files after it.
+
+    The pins themselves are untouched. Where the recorded bytes do not match,
+    ``configs/line_ending_provenance.yaml`` must already declare that path, its
+    canonical content must agree, and re-rendering that content in the declared
+    representation must reproduce the original pin exactly. A real edit fails
+    every one of those.
+    """
     payload = _governance()["preserved_c11_record"]
     assert payload["durable_checksums_unchanged"] is True
     assert payload["artifacts_edited"] == []
+    provenance = BP.provenance_entries(ROOT)
     for name, path in (("decision_json", C11_DECISION),
                        ("decision_markdown", C11_DECISION_MD),
                        ("protocol_markdown", C11_PROTOCOL_MD),
                        ("frozen_criteria", C11_CONFIG)):
-        digest = hashlib.sha256(path.read_bytes()).hexdigest()
-        assert digest == payload["artifacts"][name]["byte_sha256"], name
+        pinned = payload["artifacts"][name]["byte_sha256"]
+        content = path.read_bytes()
+        if hashlib.sha256(content).hexdigest() == pinned:
+            continue
+        relative = path.relative_to(ROOT).as_posix()
+        matched = BP.match_declared_representation(
+            content, pinned, provenance.get(relative)
+        )
+        assert matched is not None, (
+            f"{name} ({relative}) does not match its pinned digest, and no "
+            "declared line-ending provenance explains it. That is a content "
+            "change to a preserved record"
+        )
+        assert BP.canonical_digest(content) == provenance[relative][
+            "canonical_git_blob_content_sha256"], name
 
 
 @requires_run
