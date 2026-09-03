@@ -1,28 +1,44 @@
 """Generate the Obsidian vault view of this repository.
 
-Takes NO command-line arguments. There is no flag that makes it write inside the
-repository, overwrite a hand-edited note, or emit a locked-outcome path.
-
-It writes to the Obsidian vault that *contains* this repository, so `git status`
+It writes to an Obsidian vault **outside** this repository, so `git status`
 stays clean and the release manifest is untouched. Only this script, its
 contract and its tests are version-controlled.
 
+**The destination is always named.** ``--vault-root`` is required for every
+operation that looks at a vault. Until this version the root was derived from
+the contract as ``repository/..``, which meant running the script with no
+arguments at all wrote into whichever directory happened to contain the
+checkout. Convenient once; a hazard every time after, and a hazard that could
+not be tested without copying the whole repository somewhere else.
+
+**Nothing is written until a plan has been built and checked.** ``--dry-run``
+prints exactly what would happen -- new notes, updates, files left alone,
+archive moves, settings changes -- and creates nothing at all. ``--apply``
+builds the same plan, validates it, copies everything it could disturb into a
+backup transaction, and only then writes.
+
+**A failure undoes itself.** Every write is atomic, every overwritten or moved
+file is backed up first, and a failure part-way through rolls the whole
+transaction back and exits non-zero. A partial vault is not a smaller success.
+
+**A hand edit is never overwritten.** A note whose body no longer matches the
+checksum in its own frontmatter is reported and skipped, and a file this
+generator did not write is never touched. There is no ``--force``.
+
 Run it after any task that changes documents, decisions or configuration:
 
-    python scripts/build_obsidian_vault.py
+    python scripts/build_obsidian_vault.py --vault-root PATH --dry-run
 
-A note that somebody has edited by hand is reported and left alone. That is the
-whole design. This vault already drifted once — seven documents sat at its root
-as a snapshot from around Task A1 while the repository moved on, one of them
-showing four decisions where the repository had a hundred and seventy — and a
-generator that overwrites silently is how the same thing would happen again in
-the other direction.
+This vault already drifted once -- seven documents sat at its root as a snapshot
+from around Task A1 while the repository moved on, one of them showing four
+decisions where the repository had a hundred and seventy -- and a generator that
+overwrites silently is how the same thing would happen in the other direction.
 """
 
 from __future__ import annotations
 
+import argparse
 import json
-import shutil
 import sys
 from pathlib import Path, PurePosixPath
 
@@ -31,119 +47,75 @@ import yaml
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from thai_supply_chain_ews.vault import emit, harvest, notes  # noqa: E402
+from thai_supply_chain_ews.vault import (  # noqa: E402
+    emit,
+    harvest,
+    notes,
+    safety,
+    transaction,
+)
 
-CONFIG_PATH = ROOT / "configs" / "obsidian_vault.yaml"
+DEFAULT_CONFIG_PATH = ROOT / "configs" / "obsidian_vault.yaml"
 
-
-def load_contract() -> dict:
-    return yaml.safe_load(CONFIG_PATH.read_text(encoding="utf-8"))
-
-
-def assert_outside_repository(target: Path) -> None:
-    """The vault must not be written inside the repository."""
-    try:
-        target.resolve().relative_to(ROOT.resolve())
-    except ValueError:
-        return
-    raise SystemExit(
-        f"refusing to write to {target}: it is inside the repository. The vault "
-        "is a view, and a generated view committed alongside its source is the "
-        "duplication this export exists to remove."
-    )
-
-
-def write_notes(rendered, folder: Path, generated_by: str, prohibitions: dict) -> dict:
-    """Write what changed, skip what did not, and never touch a hand edit."""
-    folder.mkdir(parents=True, exist_ok=True)
-    tally = {"written": 0, "unchanged": 0, "hand_edited": [], "foreign": []}
-    for note in rendered:
-        note.guard(prohibitions)
-        path = folder / note.filename
-        verdict = notes.classify_existing(path, note.body)
-        if verdict == "hand_edited":
-            tally["hand_edited"].append(note.filename)
-            continue
-        if verdict == "foreign":
-            tally["foreign"].append(note.filename)
-            continue
-        if verdict == "unchanged":
-            tally["unchanged"] += 1
-            continue
-        path.write_text(note.render(generated_by), encoding="utf-8",
-                        newline="\n")
-        tally["written"] += 1
-    return tally
-
-
-def archive_superseded(contract: dict, vault_root: Path) -> dict:
-    """Move the early-snapshot duplicates aside, preserving every one.
-
-    Moved rather than deleted or replaced with a pointer. Every line unique to
-    these files is either a path that has since changed or a statement the
-    project has superseded, so nothing unique and still true is lost — but a
-    superseded record is still a record, and this project does not delete those.
-    """
-    plan = contract["archive"]
-    folder = vault_root / contract["target"]["archive_folder"]
-    moved, absent, blocked = [], [], []
-    for entry in plan["files"]:
-        source = vault_root / entry["name"]
-        if not source.is_file():
-            absent.append(entry["name"])
-            continue
-        destination = folder / entry["name"]
-        if destination.exists():
-            blocked.append(entry["name"])
-            continue
-        folder.mkdir(parents=True, exist_ok=True)
-        shutil.move(str(source), str(destination))
-        moved.append(entry)
-
-    if moved or folder.exists():
-        lines = [
-            "---",
-            "type: report",
-            "generated: true",
-            f"generated_by: {contract['frontmatter']['generated_by']}",
-            "tags:",
-            "  - ews/report",
-            "---",
-            "",
-            "# Archived early snapshots",
-            "",
-            "> These sat at the vault root as a snapshot from around Task A1 "
-            "while the repository moved on.",
-            "",
-            "They are **moved, not deleted and not replaced with a pointer**. "
-            "Every line unique to them is either a path that has since changed "
-            "or a statement the project has superseded, so nothing unique and "
-            "still true was lost — but a superseded record is still a record, "
-            "and deleting one is how a record starts lying.",
-            "",
-            "| archived file | superseded by | why |",
-            "| --- | --- | --- |",
-        ]
-        for entry in plan["files"]:
-            note = " ".join(entry["note"].split())
-            lines.append(f"| `{entry['name']}` | `{entry['superseded_by']}` | {note} |")
-        lines += ["", "Read the current versions in the repository, not these."]
-        (folder / "README.md").write_text(
-            "\n".join(lines) + "\n", encoding="utf-8", newline="\n")
-
-    return {"moved": [entry["name"] for entry in moved],
-            "already_absent": absent, "left_alone": blocked}
+CANVAS_NAME = "Thai Supply Chain EWS.canvas"
+ARCHIVE_README = "README.md"
 
 
 class IgnoreFilterError(ValueError):
     """A configured ignore filter is not a usable repository-relative path."""
 
 
+# ---------------------------------------------------------------------------
+# Contract
+# ---------------------------------------------------------------------------
+
+def load_contract(path: Path = None) -> dict:
+    path = Path(path) if path else DEFAULT_CONFIG_PATH
+    if not path.is_file():
+        raise SystemExit(f"no contract at {path}")
+    return yaml.safe_load(path.read_text(encoding="utf-8"))
+
+
+def assert_outside_repository(target: Path) -> None:
+    """The vault must not be written inside the repository.
+
+    Kept as a named function because it is the one refusal that would otherwise
+    recreate the duplication this export exists to remove.
+    """
+    try:
+        safety.assert_outside(target, ROOT, field="destination")
+    except safety.VaultPathError as error:
+        raise SystemExit(
+            f"refusing to write to {target}: it is inside the repository. The "
+            "vault is a view, and a generated view committed alongside its "
+            f"source is the duplication this export exists to remove. {error}"
+        ) from error
+
+
+def managed_paths(contract: dict, vault_root: Path) -> dict:
+    """Every directory and file this generator may touch, resolved and confined."""
+    target = contract["target"]
+    notes_folder = safety.resolve_within(
+        vault_root, target["notes_folder"], field="target.notes_folder")
+    archive_folder = safety.resolve_within(
+        vault_root, target["archive_folder"], field="target.archive_folder")
+    settings = safety.resolve_within(
+        vault_root, target["obsidian_config"], field="target.obsidian_config")
+    for path in (notes_folder, archive_folder, settings):
+        assert_outside_repository(path)
+    return {"notes": notes_folder, "archive": archive_folder,
+            "settings": settings}
+
+
+# ---------------------------------------------------------------------------
+# Ignore filters
+# ---------------------------------------------------------------------------
+
 def render_ignore_filters(contract: dict, repository_name: str) -> list:
     """Turn repository-relative entries into vault-relative Obsidian filters.
 
-    Obsidian filters are relative to the **vault**, and the vault is the parent
-    of this checkout, so the checkout's directory name is genuinely part of what
+    Obsidian filters are relative to the **vault**, and the vault contains this
+    checkout, so the checkout's directory name is genuinely part of what
     Obsidian must be told. It is supplied here, at runtime, from the real
     directory -- never written into the configuration, where it would only ever
     be right on the machine that typed it.
@@ -195,14 +167,14 @@ def render_ignore_filters(contract: dict, repository_name: str) -> list:
 
 def apply_ignore_filters(contract: dict, vault_root: Path,
                          repository_root: Path = ROOT) -> dict:
-    """Stop Obsidian indexing the virtual environment and the raw downloads.
+    """Additive, idempotent update of Obsidian's user ignore filters.
 
-    Additive and idempotent. Filters already present are left as they are, and
-    filters somebody added by hand are never removed -- this generator does not
-    get to decide that a person's own setting was a mistake.
+    Filters already present are left as they are, and filters somebody added by
+    hand are never removed -- this generator does not get to decide that a
+    person's own setting was a mistake.
     """
     filters = render_ignore_filters(contract, Path(repository_root).name)
-    path = vault_root / contract["target"]["obsidian_config"]
+    path = Path(vault_root) / contract["target"]["obsidian_config"]
     if not path.exists():
         return {"updated": False, "reason": "no .obsidian/app.json in this vault",
                 "rendered": filters}
@@ -213,62 +185,370 @@ def apply_ignore_filters(contract: dict, vault_root: Path,
         return {"updated": False, "reason": "already present",
                 "filters": len(existing), "rendered": filters}
     settings["userIgnoreFilters"] = existing + wanted
-    path.write_text(json.dumps(settings, indent=2) + "\n", encoding="utf-8",
-                    newline="\n")
+    transaction.atomic_write_text(
+        path, json.dumps(settings, indent=2) + "\n")
     return {"updated": True, "added": wanted, "rendered": filters,
             "filters": len(settings["userIgnoreFilters"])}
 
 
-def main() -> int:
-    contract = load_contract()
-    target = contract["target"]
-    vault_root = (ROOT / target["vault_root"]).resolve()
-    folder = vault_root / target["notes_folder"]
-    assert_outside_repository(folder)
+def settings_payload(contract: dict, settings_path: Path,
+                     repository_name: str) -> tuple:
+    """The filters to add and the resulting document, without writing anything."""
+    filters = render_ignore_filters(contract, repository_name)
+    if not settings_path.is_file():
+        return [], None, filters
+    settings = json.loads(settings_path.read_text(encoding="utf-8") or "{}")
+    existing = list(settings.get("userIgnoreFilters") or [])
+    wanted = [value for value in filters if value not in existing]
+    if not wanted:
+        return [], None, filters
+    settings["userIgnoreFilters"] = existing + wanted
+    return wanted, json.dumps(settings, indent=2) + "\n", filters
 
-    print(f"vault root : {vault_root.name}/")
-    print(f"notes      : {target['notes_folder']}/  (outside the repository)")
 
-    data = harvest.harvest(ROOT)
-    print(f"harvested  : {len(data['tasks'])} tasks, "
-          f"{data['decisions']['total']} decisions "
-          f"({len(data['decisions']['untagged'])} untagged), "
-          f"{len(data['packages'])} packages, "
-          f"{len(data['manifests'])} retrieval manifests")
+# ---------------------------------------------------------------------------
+# The plan: what would happen, computed without touching anything
+# ---------------------------------------------------------------------------
 
+def build_plan(contract: dict, vault_root: Path,
+               repository_root: Path = ROOT) -> dict:
+    """Everything an apply would do, in a fixed order, having written nothing.
+
+    Reads the vault to classify what is already there. It creates no directory,
+    writes no file and moves nothing, so a dry run is a genuine preview rather
+    than an apply with the writes commented out.
+    """
+    vault_root = Path(vault_root)
+    paths = managed_paths(contract, vault_root)
+    data = harvest.harvest(repository_root)
     rendered = emit.build_notes(data, contract)
-    tally = write_notes(
-        rendered, folder,
-        contract["frontmatter"]["generated_by"],
-        contract["prohibitions"],
-    )
-    print(f"notes      : {len(rendered)} rendered — {tally['written']} written, "
-          f"{tally['unchanged']} unchanged")
-    if tally["hand_edited"]:
-        print(f"  SKIPPED (edited by hand, left alone): {tally['hand_edited']}")
-    if tally["foreign"]:
-        print(f"  SKIPPED (not written by this generator): {tally['foreign']}")
+    generated_by = contract["frontmatter"]["generated_by"]
+    prohibitions = contract["prohibitions"]
 
-    canvas = emit.build_canvas(data, target["notes_folder"])
-    canvas_path = folder / "Thai Supply Chain EWS.canvas"
-    if not canvas_path.exists() or canvas_path.read_text(encoding="utf-8") != canvas:
-        canvas_path.write_text(canvas, encoding="utf-8", newline="\n")
-        print(f"canvas     : {canvas_path.name} written")
+    actions, protected = [], []
+    for note in sorted(rendered, key=lambda n: n.filename):
+        note.guard(prohibitions)
+        path = paths["notes"] / note.filename
+        verdict = notes.classify_existing(path, note.body)
+        if verdict in ("hand_edited", "foreign"):
+            protected.append({"kind": verdict, "path": str(path),
+                              "name": note.filename})
+            continue
+        if verdict == "unchanged":
+            actions.append({"kind": "note_unchanged", "path": str(path),
+                            "name": note.filename})
+            continue
+        actions.append({"kind": "note_new" if verdict == "new" else "note_update",
+                        "path": str(path), "name": note.filename,
+                        "text": note.render(generated_by)})
+
+    canvas_text = emit.build_canvas(data, contract["target"]["notes_folder"])
+    canvas_path = paths["notes"] / CANVAS_NAME
+    if canvas_path.is_file() and canvas_path.read_text(encoding="utf-8") == canvas_text:
+        actions.append({"kind": "canvas_unchanged", "path": str(canvas_path)})
     else:
-        print(f"canvas     : {canvas_path.name} unchanged")
+        actions.append({
+            "kind": "canvas_new" if not canvas_path.exists() else "canvas_update",
+            "path": str(canvas_path), "text": canvas_text})
 
-    archived = archive_superseded(contract, vault_root)
-    print(f"archive    : moved {len(archived['moved'])}, "
-          f"already absent {len(archived['already_absent'])}, "
-          f"left alone {len(archived['left_alone'])}")
+    moves, blocked, absent = [], [], []
+    for entry in contract["archive"]["files"]:
+        source = safety.resolve_within(
+            vault_root, entry["name"], field="archive.files[].name")
+        destination = paths["archive"] / entry["name"]
+        if not source.is_file():
+            absent.append(entry["name"])
+            continue
+        if destination.exists():
+            blocked.append({"name": entry["name"], "path": str(destination)})
+            continue
+        moves.append({"kind": "archive_move", "path": str(destination),
+                      "moved_from": str(source), "name": entry["name"]})
+    actions.extend(moves)
 
-    ignored = apply_ignore_filters(contract, vault_root)
-    print(f"obsidian   : ignore filters "
-          f"{'updated' if ignored['updated'] else 'unchanged'} "
-          f"({ignored.get('reason', '')})".rstrip(" ()"))
+    readme_path = paths["archive"] / ARCHIVE_README
+    readme_text = None
+    if moves or paths["archive"].exists():
+        readme_text = archive_readme_text(contract, [m["name"] for m in moves])
+        if readme_path.is_file() and readme_path.read_text(
+                encoding="utf-8") == readme_text:
+            actions.append({"kind": "archive_readme_unchanged",
+                            "path": str(readme_path)})
+        else:
+            actions.append({
+                "kind": ("archive_readme_new" if not readme_path.exists()
+                         else "archive_readme_update"),
+                "path": str(readme_path), "text": readme_text})
 
-    print("\nrepository: untouched — the vault is written outside it.")
-    return 0
+    added, settings_text, filters = settings_payload(
+        contract, paths["settings"], Path(repository_root).name)
+    if not paths["settings"].is_file():
+        settings = {"kind": "settings_absent", "path": str(paths["settings"]),
+                    "added": [], "rendered": filters}
+    elif not added:
+        settings = {"kind": "settings_unchanged", "path": str(paths["settings"]),
+                    "added": [], "rendered": filters}
+    else:
+        settings = {"kind": "settings_update", "path": str(paths["settings"]),
+                    "added": added, "text": settings_text, "rendered": filters}
+    actions.append(settings)
+
+    return {
+        "vault_root": str(safety.real_path(vault_root)),
+        "repository_root": str(safety.real_path(repository_root)),
+        "notes_folder": str(paths["notes"]),
+        "archive_folder": str(paths["archive"]),
+        "settings_path": str(paths["settings"]),
+        "actions": actions,
+        "protected": protected,
+        "archive_blocked": blocked,
+        "archive_absent": sorted(absent),
+        "counts": _counts(actions, protected, blocked, absent),
+    }
+
+
+def _counts(actions, protected, blocked, absent) -> dict:
+    counts = {}
+    for action in actions:
+        counts[action["kind"]] = counts.get(action["kind"], 0) + 1
+    for item in protected:
+        key = f"protected_{item['kind']}"
+        counts[key] = counts.get(key, 0) + 1
+    counts["archive_blocked"] = len(blocked)
+    counts["archive_absent"] = len(absent)
+    return dict(sorted(counts.items()))
+
+
+def archive_readme_text(contract: dict, moved_names) -> str:
+    """The archive README, rendered from the contract rather than from disk."""
+    plan = contract["archive"]
+    lines = [
+        "---",
+        "type: report",
+        "generated: true",
+        f"generated_by: {contract['frontmatter']['generated_by']}",
+        "tags:",
+        "  - ews/report",
+        "---",
+        "",
+        "# Archived early snapshots",
+        "",
+        "> These sat at the vault root as a snapshot from around Task A1 "
+        "while the repository moved on.",
+        "",
+        "They are **moved, not deleted and not replaced with a pointer**. "
+        "Every line unique to them is either a path that has since changed "
+        "or a statement the project has superseded, so nothing unique and "
+        "still true was lost — but a superseded record is still a record, "
+        "and deleting one is how a record starts lying.",
+        "",
+        "| archived file | superseded by | why |",
+        "| --- | --- | --- |",
+    ]
+    for entry in plan["files"]:
+        note = " ".join(entry["note"].split())
+        lines.append(f"| `{entry['name']}` | `{entry['superseded_by']}` | {note} |")
+    lines += ["", "Read the current versions in the repository, not these."]
+    return "\n".join(lines) + "\n"
+
+
+# ---------------------------------------------------------------------------
+# Reporting
+# ---------------------------------------------------------------------------
+
+WRITE_KINDS = ("note_new", "note_update", "canvas_new", "canvas_update",
+               "archive_readme_new", "archive_readme_update", "settings_update")
+
+
+def print_plan(plan: dict, mode: str) -> None:
+    print(f"mode          : {mode}")
+    print(f"repository    : {plan['repository_root']}")
+    print(f"vault root    : {plan['vault_root']}")
+    print(f"notes folder  : {plan['notes_folder']}")
+    print(f"archive folder: {plan['archive_folder']}")
+    print(f"settings      : {plan['settings_path']}")
+    print()
+    for kind, count in plan["counts"].items():
+        print(f"  {kind:28} {count}")
+    print()
+    for action in plan["actions"]:
+        if action["kind"] in WRITE_KINDS:
+            print(f"  {action['kind']:28} {action['path']}")
+        elif action["kind"] == "archive_move":
+            print(f"  {action['kind']:28} {action['moved_from']} -> "
+                  f"{action['path']}")
+    for item in plan["protected"]:
+        print(f"  PROTECTED ({item['kind']}): {item['path']} — left alone")
+    for item in plan["archive_blocked"]:
+        print(f"  BLOCKED archive move: {item['path']} already exists — "
+              "left alone")
+
+
+# ---------------------------------------------------------------------------
+# Apply
+# ---------------------------------------------------------------------------
+
+def planned_operations(plan: dict) -> tuple:
+    """The plan's mutations, in order, plus the kind of each for reporting."""
+    operations, kinds = [], {}
+    for action in plan["actions"]:
+        if action["kind"] in WRITE_KINDS:
+            operations.append({"op": "write", "path": action["path"],
+                               "text": action["text"]})
+        elif action["kind"] == "archive_move":
+            operations.append({"op": "move", "source": action["moved_from"],
+                               "destination": action["path"]})
+        else:
+            continue
+        kinds[len(operations) - 1] = action["kind"]
+    return operations, kinds
+
+
+def apply_plan(plan: dict, backup_root: Path, after_stage=None,
+               at_boundary=None) -> dict:
+    """Execute a validated plan inside one write-ahead journalled transaction.
+
+    ``prepare`` copies and verifies every backup, computes the exact bytes each
+    write will produce, and writes a durable ``prepared`` journal. Then each
+    operation is announced as ``intent`` and fsynced *before* its mutation, and
+    marked ``completed`` after. A process killed anywhere in that sequence
+    leaves a journal that says which side of the mutation it stopped on, so a
+    later ``--rollback`` can recover -- without this process having survived to
+    catch its own exception.
+
+    ``after_stage`` and ``at_boundary`` are test seams, not escape hatches: the
+    tests raise from them to prove each crash window is recoverable.
+    """
+    operations, kinds = planned_operations(plan)
+    txn = transaction.Transaction(
+        backup_root=backup_root,
+        repository_root=plan["repository_root"],
+        vault_root=plan["vault_root"],
+    )
+    txn.prepare(operations)
+    try:
+        return txn.execute(after_stage=after_stage, kinds=kinds,
+                           at_boundary=at_boundary)
+    except BaseException as error:
+        undo = txn.rollback()
+        raise SystemExit(
+            "apply failed: " + str(error) + "\nrollback: "
+            + ("complete" if undo["rolled_back"] else str(undo["problems"]))
+            + "\nstate: " + str(txn.state)
+            + "\nmanifest: " + str(txn.manifest_path)
+        ) from error
+
+
+# ---------------------------------------------------------------------------
+# Command line
+# ---------------------------------------------------------------------------
+
+def build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(
+        prog="build_obsidian_vault.py",
+        description=(
+            "Generate the Obsidian vault view of this repository. The vault is "
+            "always named explicitly; nothing is written without --apply, and "
+            "--apply always writes a backup first."
+        ),
+        epilog=(
+            "There is no --force. A note edited by hand, a file this generator "
+            "did not write, and an archive destination that already exists are "
+            "reported and left alone."
+        ),
+    )
+    parser.add_argument("--config", metavar="PATH", type=Path,
+                        help="contract to read (default: configs/obsidian_vault.yaml)")
+    parser.add_argument("--vault-root", metavar="PATH", type=Path,
+                        help="the Obsidian vault to inspect or write. Required "
+                             "for --dry-run and --apply; never inferred")
+    parser.add_argument("--backup-root", metavar="PATH", type=Path,
+                        help="an existing directory where --apply writes its "
+                             "backup transaction. Required for --apply; never "
+                             "created for you")
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument("--dry-run", action="store_true",
+                      help="print the plan and change nothing at all")
+    mode.add_argument("--apply", action="store_true",
+                      help="write the plan inside a backed-up transaction")
+    mode.add_argument("--rollback", metavar="MANIFEST_PATH", type=Path,
+                      help="undo a recorded transaction using its manifest")
+    return parser
+
+
+def main(argv=None) -> int:
+    parser = build_parser()
+    arguments = parser.parse_args(argv)
+
+    if not (arguments.dry_run or arguments.apply or arguments.rollback):
+        parser.print_usage(sys.stderr)
+        print("\nchoose exactly one of --dry-run, --apply or --rollback. "
+              "Running with no arguments does nothing, on purpose: this "
+              "generator writes outside the repository and never guesses "
+              "where.", file=sys.stderr)
+        return 2
+
+    try:
+        contract = load_contract(arguments.config)
+        vault_root = safety.require_directory(
+            arguments.vault_root, field="--vault-root")
+        safety.assert_outside(vault_root, ROOT, field="--vault-root")
+
+        if arguments.rollback:
+            manifest_path = Path(arguments.rollback)
+            manifest = transaction.load_manifest(manifest_path)
+            result = transaction.rollback_manifest(
+                manifest, vault_root, ROOT, manifest_path=manifest_path)
+            print(f"journal    : {transaction.describe(manifest)}")
+            print(f"rollback   : {result['reason']}")
+            print(f"state      : {result.get('state', manifest['state'])}")
+            print(f"restored   : {result['restored']} file(s)")
+            print(f"removed    : {result['removed']} file(s) this transaction "
+                  "created")
+            print(f"directories: {result['directories_removed']} removed "
+                  "(only if empty)")
+            for stray in result.get("temporary_files_left", []):
+                print(f"  LEFT IN PLACE: {stray} — a temporary file this "
+                      "journal names, holding bytes it did not announce")
+            return 0 if result["rolled_back"] or result[
+                "reason"] == "already rolled back" else 1
+
+        plan = build_plan(contract, vault_root, ROOT)
+
+        if arguments.dry_run:
+            print_plan(plan, "dry-run — nothing is created, written or moved")
+            return 0
+
+        if arguments.backup_root is None:
+            print("--apply requires --backup-root: every file this run could "
+                  "overwrite or move is copied there first, and the vault is "
+                  "not under version control.", file=sys.stderr)
+            return 2
+        # Required to exist already, exactly like --vault-root. Creating it
+        # would turn a misspelled path into a new empty directory and a backup
+        # nobody would think to look for.
+        backup_root = safety.require_directory(
+            arguments.backup_root, field="--backup-root")
+        safety.assert_outside(backup_root, ROOT, field="--backup-root")
+        for field, directory in (("target.notes_folder", plan["notes_folder"]),
+                                 ("target.archive_folder", plan["archive_folder"])):
+            safety.assert_disjoint(backup_root, Path(directory),
+                                   first_field="--backup-root",
+                                   second_field=field)
+
+        print_plan(plan, "apply")
+        result = apply_plan(plan, backup_root)
+        print()
+        print(f"transaction: {result['transaction_id']}")
+        print(f"manifest   : {result['manifest']}")
+        print(f"operations : {result['operations']}")
+        print("\nrepository: untouched — the vault is written outside it.")
+        return 0
+
+    except (safety.VaultPathError, transaction.TransactionError,
+            IgnoreFilterError) as error:
+        print(f"error: {error}", file=sys.stderr)
+        return 2
 
 
 if __name__ == "__main__":
