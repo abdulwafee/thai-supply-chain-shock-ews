@@ -16,6 +16,8 @@ from pathlib import Path
 import numpy as np
 import pytest
 
+from thai_supply_chain_ews.release import byte_provenance as BP
+
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPT_PATH = ROOT / "scripts" / "validate_oie_overlap_v2.py"
 _spec = importlib.util.spec_from_file_location("validate_oie_overlap_v2", SCRIPT_PATH)
@@ -302,11 +304,31 @@ V1_PINNED_SHA256 = {
 
 
 def test_version_1_outputs_are_preserved_byte_for_byte():
+    """v2 changed nothing in v1 -- checked as content, not as platform bytes.
+
+    One of these three pins was taken from a Windows working tree, where the
+    file was CRLF on disk while Git stored LF. The other two carry no CR at all
+    and have always matched on both platforms, which is why the difference went
+    unnoticed until a Linux run.
+
+    No pin is edited. A path whose recorded bytes do not match must already be
+    declared in ``configs/line_ending_provenance.yaml``, its canonical content
+    must agree with what that file declares, and the declared representation
+    must reproduce the original pin. Anything else is a modification.
+    """
+    provenance = BP.provenance_entries(ROOT)
     for rel, expected in V1_PINNED_SHA256.items():
         p = ROOT / rel
         assert p.is_file(), f"v1 artifact {rel} is missing — it must be preserved"
-        actual = hashlib.sha256(p.read_bytes()).hexdigest()
-        assert actual == expected, f"v1 artifact {rel} was modified by v2 work"
+        content = p.read_bytes()
+        if hashlib.sha256(content).hexdigest() == expected:
+            continue
+        matched = BP.match_declared_representation(
+            content, expected, provenance.get(rel)
+        )
+        assert matched is not None, f"v1 artifact {rel} was modified by v2 work"
+        assert BP.canonical_digest(content) == provenance[rel][
+            "canonical_git_blob_content_sha256"], rel
 
 
 def test_v2_writes_to_separate_files_from_v1():

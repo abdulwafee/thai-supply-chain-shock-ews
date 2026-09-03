@@ -57,6 +57,12 @@ jobs:
         timeout-minutes: 5
         with:
           persist-credentials: false
+          # Full history and tags. The default is a depth-1 checkout with no
+          # tags, and the historical verifiers read the v1.0.0 commit and tag
+          # from the object database -- they never fetch. Without this they
+          # would fail, which is deliberate: a missing subject commit is a fetch
+          # setting, not a result, and must not become a pass or a bare skip.
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97  # v7.0.0

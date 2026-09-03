@@ -28,9 +28,10 @@ has run on them, so nothing here says they work.
 
 from __future__ import annotations
 
-import hashlib
 import re
 from pathlib import Path
+
+from . import byte_provenance as BP
 
 __all__ = [
     "MIT_REQUIRED_PHRASES",
@@ -123,8 +124,16 @@ def _offences(text: str, phrases, *, window: int = _NEGATION_WINDOW) -> list:
 # ---------------------------------------------------------------------------
 
 def verify_e2_pins(root: Path, pinned: dict) -> dict:
-    """Confirm every E2 artifact that records a finding is byte-unchanged."""
+    """Confirm every E2 artifact that records a finding is unchanged.
+
+    Three of E2's pins were taken from a Windows working tree, where the file
+    was CRLF on disk while Git stored LF, so a Linux checkout holds the same
+    text and different bytes. ``configs/line_ending_provenance.yaml`` declares
+    which pin that applies to and in which representation; content that differs
+    in any other way is still a modification.
+    """
     root = Path(root)
+    provenance = BP.provenance_entries(root)
     rows, moved, missing = {}, [], []
     for relative, expected in sorted(pinned.items()):
         path = root / relative
@@ -132,11 +141,17 @@ def verify_e2_pins(root: Path, pinned: dict) -> dict:
             missing.append(relative)
             rows[relative] = {"present": False, "expected_sha256": expected}
             continue
-        observed = hashlib.sha256(path.read_bytes()).hexdigest()
+        content = path.read_bytes()
+        observed = BP.digest(content)
+        matched = ("recorded_bytes" if observed == expected else
+                   BP.match_declared_representation(
+                       content, expected, provenance.get(relative)))
         rows[relative] = {"present": True, "expected_sha256": expected,
                           "observed_sha256": observed,
-                          "unchanged": observed == expected}
-        if observed != expected:
+                          "canonical_sha256": BP.canonical_digest(content),
+                          "matched_as": matched,
+                          "unchanged": matched is not None}
+        if matched is None:
             moved.append(relative)
     if missing or moved:
         raise SourceReleaseError(
@@ -208,7 +223,7 @@ def verify_license(root: Path, config: dict, pyproject_text: str) -> dict:
         "code_license": rules["code_license"],
         "spdx_identifier": declared,
         "license_file": rules["license_file"],
-        "license_file_sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+        "license_file_sha256": BP.canonical_digest(path.read_bytes()),
         "license_files_declared": project.get("license-files", []),
         "copyright_line": rules["copyright_line"],
         "unlicensed_placeholder_removed": True,

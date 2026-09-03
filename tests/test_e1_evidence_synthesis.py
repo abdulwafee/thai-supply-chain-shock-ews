@@ -33,6 +33,7 @@ from pathlib import Path
 import pytest
 import yaml
 
+from thai_supply_chain_ews.release import byte_provenance as BP
 from thai_supply_chain_ews.synthesis import claim_registry as CR
 from thai_supply_chain_ews.synthesis import evidence_synthesis as ES
 from thai_supply_chain_ews.synthesis import reproducibility_manifest as RM
@@ -663,20 +664,44 @@ def test_synthetic_17_test_counts_are_copied_rather_than_measured():
 
 @requires_run
 def test_synthetic_18_an_upstream_result_artifact_is_modified():
-    """Every pinned upstream checksum still matches its live artifact."""
+    """Every pinned upstream checksum still matches its live artifact.
+
+    Three of the byte pins here were taken from a Windows working tree, where
+    the file was CRLF on disk while Git stored LF, so on a Linux checkout the
+    text is identical and the bytes are not. The eight Parquet rows in the same
+    loop are binary and keep raw-byte hashing, which is correct for them.
+
+    No pin in ``docs/e1_reproducibility_manifest.json`` is changed. A path whose
+    recorded bytes do not match must already be declared in
+    ``configs/line_ending_provenance.yaml``, its canonical content must agree,
+    and the declared representation must reproduce the original literal. A
+    genuine modification fails all three, which is what this test is for.
+    """
+    import hashlib
+
+    provenance = BP.provenance_entries(ROOT)
     for record in _manifest()["artifacts"]:
         if not record["exists"] or record["task"] == "E1":
             continue
-        path = ROOT / record["path"]
+        relative = record["path"]
+        path = ROOT / relative
         if record["checksum_kind"] == "content_checksum_timestamps_excluded":
             payload = json.loads(path.read_text(encoding="utf-8"))
-            assert payload["content_checksum"] == record["checksum"], record["path"]
-        else:
-            import hashlib
-
-            assert hashlib.sha256(path.read_bytes()).hexdigest() == (
-                record["checksum"]
-            ), record["path"]
+            assert payload["content_checksum"] == record["checksum"], relative
+            continue
+        content = path.read_bytes()
+        if hashlib.sha256(content).hexdigest() == record["checksum"]:
+            continue
+        matched = BP.match_declared_representation(
+            content, record["checksum"], provenance.get(relative)
+        )
+        assert matched is not None, (
+            f"{relative} does not match its pinned digest, and no declared "
+            "line-ending provenance explains it. That is a modification to an "
+            "upstream result artifact"
+        )
+        assert BP.canonical_digest(content) == provenance[relative][
+            "canonical_git_blob_content_sha256"], relative
 
 
 @requires_run

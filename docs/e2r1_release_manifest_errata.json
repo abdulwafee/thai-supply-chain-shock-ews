@@ -1,0 +1,1101 @@
+{
+  "schema_version": 1,
+  "task": "CI-R1",
+  "errata_version": "e2r1_release_manifest_errata_v1",
+  "purpose": "Makes every digest in the Task E2-R1 release manifest verifiable on any platform, without altering one byte of it. 118 of its 449 rows were recorded from a Windows working tree where the file was CRLF on disk while git stored LF, so those digests cannot be reproduced from a Linux checkout. Each is declared here with the representation it was taken from and the canonical digest of the same content.",
+  "subject": {
+    "path": "docs/e2r1_release_manifest.json",
+    "subject_commit_sha": "8c3c8f9cc9dfb6fd4e53729615191f2726c25047",
+    "subject_commit_reachable_as_tag": "v1.0.0",
+    "subject_blob_object_id": "f38b6701f9e6f644c3527ea25c83674ebfc38c96",
+    "subject_raw_blob_content_sha256": "83caa9a938a782baae353c628029f8b2509b9d23f4f272313dfd47943e28eed3",
+    "subject_canonical_sha256": "83caa9a938a782baae353c628029f8b2509b9d23f4f272313dfd47943e28eed3",
+    "subject_raw_and_canonical_are_equal_because_the_blob_is_lf": true,
+    "row_count": 449,
+    "subject_modified_by_this_errata": false
+  },
+  "field_semantics": {
+    "subject_raw_blob_content_sha256": "SHA-256 of the blob's content bytes. NOT git's object id, which is sha1('blob ' + length + NUL + content).",
+    "git_blob_object_id": "Git's own object id for the path at the subject commit. Recorded beside the content digest so the two are never confused."
+  },
+  "verification": {
+    "reads": "git cat-file against the subject commit",
+    "reads_working_tree": false,
+    "network_access": false,
+    "rule": "Every row is classified independently from the repository and the computed classification must equal the declaration: no missing entry, no surplus entry, no duplicate."
+  },
+  "partition": {
+    "binary_raw_verified": 41,
+    "text_canonical_lf": 290,
+    "text_legacy_crlf_reproducible": 115,
+    "text_legacy_mixed_unreproducible": 3,
+    "sums_to": 449
+  },
+  "entries": [
+    {
+      "path": ".github/workflows/ci.yml",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "c5f86236f9e40596aa679ca9c10851b44969df328e793bef33ce2f584e014139",
+      "canonical_git_blob_content_sha256": "e2f48cf3fc98dcff57165e076df76d4f35b30d58fae5a5a7d233b3cd006a63cd",
+      "git_blob_object_id": "e47746ec276debd374ac922e7146cc1def2806f2",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": ".gitignore",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "50b7b65868203bfdd49e11de690d64a58b05053c35e8866bd5445420dde713e5",
+      "canonical_git_blob_content_sha256": "56fec8d7dbb682538580b9e589955951415daa7a5d5622d57517800fedfec1f8",
+      "git_blob_object_id": "dfc4941a9fa574617f676940c58e0db93fa11648",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "configs/data.yaml",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "211d6ca7443ed144d9510231170de1eca1f2c3c6a1b6e1004c4a2ad6de4d1b3c",
+      "canonical_git_blob_content_sha256": "90cd81288b0d6c4ef31ca84d895472efcb91620cc7989c88b7a77c99a7b0933e",
+      "git_blob_object_id": "acb2d1a824275659baa36aa15b075dc5bbba804a",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "configs/e2r1_source_release.yaml",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "a6cdf953df91dd5096efc74640e4917579e966851a30cca30844ec7cf93332f9",
+      "canonical_git_blob_content_sha256": "405f1f6c640773ed34eb0551ef5a10ce6d7b1f850d2879b8b57c623b846a503a",
+      "git_blob_object_id": "0311dcd4cd8c6b4961abdc26e1e97b9fcc073bdb",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "configs/eppo_ex_refinery_archive.yaml",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "477faf7be89b8958c5bee4627b7d92b6dd378827b0391961dc73f4ec2c422dad",
+      "canonical_git_blob_content_sha256": "85f2ef2524470a1d2fb02375a87314b1ede89cdfcf5f61da11b0b3f204f910db",
+      "git_blob_object_id": "c4a9d95492d54e54549a80f59862b57c683d3c84",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "configs/eppo_fuel_oil_transformations.yaml",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "56def4ea7249592e52f9ecbb8167d10669767b1454c86d80f225eb9a7aa433a9",
+      "canonical_git_blob_content_sha256": "b9f2a2279b98d4cd47fd35053ade16d4487af8c9cee417261800e9ddf2a466ba",
+      "git_blob_object_id": "793ec208bdaea0b9ce59fe0cd027020bc0cb532f",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "configs/eppo_latest_vintage_policy.yaml",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "62aafe9102be8b0de70e6bc8790088ba2b686224513cdef329e2be4fb55b4b7a",
+      "canonical_git_blob_content_sha256": "cf1de01f92a95b89bb3663d1a01a3f91986d98b1d37abf08f56d86914991a0af",
+      "git_blob_object_id": "514ea420010c008a7c50c555487dd32f53a6428e",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "configs/eppo_monthly_source.yaml",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "13283c081e8cc3f1b73c7a7f5cf287a8e12423fa7f404a3c2446305a66daa84b",
+      "canonical_git_blob_content_sha256": "90657c64da93e63cd7298c9cb26efca46ce373868e32132b14b49d4ffddc1497",
+      "git_blob_object_id": "7deed34aa5aabfeeb9ac2c056cfecefac0a0f1fd",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "configs/eppo_product_semantics.yaml",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "4bf02f33bf3151d2ca7eb7b8e4003e2a0aa5995a638779a37d099db483bc4145",
+      "canonical_git_blob_content_sha256": "1229655b818459536ce08db1f359688d360a901c15efcf4c389f22e80f339b6f",
+      "git_blob_object_id": "7912b3ecd6127241b63ddc065c4e17c0b891e7a2",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "configs/industry_mapping.yaml",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "4f4bf1767451378c9a331ed8386e662633084b1fb61f6b08c1062c319c5319a0",
+      "canonical_git_blob_content_sha256": "6295a8ab106e267d8e72761ef683f2cd29d76bfb0da0499eb7e5bcd30024c9ac",
+      "git_blob_object_id": "e337a375cd2354ccbf4785b385ac9975e6c81fff",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "configs/targets.yaml",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "51b87e7d7b266a8ce5238614ae35a9368c723ee62cf61d1bd3abd4cda6da55f3",
+      "canonical_git_blob_content_sha256": "8d453d06e008a939fed23a7223a53340cebbe09b7728d436badef2b935d50fbf",
+      "git_blob_object_id": "75785511c544b44656d7c0af1d77de4614db08d7",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "configs/upstream_commodity_sources.yaml",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "6f40997ab539b8133ab34ae06a57f70b5b16637369ba2e024343bc304cd2b832",
+      "canonical_git_blob_content_sha256": "676e83f5393aff3d5bf79e587ec91fcf8247d579959caf366488db3b237785a1",
+      "git_blob_object_id": "0aee30055a413ff690b9810bb10a0e5caf169c67",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "data/raw/_manifests/EPPO_PRICE_STRUCTURE_manifest.jsonl",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "9eb5c589bf26aa281207b8fc0183ae28e0e54f1e0cbd19078df901b5abf6ada4",
+      "canonical_git_blob_content_sha256": "0c6e307d7a037a46de274f0172f39a4ea7bddfa1d85381e5552c70e15f15797b",
+      "git_blob_object_id": "7dd00ee0476f99f69f12345aab53d3f190b8abc7",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "data/raw/_manifests/OIE_CAPU_manifest.jsonl",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "0f48567b18e2ef12cd88396c1ca9cee10a150ca1178c8fe8b921718ecf0291b0",
+      "canonical_git_blob_content_sha256": "8faa07e6ddc62526185749f7fd67e77b02efedeeb651374dba330e3be19d05de",
+      "git_blob_object_id": "72522d828d37314ab8b30489b7cc21aaf33cd851",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "data/raw/_manifests/OIE_MPI_HIST_2554_2011_manifest.jsonl",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "ff5f37a0aa8371e33c0ccd6823ac8417002a45ab055ff0af8dc870b9055946a1",
+      "canonical_git_blob_content_sha256": "136fa9f3be35458116ca3a832cd45ebaa487feccb9a674e910a52c8b26b566ea",
+      "git_blob_object_id": "ba6ac15a03c9ab47ea8dfeb86cc61c022d37b0d0",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "data/raw/_manifests/OIE_MPI_HIST_2559_2016_manifest.jsonl",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "e80be25fb05f6da7018730cbea97139919959574251201a21ff4b7dd0dc654b5",
+      "canonical_git_blob_content_sha256": "ca554539857eec865de7592624dcc7d916b7b2c27c4460f89a861e863a91ad67",
+      "git_blob_object_id": "e60f6362dd6fbef4159a4e3e5c0e9e36e90a2864",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "data/raw/_manifests/OIE_MPI_manifest.jsonl",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "ba90b1f60390c0ffdcbec0b2d485c138fef0d6e731b28663c4fecc6fb8cbfbac",
+      "canonical_git_blob_content_sha256": "c0a750e232eb30e320dcc35b965ce53ab9fa6cb3c09a752cebc66466b07c1c5c",
+      "git_blob_object_id": "6d39a62391149544fcf2fe90a13de90c7e5cea72",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "docs/architecture/decision_log.md",
+      "class": "text_legacy_mixed_unreproducible",
+      "manifest_sha256": "3e21af83fa31487303e3343471c1bd2185f225ce9ede3ea3a9c04e4f8e746028",
+      "canonical_git_blob_content_sha256": "486083fedca1ec7c4b4897f81d8e625e6a1ea919392a6750e274849b52ce207b",
+      "git_blob_object_id": "faee1f5c95b82c49b5da75ee16c3ea30d6b0b98b",
+      "renders_to_manifest_digest_as": null,
+      "independently_reproducible": false,
+      "why_unreproducible": "The working tree mixed CRLF with bare LF at generation, so the recorded digest is of a byte pattern the content alone cannot reconstruct. Canonical content is verified against the committed blob; the legacy digest is preserved, not re-derived."
+    },
+    {
+      "path": "docs/b1_ingestion_metadata.json",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "1ca679ddc5d9a714a43368ccf5da941d454f49031398ad7790d31d6426044a79",
+      "canonical_git_blob_content_sha256": "5aaee48ccf4383d135b2f20c2656f1696993f02b096ff37760e44e39b66a4654",
+      "git_blob_object_id": "de43ec17696e22d7129149492822cd341bd4a9d5",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "docs/b2_component_validation_output.json",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "cf562ab4b9fe1b758e54fff1ceef67aecf13f297752bd2579b66760165bbedd5",
+      "canonical_git_blob_content_sha256": "e5206c46c2956f26d294b6c144045d25c9056116c3bbcda63df96fdc867871b9",
+      "git_blob_object_id": "ce17072e7c92a5364d63bb4017f0f37582b0ce8e",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "docs/b3_target_build_metadata.json",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "b6ebff8e1fe97c9cf1d4068733b6088129b54ca996507d7a4f8833918c37d667",
+      "canonical_git_blob_content_sha256": "f1f009f121e09e375e92484a267a31d273914e8a2539ed88ff4fde00678af2c4",
+      "git_blob_object_id": "6b2c5d720b514aa06d382f8d82782e1257a2e10c",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "docs/c10_design_matrix_audit.json",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "95314ee4d4fc5bdba31f9cc5a0f1223c2a348032961ea16dd7dd2970e2cf6574",
+      "canonical_git_blob_content_sha256": "93bd9bfaf1f89aaa94d96724138a2b95266cd5e97a78baefd6b3c6c9f088f4c8",
+      "git_blob_object_id": "13a860b8aca58e9c0dc420d72625043276649e0b",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "docs/c10_design_matrix_audit.md",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "931e4d93e77816fef9e029cce65842ae4731d6c50aeb20c8ca9bc89c85b28266",
+      "canonical_git_blob_content_sha256": "f4c864b58e9f177ef32c9e55beaa646ccdecb84376967fdc6f3ccbe597c0c593",
+      "git_blob_object_id": "d0282fa7e871c515a2c3799cd55ae1ae54c375de",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "docs/c10_design_matrix_protocol.md",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "3786260c85f7965f7a876283c43b1bf22a78990f1302f1a5eaee5205e340d484",
+      "canonical_git_blob_content_sha256": "3bcf27287fa7f9d4a529c947dea14cafdcad2df189e773ed143b53b516314d62",
+      "git_blob_object_id": "8323dfb09cd0740ce5a38dbaddb9c310f3715199",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "docs/c11_architecture_decision.errata.md",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "5b5379526a3f9051860b200c9e395b706d36773f7657a4274438d42b9c1ecbba",
+      "canonical_git_blob_content_sha256": "ce4a9866760e930f57e9170dfe88cb8425bd60fc5245ec8b1df751ce5d99eae5",
+      "git_blob_object_id": "a99296a5db966099ab9d7489efab15a39cb62000",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "docs/c11_architecture_decision.json",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "d482d80fa74f5a488d3b02f4a2fd0a38d0155b9393f43c779c63cb6345cd3d73",
+      "canonical_git_blob_content_sha256": "384997b23f99dc8e76053c5858201f2371109bf4009cdd72e7a661076c4a6e67",
+      "git_blob_object_id": "0c1b4653795664430e82154b83cccece4219655c",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "docs/c11_architecture_decision.md",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "9a5467c89243f0c3b6aa79075814abd13ceb6b4e77fbf4b0f9c4cbb68124046e",
+      "canonical_git_blob_content_sha256": "7f45ed56015875b26f21f1d7799d10d2ec6839103052452cfdbfe7a527c56203",
+      "git_blob_object_id": "451075ca35f61c569c15ec369359e7e9bb4938ee",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "docs/c11_architecture_decision_protocol.md",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "e823f9dcc1e7ce6dd7cd242e7e8f957d868b7a0d7c44ba4398eca96def31cd3d",
+      "canonical_git_blob_content_sha256": "146897ae828ed41d12e7b1d59e2532b5570b6c0584b1b5bcbaa2ec8d192a92fc",
+      "git_blob_object_id": "fd9b62c85b396bcf8553b941aa7bb37702c28e34",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "docs/c11r1_governance_decision.json",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "2c5a2ab9b8e267f339951646398554ccd55920d76febd699708e4c4755387622",
+      "canonical_git_blob_content_sha256": "e7f59ea6815b93529b24251da976fb640c408a2e0be1bf26c1b5eab9c3412122",
+      "git_blob_object_id": "f98c5a5034b4362a9a47b61a06ab804400e863ac",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "docs/c11r1_governance_decision.md",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "d1eb422314f58c7deea62fb4aedab054c90e1cd7de1fc59c1f8b4975d59fc071",
+      "canonical_git_blob_content_sha256": "2b56ad0bf5ff82479c54858f54bb778116646be135f1e2689dd444023a67ff96",
+      "git_blob_object_id": "6d84c58464c56658e7e7f60f1870ed1357115dc0",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "docs/c12_channel_closure.json",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "93ba31b9d17d80c7b2a75a0857d1666aa3b2692078c1848cdd72bcdb5a3909c1",
+      "canonical_git_blob_content_sha256": "da1d1907e4cc41f3d33f9387101ebe894556def6a5113923b24d2790421c18e1",
+      "git_blob_object_id": "c18eaa7ef17df36b2d7cb35b22662b4af9a43c56",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "docs/c12_channel_closure.md",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "c55957dd4810cf5809ebd43cf0ebf39692080d311b3d368b9fe9d3f2de83ab8f",
+      "canonical_git_blob_content_sha256": "8d9b08a9a8e9ebff0f0934f5df7bb6d1794f317fe2060895f44af1d2bb270098",
+      "git_blob_object_id": "3e2c807eabdef514ac6ea1897073dd7000bdedc0",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "docs/c5_price_stage_source_audit.json",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "f20023727acb224217187949966eab0a33edee55a29ea6691051760246776ae8",
+      "canonical_git_blob_content_sha256": "0b0080bf2ba51fa4da22f4abcdb07c2461a0302ddc8ab792774ece50da9cfc42",
+      "git_blob_object_id": "fad2eb44d94e7c2776d9cc6e99d9b1e840de1495",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "docs/c5_price_stage_source_audit.md",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "b064e080c80fbcbae29bed909796626c07adb5a53fa5d0894a1b7b6ee42cf5cc",
+      "canonical_git_blob_content_sha256": "493692018a6186b1787123dec565d7d44e6af4687b2ea38404efef5345e51851",
+      "git_blob_object_id": "32972f61bda565dc8769c1d555d9ed89618de741",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "docs/c5_source_recommendation.md",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "10b21af547639497557a6e712440ac99fea06a2ca42d39b2eb0c023cd5a71595",
+      "canonical_git_blob_content_sha256": "b7ddc8e966cdbfdfd151f80c32487d62ce026605977fe4fd104144ec7e24ebe2",
+      "git_blob_object_id": "cab471dde29a99ee434d0b71949e519871802d5a",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "docs/c5_structural_path_audit.json",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "152f40939e34d31d3113c0873dc99e7d168333eeb6054e295c4c7a74b410f506",
+      "canonical_git_blob_content_sha256": "c7acd0163e1bfaed5390e5ce85f04138674a0844eed8bb97323cf3862b0f8f44",
+      "git_blob_object_id": "40aa4553ceff61a8cec1ec3a2d0bf2329d5cd089",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "docs/c5_structural_path_audit.md",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "f3c85ab6c87a052cd560894941608794356e15ec64110af6ec3a1ee3888cbdb9",
+      "canonical_git_blob_content_sha256": "824c8d0c3761905c25fcc944f143ee54d2b1818287b1348dad07cb80bc09e563",
+      "git_blob_object_id": "5a8f5b427264c09ac13b50127defa0374fa462a4",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "docs/c6_5_eppo_latest_vintage_decision.json",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "f7d6cb6fb9138e6110c06a518ec2ada3b4716a124fa0e05134394de4a84dcae0",
+      "canonical_git_blob_content_sha256": "c50ec39071fd759af01166fc2d8787d029cb8981ceeb452fa20d661a2e158e0a",
+      "git_blob_object_id": "47549de3dbfee43a971a7252c9bc234bede43b2b",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "docs/c6_5_eppo_latest_vintage_decision.md",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "f162b5b7bfcde18871509ad1f0a9214bb1fa3c0428c7a2be381b2a4244e22b39",
+      "canonical_git_blob_content_sha256": "a319cef99da7a9107e5819aef13918fab001930bde53b4cfb1c9615880a2a7d2",
+      "git_blob_object_id": "3c685d0f92dcf948d308c8d4b19c88d3e3f60caa",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "docs/c6_eppo_aggregation_decision.md",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "b25774be5d5bb009e4322b3639f199cfbba1a48ba68a7519e066cc905f733ecd",
+      "canonical_git_blob_content_sha256": "38f60772ea62bccb84c55ef0eee33892498f17264645dd2aa42b26855a13a94e",
+      "git_blob_object_id": "5cd26f72516514dbe2162ff6c6c32d768371d424",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "docs/c6_eppo_archive_audit.json",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "b23f1a371634d66ffaf90f77d1f29f250a3c433de528e9e356c141dee5a6d610",
+      "canonical_git_blob_content_sha256": "639cc8433c3cae0a4be2e5d02091a59af7015ff0b5a23baa79ddfb1e74d3644e",
+      "git_blob_object_id": "f8fe60d773128b2206e3c06ca9fc4d5dc4c5405b",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "docs/c6_eppo_archive_audit.md",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "9aa52dd2f210a9e00e61988bdedc224759a960608dfc6585f7788981a69a9668",
+      "canonical_git_blob_content_sha256": "78a1a68120dd3e4671f82ed9d047fcdf2e113332f7a287cf49798f5de3d034f3",
+      "git_blob_object_id": "1f07c25739de6767543f7ac36e9ac0a843248f44",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "docs/c7_5_eppo_semantic_decision.json",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "89b4f25da3c78e67ce8916b3c75c00b8ebcb2145d925cecef2ec889b2d41d8f3",
+      "canonical_git_blob_content_sha256": "95391082269c304b7b0a19a2d1213f65606868a897812c4b9e4157ecab7e075c",
+      "git_blob_object_id": "1bdaf67ac391df52222ac47d38e67164d5e36547",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "docs/c7_5_eppo_semantic_decision.md",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "d0ea3eb3ec3af84a14423def8a9f917db2537c24752878a5d4fc1773e85795dc",
+      "canonical_git_blob_content_sha256": "b7f9f8971bad254e0504e084834e206441badc269c12cf796e624531547e7779",
+      "git_blob_object_id": "286bfe8aa488d99adc59ddab9bba4ebcd9e3159e",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "docs/c7_eppo_full_archive_audit.json",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "f708888c13c1eb7017616033b5185fe07f086db45ec13b5b721ef526ae098c0d",
+      "canonical_git_blob_content_sha256": "7a1375a152137a0637c651199a9878d573ee86e1667930b85c072381014f0117",
+      "git_blob_object_id": "e521013a95891484831701e23f93be25e148a99b",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "docs/c7_eppo_full_archive_audit.md",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "0812e0c9bb0e4eb7f0c15710c3943e9e66a6c148b81bda4380b6351fea47b5d2",
+      "canonical_git_blob_content_sha256": "279e0b95ee0f903051a6f407c49eb49497c2578baeb457f56fa22830748d19f9",
+      "git_blob_object_id": "ea5916cc01c91a1e30f368d1a2d48857b5c2c188",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "docs/c7_eppo_monthly_source_decision.md",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "2bd2ead0ea85583c954213e7d2f86181bcd53a2634920db565ee0d009079777d",
+      "canonical_git_blob_content_sha256": "53dbac2db8ac93dcc952b3a9312e89cf3c1786dad96f441a9a5f5fde28b4d3d7",
+      "git_blob_object_id": "2df2077ff34a90adeb4fc4d557afa171b3890343",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "docs/c8_eppo_transformation_audit.json",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "35b11e47cf1ec77fe06e3385bd5822cf12d643e22c3e28cbaf599d8e8b24d79b",
+      "canonical_git_blob_content_sha256": "5688604ddc32a5eb3c1fc1f53145be2862b79ecd1d8ff59c9f634a1deeea589c",
+      "git_blob_object_id": "3dce9e94f3646e9b420b6023dd22269d67aed0d7",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "docs/c8_eppo_transformation_audit.md",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "0d0d280be5e605b3611d4317adde2bd86a5554486f87ba2c45e73e1b4386e43d",
+      "canonical_git_blob_content_sha256": "08e48e5eed56e784ce9583a59ebdd9c6739b2cbdce0e57c9efe8d71e623ae507",
+      "git_blob_object_id": "310ff1a9078721c48d000f98925ec833176e41d5",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "docs/c8_eppo_transformation_protocol.md",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "dd078ccfe846d1176a57b4dc68efbe0f9cb74494fdd2ab9de9ed72cbf35825c1",
+      "canonical_git_blob_content_sha256": "b8332bb9e9f870413ed3d3a061054eefddd6a77aadd87ee3abbc5350609aead6",
+      "git_blob_object_id": "140e96e85f1378b7aed72999efe1e40333da0819",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "docs/c9_fuel_oil_conditioning_audit.json",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "2bd4e32b351bafa2c9cd2197487955f20038648b70c2934201e50174ce2428ba",
+      "canonical_git_blob_content_sha256": "be49c069fbdaa9b1eb69529fdc8c60bab0dc75590f7979a90c3c829fe08f0f36",
+      "git_blob_object_id": "9cd52d67aa33efb3ef2ffc430494ad36ce5c471a",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "docs/c9_fuel_oil_conditioning_audit.md",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "305d87f0f2e373bccdd0187e57b710a85b5843c2368d8d52e65937f2b2632e5b",
+      "canonical_git_blob_content_sha256": "a5b4ec7dc676e59ae678790ec29cc332d20abc0504ef70d834488ab742d30ebb",
+      "git_blob_object_id": "41495afbc097c4e8d734cf3c6fa87fd420a65e75",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "docs/c9_sector093_exposure_decision.json",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "af3e8e1c42d8366c5214386a81686d02fa960059741a505d2731460c19fed861",
+      "canonical_git_blob_content_sha256": "4fac31e4b9d4e37c869c4f1481c120e43f6e4d042e0e747cbad06555bb2e9551",
+      "git_blob_object_id": "f2dc00579b67da96fe3ec56dd7f2ff6085bbbb73",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "docs/c9_sector093_exposure_decision.md",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "b109fd7d3c304fcb40a8ec1da49d75c27fb3218e555514c9c3f3c4d0562c35e8",
+      "canonical_git_blob_content_sha256": "9acb426825c19d10007679dac0eb6d5efb2f4d81bdcd9e69669f50b64242c3ec",
+      "git_blob_object_id": "5c3e51b666962472897ccf07bac02e04203369ec",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "docs/d2_oie_mpi_source_audit.json",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "74998f41e95526356d2b076376f73ff7ff3f2a71cd2a9942f7ccdce1700fa5e6",
+      "canonical_git_blob_content_sha256": "240a3c1eb7d64b66b81dfe8695b8fa00e5214c4a5d8be4159ab1f6f8f134a42f",
+      "git_blob_object_id": "eac08a2346123fdde7d992fea024887aa032d331",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "docs/d2_oie_mpi_source_audit.md",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "c9168d0ebb8cfdce0e7f01f15a7c79cd1b25a832852d23708463c3aa83e1a413",
+      "canonical_git_blob_content_sha256": "7e9984e55a2cbba609f820ab6c0971584d840684a864396d1ce831ff9bbbfc93",
+      "git_blob_object_id": "e5f7dd7f45cf2c4f0f2b864e106d6fc391167070",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "docs/d2_target_timing_decision.json",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "ff23ab2f97ebce16291c4d19f15eda60edabf645321a5bd20b45c148a327c7fc",
+      "canonical_git_blob_content_sha256": "ff6b8c19b12d3aab469b4dc66a9ffbbe470c8bd9947608be521beaa0fbd6d0f1",
+      "git_blob_object_id": "ccb6842ea15b11f646449f2aae15aabd43d1ac95",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "docs/d2_target_timing_decision.md",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "2a07a2f4a4f37e286d89ed7fff508eb781bf2423d953ead56c10797dea569d30",
+      "canonical_git_blob_content_sha256": "51733f7f89b1154916fae17c7bf8e644afb184fbc47aae95e2653514745d0cdf",
+      "git_blob_object_id": "16535b6344661d720a78e92738eca5de6cbca800",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "docs/d3_locked_test_manifest.json",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "f568d82a5251a2aaf015b2ddc03cd133fbe4b2bde01e7ddfe115bc6e7216097a",
+      "canonical_git_blob_content_sha256": "0fdcaf5c0e98e7d3ecb4ac76e1f8f66c269fe75f84bc71df744b0c7d13fb6001",
+      "git_blob_object_id": "171b81444f6eaad8ca21aa25b2e61e936a4e6635",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "docs/d3_operational_baseline_results.json",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "d37cb517b8f01358290e8e81f7341be705d085aa9546750d08a119dec617b0cf",
+      "canonical_git_blob_content_sha256": "9c31b5d809c1b86c5841a3b56cb14c5f57a59e6a7e4965f00cb815bb9e282b55",
+      "git_blob_object_id": "6f8b11b6ed43be2f000d54a0597b7b558efab9ff",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "docs/d3_operational_baseline_results.md",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "afa390938fd6d56f445bd4fd3fd34d7d9214cb8a2626c7524e1e900a4c3cd411",
+      "canonical_git_blob_content_sha256": "9a3f72dd08acf6e7a8ced2a2386f3a2e0cfc7fb903530f1f067a6c535827778c",
+      "git_blob_object_id": "e2eb6aac734d3f44bec615ae66f91d3387c50578",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "docs/d3_restored_d1_checksums.json",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "aae2249db29a5a96037de27df2602882be6715eef8fd29f8d5e82b2fc5b97df0",
+      "canonical_git_blob_content_sha256": "3bb40169067a1d3e87cf616aa39764d704b2169214beca1674100e240143e096",
+      "git_blob_object_id": "5ee892e504334220b8dfa642c6a9f23fa0edab08",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "docs/d3r1_artifact_inventory.json",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "491cd3f4cb46a1e7a07e300220cedda1112a72f6b192bb6ba4cbd76832f7e73e",
+      "canonical_git_blob_content_sha256": "4ebff8a4524402c3eaffa1487fa8aa31b2418e8c374a4f0a708c5d78ccd3c615",
+      "git_blob_object_id": "5d48104ebaa30cf78ef3c7d9a9591889068e1fc2",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "docs/d3r1_benchmark_interpretation.json",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "31e360d2da34564de66780729817bfb034f5b6d27dd8d7454e33c8eaf4653f57",
+      "canonical_git_blob_content_sha256": "a2adf0a8101af3a89c869fe29fdef7eac61ca6ba74151aee140153989006ab6e",
+      "git_blob_object_id": "537c3c4667b719237a638d8d113c0a6faf11c4f6",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "docs/d4_operational_model_results.json",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "b3109dc16a4ff7c27b07e675408f5f6c797883322c342518d8e2d873aa84429d",
+      "canonical_git_blob_content_sha256": "860f2df84819ef50bdc59825c447a5f642f691e3c743d5a2c77b026dc00c7a31",
+      "git_blob_object_id": "bf380de62d2ae891c1c57e762a80967f21fd3bd5",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "docs/d4_operational_model_results.md",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "aef5d135cd19feb09c19191027049d20a73f163982dce9d26d70c36bff52cd4b",
+      "canonical_git_blob_content_sha256": "9108e88283c91292ff80af1d6f23a52a1ab8e11eb7f685f37af55cddcb6681df",
+      "git_blob_object_id": "c8a6c75d577a8291abee3c6d92a43b7fb9da3966",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "docs/d5_assembly_audit.json",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "a6f3b2ae283943fb6a376426d28f7820232b1c285bafb8bb84c058d5b6323e56",
+      "canonical_git_blob_content_sha256": "e6dce39bff2c1c441bd03bbebe428160c1d5398f022b2be5dbaa51d246e05a8e",
+      "git_blob_object_id": "94ae5b67970b39b65ea476e2735810d15df9cdd9",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "docs/d5_assembly_audit.md",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "81eb0298b6ccbb70a23ac823ccb75b6b9eef4cbc9150cfa22b010477efcb5ea8",
+      "canonical_git_blob_content_sha256": "2d268f4f3fb8a9e122195f2048d808d8f14ceafeefc66697e7345ae5c47b6f57",
+      "git_blob_object_id": "672a869d2195c823efd816ec696932af10508112",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "docs/d5_development_results.json",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "a2d60c58d5c32a9c174cf742160dca3bee5c5b625bf6985a08df93f0f16e6678",
+      "canonical_git_blob_content_sha256": "eb92f1e9663334b50b540c83f48aecc68670d8291c11b6874fedbd31ac67b86e",
+      "git_blob_object_id": "d9576c18a5bcf1364460136e463fc823ab06067d",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "docs/d5_development_results.md",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "96cf88865bcea3dc1e044147645937301b9ce4bfdaced501313a565b8e355c97",
+      "canonical_git_blob_content_sha256": "6fa3c754266eba8ad841bbef4cda728de69b86b1fa7532ba9c425a20d10518a6",
+      "git_blob_object_id": "1f4a12c23741e45ae69338a491d4015361f1aa07",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "docs/d5_frozen_protocol.json",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "22e37b46693d4934432aa19da80888b9fe7304a2f7ecf39f3639601768113198",
+      "canonical_git_blob_content_sha256": "4ed3d66bf60410b56e13e62047976c8bb24ac5cc4768ebf18eea77fa51c0ac91",
+      "git_blob_object_id": "3f5f1218f3104c125e1665d10f2ef495274d3f71",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "docs/d5_modeling_protocol.md",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "9787fc96af0ad7705dced0c57294cda8716f106c8665a49c673e3956ff10f866",
+      "canonical_git_blob_content_sha256": "73b4216fe6d29a31f41bdd26eace4f62ec8ddc08ae2274a432fcd3ed024db6e7",
+      "git_blob_object_id": "6d50e12e8165189aaf693a87072ee3858a737ac3",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "docs/data_source_inventory.md",
+      "class": "text_legacy_mixed_unreproducible",
+      "manifest_sha256": "1a86803965949ada6ff0336aa0ab4e5e76b0257b6aa55eae87e15b5cb06f3f37",
+      "canonical_git_blob_content_sha256": "22d634ad639ab1ce860035ba1c2884e8d5ade4611ad3b09d4753bafb01c818c7",
+      "git_blob_object_id": "0b7c26a0e2191e1c3662576c7fe29bc557691305",
+      "renders_to_manifest_digest_as": null,
+      "independently_reproducible": false,
+      "why_unreproducible": "The working tree mixed CRLF with bare LF at generation, so the recorded digest is of a byte pattern the content alone cannot reconstruct. Canonical content is verified against the committed blob; the legacy digest is preserved, not re-derived."
+    },
+    {
+      "path": "docs/e1_evidence_ledger.json",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "358b9e12482b72a968ce37d784a5be53c28f4a6adb8a48c6e1e773908d62bf77",
+      "canonical_git_blob_content_sha256": "4cbbd787a1fbbffd18a1ce55e4d02f2674a60534c0533784d56b0832d241cb93",
+      "git_blob_object_id": "ae59fb8669087adedae473bba50a05834115963b",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "docs/e1_executive_summary.md",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "64e4338ee7126225d5b3ee51eaf24a8b4173ca6a1d25c68abb5ce9d6e70456f1",
+      "canonical_git_blob_content_sha256": "8a35cd22191a09f8a20c7890a8aed5496ba544de14807125da5ac2e31ee5819b",
+      "git_blob_object_id": "8bec31c124057cdd8ff52573699b6486e2ecf5e3",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "docs/e1_portfolio_case_study.md",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "a337df2d03a38e43a317a5a3688e56dc9d493d1b2a2f271b3d548820fcf96981",
+      "canonical_git_blob_content_sha256": "91b6d556d6994798973d80058c6d995ab883dd82b6de217a756a7803b07ee580",
+      "git_blob_object_id": "8cdc13626c8b0981a4757827ebd33bf9e23b5310",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "docs/e1_reproducibility_manifest.json",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "6580fa57fa10a162d8782673ff8ec6a33f97e113a1d61059b6ffb311e7a7f7b3",
+      "canonical_git_blob_content_sha256": "a1bc1d776db74cc09db6c2858eb60977bc067d1d4df9ec91e01d2806bdb25007",
+      "git_blob_object_id": "5e702edcd637fffcad99ea297a4598d27914f60e",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "docs/e1_technical_closeout.md",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "cea344622dbb8675278452619c23b452a3b6cb2c7daa2aa1819affc88185949b",
+      "canonical_git_blob_content_sha256": "68804a18c411ec80baec54b73bc7215b4782e0ede30b6541325db9e9f011225f",
+      "git_blob_object_id": "547062f3f81652af70030d9af4036e3fd9943c68",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "docs/e2_release_candidate_manifest.json",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "d533fada90e29596b6eb2c39ed4fc8b3bd09612d734b75256380de68efec3b9b",
+      "canonical_git_blob_content_sha256": "799e8921a2e478c550170dd1566ffe6bc14c3dbdfbf170a0680617920744d1d5",
+      "git_blob_object_id": "b04bfd78c13ad878306200ea31887b98168c7bfd",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "docs/e2_release_readiness.json",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "969b7dd2b8fbc37f92c5d206d687a6030feb8c98cea2fbe99269b868478f4b00",
+      "canonical_git_blob_content_sha256": "31256c700bd2243161b74a872d68e1837423681e6ac99dac437285af32b4fb3a",
+      "git_blob_object_id": "f05ab4448cc4ca54398cd0121384b3e9224d5a2b",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "docs/e2_release_readiness.md",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "43694091ac408cad908dfe25a52161e1c80ea558e5bd258a50027054c085f1b6",
+      "canonical_git_blob_content_sha256": "9e15ee155d59b5316a6083f53bc24c2b5158d0e2f6870362a258c55298277bb4",
+      "git_blob_object_id": "9745b84a0fe03f5856df79f52c1f7edf37fd1ca4",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "docs/e2r1_release_checklist.md",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "87a8ed0683c6273b2ee049dd3bd73bee74062c150f73344928e725789d5057f2",
+      "canonical_git_blob_content_sha256": "0992501b888ef0104ddd27a90451c0b50e721d657b9fe1e41dbb073bf078833f",
+      "git_blob_object_id": "3707c18f7ab77408b35167174bf007710c8d040f",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "docs/oie_overlap_validation_output.json",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "f22809f455a09bf17007c67dc637c77697aea9c3eded700277aa7997f51fa1b5",
+      "canonical_git_blob_content_sha256": "162312feff64f56dc1fab5d2818771f4463e10cb3418ab5939f6fd815d6480f6",
+      "git_blob_object_id": "40c30e6fbaa397b74a99f88348a2080ce76e922e",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "docs/oie_overlap_validation_output_v2.json",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "04a75a22ba0c7bfaf5538b20751468e866e9ea304471fa37c6b2cfd7e5bda796",
+      "canonical_git_blob_content_sha256": "e74b5e80d71dcf648eaca3bdc825f7fd456ef7bf98256cb45f8384fa02c1b821",
+      "git_blob_object_id": "64597d068ca2c4157849b79fa10f44035c38dcc6",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "docs/task_a1_audit_output.json",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "74704f4150fb179818f00c56b29930eb9f7af1ebef7c2eb25ea8e198784f70b8",
+      "canonical_git_blob_content_sha256": "cbc9e86658a915fcf9920de19b5a9812bb3c887672a858c7fb27f868721cd5fb",
+      "git_blob_object_id": "9cf697441f47b4e4502ddf37799ec67c8c1ff1e4",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "docs/task_a1_history_extension_output.json",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "a4045ec1df1c2599b05a9365edbfafbae2cc7eee5e3ba4731c935b3309e65647",
+      "canonical_git_blob_content_sha256": "85080fa785b9efc8cc0f2acbcf8dedb37bde3a5068b1af4417a30d6841cffe6d",
+      "git_blob_object_id": "ceb9563cfc525690c29cb83fa1d83efe5a9738c6",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "pyproject.toml",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "4a949367a9723bc950a4f78c371f15e58d6fa90242e6f529d9da115e9a0c5b4d",
+      "canonical_git_blob_content_sha256": "feeeeb80e56e4c0548d41e34567406712dd604d96d27811402fd43fe64a6231a",
+      "git_blob_object_id": "19d08f6072553745966d7aa4a8b1b08309809814",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "requirements-dev.lock.txt",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "56e046377933d2a4fb6af5ac736dedddff0084fb8e74b8824264b3da76bb398e",
+      "canonical_git_blob_content_sha256": "a26fead35062ee925f24e6066a8f914005a1af06adb75bd0c9d4fac7cadde539",
+      "git_blob_object_id": "75646ae2516bbc09088c371e59c98f110641e940",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "requirements.lock.txt",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "6b5afc52075994448248eec4ab6b427a9354d357a78494ffddc1d9d9b3abc7d1",
+      "canonical_git_blob_content_sha256": "de60683492b9ee88a06ce37f154c048f7e183ee6f440de5678aae7709e2d9634",
+      "git_blob_object_id": "86e5e9f81998729b22fcca91d3a00cb66eb536df",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "schemas/e2r1_source_release.schema.yaml",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "c74740b85e9c2f37e2529aaf550927978a6da8e902224dd76abc78339f16e1a2",
+      "canonical_git_blob_content_sha256": "476e6ea4f5d79c08efbc339ad320fccae793e5d4727b85527e1db9285b7e5ca8",
+      "git_blob_object_id": "e317d6f6205e5f59b66aa7a2332f74426363af97",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "scripts/audit_target_sources.py",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "698921031a2460f6034ae12541f6dddd391b12352437337060995388933b33c7",
+      "canonical_git_blob_content_sha256": "bb12d3edb52be542fc87335e39971d376b8787ba6de1c4d336a442aac63c8aa7",
+      "git_blob_object_id": "dafce8fa943b91241add42d48999dc3fb0def56b",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "scripts/decide_c7_5_eppo_semantics.py",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "ae4b9c1eba830de4b19719e0a5af6b734af1aee789dc1d624ca77859f56df476",
+      "canonical_git_blob_content_sha256": "0b1cbfe2eb74e8678c9322279fbaca05adf828aec5607a98dab107213a262d50",
+      "git_blob_object_id": "7fe18bc1b99f71f3c8002b1f38bbc54cd2cca2c5",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "scripts/run_b4_baselines.py",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "4550f009a76ffe27f6ab7786ce27ef5f07465c2b5a2479113ec271a06563b23d",
+      "canonical_git_blob_content_sha256": "0d656ead91d640d029390952bffa0fd28abb75d81211e2a0586b4c9c854912e8",
+      "git_blob_object_id": "da75ea9b6efb0b5b895493e6af9ba3006a9a9d16",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "scripts/run_c7_eppo_full_ingestion.py",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "0e890c15a25a9dd98f56d8f0c15f4ad0dbdbad9b5e54d43908dfd33fdf1650a6",
+      "canonical_git_blob_content_sha256": "42dac58e0bbb2fbff4f1a0f1a8e822cb2571300878bcdcac098feb495edd05fc",
+      "git_blob_object_id": "bad78dba56f35fa7aa0161a94b22cd048845f11d",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "scripts/run_c8_eppo_transformations.py",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "e2c3cceae4b68cd7430934cdb6849df9cb2e4bdc83d66a89659d231898bd3841",
+      "canonical_git_blob_content_sha256": "8cfd5d99894c2cd979879f8d629bddcb52ecfcd7ac0c52d7c0b16d5289531659",
+      "git_blob_object_id": "37093062585eb6508b3ed598a509e1f4f317da67",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "scripts/run_c9_fuel_oil_conditioning.py",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "d7df751fef3b48110b03e6ddaec9b3852b3d82686550d9960d1ebee2696735de",
+      "canonical_git_blob_content_sha256": "c69904dcb920e1df43377a76104ce1dfcafb467d57597e743c52e7dd0866ac48",
+      "git_blob_object_id": "5e3813c4530ab2106cbdd23030c9f9ad9ce4ad8d",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "scripts/run_e2r1_source_release.py",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "b84a6866803f4f304d1bf51fac76c9a6678f4eeb0a1e0a2f140b21beb0634021",
+      "canonical_git_blob_content_sha256": "f48d9d0e37445339bc0a9fba13734ba73a0d2c7d0a458dd7fdb3c3d48fc244df",
+      "git_blob_object_id": "3eda95f539a34dfddba9718c9d04da622fc92b02",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "src/thai_supply_chain_ews/data/eppo_aggregation_contract.py",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "3dfad679d9facbab22427b8a6f1dcfd95ab7e0fdf06ca3a2f8b298728222a485",
+      "canonical_git_blob_content_sha256": "6847cfff7379107f6ce28b13bd486619c5cf864f632b2c6c29ff8e4a974c898b",
+      "git_blob_object_id": "b6d594ce3a789c00b5ac182cf694d283364dde41",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "src/thai_supply_chain_ews/data/eppo_daily_prices.py",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "8afde013e15fcff166392e0c19138d96208fbaf496a47e7efbe7490d4feba5b0",
+      "canonical_git_blob_content_sha256": "b685de2e09be901d9ae11a4830caf0273f7f1d029c1d637aaba28a7f29c3d8ea",
+      "git_blob_object_id": "dde7b56ebfeca2a63378713ba99e6f04e50980d7",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "src/thai_supply_chain_ews/data/eppo_full_archive.py",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "3562148e2248aefb699b1fab51b6cf58c5ad23bcbf827f8e4ef9a34ccdc24226",
+      "canonical_git_blob_content_sha256": "073d10661cdcea5754ac446fb6170ff296c82b45a543c402525ced784119b2ef",
+      "git_blob_object_id": "51eeda432bc5b48a565bf062b4ff842bc0c40b3a",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "src/thai_supply_chain_ews/data/eppo_product_semantics.py",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "9e54bac7865b2db2bae6cd7cab476d1cc29d20efb88f08240b17c47f1722b0df",
+      "canonical_git_blob_content_sha256": "cf412f52a3426c7900594c67c5f9dca99f01523494ed082f3ce1f1a226cab10d",
+      "git_blob_object_id": "f2b8bf72594cbd009c29a6d403717e231daa8090",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "src/thai_supply_chain_ews/data/eppo_source_availability.py",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "d544ff547a4ac75c5d325a87b9046e890a8f2628ff896a7e8fad503560775a53",
+      "canonical_git_blob_content_sha256": "bfd1f30b58994aeab939467c459234dd9be6fe16b46ccf6e4b2d6660a7f0a9cf",
+      "git_blob_object_id": "5f42e0d5b6f20406f775fd04193e66d6cf58d482",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "src/thai_supply_chain_ews/data/taxonomy.py",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "a70b03f402db06858c861b0535f739ece3026d5cddaeca6ff5c324e7e5079f3d",
+      "canonical_git_blob_content_sha256": "f23af45d90e6d1223bb887ec95d0cde84db1b39800b15e5d3eb1e6dc7e4e31b5",
+      "git_blob_object_id": "6f3e0beaa3d4aa17b11647fbdf53f9397c5dd56c",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "src/thai_supply_chain_ews/data/world_bank_commodities.py",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "87fc8182e3709d56541c035ca9906eee0eaa0f9d4251e0d7c9e8115c0185d8b6",
+      "canonical_git_blob_content_sha256": "a0900658397faa5ecb4b124224e199f943024eacb1f86f561121291a0ac75647",
+      "git_blob_object_id": "49f3564de35528c020ea9132830e9052dd74f78e",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "src/thai_supply_chain_ews/features/eppo_fuel_oil_transformations.py",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "706887e23763703f2bbeb6e570498e707139fbd40924344d56eb72f70d9b568b",
+      "canonical_git_blob_content_sha256": "ecda13bc1b7a4b8c152aec462d7b8ed5a73b45d0ff872d4710f9fe634c8ed22d",
+      "git_blob_object_id": "d7d9563b33ac04f264ba6b6958d275a22c58424f",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "src/thai_supply_chain_ews/release/clean_tree.py",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "f9a659a91a9c9a7bef17e4d99e318dadbe9f566997e74678aa9d94fc48fe6740",
+      "canonical_git_blob_content_sha256": "983f28fe677f832dacb2f1c5e15a21b4b1a5e75a16bed4fe86063dab74bc9a75",
+      "git_blob_object_id": "1b6bb08f7b53f5b151ca4ee4ab24439b62a20f7f",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "src/thai_supply_chain_ews/release/security_audit.py",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "c76ff89cfead6f968c572ca6ad927aa9c020335ec2e0c113195443aaf632e8c9",
+      "canonical_git_blob_content_sha256": "da75a78e8a5c7c03be537520c821a8ce368dc23abd753aa493f5cc58778425cb",
+      "git_blob_object_id": "11914806146b6225ed24958edeed72d92b16c267",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "src/thai_supply_chain_ews/release/source_release.py",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "373dc6e875b6eaff6e391588cd28edcdb2240f7ec3ce755b1d0c798bdb89a4e6",
+      "canonical_git_blob_content_sha256": "e755efd2573c0380569dcb8fa06756514f3a63e1b3162e1304eb42171c45a28a",
+      "git_blob_object_id": "30919d7975b910f440c3e81cce6067c5400fe8f2",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "src/thai_supply_chain_ews/targets/calibration.py",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "3fd97cbc83d86e3aa865c220525476d36d259cb81296a40ba5011c667bcf859c",
+      "canonical_git_blob_content_sha256": "b467897f34d2c746d6976373977fdf0563264d85ba5679ea69a7815b8e138f48",
+      "git_blob_object_id": "0a009de9c8f8fedf84dafb5d6945a5d51979486b",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "src/thai_supply_chain_ews/targets/component_diagnostics.py",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "eb09ec50b798c397ca5b535257d3750057f5289e392c0ecabf72d18cd694cddc",
+      "canonical_git_blob_content_sha256": "83ba29094685b31757f5341017253dbfeffebb2bd7680f84fdc296518eb3601a",
+      "git_blob_object_id": "13987f4039c1d7ad4f987fa39adc937aa59ba474",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "tests/data_backed_tests.txt",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "8361bc9a0db7e8212544f590f41af00b03814abeaa55e456086b26d3b6175b57",
+      "canonical_git_blob_content_sha256": "e043f89bed68b69cea7f5d604724a2fcb894739a89bf4bfaa70006a78d8af704",
+      "git_blob_object_id": "c96f612b9215ac9c2312d57e22b88100cc1c9beb",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "tests/test_b4_walk_forward.py",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "f3a849d17cba3d5829907b814f2899d0a9999f7595a265c027ce18ff8c1ed206",
+      "canonical_git_blob_content_sha256": "8f2a2aad6279caac83d54842e43eb30861137999b76b83aaf5dce69fe843730f",
+      "git_blob_object_id": "3ffb9b2fbf06d58b02d50b306b981c44aa465794",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "tests/test_c1_commodity_ingestion.py",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "71fe92f3fd9b23804d8ff70239d081282d7f96af2e63ea1c41e6d8917bb83c4a",
+      "canonical_git_blob_content_sha256": "2192f163e01dbbca56584fab2c56eb2e5518c09044b83729691018c2a3560e15",
+      "git_blob_object_id": "cce76a8ba2722194e527d8c2a3c20bc2aa7c2f25",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "tests/test_c7_5_eppo_semantics.py",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "d8cbf48aabbb0565a30999cd93a152f55db499ce46181617e2c41c09f3f4faf8",
+      "canonical_git_blob_content_sha256": "88d7f91ab5fa308874a8ee88c1e8e89b77b66293a27a752db44a2af216fe1cdb",
+      "git_blob_object_id": "cae1ce8a83cc84deb7551112f8207be3fc4f65d2",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "tests/test_c7_eppo_full_ingestion.py",
+      "class": "text_legacy_mixed_unreproducible",
+      "manifest_sha256": "654c5b21a19d0b5ff990e563bd915c904eb3530a20c7d7f5b3bdd0ce1eaa39c0",
+      "canonical_git_blob_content_sha256": "dd5802a224cf06adc6c59990265b436ed05cc883c3b4c4dd25ebab3bcba56c80",
+      "git_blob_object_id": "7c188eeaeff973f1810a543ec94c4dc9e184acd4",
+      "renders_to_manifest_digest_as": null,
+      "independently_reproducible": false,
+      "why_unreproducible": "The working tree mixed CRLF with bare LF at generation, so the recorded digest is of a byte pattern the content alone cannot reconstruct. Canonical content is verified against the committed blob; the legacy digest is preserved, not re-derived."
+    },
+    {
+      "path": "tests/test_c8_eppo_transformations.py",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "30677efcef5ff3d6c80035d2d8a721c93e98288da33becf14eb6446f07cba8aa",
+      "canonical_git_blob_content_sha256": "61d31f60c33b64af2b8573dbc1657809c59818dd7b58592d669bb4b6bb58cf1f",
+      "git_blob_object_id": "3ed9b589f4a299355eee8b586080da8e7ba8c94e",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "tests/test_c9_fuel_oil_conditioning.py",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "c262220dc5546fe5a250cb9f437aa10ee51d963000c7f19c131907d5dd901665",
+      "canonical_git_blob_content_sha256": "30a7e9e07bb01ea9de25e5a2a09620326d1c55245a1f6ab3a2953b0c30dc48fd",
+      "git_blob_object_id": "0cf2c2205f5e459de0918a8a5bd7a12fd82d9ce8",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    },
+    {
+      "path": "tests/test_e2r1_source_release.py",
+      "class": "text_legacy_crlf_reproducible",
+      "manifest_sha256": "063cffaaadd2697b77585755b6b2257ab420cd032db5b74115fc15fa4f4d68d3",
+      "canonical_git_blob_content_sha256": "faccc695e8f4c279e167817e44820af9e0a4d40e974a828f6df7c0134beaa119",
+      "git_blob_object_id": "0f2ec2e1b2d8b523b0944e253f8cb4179055ec51",
+      "renders_to_manifest_digest_as": "windows_crlf_worktree",
+      "independently_reproducible": true
+    }
+  ]
+}

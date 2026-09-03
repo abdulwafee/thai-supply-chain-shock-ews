@@ -44,6 +44,8 @@ import sys
 import time
 from pathlib import Path
 
+from . import byte_provenance as BP
+
 __all__ = [
     "PYTEST_SUMMARY",
     "CleanTreeError",
@@ -141,6 +143,12 @@ def tree_checksum(destination: Path) -> tuple:
 
     The created environment, caches and build outputs are skipped: they are
     products of running the verification, not part of the release.
+
+    Text is hashed canonically and binary raw, so the before-and-after
+    comparison detects a test that wrote into its own source tree, and not
+    merely a platform whose checkout uses different line terminators. Hashing
+    the working tree's bytes would have made this check report a change on
+    Linux that Windows called clean, which is the opposite of what it is for.
     """
     destination = Path(destination)
     digests = {}
@@ -151,7 +159,7 @@ def tree_checksum(destination: Path) -> tuple:
         for name in sorted(filenames):
             path = Path(dirpath) / name
             relative = path.relative_to(destination).as_posix()
-            digests[relative] = hashlib.sha256(path.read_bytes()).hexdigest()
+            digests[relative] = BP.release_digest(path.read_bytes())[0]
     combined = hashlib.sha256(
         json.dumps(dict(sorted(digests.items())), separators=(",", ":")).encode("utf-8")
     ).hexdigest()
