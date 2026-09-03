@@ -41,6 +41,7 @@ nothing.
 | how to reproduce it | [`docs/e1_reproducibility_manifest.json`](docs/e1_reproducibility_manifest.json) |
 | the decision history | [`docs/architecture/decision_log.md`](docs/architecture/decision_log.md) |
 | methods in depth | [`docs/methodology.md`](docs/methodology.md) |
+| how to run the Obsidian vault generator safely | [`docs/obsidian_vault_usage.md`](docs/obsidian_vault_usage.md) |
 
 **Running it yourself, and what ships (Task E2-R1).** The source-release
 candidate is prepared and verified but **not published**: no commit, tag, push,
@@ -545,6 +546,9 @@ material this project analyses, none of which is redistributed here; see
   robust-z normalization, then global logistic calibration to a common 0–100 scale and one shared
   risk-threshold set), walk-forward calibration behavior, and required tests.
 - `docs/methodology.md` — method summary (draft), pointing into the documents above.
+- `docs/obsidian_vault_usage.md` — how to run `scripts/build_obsidian_vault.py`: dry run first,
+  explicit `--vault-root` and `--backup-root`, what it manages, what it refuses to overwrite, and
+  how to roll a run back. A post-`v1.0.0` feature; the released tag does not contain it.
 - `configs/` — `data.yaml`, `features.yaml`, `model.yaml`, `targets.yaml`: adjustable settings, with
   unresolved items explicitly marked rather than silently defaulted.
 - `src/thai_supply_chain_ews/` — the installable package. Most modules are currently stubs

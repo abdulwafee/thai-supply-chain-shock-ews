@@ -68,8 +68,21 @@ def rendered(data, config):
 # ===========================================================================
 
 def test_the_contract_writes_outside_the_repository(config):
-    assert config["target"]["writes_inside_repository"] is False
-    assert config["target"]["vault_root"] == ".."
+    """And no longer chooses *which* outside directory. That is the operator's.
+
+    ``vault_root: ".."`` used to live here, which meant the generator wrote into
+    whatever directory contained the checkout the moment anybody ran it. The
+    folder names stay -- they describe the shape of a vault -- but the root they
+    hang from now arrives as an explicit argument.
+    """
+    target = config["target"]
+    assert target["writes_inside_repository"] is False
+    assert target["vault_root_is_configured"] is False
+    assert target["vault_root_source"] == "command_line_argument"
+    assert "vault_root" not in target, (
+        "a configured vault root is exactly the implicit destination this "
+        "change removed"
+    )
 
 
 def test_the_contract_refuses_to_overwrite_a_hand_edit(config):
@@ -287,12 +300,27 @@ def test_synthetic_08_writing_inside_the_repository_is_refused():
 
 
 def test_synthetic_09_the_archive_moves_and_never_deletes(config):
+    """A move, performed transactionally, and no deletion in the runner at all.
+
+    ``shutil.move`` moved into the transaction module along with the backup that
+    now precedes it. Deletion is allowed to exist only there, where it removes
+    nothing but paths that module's own manifest records as created -- and it
+    stays absent from the runner, which is where an accidental one would reach
+    a user's vault directly.
+    """
     plan = config["archive"]
     assert plan["move_not_delete"] is True
-    source = (ROOT / "scripts" / "build_obsidian_vault.py").read_text(encoding="utf-8")
-    assert "shutil.move" in source
-    for verb in ("os.remove", "unlink(", "rmtree", "write_text(stub"):
-        assert verb not in source
+    runner = (ROOT / "scripts" / "build_obsidian_vault.py").read_text(encoding="utf-8")
+    mover = (ROOT / "src" / "thai_supply_chain_ews" / "vault"
+             / "transaction.py").read_text(encoding="utf-8")
+    assert "shutil.move" in mover
+    assert "rmtree" not in mover, (
+        "rollback removes recorded files and empty directories only; a "
+        "recursive delete would remove whatever else arrived there"
+    )
+    for verb in ("shutil.move", "os.remove", "unlink(", "rmtree",
+                 "write_text(stub"):
+        assert verb not in runner
 
 
 def test_synthetic_10_every_archived_file_names_its_successor(config):
@@ -363,16 +391,33 @@ def test_synthetic_10b_no_checkout_folder_name_is_hard_coded(config):
 # 6. The runner
 # ===========================================================================
 
-def test_the_runner_takes_no_arguments_and_offers_no_escape_hatch():
+def test_the_runner_parses_arguments_and_offers_no_escape_hatch():
+    """It now takes arguments -- and still no way to overwrite a hand edit.
+
+    The earlier version took none at all, which sounded safe and was not: with
+    nothing to parse, every flag was ignored and the default action wrote to a
+    real vault. What must stay absent is the *bypass*, not the interface.
+    """
     import ast
 
     source = (ROOT / "scripts" / "build_obsidian_vault.py").read_text(encoding="utf-8")
     tree = ast.parse(source)
     main = next(node for node in tree.body
                 if isinstance(node, ast.FunctionDef) and node.name == "main")
-    assert not main.args.args and not main.args.kwonlyargs
-    for escape in ("argparse", "sys.argv[1", "--force", "--overwrite", "--inside"):
-        assert escape not in source
+    assert [argument.arg for argument in main.args.args] == ["argv"]
+    assert "argparse" in source
+
+    # Asked of the parser rather than of the file's text: the module docstring
+    # says in prose that there is no bypass, and a text search cannot tell a
+    # prohibition from the thing it prohibits. The same reason this project's
+    # language guards strip quoted spans before matching.
+    registered = {option for action in build.build_parser()._actions
+                  for option in action.option_strings}
+    for escape in ("--force", "--overwrite", "--inside", "--no-backup",
+                   "--skip-checks", "--yes"):
+        assert escape not in registered, f"{escape} is a bypass and must not exist"
+    assert {"--dry-run", "--apply", "--rollback", "--vault-root",
+            "--backup-root", "--config"} <= registered
 
 # ===========================================================================
 # 7. Ignore filters: repository-relative in the file, checkout-aware at runtime

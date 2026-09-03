@@ -21,10 +21,19 @@ task: OBSIDIAN-VAULT
 config_version: obsidian_vault_v1
 
 # ---------------------------------------------------------------------------
-# 1. Where things go. Paths are relative to the repository root.
+# 1. Where things go INSIDE a vault. The vault itself is named on the command
+#    line and is never chosen here.
+#
+#    This contract used to carry `vault_root: ".."`, which made the generator
+#    write into whatever directory happened to contain the checkout the moment
+#    anyone ran it. A destination nobody typed is a destination nobody checked,
+#    and this one is outside version control, so there was nothing to recover
+#    from. The folder names below stay in the contract because they describe the
+#    shape of the vault; the root they hang from arrives as --vault-root.
 # ---------------------------------------------------------------------------
 target:
-  vault_root: ".."
+  vault_root_is_configured: false
+  vault_root_source: command_line_argument
   notes_folder: "Knowledge Graph"
   archive_folder: "_archive"
   writes_inside_repository: false
