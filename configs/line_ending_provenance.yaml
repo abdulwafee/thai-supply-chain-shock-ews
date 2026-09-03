@@ -1,0 +1,298 @@
+# Line-ending provenance for the historical checksums (Task CI-R1).
+#
+# NOT ONE PIN BELOW IS EDITED. Each value is copied verbatim from the document
+# that recorded it, and verification re-derives it from content rather than
+# trusting the copy. If the copy and the source document ever disagree, that is
+# an error, not a correction.
+#
+# WHY THIS FILE EXISTS. Several early runners wrote a document with
+# Path.write_text on Windows -- where \n becomes \r\n on disk -- then hashed the
+# file they had just written. Git normalised the same file to LF on commit, so on
+# a Linux checkout the bytes no longer match a pin that was meant to prove the
+# record had not been edited. Nothing was ever edited. The digest measured the
+# working tree instead of the text, and it took a Linux CI run to notice.
+#
+# ALL HISTORICAL READS COME FROM GIT OBJECTS, NOT THE WORKING TREE. The branch
+# that adds this file also appends to docs/architecture/decision_log.md, which is
+# itself one of the affected paths. Verifying against the working tree would make
+# this file's own commit change what the v1.0.0 record says.
+
+schema_version: 1
+task: CI-R1
+config_version: line_ending_provenance_v1
+
+# ---------------------------------------------------------------------------
+# 1. The rule for everything from here on.
+# ---------------------------------------------------------------------------
+canonical_representation: canonical_lf
+canonical_rule: >-
+  Every new pin on a text artifact is a SHA-256 of the file's bytes with CRLF
+  normalised to LF. That is what git stores and what every platform checks out,
+  so it is the one representation that means the same thing everywhere. New text
+  artifacts are written with newline="\n" so the working tree agrees with the
+  blob and raw-byte tools agree too.
+new_pins_may_declare_a_legacy_representation: false
+tolerated_vulnerable_pin_assertions: 0
+
+subject_commit: 8c3c8f9cc9dfb6fd4e53729615191f2726c25047
+subject_commit_reachable_as_tag: v1.0.0
+network_access_during_verification: false
+reads_working_tree_for_historical_paths: false
+
+# ---------------------------------------------------------------------------
+# 2. Representations.
+# ---------------------------------------------------------------------------
+representations:
+  canonical_lf:
+    render: the content itself
+  windows_crlf_worktree:
+    render: canonical content with every LF replaced by CRLF
+    why_it_exists: >-
+      Written by a Python runner on Windows, hashed from the working tree before
+      git normalised it. The text is identical to the committed blob; only the
+      line terminator differs.
+  unreproducible_mixed_worktree:
+    render: none -- deliberately not renderable
+    why_it_exists: >-
+      The working tree mixed CRLF with bare LF at generation time. That byte
+      pattern cannot be reconstructed from content, so the pin is preserved and
+      verified as preserved rather than re-derived. Inventing a renderer for it
+      would repeat the original mistake in a new place.
+
+# ---------------------------------------------------------------------------
+# 3. The ten historical artifact pins.
+# ---------------------------------------------------------------------------
+entries:
+  - path: docs/e2_release_candidate_manifest.json
+    legacy_sha256: d533fada90e29596b6eb2c39ed4fc8b3bd09612d734b75256380de68efec3b9b
+    legacy_representation: windows_crlf_worktree
+    canonical_git_blob_content_sha256: 799e8921a2e478c550170dd1566ffe6bc14c3dbdfbf170a0680617920744d1d5
+    git_blob_object_id: b04bfd78c13ad878306200ea31887b98168c7bfd
+    pinned_in_path: configs/e2r1_source_release.yaml
+    pinned_in_field: supersession.pinned_artifact_checksums["docs/e2_release_candidate_manifest.json"]
+    evidence: >-
+      6,149 CR bytes in the Windows working tree, none in the committed blob.
+      Collapsing CRLF yields the blob exactly; re-inserting it reproduces the
+      pin exactly.
+
+  - path: docs/e2_release_readiness.json
+    legacy_sha256: 969b7dd2b8fbc37f92c5d206d687a6030feb8c98cea2fbe99269b868478f4b00
+    legacy_representation: windows_crlf_worktree
+    canonical_git_blob_content_sha256: 31256c700bd2243161b74a872d68e1837423681e6ac99dac437285af32b4fb3a
+    git_blob_object_id: f05ab4448cc4ca54398cd0121384b3e9224d5a2b
+    pinned_in_path: configs/e2r1_source_release.yaml
+    pinned_in_field: supersession.pinned_artifact_checksums["docs/e2_release_readiness.json"]
+    evidence: 1,231 CR bytes in the working tree, none in the blob; exact round trip.
+
+  - path: docs/e2_release_readiness.md
+    legacy_sha256: 43694091ac408cad908dfe25a52161e1c80ea558e5bd258a50027054c085f1b6
+    legacy_representation: windows_crlf_worktree
+    canonical_git_blob_content_sha256: 9e15ee155d59b5316a6083f53bc24c2b5158d0e2f6870362a258c55298277bb4
+    git_blob_object_id: 9745b84a0fe03f5856df79f52c1f7edf37fd1ca4
+    pinned_in_path: configs/e2r1_source_release.yaml
+    pinned_in_field: supersession.pinned_artifact_checksums["docs/e2_release_readiness.md"]
+    evidence: 63 CR bytes in the working tree, none in the blob; exact round trip.
+
+  - path: docs/c11_architecture_decision.json
+    legacy_sha256: d482d80fa74f5a488d3b02f4a2fd0a38d0155b9393f43c779c63cb6345cd3d73
+    legacy_representation: windows_crlf_worktree
+    canonical_git_blob_content_sha256: 384997b23f99dc8e76053c5858201f2371109bf4009cdd72e7a661076c4a6e67
+    git_blob_object_id: 0c1b4653795664430e82154b83cccece4219655c
+    pinned_in_path: docs/c11r1_governance_decision.json
+    pinned_in_field: preserved_c11_record.artifacts.decision_json.byte_sha256
+    evidence: >-
+      1,354 CR bytes in the working tree, none in the blob. The canonical digest
+      384997b2… is exactly what the Linux CI run observed and reported as a
+      mismatch.
+
+  - path: docs/c11_architecture_decision.md
+    legacy_sha256: 9a5467c89243f0c3b6aa79075814abd13ceb6b4e77fbf4b0f9c4cbb68124046e
+    legacy_representation: windows_crlf_worktree
+    canonical_git_blob_content_sha256: 7f45ed56015875b26f21f1d7799d10d2ec6839103052452cfdbfe7a527c56203
+    git_blob_object_id: 451075ca35f61c569c15ec369359e7e9bb4938ee
+    pinned_in_path: docs/c11r1_governance_decision.json
+    pinned_in_field: preserved_c11_record.artifacts.decision_markdown.byte_sha256
+    evidence: >-
+      307 CR bytes in the working tree, none in the blob. Broken in the same way
+      as the JSON beside it but never reported, because the assertion that
+      checks them stops at the first mismatch.
+
+  - path: docs/c11_architecture_decision_protocol.md
+    legacy_sha256: e823f9dcc1e7ce6dd7cd242e7e8f957d868b7a0d7c44ba4398eca96def31cd3d
+    legacy_representation: windows_crlf_worktree
+    canonical_git_blob_content_sha256: 146897ae828ed41d12e7b1d59e2532b5570b6c0584b1b5bcbaa2ec8d192a92fc
+    git_blob_object_id: fd9b62c85b396bcf8553b941aa7bb37702c28e34
+    pinned_in_path: docs/c11r1_governance_decision.json
+    pinned_in_field: preserved_c11_record.artifacts.protocol_markdown.byte_sha256
+    evidence: >-
+      119 CR bytes in the working tree, none in the blob. Found only by
+      simulating a Linux checkout against every pinned artifact rather than
+      reading the CI log: the C11 assertion stops at the first mismatch, so it
+      reported the decision JSON and never reached this file. Two of the four
+      C11 pins were broken and one failure was visible.
+
+  - path: docs/oie_overlap_validation_output.json
+    legacy_sha256: f22809f455a09bf17007c67dc637c77697aea9c3eded700277aa7997f51fa1b5
+    legacy_representation: windows_crlf_worktree
+    canonical_git_blob_content_sha256: 162312feff64f56dc1fab5d2818771f4463e10cb3418ab5939f6fd815d6480f6
+    git_blob_object_id: 40c30e6fbaa397b74a99f88348a2080ce76e922e
+    pinned_in_path: tests/test_validate_oie_overlap_v2.py
+    pinned_in_field: V1_PINNED_SHA256["docs/oie_overlap_validation_output.json"]
+    evidence: >-
+      1,458 CR bytes in the working tree, none in the blob. The two sibling pins
+      in the same table carry no CR and have always passed on both platforms.
+
+  - path: docs/d5_frozen_protocol.json
+    legacy_sha256: 22e37b46693d4934432aa19da80888b9fe7304a2f7ecf39f3639601768113198
+    legacy_representation: windows_crlf_worktree
+    canonical_git_blob_content_sha256: 4ed3d66bf60410b56e13e62047976c8bb24ac5cc4768ebf18eea77fa51c0ac91
+    git_blob_object_id: 3f5f1218f3104c125e1665d10f2ef495274d3f71
+    pinned_in_path: docs/e1_reproducibility_manifest.json
+    pinned_in_field: artifacts[path == "docs/d5_frozen_protocol.json"].checksum
+    additionally_pinned_in:
+      - path: docs/c12_channel_closure.json
+        field: preservation.byte_checksums["docs/d5_frozen_protocol.json"]
+    evidence: >-
+      319 CR bytes in the working tree, none in the blob; exact round trip. Two
+      documents pin this path and both record the same literal, which is checked
+      rather than assumed. Neither assertion failed in CI because both are
+      registered data-backed and CI has no generated tables; that is absence of
+      execution, not evidence of correctness.
+
+  - path: docs/d3_locked_test_manifest.json
+    legacy_sha256: f568d82a5251a2aaf015b2ddc03cd133fbe4b2bde01e7ddfe115bc6e7216097a
+    legacy_representation: windows_crlf_worktree
+    canonical_git_blob_content_sha256: 0fdcaf5c0e98e7d3ecb4ac76e1f8f66c269fe75f84bc71df744b0c7d13fb6001
+    git_blob_object_id: 171b81444f6eaad8ca21aa25b2e61e936a4e6635
+    pinned_in_path: docs/e1_reproducibility_manifest.json
+    pinned_in_field: artifacts[path == "docs/d3_locked_test_manifest.json"].checksum
+    evidence: >-
+      75 CR bytes in the working tree, none in the blob; exact round trip.
+    scope_note: >-
+      This is the tracked public manifest document itself, and nothing else. It
+      is one of the 449 rows of the E2-R1 release manifest and matches no
+      locked-outcome path fragment. Only its own bytes are digested here: no
+      path named inside it is followed, and no locked outcome, locked dataset or
+      final-test artifact is opened, listed, hashed or evaluated.
+
+  - path: docs/d3r1_benchmark_interpretation.json
+    legacy_sha256: 31e360d2da34564de66780729817bfb034f5b6d27dd8d7454e33c8eaf4653f57
+    legacy_representation: windows_crlf_worktree
+    canonical_git_blob_content_sha256: a2adf0a8101af3a89c869fe29fdef7eac61ca6ba74151aee140153989006ab6e
+    git_blob_object_id: 537c3c4667b719237a638d8d113c0a6faf11c4f6
+    pinned_in_path: docs/e1_reproducibility_manifest.json
+    pinned_in_field: >-
+      artifacts[path == "docs/d3r1_benchmark_interpretation.json"].checksum
+    evidence: >-
+      74 CR bytes in the working tree, none in the blob; exact round trip.
+
+# ---------------------------------------------------------------------------
+# 4. Where raw-byte hashing is correct and must not be canonicalised.
+#    A blanket ban would corrupt every one of these.
+# ---------------------------------------------------------------------------
+raw_byte_hashing_allowed:
+  - {path: src/thai_supply_chain_ews/data/oie.py, symbol: sha256_of_file,
+     hashes: downloaded_xlsx_workbook,
+     reason: "A publisher's binary workbook. Normalising bytes would corrupt it."}
+  - {path: src/thai_supply_chain_ews/data/source_manifests.py, symbol: sha256_of_file,
+     hashes: downloaded_source_document,
+     reason: "Retrieval manifests record the bytes the publisher served."}
+  - {path: src/thai_supply_chain_ews/data/eppo_full_archive.py, symbol: sha256_bytes,
+     hashes: downloaded_xls_workbook,
+     reason: "Legacy BIFF workbooks; binary."}
+  - {path: src/thai_supply_chain_ews/data/eppo_product_semantics.py, symbol: inline,
+     hashes: downloaded_attachment, reason: "Binary attachment bytes."}
+  - {path: scripts/run_c2_commodity_features.py, symbol: inline,
+     hashes: generated_parquet, reason: "Binary columnar file."}
+  - {path: scripts/run_c3_industry_exposure.py, symbol: inline,
+     hashes: generated_parquet, reason: "Binary columnar file."}
+  - {path: scripts/run_c4_industry_conditioned_features.py, symbol: inline,
+     hashes: generated_parquet, reason: "Binary columnar file."}
+  - {path: scripts/run_d1_development_model.py, symbol: inline,
+     hashes: generated_parquet, reason: "Binary prediction table."}
+
+# ---------------------------------------------------------------------------
+# 5. Frozen historical runners. Preserved unchanged; they produced the legacy
+#    pins and are the reason this file exists. None can create a new pin without
+#    first overwriting a historical document, which the preservation tests refuse.
+# ---------------------------------------------------------------------------
+frozen_historical_hashing:
+  - {path: scripts/run_e2_release_preparation.py, symbol: _file_checksum,
+     reason: "Superseded by E2-R1 and refuses to execute at all."}
+  - {path: scripts/run_c11r1_governance_closure.py, symbol: byte_sha256,
+     reason: "Produced the two C11 legacy pins."}
+  - {path: scripts/run_c12_channel_closure.py, symbol: byte_sha256,
+     reason: "C12 closure record."}
+  - {path: scripts/validate_oie_overlap.py, symbol: sha256_of,
+     reason: "Produced the v1 OIE pin; superseded by the v2 script."}
+  - {path: src/thai_supply_chain_ews/synthesis/reproducibility_manifest.py, symbol: inline,
+     reason: "E1 evidence ledger."}
+  - {path: scripts/run_b3_target_build.py, symbol: _sha256, reason: "B3 record."}
+  - {path: scripts/run_b4_baselines.py, symbol: _sha256, reason: "B4 record."}
+  - {path: scripts/audit_history_extension.py, symbol: _sha256, reason: "A1 audit."}
+  - {path: scripts/audit_target_sources.py, symbol: _sha256, reason: "A1 audit."}
+  - {path: scripts/audit_c5_price_stage_alignment.py, symbol: inline, reason: "C5 audit."}
+
+# ---------------------------------------------------------------------------
+# 6. Assertion sites that were vulnerable and are now representation-aware.
+#
+#    Found by auditing the hashing call sites, not by reading a CI log: both
+#    compare a working tree against digests taken on Windows, and both would
+#    have failed on a Linux machine that has the data. Neither failed in CI,
+#    and that was luck rather than correctness -- each is registered
+#    data-backed, and CI has no generated tables, so each was skipped. A skipped
+#    test is not a passing test, so they were corrected rather than tolerated.
+# ---------------------------------------------------------------------------
+corrected_worktree_pin_assertions:
+  - path: tests/test_c12_channel_closure.py
+    test: test_the_pinned_artifacts_are_all_present_and_unchanged
+    data_backed_registered: true
+    representation_aware: true
+    pins_declared_in: docs/c12_channel_closure.json
+    pinned_field: preservation.byte_checksums
+    affected_documents:
+      - docs/d5_frozen_protocol.json
+    binary_rows_hashed_raw: true
+    correction: >-
+      Comparison logic only. The pinned literals in
+      docs/c12_channel_closure.json are untouched; a raw-byte match is still
+      tried first, and only a path declared above may fall back to its single
+      declared representation.
+  - path: tests/test_e1_evidence_synthesis.py
+    test: test_synthetic_18_an_upstream_result_artifact_is_modified
+    data_backed_registered: true
+    representation_aware: true
+    pins_declared_in: docs/e1_reproducibility_manifest.json
+    pinned_field: artifacts[].checksum where checksum_kind == byte_sha256
+    affected_documents:
+      - docs/d3_locked_test_manifest.json
+      - docs/d3r1_benchmark_interpretation.json
+      - docs/d5_frozen_protocol.json
+    binary_rows_hashed_raw: true
+    correction: >-
+      Comparison logic only. The pinned literals in
+      docs/e1_reproducibility_manifest.json are untouched, and the eight Parquet
+      rows in the same loop keep raw-byte hashing, which is correct for them.
+    scope_note: >-
+      docs/d3_locked_test_manifest.json is verified as a tracked public document
+      and nothing more. No path inside it is followed, and no locked outcome,
+      locked dataset or final-test artifact is opened, listed, hashed or
+      evaluated.
+
+# ---------------------------------------------------------------------------
+# 7. A pin assertion that is safe today, and why that is a measurement rather
+#    than an assumption. Every document it pins is CR-free, so the recorded
+#    digest is already canonical and matches on both platforms. Listed so the
+#    guard has an account of the site, and so the claim is re-checked on every
+#    run instead of being remembered.
+# ---------------------------------------------------------------------------
+worktree_pin_assertions_lf_clean:
+  - path: tests/test_d3_operational_baselines.py
+    test: test_restored_d1_document_checksums_are_recorded
+    pins_declared_in: docs/d3_restored_d1_checksums.json
+    pinned_key: restored
+    reason: >-
+      Both restored D1 documents carry no carriage return, so their raw and
+      canonical digests are the same value. The test therefore passes on Linux
+      and on Windows for the same reason, not by luck. A test verifies that this
+      is still true rather than trusting this sentence.

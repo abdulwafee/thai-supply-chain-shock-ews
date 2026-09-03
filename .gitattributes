@@ -1,0 +1,25 @@
+# Line endings are normalised so a checksum means the same thing on every platform.
+#
+# Without this, Git with core.autocrlf=true gives a Windows worktree CRLF while the
+# committed blob stays LF. Any pin taken from the worktree then fails on Linux, even
+# though the content is identical. That is exactly what happened to ten governance
+# checksums and to 118 rows of the E2-R1 release manifest; configs/line_ending_provenance.yaml
+# and docs/e2r1_release_manifest_errata.json record it.
+#
+# Safe to apply here: no tracked text blob at v1.0.0 contains a CR byte, so
+# normalisation changes no committed content. The binary types below are listed
+# explicitly rather than left to heuristics -- a Parquet file or a workbook that got
+# line-ending conversion would be corrupted, not merely reformatted.
+
+* text=auto eol=lf
+
+*.png       binary
+*.pdf       binary
+*.zip       binary
+*.xls       binary
+*.xlsx      binary
+*.parquet   binary
+*.whl       binary
+*.gz        binary
+*.pkl       binary
+*.joblib    binary

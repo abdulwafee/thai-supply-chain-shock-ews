@@ -662,13 +662,22 @@ def _limitations(config: dict, clean: dict, security: dict) -> list:
 
 
 def _write_outputs(config: dict, manifest: dict, report: dict) -> None:
+    """Write the three documents with LF line endings on every platform.
+
+    ``newline="\n"`` is not cosmetic. Without it Python translates ``\n`` to
+    ``\r\n`` on Windows, so a runner hashes bytes that no other machine will
+    ever see: the checksum looks right where it was produced and fails
+    everywhere else. That is exactly how ten governance pins and 118 rows of
+    the release manifest came to disagree with their own repository.
+    """
     outputs = config["outputs"]
     (ROOT / outputs["release_manifest"]).write_text(
-        json.dumps(manifest, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
+        json.dumps(manifest, indent=2, ensure_ascii=False) + "\n",
+        encoding="utf-8", newline="\n",
     )
     (ROOT / outputs["decision_json"]).write_text(
         json.dumps(report, indent=2, ensure_ascii=False, default=str) + "\n",
-        encoding="utf-8",
+        encoding="utf-8", newline="\n",
     )
     markdown = _render_decision_markdown(config, report)
     SR.assert_mit_not_applied_to_third_party_data(markdown)
@@ -677,7 +686,9 @@ def _write_outputs(config: dict, manifest: dict, report: dict) -> None:
     SR.assert_no_invented_author_identity(markdown, permitted=())
     SR.assert_limitation_is_documented(markdown, LIMITATION_PHRASES)
     SEC.assert_no_secret_values_printed(markdown, [])
-    (ROOT / outputs["decision_markdown"]).write_text(markdown, encoding="utf-8")
+    (ROOT / outputs["decision_markdown"]).write_text(
+        markdown, encoding="utf-8", newline="\n",
+    )
     print(f"\nwrote {outputs['release_manifest']}, {outputs['decision_json']} "
           f"and {outputs['decision_markdown']}")
 
