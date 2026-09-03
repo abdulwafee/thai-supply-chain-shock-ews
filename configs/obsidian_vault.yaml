@@ -33,19 +33,35 @@ target:
 # Obsidian walks every file in the vault. Without these it indexes the virtual
 # environment and a hundred megabytes of downloaded workbooks, and the graph
 # view fills with orphan nodes from third-party package READMEs.
+#
+# THE PATHS BELOW ARE RELATIVE TO THE REPOSITORY ROOT, and carry no checkout
+# folder name. Obsidian needs a vault-relative filter, and the vault is the
+# parent of the checkout, so the folder name is genuinely part of what Obsidian
+# is told -- but it is *not* part of what is version-controlled here. The
+# builder reads the real directory name at runtime and prefixes each entry.
+# Writing the name into this file would make the filters work only in a
+# checkout that happened to be called that, which is the same defect the
+# `superseded_by` paths above had.
+#
+# `kind` is preserved deliberately. Obsidian treats a bare string as a name
+# filter and a `path:`-prefixed string as a path filter, and they are not
+# interchangeable. It is declared per entry rather than inferred from a prefix
+# somebody might forget to type.
+ignore_filters_relative_to: repository_root
+ignore_filters_render_separator: "/"
 ignore_filters:
-  - "thai-supply-chain-ews/.venv"
-  - "thai-supply-chain-ews/data/raw"
-  - "thai-supply-chain-ews/data/interim"
-  - "thai-supply-chain-ews/data/features"
-  - "thai-supply-chain-ews/data/processed"
-  - "thai-supply-chain-ews/data/targets"
-  - "thai-supply-chain-ews/data/model_input"
-  - "thai-supply-chain-ews/.git"
-  - "thai-supply-chain-ews/.pytest_cache"
-  - "thai-supply-chain-ews/.ruff_cache"
-  - "path:thai-supply-chain-ews/dist"
-  - "path:thai-supply-chain-ews/build"
+  - {kind: name, path: ".venv"}
+  - {kind: name, path: "data/raw"}
+  - {kind: name, path: "data/interim"}
+  - {kind: name, path: "data/features"}
+  - {kind: name, path: "data/processed"}
+  - {kind: name, path: "data/targets"}
+  - {kind: name, path: "data/model_input"}
+  - {kind: name, path: ".git"}
+  - {kind: name, path: ".pytest_cache"}
+  - {kind: name, path: ".ruff_cache"}
+  - {kind: path, path: "dist"}
+  - {kind: path, path: "build"}
 
 # ---------------------------------------------------------------------------
 # 2. The frontmatter contract every generated note carries.
@@ -216,31 +232,37 @@ concepts:
 archive:
   reason: superseded_by_repository_copy
   move_not_delete: true
+  # `superseded_by` is relative to the REPOSITORY ROOT, never to the checkout
+  # folder. A checkout is named by whoever cloned it, and the name differs
+  # between this project's own directory, GitHub's default for the repository
+  # and any local clone, so a path carrying a folder name resolves only on the
+  # machine that wrote it. No checkout folder name appears in this file.
+  superseded_by_paths_are_relative_to: repository_root
   files:
     - name: decision_log.md
-      superseded_by: thai-supply-chain-ews/docs/architecture/decision_log.md
+      superseded_by: docs/architecture/decision_log.md
       note: The vault copy holds AD-R1 to AD-R4; the repository copy is a superset.
     - name: data_architecture.md
-      superseded_by: thai-supply-chain-ews/docs/architecture/data_architecture.md
+      superseded_by: docs/architecture/data_architecture.md
       note: Differs only in paths that have since moved.
     - name: data_contract_industry_month_panel.md
-      superseded_by: thai-supply-chain-ews/docs/architecture/data_contract_industry_month_panel.md
+      superseded_by: docs/architecture/data_contract_industry_month_panel.md
       note: Differs only in a path that has since moved.
     - name: data_source_inventory.md
-      superseded_by: thai-supply-chain-ews/docs/data_source_inventory.md
+      superseded_by: docs/data_source_inventory.md
       note: >-
         The vault copy states that no pipeline was built and no data downloaded.
         That was true when it was written and is not true now.
     - name: project_roadmap.md
-      superseded_by: thai-supply-chain-ews/docs/project_roadmap.md
+      superseded_by: docs/project_roadmap.md
       note: Differs only in a path that has since moved.
     - name: target_definition.md
-      superseded_by: thai-supply-chain-ews/docs/target_definition.md
+      superseded_by: docs/target_definition.md
       note: >-
         The vault copy records all four target components as unresolved. B2 and
         B3 have since resolved the target to MPI alone.
     - name: modeling_strategy.md
-      superseded_by: thai-supply-chain-ews/docs/modeling_strategy.md
+      superseded_by: docs/modeling_strategy.md
       note: Identical to the repository copy; archived to remove the duplicate.
 
 # ---------------------------------------------------------------------------

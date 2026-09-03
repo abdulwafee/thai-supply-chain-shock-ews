@@ -24,7 +24,7 @@ from __future__ import annotations
 import json
 import shutil
 import sys
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 
 import yaml
 
@@ -70,7 +70,8 @@ def write_notes(rendered, folder: Path, generated_by: str, prohibitions: dict) -
         if verdict == "unchanged":
             tally["unchanged"] += 1
             continue
-        path.write_text(note.render(generated_by), encoding="utf-8")
+        path.write_text(note.render(generated_by), encoding="utf-8",
+                        newline="\n")
         tally["written"] += 1
     return tally
 
@@ -127,25 +128,95 @@ def archive_superseded(contract: dict, vault_root: Path) -> dict:
             note = " ".join(entry["note"].split())
             lines.append(f"| `{entry['name']}` | `{entry['superseded_by']}` | {note} |")
         lines += ["", "Read the current versions in the repository, not these."]
-        (folder / "README.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
+        (folder / "README.md").write_text(
+            "\n".join(lines) + "\n", encoding="utf-8", newline="\n")
 
     return {"moved": [entry["name"] for entry in moved],
             "already_absent": absent, "left_alone": blocked}
 
 
-def apply_ignore_filters(contract: dict, vault_root: Path) -> dict:
-    """Stop Obsidian indexing the virtual environment and the raw downloads."""
+class IgnoreFilterError(ValueError):
+    """A configured ignore filter is not a usable repository-relative path."""
+
+
+def render_ignore_filters(contract: dict, repository_name: str) -> list:
+    """Turn repository-relative entries into vault-relative Obsidian filters.
+
+    Obsidian filters are relative to the **vault**, and the vault is the parent
+    of this checkout, so the checkout's directory name is genuinely part of what
+    Obsidian must be told. It is supplied here, at runtime, from the real
+    directory -- never written into the configuration, where it would only ever
+    be right on the machine that typed it.
+
+    ``kind`` is carried through rather than guessed: Obsidian reads a bare
+    string as a name filter and a ``path:``-prefixed string as a path filter,
+    and the two do different things.
+
+    Separators are forced to ``/`` because Obsidian stores its filters that way
+    on every platform. Building them with ``Path`` would emit backslashes on
+    Windows and produce filters that silently match nothing.
+    """
+    if contract.get("ignore_filters_relative_to") != "repository_root":
+        raise IgnoreFilterError(
+            "ignore_filters must declare ignore_filters_relative_to: "
+            "repository_root, so a reader knows what the paths are relative to "
+            "without inferring it"
+        )
+    separator = contract.get("ignore_filters_render_separator", "/")
+    if not repository_name or repository_name in (".", ".."):
+        raise IgnoreFilterError(
+            f"{repository_name!r} is not a usable checkout directory name"
+        )
+
+    rendered = []
+    for entry in contract["ignore_filters"]:
+        kind, relative = entry["kind"], entry["path"]
+        if kind not in ("name", "path"):
+            raise IgnoreFilterError(
+                f"{kind!r} is not an Obsidian filter kind; use 'name' or 'path'"
+            )
+        if relative.startswith(("/", "\\")):
+            raise IgnoreFilterError(
+                f"{relative!r} starts with a separator, so it is not relative "
+                "to the repository root"
+            )
+        candidate = PurePosixPath(relative.replace("\\", "/"))
+        if candidate.is_absolute() or relative[1:3] in (":/", ":\\"):
+            raise IgnoreFilterError(f"{relative!r} is an absolute path")
+        if ".." in candidate.parts:
+            raise IgnoreFilterError(
+                f"{relative!r} traverses upward; an ignore filter may not point "
+                "outside the repository it describes"
+            )
+        joined = separator.join((repository_name, *candidate.parts))
+        rendered.append(f"path:{joined}" if kind == "path" else joined)
+    return rendered
+
+
+def apply_ignore_filters(contract: dict, vault_root: Path,
+                         repository_root: Path = ROOT) -> dict:
+    """Stop Obsidian indexing the virtual environment and the raw downloads.
+
+    Additive and idempotent. Filters already present are left as they are, and
+    filters somebody added by hand are never removed -- this generator does not
+    get to decide that a person's own setting was a mistake.
+    """
+    filters = render_ignore_filters(contract, Path(repository_root).name)
     path = vault_root / contract["target"]["obsidian_config"]
     if not path.exists():
-        return {"updated": False, "reason": "no .obsidian/app.json in this vault"}
+        return {"updated": False, "reason": "no .obsidian/app.json in this vault",
+                "rendered": filters}
     settings = json.loads(path.read_text(encoding="utf-8") or "{}")
     existing = list(settings.get("userIgnoreFilters") or [])
-    wanted = [f for f in contract["ignore_filters"] if f not in existing]
+    wanted = [f for f in filters if f not in existing]
     if not wanted:
-        return {"updated": False, "reason": "already present", "filters": len(existing)}
+        return {"updated": False, "reason": "already present",
+                "filters": len(existing), "rendered": filters}
     settings["userIgnoreFilters"] = existing + wanted
-    path.write_text(json.dumps(settings, indent=2) + "\n", encoding="utf-8")
-    return {"updated": True, "added": wanted, "filters": len(settings["userIgnoreFilters"])}
+    path.write_text(json.dumps(settings, indent=2) + "\n", encoding="utf-8",
+                    newline="\n")
+    return {"updated": True, "added": wanted, "rendered": filters,
+            "filters": len(settings["userIgnoreFilters"])}
 
 
 def main() -> int:
@@ -181,7 +252,7 @@ def main() -> int:
     canvas = emit.build_canvas(data, target["notes_folder"])
     canvas_path = folder / "Thai Supply Chain EWS.canvas"
     if not canvas_path.exists() or canvas_path.read_text(encoding="utf-8") != canvas:
-        canvas_path.write_text(canvas, encoding="utf-8")
+        canvas_path.write_text(canvas, encoding="utf-8", newline="\n")
         print(f"canvas     : {canvas_path.name} written")
     else:
         print(f"canvas     : {canvas_path.name} unchanged")
