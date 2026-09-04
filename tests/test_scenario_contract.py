@@ -1651,18 +1651,30 @@ def test_the_filesystem_guard_would_actually_catch_a_reach(tmp_path):
     assert {"configs", "structural_exposure_scenario.yaml"} <= found
 
 
-def test_phase_one_ships_no_calculation_report_or_cli_module():
+def test_phase_two_ships_only_reviewed_modules_and_no_phase_three_module():
+    # Phase 2 deliberately added the pinned-artifact loader and the calculation engine.
+    # The set stays closed: an unreviewed Phase 3 module — `report.py`, `__main__.py`,
+    # a CLI — must still make this fail, which a subset or count assertion would not.
     package = CONTRACT_SOURCE.parent
     present = sorted(path.name for path in package.glob("*.py"))
-    assert present == ["__init__.py", "contract.py"]
+    assert present == [
+        "__init__.py",
+        "artifacts.py",
+        "contract.py",
+        "exposure.py",
+    ]
 
 
-def test_the_public_api_exposes_only_reviewed_phase_one_names():
+def test_the_public_api_exposes_only_reviewed_phase_one_and_two_names():
     from thai_supply_chain_ews import scenario
 
+    # `exposure` left this set when it stopped being a placeholder for an unfinished
+    # calculation API and became the reviewed Phase 2 submodule, exported the same way
+    # `contract` and `artifacts` are. Every remaining name is still unbuilt.
     unfinished = {"run", "rank", "score", "report", "render", "explain", "main", "cli",
-                  "load_artifacts", "exposure"}
+                  "load_artifacts"}
     assert not set(scenario.__all__) & unfinished
+    assert {"artifacts", "contract", "exposure"} <= set(scenario.__all__)
 
 
 def test_the_parsing_helper_is_not_part_of_the_public_api():
