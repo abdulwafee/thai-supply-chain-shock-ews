@@ -43,10 +43,7 @@ nothing.
 | methods in depth | [`docs/methodology.md`](docs/methodology.md) |
 | how to run the Obsidian vault generator safely | [`docs/obsidian_vault_usage.md`](docs/obsidian_vault_usage.md) |
 
-**Running it yourself, and what ships (Task E2-R1).** The source-release
-candidate is prepared and verified but **not published**: no commit, tag, push,
-GitHub repository, PyPI upload or release. It is **MIT licensed**, released as a
-**public GitHub source checkout**, and requires **Python 3.12**.
+**Running it yourself, and what ships (Task E2-R1).** Task E2-R1 prepared and verified the source-release candidate; publication followed in Task E3. The project is now published as a public GitHub source checkout under the MIT License and requires Python 3.12 or newer. `v1.0.0` is the first published release; see [GitHub Releases](https://github.com/abdulwafee/thai-supply-chain-shock-ews/releases) for published versions. The package is not currently published to PyPI.
 
 | you want | read |
 | --- | --- |
