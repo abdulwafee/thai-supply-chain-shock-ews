@@ -1,0 +1,294 @@
+# Schema for a Structural Exposure Scenario input document.
+#
+# Describes what thai_supply_chain_ews.scenario.contract ACTUALLY accepts, and is
+# checked against that module by tests/test_scenario_contract.py: the declared field
+# sets and required sets must match the validator's own constants exactly, so a
+# schema and a validator cannot drift apart while both look correct.
+#
+# The document is USER INPUT and is treated as untrusted structured data. Unknown
+# fields are refused rather than ignored, at the top level and inside every shock,
+# because a silently dropped field is a scenario the user thinks they ran and did
+# not. Policy limits live in configs/structural_exposure_scenario.yaml; this file
+# describes shape and type.
+#
+# No target column, no score, no prediction, no basis, no locked-test field, no
+# company identifier. Their absence is enforced by test, not by convention.
+
+schema_version: 1
+document: scenario_input
+document_schema_version: structural_exposure_scenario_v1
+validated_by: thai_supply_chain_ews.scenario.contract.validate_scenario_document
+policy: configs/structural_exposure_scenario.yaml
+accepted_extensions: [".yaml", ".yml", ".json"]
+
+interpretation: >-
+  A hypothetical upstream price movement, stated relatively. The document selects no
+  data, names no vintage and asserts nothing about the world. It is the left-hand
+  side of a structural accounting calculation whose coefficients are fixed at the
+  2015 NESDC benchmark year.
+
+unknown_field_behaviour: reject
+duplicate_mapping_key_behaviour: reject
+top_level_type: mapping
+
+top_level:
+  required: [schema_version, scenario_id, shocks]
+  optional: [scenario_name, scenario_date, note]
+
+  fields:
+    - name: schema_version
+      type: string
+      required: true
+      const: structural_exposure_scenario_v1
+      note: "Any other value is refused; there is no forward or backward tolerance."
+
+    - name: scenario_id
+      type: string
+      required: true
+      pattern: "^[a-z0-9][a-z0-9_-]{2,63}$"
+      note: >-
+        Lower-case, 3 to 64 characters. Used in the canonical payload and, in a
+        later phase, in output filenames, so the character set is deliberately
+        narrow.
+
+    - name: scenario_name
+      type: string
+      required: false
+      min_length: 1
+      max_length: 120
+      note: "Human label. Non-empty when present."
+
+    - name: scenario_date
+      type: string
+      required: false
+      format: iso_calendar_date
+      pattern: "^\\d{4}-\\d{2}-\\d{2}$"
+      date_only: true
+      timestamp_accepted: false
+      quoting_is_semantically_irrelevant: true
+      note: >-
+        A real calendar date, validated as one. METADATA ONLY. It selects no data,
+        it is not a vintage, and it never changes the structural reference year,
+        which is 2015 in every result regardless of what this field says.
+      quoting_note: >-
+        `2026-09-04`, `"2026-09-04"` and `'2026-09-04'` are the same date and produce
+        the same canonical payload and the same digest. PyYAML would resolve the
+        unquoted form to a datetime.date before validation could run — so an invalid
+        date would fail as a parse error rather than against this field's own rule —
+        and the scenario loader preserves the original scalar text instead.
+      timestamp_note: >-
+        A value carrying a time, such as `2026-09-04T12:30:00`, is refused as
+        bad_scenario_date. This field accepts a date; a time is not a near-miss on the
+        length limit, it is the wrong kind of value.
+
+    - name: note
+      type: string
+      required: false
+      max_length: 500
+
+    - name: shocks
+      type: list
+      required: true
+      min_items: 1
+      max_items: 8
+      item_type: mapping
+      item: shock
+
+shock:
+  required: [channel, direction, magnitude, magnitude_unit]
+  optional: [note]
+
+  fields:
+    - name: channel
+      type: string
+      required: true
+      allowed:
+        [
+          aluminum_usd_mt,
+          brent_crude_usd_bbl,
+          copper_usd_mt,
+          rubber_rss3_usd_kg,
+        ]
+      note: >-
+        Exactly the four registered channels in
+        configs/structural_exposure_scenario.yaml. An unregistered channel is
+        refused with its own distinct error type, so a caller can tell a misspelled
+        channel from a malformed document without reading prose.
+
+    - name: direction
+      type: string
+      required: true
+      allowed: [increase, decrease]
+      note: "Direction carries the sign; magnitude is always non-negative."
+
+    - name: magnitude
+      type: number
+      required: true
+      bool_accepted: false
+      finite: true
+      minimum: 0
+      note: >-
+        A real number. A boolean is refused even though Python treats it as an int,
+        because `magnitude: true` is an authoring mistake, not a magnitude of one.
+        NaN and both infinities are refused.
+
+    - name: magnitude_unit
+      type: string
+      required: true
+      allowed: [percent, fraction]
+      note: >-
+        Relative only. `percent` is divided by 100 to a fraction; `fraction` is kept
+        as given. An absolute price unit is refused: no base-price series ships, so
+        there is nothing to divide by.
+
+    - name: note
+      type: string
+      required: false
+      max_length: 500
+
+cross_field_rules:
+  - rule: unique_channel
+    statement: A channel identifier may appear at most once in one document.
+  - rule: unique_io_sector
+    statement: >-
+      Two different channels resolving to the same official I/O sector are refused.
+      aluminum_usd_mt and copper_usd_mt both resolve to sector 107, so they may
+      never appear together, whatever their directions and magnitudes. They are not
+      deduplicated, not summed and not chosen between.
+  - rule: direction_sensitive_magnitude_bounds
+    statement: >-
+      increase above fraction 10.0 is refused; increase above 1.0 is accepted with a
+      warning; decrease above fraction 1.0 is refused; zero is accepted with a
+      warning that the scenario cannot discriminate between industries.
+
+# FROZEN for structural_exposure_scenario_v1. Adding or removing an entry changes
+# the machine-readable error code a document receives — `excluded_field` rather than
+# `unknown_field`, or the reverse — so a caller branching on codes would change
+# behaviour without anything in its document changing. A future incompatible change
+# takes a NEW document_schema_version rather than editing this list in place.
+excluded_fields_are_frozen_for_this_schema_version: true
+excluded_fields:
+  - name: as_of_date
+    reason: Superseded by scenario_date.
+  - name: duration_months
+    reason: No artifact makes a duration affect the calculation.
+  - name: affected_trading_partner
+    reason: No country-to-industry exposure artifact exists.
+  - name: basis
+    reason: The basis is an explicit command-line argument, never a document field.
+  - name: company_id
+    reason: No company-level data exists in this project.
+  - name: output_path
+    reason: An input document does not decide where output is written.
+  - name: model
+    reason: No model is trained, loaded or consulted.
+  - name: risk_threshold
+    reason: >-
+      The registered risk bands are defined over the production stress index, not
+      over structural exposure.
+
+canonicalization:
+  hashed_by: thai_supply_chain_ews.scenario.contract.canonical_input_sha256
+  excludes: [source_path, runtime_timestamp, magnitude, magnitude_unit]
+  includes:
+    [
+      schema_version,
+      scenario_id,
+      scenario_name,
+      scenario_date,
+      note,
+      shocks.channel,
+      shocks.direction,
+      shocks.signed_magnitude_fraction,
+      shocks.note,
+    ]
+  shock_ordering: channel_ascending
+  key_ordering: sorted
+  note: >-
+    The raw magnitude and its unit are excluded so that `30` percent and `0.30`
+    fraction — the same scenario written two ways — produce one digest. The original
+    values are preserved on the validated object; they are simply not what identifies
+    the scenario.
+
+  numeric_model: decimal
+  numeric_note: >-
+    Magnitudes are read as exact decimals and never pass through binary floating
+    point. YAML float scalars are constructed from the lexeme; JSON uses
+    `parse_float=Decimal` and `parse_constant=Decimal`; integers convert exactly.
+    `percent` is divided by an exact Decimal(100). An identity that rested on IEEE
+    rounding happening to agree would be true for the values anybody is likely to
+    write and would not be a guarantee.
+
+  numeric_grammar: |
+    -? ( 0 | [1-9][0-9]* ) ( '.' [0-9]+ )? ( [eE] [+-]? [0-9]+ )?
+  numeric_grammar_name: json_number_base_10
+  numeric_grammar_note: >-
+    Ordinary base-10 decimal or scientific notation — the JSON number grammar, and
+    the same grammar in both formats. A scenario must mean one thing whichever format
+    it is written in, so a spelling JSON would reject is not a magnitude here either,
+    however willingly PyYAML would convert it.
+  accepted_examples: ["0", "10", "10.5", "1e1", "1E+1", "3E-1", "0.001", "-0", "-0.0"]
+  rejected_examples:
+    - value: "0x1e1"
+      reason: hexadecimal — YAML 1.1 reads 481; JSON rejects it
+    - value: "017"
+      reason: YAML 1.1 leading-zero octal — 15 here, invalid JSON
+    - value: "0b101"
+      reason: binary — 5 in YAML 1.1, invalid JSON
+    - value: "0o17"
+      reason: YAML 1.2 octal spelling, which YAML 1.1 leaves as a string
+    - value: "1_000"
+      reason: digit separators are a YAML extension with no JSON equivalent
+    - value: "1_0.5"
+      reason: digit separators inside a fraction
+    - value: ".5"
+      reason: leading-dot decimal — invalid JSON
+    - value: "1."
+      reason: trailing-dot decimal — invalid JSON
+    - value: "190:20:30.15"
+      reason: YAML 1.1 sexagesimal
+    - value: "+10"
+      reason: leading plus — invalid JSON, and direction already carries the sign
+    - value: '"10"'
+      reason: a quoted numeric string is a string, not a number
+  quoted_numbers_are_not_numbers: true
+  unsupported_yaml_numeric_dialects:
+    [hexadecimal, octal, binary, digit_separators, sexagesimal, leading_plus,
+     leading_dot, trailing_dot]
+  scientific_notation_scope: plain_scalars_only
+  scientific_notation_note: >-
+    PyYAML implements YAML 1.1, whose implicit float resolver wants a decimal point
+    AND a signed exponent, so it reads 1.5e+3 as a number but 1E+1, 1e1, 1.0e1,
+    2.5e0 and 3E-1 as plain strings — all of which JSON accepts. The scenario loader
+    adds an implicit resolver for the grammar above so the two formats agree. Being an
+    IMPLICIT resolver, it applies only to plain (unquoted) scalars: a quoted
+    `magnitude: "1E+1"` keeps the string tag YAML gives it and is refused as
+    magnitude_not_a_number, because the author wrote a string.
+  loaders: >-
+    Two private SafeLoader subclasses, never exported. The scenario-input loader
+    applies the grammar above, preserves date scalars as text, and refuses duplicate
+    keys. The shipped-policy loader refuses duplicate keys and reads floats as exact
+    decimals, but applies neither the strict grammar nor the date handling: a
+    version-controlled, reviewed file in this repository is not untrusted input, and
+    constraining it would be a rule with no risk behind it.
+  non_finite_and_sexagesimal: >-
+    `.inf`, `-.inf` and `.nan` still resolve through YAML's own float resolver, reach
+    the validator as non-finite decimals, and are refused as magnitude_not_finite —
+    naming the field rather than reporting a malformed file. Sexagesimal resolves as
+    a YAML float that Decimal cannot represent; it is returned as its original text
+    and refused as magnitude_not_a_number.
+
+  magnitude_serialization: normalized_decimal_string
+  magnitude_serialization_rules:
+    - Trailing zeros are removed, so 0.30, 0.300 and 3.0E-1 all serialize to "0.3".
+    - Ordinary decimal form is used whenever one exists, so 10.0 and 1E+1 both
+      serialize to "10" rather than to an exponent spelling.
+    - Zero serializes to "0" for every sign and scale, so -0, -0.00 and 0E+5 cannot
+      produce three digests for one absence of a shock.
+    - No rounding to a fixed number of decimal places is applied at any point; two
+      genuinely different decimals keep two different serializations.
+    - Values are emitted as JSON strings, so no Decimal is serialized through a float.
+  direction_is_separate: >-
+    Direction remains its own field, so a zero increase and a zero decrease still
+    differ — because the author said something different, not because of how a signed
+    zero happens to encode.

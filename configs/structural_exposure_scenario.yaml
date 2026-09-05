@@ -1,0 +1,310 @@
+# Policy for the Structural Exposure Scenario CLI — Phase 1 (input contract only).
+#
+# This file is the SINGLE policy source for what a scenario document may say. The
+# runtime validator in thai_supply_chain_ews.scenario.contract reads it and refuses
+# anything it does not declare. Nothing here describes a calculation: Phase 1 ends
+# at a validated, canonically hashable input.
+#
+# Every limit below is DECLARED VALIDATION POLICY. None of it was estimated, fitted,
+# tuned or otherwise learned from data, and none of it may be presented as an
+# empirical finding. The distinction matters because the numbers look like the kind
+# of thing a model produces, and they are not.
+#
+# Written to be read alongside configs/industry_exposure.yaml, which is the source
+# of the channel-to-I/O-sector mapping restated here. This file does not modify,
+# copy or supersede any governance record, and in particular it does not touch
+# configs/fuel_oil_channel_closure.yaml.
+
+schema_version: 1
+config_version: structural_exposure_scenario_policy_v1
+task: v1.2.0 Structural Exposure Scenario CLI
+
+# --- what the coefficients are, and always remain -----------------------------
+# Restated from configs/industry_exposure.yaml. A scenario document may carry a
+# scenario_date; it never changes this year, and it never makes the coefficients
+# current as of that date.
+structural_reference_year: 2015
+structural_reference_note: >-
+  Input-output accounting ratios from the NESDC 2015 benchmark table, held
+  time-invariant under fixed proportions and no substitution. Not price
+  pass-through elasticities, not causal effects, not forecasts.
+
+# --- the input document contract ----------------------------------------------
+accepted_input_schema_version: structural_exposure_scenario_v1
+input_schema_path: schemas/scenario_input.schema.yaml
+
+accepted_input_extensions: [".yaml", ".yml", ".json"]
+
+# Checked against the file size BEFORE the bytes are read, so a hostile or
+# accidental multi-gigabyte document cannot be parsed at all. 262144 bytes is
+# roughly two thousand times the largest plausible scenario.
+max_input_bytes: 262144
+
+min_shocks: 1
+max_shocks: 8
+max_scenario_name_length: 120
+max_note_length: 500
+scenario_id_pattern: "^[a-z0-9][a-z0-9_-]{2,63}$"
+
+scenario_date_is_metadata_only: true
+scenario_date_implies_coefficient_vintage: false
+scenario_date_note: >-
+  scenario_date records when the user framed the scenario. It selects no data, it
+  is not a vintage, and it must never be rendered in a way that suggests the 2015
+  structural coefficients describe that date.
+
+# --- basis ---------------------------------------------------------------------
+# Phase 1 declares the policy; the basis itself arrives later as an explicit CLI
+# argument and is deliberately NOT a field of the scenario document.
+supported_bases: [direct, total_requirement]
+registered_primary_basis: direct
+total_requirement_role: structural_sensitivity_only
+basis_must_be_explicit: true
+basis_default: null
+basis_in_input_document: false
+basis_note: >-
+  configs/industry_exposure.yaml registers direct_exposure as the primary matrix
+  and the total-requirement matrix as a sensitivity view that must not silently
+  replace it. Requiring the basis explicitly is how that rule is kept: the tool
+  never chooses, and the choice is recorded in every result.
+
+# --- magnitude -----------------------------------------------------------------
+allowed_magnitude_units: [percent, fraction]
+magnitude_unit_note: >-
+  Relative magnitudes only. An absolute price unit is refused because no base-price
+  series ships with this repository, so no conversion to a fraction is possible.
+
+magnitude_policy:
+  must_be_real_number: true
+  bool_is_not_a_number: true
+  must_be_finite: true
+  must_be_nonnegative: true
+  direction_carries_the_sign: true
+  # Magnitudes and these thresholds are both exact decimals, read from the text that
+  # was written rather than through binary floating point. "Exactly 1000%" is then a
+  # question about the number, not about IEEE rounding.
+  numeric_model: decimal
+  thresholds_read_as_decimal_from_this_file: true
+  percent_to_fraction_divisor: 100
+  increase_warn_above_fraction: 1.0 # 100%
+  increase_refuse_above_fraction: 10.0 # 1000%
+  decrease_refuse_above_fraction: 1.0 # 100%
+  zero_is_accepted: true
+  limits_are_validation_policy: true
+  limits_are_learned_thresholds: false
+  limits_rationale: >-
+    A structural coefficient is a first-order accounting ratio from one benchmark
+    year. Scaling it by an arbitrarily large factor stays arithmetically valid and
+    stops being meaningful, so the ceilings exist to stop the tool from printing a
+    number nobody should read. They are presentation and validation limits chosen
+    by the project owner. They were not estimated from data and carry no empirical
+    content whatsoever.
+
+# --- direction -----------------------------------------------------------------
+allowed_directions: [increase, decrease]
+
+# --- channels ------------------------------------------------------------------
+# Exactly four. The I/O sector codes are restated from configs/industry_exposure.yaml
+# `commodity_crosswalk`; the runtime validator refuses any channel outside this set
+# and refuses the set itself if it grows, shrinks or duplicates a sector mapping in
+# a way the shared-sector policy does not cover.
+channels:
+  - channel: brent_crude_usd_bbl
+    io_sector_code: "031"
+    io_sector_label: Petroleum and natural gas
+    scope_note: >-
+      The official sector covers crude petroleum AND natural gas extraction. Brent
+      prices crude alone, so the coefficient embeds gas use this channel does not
+      price. Natural gas is not separately available.
+  - channel: aluminum_usd_mt
+    io_sector_code: "107"
+    io_sector_label: Non-ferrous metal
+    scope_note: >-
+      The official category combines all primary non-ferrous metals. Aluminum cannot
+      be separated from copper, zinc, lead or tin within it.
+  - channel: copper_usd_mt
+    io_sector_code: "107"
+    io_sector_label: Non-ferrous metal
+    scope_note: >-
+      Same official category as aluminum. The two are identical by construction and
+      are never independent evidence.
+  - channel: rubber_rss3_usd_kg
+    io_sector_code: "095"
+    io_sector_label: Rubber sheet and block rubber
+    scope_note: >-
+      RSS3 is one grade within a category that also covers block rubber and crepe.
+      Processed natural rubber, not fabricated rubber goods.
+
+# --- shared I/O sectors ---------------------------------------------------------
+shared_io_sector_policy: reject_scenario
+shared_io_sector_groups:
+  - io_sector_code: "107"
+    channels: [aluminum_usd_mt, copper_usd_mt]
+shared_io_sector_note: >-
+  Two channels resolving to one official sector are the same measurement twice.
+  Summing them double-counts; silently dropping one, or picking the larger, would
+  answer a question the user did not ask. The scenario is refused instead, and the
+  refusal names both channels and the sector they share.
+silently_deduplicate: false
+silently_select_one: false
+silently_sum_shared_sector: false
+
+# --- deliberately absent --------------------------------------------------------
+# I/O sector 093 (Petroleum refineries) is NOT a channel in v1.2.0. The C9 exposure
+# vector remains valid and reproducible; the channel identifier is closed under Task
+# C12 for modeling, and this release does not open, extend or reinterpret that
+# closure. configs/fuel_oil_channel_closure.yaml is not read, copied or modified.
+excluded_channels:
+  - io_sector_code: "093"
+    reason: >-
+      Excluded from v1.2.0 by the project owner. Not a defect in the C9 exposure and
+      not a claim about it.
+# FROZEN for structural_exposure_scenario_v1. This set decides which machine-readable
+# error code a document receives — `excluded_field` rather than `unknown_field` — so
+# adding or removing an entry silently changes behaviour for any caller branching on
+# codes. A future incompatible change takes a NEW accepted_input_schema_version rather
+# than editing this mapping in place. The runtime copy in
+# thai_supply_chain_ews.scenario.contract.EXCLUDED_INPUT_FIELDS is pinned by test.
+excluded_input_fields_are_frozen_for_this_schema_version: true
+excluded_input_fields:
+  as_of_date: Superseded by scenario_date, which states plainly that it is metadata.
+  duration_months: >-
+    No published artifact transforms a duration into an exposure, so the field would
+    be accepted and ignored. Accepting an input that changes nothing is worse than
+    refusing it.
+  affected_trading_partner: >-
+    No country-to-industry exposure artifact exists. data/mapping/country_reference.csv
+    is a code list, not an exposure.
+  basis: >-
+    The basis is an explicit command-line argument so the choice is visible at the
+    point it is made, not buried in a document.
+  company_id: No company-level data exists anywhere in this project.
+  output_path: An input document does not decide where output is written.
+  model: No model is trained, loaded or consulted.
+  risk_threshold: >-
+    The registered Normal/Watch/High/Severe bands are defined over the production
+    stress index, not over structural exposure. Reusing them here would silently
+    redefine a registered artifact.
+
+# --- what this tool does not produce --------------------------------------------
+prohibited_outputs:
+  company_level_result: false
+  probability: false
+  forecast: false
+  predicted_percentage_change: false
+  predicted_loss: false
+  elasticity: false
+  pass_through_rate: false
+  causal_effect: false
+  registered_risk_band: false
+  operational_alert: false
+  production_recommendation: false
+  investment_recommendation: false
+
+# --- what this tool does not depend on ------------------------------------------
+dependencies:
+  model_training: false
+  model_artifact: false
+  model_prediction: false
+  locked_test_access: false
+  network_access: false
+  non_redistributable_raw_data: false
+  writes_any_file_during_validation: false
+
+# --- runtime artifacts (Phase 2) -------------------------------------------------
+# The exact, closed set of published files the calculation may read. Four entries,
+# named individually and pinned individually. There is deliberately no directory
+# scan, no glob and no fallback: a tool that discovers its own inputs is a tool whose
+# inputs can change without anybody deciding they should.
+#
+# These pins are the scenario's OWN. `docs/e2r1_release_manifest.json` is a frozen
+# historical record of what was published once; reading it at runtime would turn an
+# immutable record into a live registry, and a future release row would silently
+# become a runtime dependency. The two agree today and are checked against each
+# other by test, which is a different and safer relationship than depending on one.
+#
+# Every digest is `canonical_lf`: SHA-256 over the bytes with CRLF collapsed to LF,
+# the representation `thai_supply_chain_ews.release.byte_provenance` declares for new
+# text pins. That choice is load-bearing rather than stylistic. Two of these four
+# files are stored LF in Git and checked out CRLF on Windows, so a raw-byte pin would
+# verify on one platform and fail on the other for a file nobody had edited — the
+# exact defect Task CI-R1 was created to fix. The canonical digests below equal the
+# `canonical_git_blob_content_sha256` values recorded in the CI-R1 errata for the two
+# files that appear there.
+runtime_artifacts_are_a_closed_set: true
+runtime_artifacts_discovered_by_scan: false
+runtime_artifacts_fall_back_to_unpinned: false
+historical_release_manifest_is_a_runtime_registry: false
+
+runtime_artifacts:
+  - name: exposure_matrix
+    path: docs/c3_commodity_exposure_matrix.json
+    format: json
+    sha256: 9204c3c96a1be3bd0d246851c622c012728cf4c87d8f468efe9de29eebb1ed59
+    digest_representation: canonical_lf
+    stored_line_ending: lf
+    worktree_line_ending_may_differ: false
+    role: >-
+      Task C3's canonical 48-row commodity-industry exposure matrix. The AUTHORITATIVE
+      source for every coefficient, sign and eligibility flag used in the calculation.
+  - name: structural_path_audit
+    path: docs/c5_structural_path_audit.json
+    format: json
+    sha256: c7acd0163e1bfaed5390e5ce85f04138674a0844eed8bb97323cf3862b0f8f44
+    digest_representation: canonical_lf
+    stored_line_ending: lf
+    worktree_line_ending_may_differ: true
+    role: >-
+      Task C5's 480-row mediator decomposition, ten intermediate sectors per pair.
+      Supporting attribution only; its coefficients are not used for scoring.
+  - name: price_stage_source_audit
+    path: docs/c5_price_stage_source_audit.json
+    format: json
+    sha256: 0b0080bf2ba51fa4da22f4abcdb07c2461a0302ddc8ab792774ece50da9cfc42
+    digest_representation: canonical_lf
+    stored_line_ending: lf
+    worktree_line_ending_may_differ: true
+    role: >-
+      Task C5's 48 price-stage alignment records. Supporting metadata only; its
+      coefficients are not used for scoring.
+  - name: industry_map
+    path: data/mapping/industry_map.csv
+    format: csv
+    sha256: 4488b6b73b227ed5ed031c8aa4ae7e20526ca2a0b690fd8edc5d60db5407a53e
+    digest_representation: canonical_lf
+    stored_line_ending: lf
+    worktree_line_ending_may_differ: false
+    role: The 12 project industry identifiers and their official English names.
+
+# --- cross-artifact agreement ----------------------------------------------------
+# C3 and C5 were generated by separate runs over the same official table, in float64,
+# and their printed decimals therefore differ in the last digit or two for 14 of the
+# 48 pairs. The largest observed disagreement is 3e-17. Requiring exact equality
+# would fail on arithmetic noise; ignoring it would let a genuinely different artifact
+# through. The tolerance below is a DECLARED VALIDATION LIMIT, chosen as roughly two
+# orders of magnitude above the largest observed difference and well below any
+# coefficient the calculation reports. It was not estimated from data and carries no
+# empirical content.
+cross_artifact_agreement:
+  authoritative_coefficient_source: exposure_matrix
+  supporting_artifacts_are_scored: false
+  # Written with a decimal point because YAML 1.1 resolves `1e-15` as a string.
+  coefficient_agreement_tolerance: 1.0e-15
+  tolerance_is_validation_policy: true
+  tolerance_is_a_learned_threshold: false
+  largest_observed_difference: 3.0e-17
+
+# --- the propagated component ----------------------------------------------------
+# The exposure matrix publishes `indirect_exposure` alongside direct and total, and
+# the three do not satisfy `direct + indirect == total` exactly: they were written by
+# float64 arithmetic and disagree by up to 6e-17. The calculation therefore DERIVES
+# the propagated component as `total_requirement - direct` in exact decimal, which
+# makes `direct + propagated == total_requirement` true by construction rather than
+# nearly true by luck. The published field is preserved and reported as a published
+# fact; it is simply not the number the arithmetic uses.
+propagated_component:
+  derived_as: total_requirement_minus_direct
+  published_indirect_exposure_used_for_arithmetic: false
+  published_indirect_exposure_preserved: true
+  identity_is_exact_by_construction: true
+  largest_published_identity_residual: 6.0e-17

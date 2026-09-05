@@ -1,0 +1,18 @@
+# A single upstream price shock, and the clearest demonstration of why the basis has to
+# be chosen explicitly: ten of the twelve industries publish an observed-zero DIRECT
+# coefficient for crude, because factories do not buy crude oil across the factory gate.
+# On the direct basis this scenario is almost entirely neutral; on the total-requirement
+# basis the exposure appears, arriving through refined fuel, electricity, petrochemicals
+# and transport. Both answers are honest and they are answers to different questions.
+schema_version: structural_exposure_scenario_v1
+scenario_id: crude-oil-price-increase
+scenario_name: Brent crude sustained +30%
+scenario_date: 2026-09-04
+note: >-
+  I/O sector 031 covers crude petroleum AND natural gas extraction, so the coefficient
+  embeds gas use that a Brent price does not describe.
+shocks:
+  - channel: brent_crude_usd_bbl
+    direction: increase
+    magnitude: 30
+    magnitude_unit: percent
