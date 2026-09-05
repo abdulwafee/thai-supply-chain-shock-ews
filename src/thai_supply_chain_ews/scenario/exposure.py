@@ -34,7 +34,7 @@ and the amount that cancelled beside it.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from decimal import Decimal
+from decimal import Decimal, localcontext
 
 from thai_supply_chain_ews.scenario.artifacts import ArtifactBundle, ExposurePair
 from thai_supply_chain_ews.scenario.contract import (
@@ -43,6 +43,10 @@ from thai_supply_chain_ews.scenario.contract import (
     ScenarioPolicy,
     ValidatedScenario,
     decimal_text,
+    exact_difference,
+    exact_product,
+    exact_total,
+    fixed_context,
 )
 
 __all__ = [
@@ -87,6 +91,20 @@ DIRECTION_LABELS = ("stress_pressure", "relief_pressure", "neutral")
 #: is reporting noise as order.
 TIE_TOLERANCE = Decimal("1e-12")
 
+# ---------------------------------------------------------------------------
+# Arithmetic
+#
+# The exact operations live in `contract`, which `artifacts` can also import -- the
+# loader needs the same guarantees and cannot import this module, since this one imports
+# it. One implementation, used by both, rather than two copies of the same reasoning.
+#
+# Division is the exception and stays here, because its width is a property of this
+# module's output rather than of the operands. The relative index and the cancellation
+# ratio are genuine non-terminating quotients where no precision is exact, so the width
+# is a presentation choice; 28 is the choice already shipped, and pinning it preserves
+# every published figure rather than silently lengthening it.
+_QUOTIENT_CONTEXT = fixed_context(28)
+
 
 @dataclass(frozen=True)
 class ChannelContribution:
@@ -108,6 +126,8 @@ class ChannelContribution:
 
     @property
     def canonical_contribution(self) -> str:
+        # No context needed: `decimal_text` reads the stored representation and does no
+        # arithmetic, so it cannot round whatever the ambient settings are.
         return decimal_text(self.contribution)
 
 
@@ -141,14 +161,23 @@ class IndustryExposure:
 
     @property
     def cancellation(self) -> Decimal:
-        """How much opposing movement the net figure absorbed."""
-        return self.gross_absolute_contribution - abs(self.net_exposure)
+        """How much opposing movement the net figure absorbed.
+
+        A property, so it is computed wherever a reader touches it rather than inside
+        the calculation. That is exactly why it derives its own precision: otherwise
+        this one subtraction would be the only part of the result that depended on
+        whatever the caller's ambient context happened to be.
+        """
+        return exact_difference(
+            self.gross_absolute_contribution, self.net_exposure.copy_abs()
+        )
 
     @property
     def cancellation_ratio(self) -> Decimal | None:
         if self.gross_absolute_contribution == 0:
             return None
-        return self.cancellation / self.gross_absolute_contribution
+        with localcontext(_QUOTIENT_CONTEXT):
+            return self.cancellation / self.gross_absolute_contribution
 
     @property
     def direction(self) -> str:
@@ -232,8 +261,13 @@ def calculate_scenario_exposure(scenario: ValidatedScenario, *, basis,
     """Score a validated scenario against the pinned coefficients.
 
     Pure and deterministic: the same scenario, basis and bundle give the same result,
-    and the order the author listed the shocks in changes nothing, because Phase 1
-    already sorted them canonically by channel.
+    the order the author listed the shocks in changes nothing because Phase 1 already
+    sorted them canonically, and the caller's ambient decimal settings change nothing
+    because every operation derives its own exact precision from its own operands.
+
+    Each helper enters and leaves its context with ``localcontext``, which restores the
+    caller's on the way out including when an operation raises, so scoring a scenario
+    never leaves a program's arithmetic altered.
     """
     from thai_supply_chain_ews.scenario.contract import canonical_input_sha256
 
@@ -344,14 +378,19 @@ def _exclusion_detail(reason: str, pair: ExposurePair) -> str:
 def _contribution(pair: ExposurePair, shock, basis: str,
                   propagated_supported: bool) -> ChannelContribution:
     coefficient = pair.coefficient(basis)
-    contribution = Decimal(pair.sign) * shock.signed_magnitude_fraction * coefficient
-    scale = Decimal(pair.sign) * shock.signed_magnitude_fraction
-    direct_component = scale * pair.direct_exposure
-    propagated_component = scale * pair.propagated_exposure if propagated_supported else None
+    scale = exact_product(Decimal(pair.sign), shock.signed_magnitude_fraction)
+    contribution = exact_product(scale, coefficient)
+    direct_component = exact_product(scale, pair.direct_exposure)
+    # `pair.propagated_exposure` is itself an exact `total - direct`, so it is read
+    # rather than re-derived here: two derivations of one quantity are two places for
+    # it to drift.
+    propagated_component = (
+        exact_product(scale, pair.propagated_exposure) if propagated_supported else None
+    )
     if propagated_supported:
         # Exact by construction: propagated is derived as total - direct, so the two
         # scaled components must reconstruct the scaled total with no residual at all.
-        if direct_component + propagated_component != contribution:
+        if exact_total([direct_component, propagated_component]) != contribution:
             raise ScenarioInternalError(
                 f"{pair.industry_id}/{pair.channel}: direct + propagated does not reconstruct "
                 f"the total-requirement contribution exactly "
@@ -376,13 +415,13 @@ def _contribution(pair: ExposurePair, shock, basis: str,
 
 def _aggregate(industry, basis: str, contributions, excluded,
                propagated_supported: bool) -> IndustryExposure:
-    net = sum((c.contribution for c in contributions), Decimal(0))
-    direct = sum((c.direct_component for c in contributions), Decimal(0))
-    gross = sum((abs(c.contribution) for c in contributions), Decimal(0))
+    net = exact_total(c.contribution for c in contributions)
+    direct = exact_total(c.direct_component for c in contributions)
+    gross = exact_total(c.contribution.copy_abs() for c in contributions)
     propagated = None
     if propagated_supported:
-        propagated = sum((c.propagated_component for c in contributions), Decimal(0))
-        if direct + propagated != net:
+        propagated = exact_total(c.propagated_component for c in contributions)
+        if exact_total([direct, propagated]) != net:
             raise ScenarioInternalError(
                 f"{industry.industry_id}: aggregate direct + propagated does not reconstruct the "
                 f"net exposure exactly ({direct} + {propagated} != {net})"
@@ -401,6 +440,17 @@ def _aggregate(industry, basis: str, contributions, excluded,
     )
 
 
+def _index(net: Decimal, denominator: Decimal) -> Decimal:
+    """``100 * net / denominator``, at the fixed presentation precision.
+
+    The multiplication is exact; the division generally is not, so it is pinned rather
+    than left to whatever precision the process happens to carry.
+    """
+    numerator = exact_product(Decimal(100), net)
+    with localcontext(_QUOTIENT_CONTEXT):
+        return numerator / denominator
+
+
 def _rank(industries, scenario: ValidatedScenario):
     """Order by absolute net exposure, with competition ranks and anchored ties.
 
@@ -414,8 +464,16 @@ def _rank(industries, scenario: ValidatedScenario):
         unranked = tuple(sorted(industries, key=lambda e: e.industry_id))
         return (), unranked, "all_magnitudes_zero", None
 
-    ordered = sorted(industries, key=lambda e: (-abs(e.net_exposure), e.industry_id))
-    denominator = max((abs(e.net_exposure) for e in ordered), default=Decimal(0))
+    # `copy_abs`/`copy_negate` throughout: `abs()` and unary minus round to the ambient
+    # precision, which at a low one would collapse distinct exposures into equal sort
+    # keys and rank two industries by their identifiers instead of their exposure.
+    ordered = sorted(
+        industries,
+        key=lambda e: (e.net_exposure.copy_abs().copy_negate(), e.industry_id),
+    )
+    denominator = max(
+        (e.net_exposure.copy_abs() for e in ordered), default=Decimal(0)
+    )
     if denominator == 0:
         unranked = tuple(sorted(industries, key=lambda e: e.industry_id))
         return (), unranked, "all_net_exposures_zero", None
@@ -423,8 +481,8 @@ def _rank(industries, scenario: ValidatedScenario):
     groups: list[list] = []
     anchor: Decimal | None = None
     for entry in ordered:
-        magnitude = abs(entry.net_exposure)
-        if anchor is not None and (anchor - magnitude) <= TIE_TOLERANCE:
+        magnitude = entry.net_exposure.copy_abs()
+        if anchor is not None and exact_difference(anchor, magnitude) <= TIE_TOLERANCE:
             groups[-1].append(entry)
         else:
             groups.append([entry])
@@ -448,7 +506,7 @@ def _rank(industries, scenario: ValidatedScenario):
                     contributions=entry.contributions,
                     excluded_pairs=entry.excluded_pairs,
                     rank=position,
-                    relative_exposure_index=(Decimal(100) * entry.net_exposure) / denominator,
+                    relative_exposure_index=_index(entry.net_exposure, denominator),
                     tied_with=tuple(m for m in members if m != entry.industry_id),
                 )
             )

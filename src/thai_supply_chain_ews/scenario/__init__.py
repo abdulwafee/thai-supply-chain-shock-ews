@@ -24,8 +24,13 @@ basis and that verified bundle into signed structural contributions, industry
 aggregates and a ranking. Both are pure: they read the pinned files, compute in exact
 decimal, and write nothing.
 
-There is still no command-line layer, no renderer and no result schema. Those are a
-later phase and are deliberately absent rather than stubbed.
+**Phase 3 adds the reports and the command line.** :mod:`report` builds the two result
+documents — a machine-readable JSON one and a Markdown one for a person — and both are
+fully deterministic: no timestamp, no run identity, no absolute path, every number a
+canonical decimal string. ``python -m thai_supply_chain_ews.scenario`` exposes exactly
+three subcommands: ``validate``, ``run`` and ``explain``. The command-line entry point
+is not exported here; a caller uses the module, and the surface a program should depend
+on is the report builders and renderers below.
 
 Only the reviewed surface is exported here, so nothing downstream can come to depend on
 an interface that has not been agreed.
@@ -84,6 +89,18 @@ from thai_supply_chain_ews.scenario.exposure import (
     ScenarioExposureResult,
     calculate_scenario_exposure,
 )
+from thai_supply_chain_ews.scenario.report import (
+    EXPLANATION_SCHEMA_VERSION,
+    LIMITATIONS,
+    RESULT_SCHEMA_VERSION,
+    build_industry_explanation_document,
+    build_scenario_result_document,
+    render_industry_explanation_json,
+    render_industry_explanation_markdown,
+    render_scenario_result_json,
+    render_scenario_result_markdown,
+    validate_result_document,
+)
 
 __all__ = [
     # --- Phase 1: the input contract ---
@@ -136,4 +153,16 @@ __all__ = [
     "exposure",
     "load_artifact_bundle",
     "read_artifact_declarations",
+    # --- Phase 3: result documents ---
+    "EXPLANATION_SCHEMA_VERSION",
+    "LIMITATIONS",
+    "RESULT_SCHEMA_VERSION",
+    "build_industry_explanation_document",
+    "build_scenario_result_document",
+    "render_industry_explanation_json",
+    "render_industry_explanation_markdown",
+    "render_scenario_result_json",
+    "render_scenario_result_markdown",
+    "report",
+    "validate_result_document",
 ]

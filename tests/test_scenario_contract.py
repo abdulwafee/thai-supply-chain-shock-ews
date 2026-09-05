@@ -21,6 +21,7 @@ field sets and the same required sets.
 from __future__ import annotations
 
 import ast
+import decimal
 import json
 import os
 import re
@@ -1651,30 +1652,33 @@ def test_the_filesystem_guard_would_actually_catch_a_reach(tmp_path):
     assert {"configs", "structural_exposure_scenario.yaml"} <= found
 
 
-def test_phase_two_ships_only_reviewed_modules_and_no_phase_three_module():
-    # Phase 2 deliberately added the pinned-artifact loader and the calculation engine.
-    # The set stays closed: an unreviewed Phase 3 module — `report.py`, `__main__.py`,
-    # a CLI — must still make this fail, which a subset or count assertion would not.
+def test_phase_three_ships_only_reviewed_modules_and_no_unreviewed_module():
+    # Phase 3 deliberately added the report builders and the command-line entry point.
+    # The set stays closed: any module nobody reviewed must still make this fail, which
+    # a subset, prefix or count assertion would not.
     package = CONTRACT_SOURCE.parent
     present = sorted(path.name for path in package.glob("*.py"))
     assert present == [
         "__init__.py",
+        "__main__.py",
         "artifacts.py",
         "contract.py",
         "exposure.py",
+        "report.py",
     ]
 
 
-def test_the_public_api_exposes_only_reviewed_phase_one_and_two_names():
+def test_the_public_api_exposes_only_reviewed_phase_one_two_and_three_names():
     from thai_supply_chain_ews import scenario
 
-    # `exposure` left this set when it stopped being a placeholder for an unfinished
-    # calculation API and became the reviewed Phase 2 submodule, exported the same way
-    # `contract` and `artifacts` are. Every remaining name is still unbuilt.
-    unfinished = {"run", "rank", "score", "report", "render", "explain", "main", "cli",
-                  "load_artifacts"}
+    # Two sentinels have now been completed by a reviewed phase and left this set:
+    # `exposure` in Phase 2 and `report` in Phase 3, both exported as submodules exactly
+    # as `contract` is. Everything still listed is unbuilt, and `main` stays listed
+    # because the command-line entry point is deliberately not part of the API.
+    unfinished = {"run", "rank", "score", "render", "explain", "main", "cli",
+                  "load_artifacts", "predict", "forecast"}
     assert not set(scenario.__all__) & unfinished
-    assert {"artifacts", "contract", "exposure"} <= set(scenario.__all__)
+    assert {"artifacts", "contract", "exposure", "report"} <= set(scenario.__all__)
 
 
 def test_the_parsing_helper_is_not_part_of_the_public_api():
@@ -1851,3 +1855,285 @@ def test_warning_codes_are_declared(policy):
         document(shocks=[shock(magnitude=0)]), policy=policy
     )
     assert set(result.warning_codes) <= contract.WARNING_CODES
+
+
+# ---------------------------------------------------------------------------
+# The canonical form does not depend on the caller's decimal context
+#
+# `decimal_text` decides how every magnitude is spelled, and that spelling goes into
+# the canonical payload and therefore into the digest that identifies a scenario. It
+# used to be `format(value.normalize(), "f")`, and `normalize` rounds to the ambient
+# precision: under a precision-6 context the same shock produced a different string
+# and a different digest than it did under the default one. Two people would then
+# disagree about what a scenario *is* because of a global neither of them set.
+#
+# The same hazard reached the values themselves. Percent-to-fraction was a division
+# and a decrease was a unary minus, both context operations, so a long magnitude was
+# silently shortened on the way in.
+# ---------------------------------------------------------------------------
+
+
+AMBIENT_CONTEXTS = [
+    (6, decimal.ROUND_DOWN),
+    (9, decimal.ROUND_UP),
+    (28, decimal.ROUND_HALF_EVEN),
+    (50, decimal.ROUND_FLOOR),
+    (80, decimal.ROUND_CEILING),
+]
+
+#: A magnitude far longer than any precision tried above, so a context-sensitive
+#: operation anywhere in the path must lose digits from it. The run deliberately ends
+#: in a non-zero digit: a trailing zero is not significant and canonicalisation drops
+#: it, which would make a lost digit indistinguishable from a correctly stripped one.
+LONG_DIGITS = "1234567891" * 12
+LONG_FRACTION = "0." + LONG_DIGITS
+
+
+def under(prec, rounding, work):
+    """Run ``work`` under an ambient context, restoring the caller's afterwards."""
+    with decimal.localcontext() as ctx:
+        ctx.prec, ctx.rounding = prec, rounding
+        return work()
+
+
+def test_decimal_text_is_identical_under_every_ambient_context():
+    values = [
+        Decimal("0.214130850110323640005"),
+        Decimal(LONG_FRACTION),
+        Decimal("-2.500"),
+        Decimal("1E+1"),
+        Decimal("0.30"),
+        Decimal("123456789012345678901234567890"),
+    ]
+    for value in values:
+        rendered = {
+            under(prec, rounding, lambda value=value: contract.decimal_text(value))
+            for prec, rounding in AMBIENT_CONTEXTS
+        }
+        assert len(rendered) == 1, f"{value!r} rendered {len(rendered)} different ways"
+
+
+def test_decimal_text_keeps_every_significant_digit_of_a_long_decimal():
+    text = contract.decimal_text(Decimal(LONG_FRACTION))
+    assert text == LONG_FRACTION
+    assert text.split(".")[1] == LONG_DIGITS
+    assert Decimal(text) == Decimal(LONG_FRACTION)
+
+
+def test_decimal_text_canonicalises_every_spelling_of_zero():
+    for spelling in ("0", "-0", "0.0", "-0.00", "0E+5", "-0E-7", "0.000"):
+        assert contract.decimal_text(Decimal(spelling)) == "0", spelling
+
+
+def test_decimal_text_reads_the_representation_and_does_no_arithmetic():
+    """Structural, not textual: the defect was a method call, so the guard reads calls.
+
+    A comment saying "context-free" is not enforceable. ``normalize``, ``quantize``,
+    ``scaleb`` and unary plus all round to the ambient precision, so none of them may
+    appear, and ``as_tuple`` must, because reading the stored digits is the whole
+    mechanism by which the function avoids them.
+    """
+    tree = ast.parse(CONTRACT_SOURCE.read_text(encoding="utf-8"))
+    function = next(
+        node
+        for node in ast.walk(tree)
+        if isinstance(node, ast.FunctionDef) and node.name == "decimal_text"
+    )
+    called = {
+        node.func.attr
+        for node in ast.walk(function)
+        if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute)
+    }
+    assert "as_tuple" in called
+    assert not called & {"normalize", "quantize", "scaleb", "fma", "to_integral_value"}
+    assert not [
+        node
+        for node in ast.walk(function)
+        if isinstance(node, ast.UnaryOp) and isinstance(node.op, ast.UAdd)
+    ]
+
+
+#: Canonical strings and digests produced by the implementation shipped in the Phase 1
+#: commit, recorded before the context fix and asserted unchanged after it. The fix was
+#: meant to remove a dependency on a global, not to renumber anything: if an ordinary
+#: scenario's identity moved, every digest a reader already holds would be wrong.
+PINNED_CANONICAL = {
+    ("0.3", "fraction", "increase"): (
+        "0.3", "0cbf497566546b5d1f2d075248f6be218efec4ca5faddaa844bbd328d2d86d3c",
+    ),
+    ("0.3", "fraction", "decrease"): (
+        "-0.3", "213e70bd831fa8dd93132f0414166df1a54be95d8aa79462319a326fdc4ecde0",
+    ),
+    ("30", "percent", "increase"): (
+        "0.3", "0cbf497566546b5d1f2d075248f6be218efec4ca5faddaa844bbd328d2d86d3c",
+    ),
+    ("30", "percent", "decrease"): (
+        "-0.3", "213e70bd831fa8dd93132f0414166df1a54be95d8aa79462319a326fdc4ecde0",
+    ),
+    ("0.1", "percent", "increase"): (
+        "0.001", "ca4d843d168c7113dd2201711ef11027aaa4b9c9814f13095f13a3d68e7035cf",
+    ),
+    ("0.1", "percent", "decrease"): (
+        "-0.001", "d438fee0bf6d4dddbb587b5e43d23c3a7ee4222eb3a6348a9ebba58b51f646d8",
+    ),
+    ("25", "percent", "increase"): (
+        "0.25", "ee463f5c27bf1f9e62b7b81f36e3b114c509569f2eca4ae3a535214a07ab2ae5",
+    ),
+    ("25", "percent", "decrease"): (
+        "-0.25", "bd00cca873f01b5e6d2443c3ccd79901f9a5292aaee622406e9f09513ec14ea1",
+    ),
+    ("15", "percent", "increase"): (
+        "0.15", "72d40d5e5f853e53347d1303f8a8d022e6ed1d86d79f8684941e70266c2c6da0",
+    ),
+    ("15", "percent", "decrease"): (
+        "-0.15", "6e0f884a0d377d07b519ae03a43aeabb68101b3a0aeb6fe000f5c78178ef8d2a",
+    ),
+    ("2.5", "percent", "increase"): (
+        "0.025", "c32ac7edb0897bfc9cb3feaae3278952ca9fdb530a2ed8099aae069607ca9ee7",
+    ),
+    ("2.5", "percent", "decrease"): (
+        "-0.025", "488e79306484a797862ec8ea5e56e3fb969951786aa2b13204349796d811436d",
+    ),
+    ("1000", "percent", "increase"): (
+        "10", "ea68068a20e57388299e5f3b43545f1309f122badb2fa5f6f30c510e1e0104dc",
+    ),
+    ("0", "fraction", "increase"): (
+        "0", "e8bc7314ca89187cc438cedf79be8556b4307be4d3555e9113383ac088efda21",
+    ),
+    ("0", "fraction", "decrease"): (
+        "0", "24f88afe235bf0e91d13ed32605f736267cc3f6732417f5bfcabb90c04699cdf",
+    ),
+    ("0.000", "percent", "increase"): (
+        "0", "e8bc7314ca89187cc438cedf79be8556b4307be4d3555e9113383ac088efda21",
+    ),
+    ("1E+1", "percent", "increase"): (
+        "0.1", "a9963c6b1a4d6f79880af0671d7028dc5c7b7d701792acb4bf2b5e0f1cd81455",
+    ),
+}
+
+
+def pinned_scenario(tmp_path, magnitude, unit, direction, policy, name):
+    path = write(
+        tmp_path,
+        "schema_version: structural_exposure_scenario_v1\n"
+        "scenario_id: pinned-canonical\n"
+        "shocks:\n"
+        "  - channel: brent_crude_usd_bbl\n"
+        f"    direction: {direction}\n"
+        f"    magnitude: {magnitude}\n"
+        f"    magnitude_unit: {unit}\n",
+        name=name,
+    )
+    return contract.load_scenario_document(path, policy=policy)
+
+
+@pytest.mark.parametrize(("case", "expected"), sorted(PINNED_CANONICAL.items()))
+def test_ordinary_canonical_strings_and_digests_are_unchanged(case, expected, tmp_path, policy):
+    magnitude, unit, direction = case
+    loaded = pinned_scenario(tmp_path, magnitude, unit, direction, policy, "pinned.yaml")
+    assert loaded.shocks[0].canonical_signed_fraction == expected[0]
+    assert contract.canonical_input_sha256(loaded) == expected[1]
+
+
+@pytest.mark.parametrize(("case", "expected"), sorted(PINNED_CANONICAL.items()))
+def test_ordinary_digests_are_also_unchanged_under_a_hostile_context(
+    case, expected, tmp_path, policy
+):
+    """The pinned values are the answer in every context, not only the default one."""
+    magnitude, unit, direction = case
+    for index, (prec, rounding) in enumerate(AMBIENT_CONTEXTS):
+        loaded = under(
+            prec,
+            rounding,
+            lambda index=index: pinned_scenario(
+                tmp_path, magnitude, unit, direction, policy, f"pinned{index}.yaml"
+            ),
+        )
+        assert loaded.shocks[0].canonical_signed_fraction == expected[0]
+        assert contract.canonical_input_sha256(loaded) == expected[1]
+
+
+def test_a_long_percent_magnitude_keeps_every_digit_its_author_wrote(tmp_path, policy):
+    """Percent-to-fraction shifts the point; it must not shorten the number.
+
+    ``0.1234...`` percent is ``0.001234...`` with the same digits. A division would
+    have produced the ambient precision's worth of them and raised nothing.
+    """
+    written = LONG_FRACTION
+    loaded = pinned_scenario(tmp_path, written, "percent", "increase", policy, "long.yaml")
+    accepted = loaded.shocks[0]
+    assert accepted.magnitude == Decimal(written)
+    assert accepted.canonical_signed_fraction == "0.00" + LONG_DIGITS
+    assert len(accepted.magnitude_fraction.as_tuple().digits) == len(LONG_DIGITS)
+
+
+def test_a_long_decrease_is_the_exact_mirror_of_its_increase(tmp_path, policy):
+    """The negation is ``copy_negate``, so a decrease cannot be stored shorter."""
+    up = pinned_scenario(tmp_path, LONG_FRACTION, "percent", "increase", policy, "up.yaml")
+    down = pinned_scenario(tmp_path, LONG_FRACTION, "percent", "decrease", policy, "down.yaml")
+    assert down.shocks[0].canonical_signed_fraction == (
+        "-" + up.shocks[0].canonical_signed_fraction
+    )
+    assert (
+        down.shocks[0].signed_magnitude_fraction.copy_negate()
+        == up.shocks[0].signed_magnitude_fraction
+    )
+
+
+def test_a_long_magnitude_is_identical_under_every_ambient_context(tmp_path, policy):
+    seen = set()
+    for index, (prec, rounding) in enumerate(AMBIENT_CONTEXTS):
+        loaded = under(
+            prec,
+            rounding,
+            lambda index=index: pinned_scenario(
+                tmp_path, LONG_FRACTION, "percent", "decrease", policy, f"long{index}.yaml"
+            ),
+        )
+        seen.add(
+            (
+                loaded.shocks[0].canonical_signed_fraction,
+                contract.canonical_input_sha256(loaded),
+            )
+        )
+    assert len(seen) == 1
+    assert len(next(iter(seen))[0].split(".")[1]) == len(LONG_DIGITS) + 2
+
+
+def test_removing_the_context_free_conversions_would_make_these_tests_fail():
+    """Mutation check: each replaced operation really is context-sensitive.
+
+    The three operations the fix removed are performed here the way the module used to
+    perform them. If any of them gave one answer in every context, the corresponding
+    test above would pass whether or not the fix existed.
+    """
+    long_value = Decimal(LONG_FRACTION)
+    hundred = Decimal(100)
+
+    normalised = {
+        under(prec, rounding, lambda: format(long_value.normalize(), "f"))
+        for prec, rounding in AMBIENT_CONTEXTS
+    }
+    divided = {
+        under(prec, rounding, lambda: str(long_value / hundred))
+        for prec, rounding in AMBIENT_CONTEXTS
+    }
+    negated = {
+        under(prec, rounding, lambda: str(-long_value)) for prec, rounding in AMBIENT_CONTEXTS
+    }
+    for label, mutated in (("normalize", normalised), ("divide", divided), ("negate", negated)):
+        assert len(mutated) > 1, f"{label} collapsed to one answer; the guard proves nothing"
+
+    fixed = {
+        under(prec, rounding, lambda: contract.decimal_text(long_value))
+        for prec, rounding in AMBIENT_CONTEXTS
+    }
+    shifted = {
+        under(prec, rounding, lambda: str(contract.scale_down_by_power_of_ten(long_value, 2)))
+        for prec, rounding in AMBIENT_CONTEXTS
+    }
+    flipped = {
+        under(prec, rounding, lambda: str(long_value.copy_negate()))
+        for prec, rounding in AMBIENT_CONTEXTS
+    }
+    assert len(fixed) == len(shifted) == len(flipped) == 1

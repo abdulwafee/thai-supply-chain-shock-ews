@@ -59,6 +59,7 @@ from thai_supply_chain_ews.scenario.contract import (
     ScenarioPolicy,
     ScenarioPolicyError,
     _PolicyLoader,
+    exact_difference,
     load_policy,
 )
 
@@ -192,7 +193,13 @@ class ExposurePair:
 
     @property
     def propagated_exposure(self) -> Decimal:
-        return self.total_requirement_exposure - self.direct_exposure
+        # Exact, and independent of whatever precision the reader's program is
+        # carrying. A bare `total - direct` here would be evaluated in the ambient
+        # context, so the same pair would report different propagated exposure to
+        # two callers who differ only in a global neither of them set.
+        return exact_difference(
+            self.total_requirement_exposure, self.direct_exposure
+        )
 
     @property
     def key(self) -> tuple[str, str]:
@@ -785,7 +792,13 @@ def _cross_check(pairs, mediators, price_stages, policy_path) -> None:
         first_mediator.setdefault((mediator.industry_id, mediator.channel), mediator)
 
     def compare(label, key, left, right):
-        difference = abs(left - right)
+        # Both halves of `abs(left - right)` consult the context: the subtraction
+        # rounds to the ambient precision and `abs` rounds again. The comparison
+        # below decides whether a published artifact is accepted at all, so it must
+        # not depend on a setting the loader does not control. `exact_difference`
+        # takes plain values -- nothing is computed in the caller's context on the
+        # way in -- and `copy_abs` drops the sign without consulting a context.
+        difference = exact_difference(left, right).copy_abs()
         if difference > tolerance:
             raise ArtifactIntegrityError(
                 f"{key[0]}/{key[1]}: {label} disagrees between the exposure matrix ({left}) and "

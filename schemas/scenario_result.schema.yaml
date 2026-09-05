@@ -1,0 +1,268 @@
+# Schema for the two documents the Structural Exposure Scenario CLI emits.
+#
+# Describes what thai_supply_chain_ews.scenario.report ACTUALLY builds, and is checked
+# against that module by tests/test_scenario_report.py: the declared field sets must
+# match the documents field for field, so a schema and a writer cannot drift apart
+# while both look correct.
+#
+# Two properties are structural rather than stylistic.
+#
+# DETERMINISM. Neither document carries a timestamp, a run identity, a hostname, an
+# absolute path or any other machine-specific value. Identical inputs produce
+# byte-identical output. The `forbidden` list below is enforced recursively, so a field
+# like `generated_at` cannot reappear inside a nested object.
+#
+# DECIMAL STRINGS. Every numeric quantity is serialised as a canonical decimal string,
+# never a JSON float. The two previous phases went to some trouble to keep magnitudes
+# and coefficients in exact decimal arithmetic; emitting them as floats at the last step
+# would undo that invisibly. json.dumps cannot encode a Decimal at all, so a regression
+# fails loudly.
+#
+# No probability, forecast, predicted percentage, elasticity, causal effect, risk band or
+# recommendation field exists in either document. Their absence is enforced by test.
+
+schema_version: 1
+written_by: thai_supply_chain_ews.scenario.report
+validated_by: thai_supply_chain_ews.scenario.report.validate_result_document
+input_schema: schemas/scenario_input.schema.yaml
+
+numeric_serialisation: canonical_decimal_string
+json_floats_permitted: false
+nan_or_infinity_permitted: false
+deterministic: true
+nondeterministic_fields_permitted: false
+
+interpretation: >-
+  A conditional structural exposure calculation over published input-output accounting
+  ratios from the NESDC 2015 benchmark table. Not a probability, not a forecast, not a
+  predicted percentage change in production, not a causal effect, not an elasticity, not
+  a registered risk band, and not an investment or production recommendation.
+
+documents:
+  scenario_result:
+    schema_version: structural_exposure_result_v1
+    produced_by: run
+    required:
+      - schema_version
+      - scenario
+      - basis
+      - artifacts
+      - ranking
+      - unscorable_industries
+      - exclusions
+      - limitations
+    optional: []
+    forbidden:
+      - generated_at
+      - generated_at_utc
+      - timestamp
+      - run_id
+      - run_identity
+      - hostname
+      - absolute_path
+      - source_path
+      - probability
+      - likelihood
+      - forecast
+      - prediction
+      - predicted_percentage_change
+      - expected_loss
+      - expected_return
+      - elasticity
+      - pass_through_rate
+      - causal_effect
+      - risk_score
+      - risk_band
+      - risk_level
+      - confidence
+      - recommendation
+
+  industry_explanation:
+    schema_version: structural_exposure_explanation_v1
+    produced_by: explain
+    required:
+      - schema_version
+      - scenario
+      - basis
+      - artifacts
+      - industry
+      - channels
+      - exclusions
+      - mediator_interpretation
+      - limitations
+    optional: []
+    forbidden:
+      - generated_at
+      - generated_at_utc
+      - timestamp
+      - run_id
+      - run_identity
+      - hostname
+      - absolute_path
+      - source_path
+      - probability
+      - likelihood
+      - forecast
+      - prediction
+      - predicted_percentage_change
+      - expected_loss
+      - expected_return
+      - elasticity
+      - pass_through_rate
+      - causal_effect
+      - risk_score
+      - risk_band
+      - risk_level
+      - confidence
+      - recommendation
+
+# --- field detail -----------------------------------------------------------------
+
+scenario_block:
+  fields:
+    - name: scenario_id
+      type: string
+    - name: scenario_name
+      type: string_or_null
+    - name: scenario_date
+      type: string_or_null
+      note: ISO calendar date. Metadata only; it selects no data and is not a vintage.
+    - name: scenario_date_is_metadata_only
+      type: boolean
+      const: true
+    - name: coefficient_vintage_is_scenario_date
+      type: boolean
+      const: false
+    - name: note
+      type: string_or_null
+    - name: canonical_input_sha256
+      type: string
+      note: >-
+        The Phase 1 canonical digest of the validated input. Deterministic: it excludes
+        the source path and every runtime value, so it identifies the scenario rather
+        than the run.
+    - name: shocks
+      type: list
+    - name: warnings
+      type: list
+
+basis_block:
+  fields:
+    - name: selected
+      type: string
+      allowed: [direct, total_requirement]
+    - name: role
+      type: string
+      allowed: [registered_primary, structural_sensitivity_only]
+    - name: registered_primary
+      type: string
+      const: direct
+    - name: structural_reference_year
+      type: integer
+      const: 2015
+
+artifact_entry:
+  fields: [name, path, sha256, digest_representation]
+  count: 4
+  note: >-
+    The four pinned runtime artifacts, in name order. Repository-relative paths only —
+    an absolute path would make the document machine-specific.
+
+industry_entry:
+  fields:
+    - rank
+    - industry_id
+    - industry_name
+    - direction
+    - net_exposure
+    - relative_exposure_index
+    - direct_component
+    - propagated_component
+    - propagated_supported
+    - gross_absolute_contribution
+    - cancellation
+    - cancellation_ratio
+    - tied_with
+    - contributions
+    - excluded_pairs
+  direction_allowed: [stress_pressure, relief_pressure, neutral]
+  decimal_string_fields:
+    - net_exposure
+    - relative_exposure_index
+    - direct_component
+    - propagated_component
+    - gross_absolute_contribution
+    - cancellation
+    - cancellation_ratio
+  note: >-
+    propagated_component is null on the direct basis, where propagation does not take
+    part in the selected score. On the total-requirement basis
+    direct_component + propagated_component == net_exposure exactly, because the
+    propagated coefficient is derived as total_requirement - direct rather than read
+    from the published indirect field.
+
+contribution_entry:
+  fields:
+    - channel
+    - io_sector_code
+    - direction
+    - sign
+    - signed_magnitude_fraction
+    - coefficient
+    - contribution
+    - direct_component
+    - propagated_component
+    - propagated_supported
+    - published_indirect_exposure
+    - proxy_fit_status
+    - quality_flag
+  ordering: channel_ascending
+
+exclusion_entry:
+  fields: [industry_id, channel, reason, detail]
+  reasons: [direction_sign_unresolved, pair_not_feature_eligible, pair_not_published]
+  note: >-
+    An excluded pair is never scored as zero. Its coefficient is preserved and the pair
+    is reported with a stable machine-readable reason.
+
+ranking_block:
+  fields: [status, no_ranking_reason, relative_index_denominator, industries]
+  status_allowed: [ranked, not_ranked]
+  no_ranking_reasons: [all_magnitudes_zero, all_net_exposures_zero]
+  note: >-
+    Both no-ranking reasons are accepted outcomes rather than errors, and the command
+    exits 0. relative_index_denominator is null when no ranking was produced, so nothing
+    divides by zero.
+
+explanation_channel_entry:
+  extends: contribution_entry
+  additional_fields:
+    - price_stage
+    - alignment_status
+    - shared_source_sector_warning
+    - mediators_shown
+    - mediators_published
+    - mediators
+  mediator_fields:
+    - rank
+    - intermediate_sector_code
+    - intermediate_sector_label
+    - contribution
+    - share_of_indirect
+    - cumulative_share
+  mediator_default_count: 5
+  mediator_all_count: 10
+  mediator_ordering: published_rank_ascending
+  mediator_note: >-
+    Rows are the pinned artifact's own, in its own rank order. Nothing is summarised,
+    reordered or interpolated. They attribute an exact accounting identity to the first
+    intermediate sector purchased and are structural corroboration, not evidence of a
+    causal path.
+
+limitations:
+  type: list_of_strings
+  fixed: true
+  configurable: false
+  note: >-
+    Emitted verbatim on every document, in a fixed order. A caveat a caller can switch
+    off is a caveat that will be switched off.

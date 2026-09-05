@@ -1,0 +1,28 @@
+# Three channels moving at once, two up and one down. The point of this example is
+# cancellation: a small net exposure can be the residue of two large opposing
+# contributions, so every industry reports its gross absolute contribution and the
+# amount that cancelled beside the net.
+#
+# Copper is absent on purpose. It resolves to the same official I/O sector as aluminium
+# (107), so the two are the same measurement twice; a scenario naming both is refused by
+# the input contract rather than deduplicated or summed.
+schema_version: structural_exposure_scenario_v1
+scenario_id: multi-commodity-shock
+scenario_name: Crude and aluminium up, natural rubber down
+scenario_date: 2026-09-04
+note: >-
+  Aluminium and copper share I/O sector 107 and are never independent evidence, so only
+  one of the two may appear in a scenario.
+shocks:
+  - channel: brent_crude_usd_bbl
+    direction: increase
+    magnitude: 25
+    magnitude_unit: percent
+  - channel: aluminum_usd_mt
+    direction: increase
+    magnitude: 10
+    magnitude_unit: percent
+  - channel: rubber_rss3_usd_kg
+    direction: decrease
+    magnitude: 15
+    magnitude_unit: percent

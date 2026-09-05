@@ -13,11 +13,13 @@ proves the arithmetic and not that the arithmetic is wired to the published numb
 from __future__ import annotations
 
 import ast
+import decimal
 import itertools
 from decimal import Decimal
 from pathlib import Path
 
 import pytest
+import yaml
 
 from thai_supply_chain_ews.scenario import artifacts as art
 from thai_supply_chain_ews.scenario import contract
@@ -775,10 +777,12 @@ def test_the_engine_imports_no_model_target_or_external_data_module():
     }
 
 
-def test_no_phase_three_module_exists_yet():
+def test_the_package_ships_only_reviewed_modules():
+    """The same closed set the contract tests assert, checked from the engine's side."""
     package = EXPOSURE_SOURCE.parent
     assert sorted(p.name for p in package.glob("*.py")) == [
-        "__init__.py", "artifacts.py", "contract.py", "exposure.py"
+        "__init__.py", "__main__.py", "artifacts.py", "contract.py", "exposure.py",
+        "report.py",
     ]
 
 
@@ -787,7 +791,11 @@ def test_the_public_api_exposes_the_reviewed_phase_two_names_and_no_more():
 
     assert "calculate_scenario_exposure" in scenario.__all__
     assert "load_artifact_bundle" in scenario.__all__
-    for name in ("main", "cli", "render", "report", "run", "predict", "forecast",
+    # `report` completed in Phase 3 and is exported as a reviewed submodule. `main`
+    # is not: the command-line entry point is reached through `python -m`, never
+    # imported, so exporting it would invite a dependency nobody reviewed.
+    assert "report" in scenario.__all__
+    for name in ("main", "cli", "render", "run", "predict", "forecast",
                  "fetch", "download"):
         assert name not in scenario.__all__
     for name in ("_rank", "_aggregate", "_contribution", "_require_basis",
@@ -795,3 +803,812 @@ def test_the_public_api_exposes_the_reviewed_phase_two_names_and_no_more():
         assert name not in scenario.__all__
         assert not hasattr(scenario, name)
         assert hasattr(ex, name)
+
+
+# ---------------------------------------------------------------------------
+# The arithmetic does not depend on the caller's decimal context
+# ---------------------------------------------------------------------------
+
+
+def context_scenario(tmp_path, policy):
+    """A scenario whose index and cancellation ratio are both non-terminating.
+
+    Two channels in opposite directions, so the net is a real cancellation of two
+    contributions and the ratio is a genuine division; twelve industries, so the
+    relative index divides by a denominator it does not divide evenly into.
+    """
+    return scenario_for(
+        tmp_path,
+        [("brent_crude_usd_bbl", "increase", "0.25"), ("rubber_rss3_usd_kg", "decrease", "0.15")],
+        policy,
+        scenario_id="ambient-context",
+    )
+
+
+AMBIENT_CONTEXTS = [
+    (6, decimal.ROUND_DOWN),
+    (28, decimal.ROUND_HALF_EVEN),
+    (80, decimal.ROUND_CEILING),
+    (9, decimal.ROUND_UP),
+    (50, decimal.ROUND_FLOOR),
+]
+
+
+def under(prec, rounding, work):
+    """Run ``work`` with an ambient context, always restoring the caller's."""
+    with decimal.localcontext() as ctx:
+        ctx.prec, ctx.rounding = prec, rounding
+        return work()
+
+
+def test_the_result_is_identical_under_every_ambient_decimal_context(
+    tmp_path, policy, real_bundle
+):
+    """The defect this guards: at precision 6 the calculation used to raise outright."""
+    scenario = context_scenario(tmp_path, policy)
+    results = [
+        under(prec, rounding,
+              lambda: ex.calculate_scenario_exposure(
+                  scenario, basis="total_requirement", bundle=real_bundle, policy=policy))
+        for prec, rounding in AMBIENT_CONTEXTS
+    ]
+    first = results[0]
+    for other in results[1:]:
+        assert other == first
+
+
+def test_every_canonical_value_is_identical_under_every_ambient_context(
+    tmp_path, policy, real_bundle
+):
+    scenario = context_scenario(tmp_path, policy)
+    seen = set()
+    for prec, rounding in AMBIENT_CONTEXTS:
+        result = under(prec, rounding,
+                       lambda: ex.calculate_scenario_exposure(
+                           scenario, basis="total_requirement", bundle=real_bundle,
+                           policy=policy))
+        seen.add(
+            tuple(
+                (e.industry_id, e.rank, str(e.net_exposure), str(e.direct_component),
+                 str(e.propagated_component), str(e.gross_absolute_contribution),
+                 str(e.cancellation), str(e.cancellation_ratio),
+                 str(e.relative_exposure_index), e.direction, e.canonical_net_exposure,
+                 tuple(c.canonical_contribution for c in e.contributions))
+                for e in result.ranking
+            )
+        )
+    assert len(seen) == 1
+
+
+def test_both_renderings_are_byte_identical_under_every_ambient_context(
+    tmp_path, policy, real_bundle
+):
+    from thai_supply_chain_ews.scenario import report as rp
+
+    scenario = context_scenario(tmp_path, policy)
+    renders = set()
+    for prec, rounding in AMBIENT_CONTEXTS:
+        def build():
+            result = ex.calculate_scenario_exposure(
+                scenario, basis="total_requirement", bundle=real_bundle, policy=policy
+            )
+            document = rp.build_scenario_result_document(scenario, result, real_bundle)
+            return (rp.render_scenario_result_json(document).encode("utf-8"),
+                    rp.render_scenario_result_markdown(document).encode("utf-8"))
+
+        renders.add(under(prec, rounding, build))
+    assert len(renders) == 1
+
+
+def test_ranks_and_tie_groups_are_identical_under_every_ambient_context(
+    tmp_path, policy, real_bundle
+):
+    scenario = context_scenario(tmp_path, policy)
+    orders = {
+        under(prec, rounding,
+              lambda: tuple(
+                  (e.industry_id, e.rank, e.tied_with)
+                  for e in ex.calculate_scenario_exposure(
+                      scenario, basis="total_requirement", bundle=real_bundle,
+                      policy=policy).ranking))
+        for prec, rounding in AMBIENT_CONTEXTS
+    }
+    assert len(orders) == 1
+
+
+def test_the_exact_identity_survives_every_ambient_context(tmp_path, policy, real_bundle):
+    """Checked inside the engine's own context.
+
+    A caller who adds two of these decimals in a precision-6 context gets a precision-6
+    sum -- that is the caller's arithmetic, not a wrong stored value -- so the comparison
+    is made where the engine makes it.
+    """
+    scenario = context_scenario(tmp_path, policy)
+    for prec, rounding in AMBIENT_CONTEXTS:
+        result = under(prec, rounding,
+                       lambda: ex.calculate_scenario_exposure(
+                           scenario, basis="total_requirement", bundle=real_bundle,
+                           policy=policy))
+        for entry in result.ranking:
+            assert contract.exact_total([entry.direct_component, entry.propagated_component]) == (
+                entry.net_exposure
+            )
+            for contribution in entry.contributions:
+                assert contract.exact_total(
+                    [contribution.direct_component, contribution.propagated_component]
+                ) == contribution.contribution
+
+
+def test_a_successful_calculation_leaves_the_callers_context_untouched(
+    tmp_path, policy, real_bundle
+):
+    scenario = context_scenario(tmp_path, policy)
+    with decimal.localcontext() as ctx:
+        ctx.prec, ctx.rounding = 11, decimal.ROUND_05UP
+        before = (decimal.getcontext().prec, decimal.getcontext().rounding,
+                  dict(decimal.getcontext().traps))
+        ex.calculate_scenario_exposure(scenario, basis="total_requirement",
+                                       bundle=real_bundle, policy=policy)
+        after = (decimal.getcontext().prec, decimal.getcontext().rounding,
+                 dict(decimal.getcontext().traps))
+        assert before == after
+        assert after[0] == 11 and after[1] == decimal.ROUND_05UP
+
+
+def test_a_raising_calculation_also_restores_the_callers_context(
+    tmp_path, policy, real_bundle
+):
+    scenario = context_scenario(tmp_path, policy)
+    with decimal.localcontext() as ctx:
+        ctx.prec, ctx.rounding = 13, decimal.ROUND_FLOOR
+        with pytest.raises(contract.ScenarioContractError):
+            ex.calculate_scenario_exposure(scenario, basis="not-a-basis",
+                                           bundle=real_bundle, policy=policy)
+        assert decimal.getcontext().prec == 13
+        assert decimal.getcontext().rounding == decimal.ROUND_FLOOR
+
+
+def test_reading_a_property_does_not_alter_the_callers_context(tmp_path, policy, real_bundle):
+    """``cancellation`` and its ratio are computed when a reader touches them."""
+    scenario = context_scenario(tmp_path, policy)
+    result = ex.calculate_scenario_exposure(scenario, basis="total_requirement",
+                                            bundle=real_bundle, policy=policy)
+    with decimal.localcontext() as ctx:
+        ctx.prec, ctx.rounding = 7, decimal.ROUND_UP
+        entry = result.ranking[0]
+        touched = (entry.cancellation, entry.cancellation_ratio, entry.direction,
+                   entry.canonical_net_exposure)
+        assert touched is not None
+        assert decimal.getcontext().prec == 7
+        assert decimal.getcontext().rounding == decimal.ROUND_UP
+
+
+def test_the_declared_contexts_are_explicit_and_private():
+    """Two kinds of context, with deliberately different trap sets.
+
+    The exact ones trap ``Inexact``, because rounding there would mean a precision
+    derivation was wrong and the module would be returning a number it calls exact. The
+    quotient one does not, because a non-terminating quotient has to be rounded
+    somewhere and 28 digits is the declared place.
+
+    The exact helpers live in ``contract`` rather than here: ``artifacts`` needs the same
+    guarantees and cannot import this module, so one implementation serves both.
+    """
+    for context in (ex._QUOTIENT_CONTEXT, contract.exact_context(17),
+                    contract.exact_context(200)):
+        assert isinstance(context, decimal.Context)
+        assert context.rounding == decimal.ROUND_HALF_EVEN
+        assert context.Emin == -999999
+        assert context.Emax == 999999
+        for signal in (decimal.InvalidOperation, decimal.DivisionByZero, decimal.Overflow):
+            assert context.traps[signal] is True
+
+    assert ex._QUOTIENT_CONTEXT.prec == 28
+    assert ex._QUOTIENT_CONTEXT.traps[decimal.Inexact] is False
+    assert contract.exact_context(17).traps[decimal.Inexact] is True
+    assert not hasattr(ex, "_EXACT_CONTEXT"), "a fixed ceiling is the defect, not the fix"
+
+    from thai_supply_chain_ews import scenario
+
+    for name in ("_QUOTIENT_CONTEXT", "exact_context", "exact_product", "exact_total",
+                 "exact_difference", "fixed_context", "significant_digits"):
+        assert name not in ex.__all__
+        assert name not in contract.__all__
+        assert name not in scenario.__all__
+
+
+def test_removing_the_fixed_context_would_make_these_tests_fail(tmp_path, policy, real_bundle):
+    """Mutation check: the pinning is load-bearing, not decoration.
+
+    The same three values are recomputed the way the module would if the
+    ``localcontext`` wrappers were deleted -- straight into the ambient context. If that
+    produced the same answers everywhere, every test above would pass whether or not the
+    fix existed.
+    """
+    scenario = context_scenario(tmp_path, policy)
+    result = ex.calculate_scenario_exposure(scenario, basis="total_requirement",
+                                            bundle=real_bundle, policy=policy)
+    entry = result.ranking[1]
+    denominator = result.relative_index_denominator
+
+    unpinned = set()
+    for prec, rounding in AMBIENT_CONTEXTS:
+        def recompute():
+            index = (Decimal(100) * entry.net_exposure) / denominator
+            gross = entry.gross_absolute_contribution
+            ratio = (gross - abs(entry.net_exposure)) / gross
+            return (str(index), str(ratio), contract.decimal_text(entry.net_exposure))
+
+        unpinned.add(under(prec, rounding, recompute))
+    assert len(unpinned) > 1, "if this collapses to one, the guard proves nothing"
+
+    pinned = {
+        under(prec, rounding,
+              lambda: (str(entry.relative_exposure_index), str(entry.cancellation_ratio),
+                       entry.canonical_net_exposure))
+        for prec, rounding in AMBIENT_CONTEXTS
+    }
+    assert len(pinned) == 1
+
+
+# ---------------------------------------------------------------------------
+# The precision is derived from the operands, not fixed
+#
+# The first version of the fix above pinned one context at 60 digits. That removed the
+# dependence on the caller's settings and replaced it with a ceiling: Phase 1 bounds a
+# magnitude's value but not its digit count, so a contract-valid magnitude can be long,
+# and a 60-digit magnitude times a 16-digit coefficient needs 76 digits. At 60 the
+# product was silently truncated and the exact decomposition it feeds became a rounded
+# one. Deriving the width from the operands removes the boundary rather than moving it.
+#
+# `Inexact` is trapped in those derived contexts, so a derivation that was ever short by
+# one digit would raise instead of rounding. The long-magnitude cases below are what
+# demonstrate it does not fire.
+# ---------------------------------------------------------------------------
+
+
+#: Longer than any precision in AMBIENT_CONTEXTS and longer than the 60-digit ceiling
+#: the first fix carried, so a fixed-width context must lose digits from its products.
+LONG_MAGNITUDE = "0." + "1234567891" * 8
+
+
+def long_scenario(tmp_path, policy, direction="decrease", tag="long"):
+    return scenario_for(
+        tmp_path,
+        [("brent_crude_usd_bbl", direction, LONG_MAGNITUDE)],
+        policy,
+        scenario_id=tag,
+    )
+
+
+def test_a_long_magnitude_is_scored_without_rounding(tmp_path, policy, real_bundle):
+    """The product keeps every digit both operands contribute.
+
+    A magnitude of m digits against a coefficient of n needs m + n; anything narrower
+    would either round -- which the trapped ``Inexact`` turns into a raise -- or, before
+    the trap existed, quietly return a shortened number.
+    """
+    scenario = long_scenario(tmp_path, policy)
+    result = ex.calculate_scenario_exposure(
+        scenario, basis="total_requirement", bundle=real_bundle, policy=policy
+    )
+    entry = result.ranking[0]
+    contribution = entry.contributions[0]
+
+    pair = real_bundle.pair(entry.industry_id, "brent_crude_usd_bbl")
+    with decimal.localcontext() as ctx:
+        ctx.prec = 5000
+        reference = (
+            Decimal(pair.sign)
+            * scenario.shocks[0].signed_magnitude_fraction
+            * pair.total_requirement_exposure
+        )
+    assert contribution.contribution == reference
+
+    magnitude_digits = len(scenario.shocks[0].signed_magnitude_fraction.as_tuple().digits)
+    coefficient_digits = len(pair.total_requirement_exposure.as_tuple().digits)
+    assert magnitude_digits > 60
+    assert len(contribution.contribution.as_tuple().digits) > 60
+    assert len(contribution.contribution.as_tuple().digits) <= (
+        magnitude_digits + coefficient_digits
+    )
+
+
+def test_the_exact_decomposition_holds_for_a_long_magnitude(tmp_path, policy, real_bundle):
+    """``direct + propagated == total`` is the claim the report prints; it must not be
+    true only for short inputs."""
+    scenario = long_scenario(tmp_path, policy, tag="long-decomposition")
+    result = ex.calculate_scenario_exposure(
+        scenario, basis="total_requirement", bundle=real_bundle, policy=policy
+    )
+    for entry in result.ranking:
+        assert contract.exact_total([entry.direct_component, entry.propagated_component]) == (
+            entry.net_exposure
+        )
+        for contribution in entry.contributions:
+            assert contract.exact_total(
+                [contribution.direct_component, contribution.propagated_component]
+            ) == contribution.contribution
+
+
+def test_a_long_magnitude_gives_the_same_answer_in_every_ambient_context(
+    tmp_path, policy, real_bundle
+):
+    scenario = long_scenario(tmp_path, policy, tag="long-ambient")
+    seen = {
+        under(
+            prec,
+            rounding,
+            lambda: tuple(
+                (entry.industry_id, entry.canonical_net_exposure, str(entry.rank))
+                for entry in ex.calculate_scenario_exposure(
+                    scenario, basis="total_requirement", bundle=real_bundle, policy=policy
+                ).ranking
+            ),
+        )
+        for prec, rounding in AMBIENT_CONTEXTS
+    }
+    assert len(seen) == 1
+
+
+def test_a_fixed_sixty_digit_context_would_have_truncated_that_product(
+    tmp_path, policy, real_bundle
+):
+    """Mutation check on the ceiling itself, not on the ambient context.
+
+    This is the arithmetic the module performed while one context was pinned at 60
+    digits. It is well-defined and deterministic -- which is exactly why the defect was
+    invisible -- and it is not the exact answer.
+    """
+    scenario = long_scenario(tmp_path, policy, tag="long-ceiling")
+    result = ex.calculate_scenario_exposure(
+        scenario, basis="total_requirement", bundle=real_bundle, policy=policy
+    )
+    contribution = result.ranking[0].contributions[0]
+    pair = real_bundle.pair(result.ranking[0].industry_id, "brent_crude_usd_bbl")
+
+    ceiling = decimal.Context(prec=60, rounding=decimal.ROUND_HALF_EVEN)
+    with decimal.localcontext(ceiling):
+        truncated = (
+            Decimal(pair.sign)
+            * scenario.shocks[0].signed_magnitude_fraction
+            * pair.total_requirement_exposure
+        )
+    assert truncated != contribution.contribution
+    assert len(truncated.as_tuple().digits) == 60
+
+
+def test_the_derived_precision_never_rounds(tmp_path, policy, real_bundle):
+    """``Inexact`` is trapped, so a short derivation raises rather than rounding.
+
+    Asserting the trap is set proves the intent; running the long scenario through the
+    engine proves the derivations are actually wide enough for the trap not to fire.
+    """
+    for width in (1, 2, 17, 60, 200):
+        context = contract.exact_context(width)
+        assert context.traps[decimal.Inexact] is True
+        assert context.prec == width
+
+    scenario = long_scenario(tmp_path, policy, tag="long-trap")
+    ex.calculate_scenario_exposure(
+        scenario, basis="total_requirement", bundle=real_bundle, policy=policy
+    )
+    ex.calculate_scenario_exposure(
+        scenario, basis="direct", bundle=real_bundle, policy=policy
+    )
+
+
+def test_the_quotients_keep_the_precision_they_shipped_with(tmp_path, policy, real_bundle):
+    """The index and the ratio do not terminate, so their width is a presentation choice.
+
+    Widening it would change every published figure. 28 is what shipped, so 28 is what
+    these must still be -- including when the magnitude driving them is long.
+    """
+    assert ex._QUOTIENT_CONTEXT.prec == 28
+
+    scenario = context_scenario(tmp_path, policy)
+    result = ex.calculate_scenario_exposure(
+        scenario, basis="total_requirement", bundle=real_bundle, policy=policy
+    )
+    entry = result.ranking[1]
+    assert str(entry.relative_exposure_index) == "23.27169836798944487889057774"
+    assert str(entry.cancellation_ratio) == "0.006815722200303706405239369890"
+
+    long_result = ex.calculate_scenario_exposure(
+        long_scenario(tmp_path, policy, tag="long-quotient"),
+        basis="total_requirement",
+        bundle=real_bundle,
+        policy=policy,
+    )
+    for ranked in long_result.ranking:
+        assert len(ranked.relative_exposure_index.as_tuple().digits) <= 28
+
+
+def test_sign_and_magnitude_are_taken_without_a_context(tmp_path, policy, real_bundle):
+    """``abs()`` and unary minus round; ``copy_abs`` and ``copy_negate`` do not.
+
+    Both appear in the ranking key and in the cancellation, so at a low precision the
+    unfixed forms would collapse distinct exposures into equal keys and rank industries
+    by identifier instead of by exposure.
+    """
+    value = Decimal("0.0027230587343272067")
+    rounded = {
+        under(prec, rounding, lambda: str(abs(value))) for prec, rounding in AMBIENT_CONTEXTS
+    }
+    exact = {
+        under(prec, rounding, lambda: str(value.copy_abs()))
+        for prec, rounding in AMBIENT_CONTEXTS
+    }
+    assert len(rounded) > 1, "if abs() were context-free this guard would prove nothing"
+    assert len(exact) == 1
+
+    scenario = context_scenario(tmp_path, policy)
+    cancellations = {
+        under(
+            prec,
+            rounding,
+            lambda: tuple(
+                contract.decimal_text(entry.cancellation)
+                for entry in ex.calculate_scenario_exposure(
+                    scenario, basis="total_requirement", bundle=real_bundle, policy=policy
+                ).ranking
+            ),
+        )
+        for prec, rounding in AMBIENT_CONTEXTS
+    }
+    assert len(cancellations) == 1
+
+
+# ---------------------------------------------------------------------------
+# The artifact loader is context-independent too
+#
+# The loader was the last place an ambient context still reached. Its coefficient
+# agreement check computed `abs(left - right)` -- two context operations in one
+# expression -- and `ExposurePair.propagated_exposure` computed `total - direct` in
+# whatever context its reader happened to carry.
+#
+# The agreement check is not cosmetic: it decides whether a published artifact is
+# accepted at all. A comparison that depends on a global some other library set is a
+# validation decision made by something outside the project.
+# ---------------------------------------------------------------------------
+
+
+SCENARIO_MODULES = ("contract.py", "artifacts.py", "exposure.py", "report.py", "__main__.py")
+SCENARIO_SOURCE_DIR = ROOT / "src" / "thai_supply_chain_ews" / "scenario"
+
+#: Integer operands that may legitimately be negated. Keyed by (module, function, name)
+#: so an addition anywhere else still has to be justified rather than inheriting an
+#: exemption from a name that happens to match.
+INTEGER_UNARY_ALLOWLIST = {
+    # `point` is the index of the decimal point within a digit string: an int used to
+    # build a slice, never a Decimal.
+    ("contract.py", "decimal_text", "point"),
+}
+
+
+def unsafe_sign_operations(source: str, module: str) -> list[tuple[int, str]]:
+    """Every unary minus/plus and builtin ``abs()`` that is not provably not a Decimal.
+
+    Fail-closed on purpose. Deciding an operand's type statically is not possible in
+    general, so anything that is not obviously an integer is reported and has to be
+    either rewritten with ``copy_negate``/``copy_abs`` or declared in the allowlist
+    above with a reason. Constants and ``len(...)`` are allowed outright because neither
+    can produce a Decimal.
+
+    This reads the syntax tree, so the prose in this file -- which necessarily writes
+    ``abs()`` and ``-value`` in order to describe them -- is not matched.
+    """
+    tree = ast.parse(source)
+    owner: dict[int, str] = {}
+    for function in ast.walk(tree):
+        if isinstance(function, (ast.FunctionDef, ast.AsyncFunctionDef)):
+            for node in ast.walk(function):
+                owner[id(node)] = function.name
+
+    def provably_not_decimal(node) -> bool:
+        if isinstance(node, ast.Constant) and isinstance(node.value, (int, float)):
+            return True
+        return (
+            isinstance(node, ast.Call)
+            and isinstance(node.func, ast.Name)
+            and node.func.id == "len"
+        )
+
+    findings: list[tuple[int, str]] = []
+    for node in ast.walk(tree):
+        if isinstance(node, ast.UnaryOp) and isinstance(node.op, (ast.USub, ast.UAdd)):
+            operand, label = node.operand, "unary sign"
+        elif (
+            isinstance(node, ast.Call)
+            and isinstance(node.func, ast.Name)
+            and node.func.id == "abs"
+        ):
+            operand, label = (node.args[0] if node.args else None), "builtin abs()"
+        else:
+            continue
+        if operand is not None and provably_not_decimal(operand):
+            continue
+        if isinstance(operand, ast.Name) and (
+            module, owner.get(id(node), "<module>"), operand.id
+        ) in INTEGER_UNARY_ALLOWLIST:
+            continue
+        findings.append((node.lineno, label))
+    return findings
+
+
+def test_no_scenario_module_signs_a_decimal_through_the_ambient_context():
+    """``-x`` and ``abs(x)`` round; ``copy_negate`` and ``copy_abs`` do not.
+
+    Both defects that reached the published figures were of exactly this shape, and one
+    of them hid inside an argument -- ``helper(-value)`` negates in the *caller's*
+    context, because arguments are evaluated before the callee opens its own. A reviewer
+    will not reliably spot that, so it is checked mechanically.
+    """
+    offences = {}
+    for module in SCENARIO_MODULES:
+        source = (SCENARIO_SOURCE_DIR / module).read_text(encoding="utf-8")
+        findings = unsafe_sign_operations(source, module)
+        if findings:
+            offences[module] = findings
+    assert not offences, (
+        "use copy_negate()/copy_abs(), or declare an integer operand in "
+        f"INTEGER_UNARY_ALLOWLIST: {offences}"
+    )
+
+
+def test_that_guard_would_catch_a_reintroduced_defect():
+    """Mutation check on the guard itself.
+
+    Each snippet is a form that actually shipped and had to be corrected. If the guard
+    passed them, the test above would be decoration.
+    """
+    reintroduced = [
+        "def f(a, b):\n    return total([a, -b])\n",
+        "def f(x):\n    return abs(x)\n",
+        "def f(x, y):\n    return sorted(v, key=lambda e: (-abs(e.net_exposure), e.id))\n",
+        "def f(fraction, direction):\n"
+        '    return fraction if direction == "increase" else -fraction\n',
+    ]
+    for snippet in reintroduced:
+        assert unsafe_sign_operations(snippet, "contract.py"), snippet
+
+    permitted = [
+        "def f(xs):\n    return xs[-1]\n",
+        "EMIN = -999999\n",
+        "def decimal_text(s, point):\n    return s[:point] if point > 0 else -point\n",
+        "def f(xs):\n    return abs(len(xs))\n",
+        "def f(v):\n    return v.copy_negate().copy_abs()\n",
+    ]
+    for snippet in permitted:
+        module = "contract.py" if "point" in snippet else "exposure.py"
+        assert not unsafe_sign_operations(snippet, module), snippet
+
+
+def test_the_allowlist_names_only_operands_that_still_exist():
+    """A stale exemption is a hole. Each entry must still match a real function."""
+    for module, function, name in INTEGER_UNARY_ALLOWLIST:
+        tree = ast.parse((SCENARIO_SOURCE_DIR / module).read_text(encoding="utf-8"))
+        target = next(
+            (
+                node
+                for node in ast.walk(tree)
+                if isinstance(node, ast.FunctionDef) and node.name == function
+            ),
+            None,
+        )
+        assert target is not None, f"{module}:{function} no longer exists"
+        assert any(
+            isinstance(node, ast.Name) and node.id == name for node in ast.walk(target)
+        ), f"{module}:{function} no longer uses {name}"
+
+
+def bundle_fingerprint(bundle) -> tuple:
+    """Every Decimal the loader produced, as text, plus the declared digests."""
+    return (
+        tuple(
+            (
+                pair.industry_id,
+                pair.channel,
+                str(pair.direct_exposure),
+                str(pair.total_requirement_exposure),
+                str(pair.published_indirect_exposure),
+                str(pair.propagated_exposure),
+                contract.decimal_text(pair.propagated_exposure),
+                str(pair.sign),
+            )
+            for pair in sorted(bundle.pairs, key=lambda p: p.key)
+        ),
+        tuple(
+            (declaration.name, declaration.sha256, declaration.digest_representation)
+            for declaration in sorted(bundle.declarations, key=lambda d: d.name)
+        ),
+    )
+
+
+def test_loading_the_bundle_is_identical_under_every_ambient_context():
+    """The whole loader, including the agreement check it runs on the way through."""
+    policy = contract.load_policy(POLICY_PATH)
+    fingerprints = {
+        under(
+            prec,
+            rounding,
+            lambda: bundle_fingerprint(
+                art.load_artifact_bundle(ROOT, policy=policy, policy_path=POLICY_PATH)
+            ),
+        )
+        for prec, rounding in AMBIENT_CONTEXTS
+    }
+    assert len(fingerprints) == 1
+
+
+def test_the_agreement_tolerance_decision_is_identical_under_every_ambient_context(
+    real_bundle,
+):
+    """C3 stays authoritative and the 1e-15 bound is unchanged; only the arithmetic moved.
+
+    The differences in the published artifacts are around 1e-17, so the check must keep
+    accepting them, and it must accept them for the same reason in every context.
+    """
+    raw = yaml.safe_load(POLICY_PATH.read_text(encoding="utf-8"))["cross_artifact_agreement"]
+    assert raw["authoritative_coefficient_source"] == "exposure_matrix"
+    assert Decimal(str(raw["coefficient_agreement_tolerance"])) == Decimal("1.0e-15")
+
+    tolerance = Decimal("1.0e-15")
+    mediators = {(m.industry_id, m.channel): m for m in real_bundle.mediators}
+    decisions = set()
+    for prec, rounding in AMBIENT_CONTEXTS:
+
+        def decide():
+            verdicts = []
+            for pair in sorted(real_bundle.pairs, key=lambda p: p.key):
+                mediator = mediators.get(pair.key)
+                if mediator is None:
+                    continue
+                for left, right in (
+                    (pair.direct_exposure, mediator.pair_direct_exposure),
+                    (pair.total_requirement_exposure, mediator.pair_total_exposure),
+                ):
+                    difference = contract.exact_difference(left, right).copy_abs()
+                    verdicts.append((str(difference), difference > tolerance))
+            return tuple(verdicts)
+
+        decisions.add(under(prec, rounding, decide))
+    assert len(decisions) == 1
+    assert not any(exceeded for _, exceeded in next(iter(decisions)))
+
+
+def test_the_replaced_expressions_really_were_context_sensitive(real_bundle):
+    """Mutation check on both halves of the expression that was removed.
+
+    Worth being precise about what this does and does not show. For the artifacts as
+    published, the agreement differences are around 1e-17 and carry so few significant
+    digits that rounding them could not have flipped an accept into a reject: the fix
+    removes a latent dependence rather than correcting a decision that was wrong. The
+    dependence is real all the same, and on values with a full complement of digits --
+    the coefficients themselves, and the subtraction behind ``propagated_exposure`` --
+    both ``abs()`` and ``-`` visibly round.
+    """
+    pair = max(real_bundle.pairs, key=lambda p: len(p.direct_exposure.as_tuple().digits))
+    assert len(pair.direct_exposure.as_tuple().digits) > 6
+
+    ambient_abs = {
+        under(prec, rounding, lambda: str(abs(pair.direct_exposure)))
+        for prec, rounding in AMBIENT_CONTEXTS
+    }
+    exact_abs = {
+        under(prec, rounding, lambda: str(pair.direct_exposure.copy_abs()))
+        for prec, rounding in AMBIENT_CONTEXTS
+    }
+    assert len(ambient_abs) > 1, "if abs() were context-free this guard proves nothing"
+    assert len(exact_abs) == 1
+
+    ambient_sub = {
+        under(
+            prec,
+            rounding,
+            lambda: str(pair.total_requirement_exposure - pair.direct_exposure),
+        )
+        for prec, rounding in AMBIENT_CONTEXTS
+    }
+    exact_sub = {
+        under(prec, rounding, lambda: str(pair.propagated_exposure))
+        for prec, rounding in AMBIENT_CONTEXTS
+    }
+    assert len(ambient_sub) > 1, "if subtraction were context-free this proves nothing"
+    assert len(exact_sub) == 1
+
+
+def test_the_propagated_exposure_property_is_identical_under_every_ambient_context(
+    real_bundle,
+):
+    """It is public on an immutable record, so any reader can touch it in any context."""
+    for pair in real_bundle.pairs:
+        rendered = {
+            under(prec, rounding, lambda pair=pair: str(pair.propagated_exposure))
+            for prec, rounding in AMBIENT_CONTEXTS
+        }
+        assert len(rendered) == 1, pair.key
+        assert contract.exact_total(
+            [pair.direct_exposure, pair.propagated_exposure]
+        ) == pair.total_requirement_exposure
+
+
+def result_fingerprint(result) -> tuple:
+    """Every Decimal the engine stored, in raw form, plus the order it ranked them in.
+
+    ``str`` rather than the canonical spelling on purpose: canonicalisation strips
+    trailing zeros, so it would hide a value that came back with a different scale
+    because something rounded it. This is the strictest comparison available.
+    """
+    return (
+        str(result.relative_index_denominator),
+        result.no_ranking_reason,
+        tuple(entry.industry_id for entry in result.ranking),
+        tuple(
+            (
+                entry.industry_id,
+                entry.rank,
+                entry.direction,
+                str(entry.net_exposure),
+                str(entry.direct_component),
+                str(entry.propagated_component),
+                str(entry.gross_absolute_contribution),
+                str(entry.cancellation),
+                str(entry.cancellation_ratio),
+                str(entry.relative_exposure_index),
+                tuple(
+                    (
+                        channel.channel,
+                        str(channel.contribution),
+                        str(channel.direct_component),
+                        str(channel.propagated_component),
+                    )
+                    for channel in entry.contributions
+                ),
+            )
+            for entry in result.industries
+        ),
+    )
+
+
+@pytest.mark.parametrize("basis", ["direct", "total_requirement"])
+def test_every_stored_decimal_and_the_ranking_order_survive_any_context(
+    basis, tmp_path, policy, real_bundle
+):
+    scenario = context_scenario(tmp_path, policy)
+    fingerprints = {
+        under(
+            prec,
+            rounding,
+            lambda: result_fingerprint(
+                ex.calculate_scenario_exposure(
+                    scenario, basis=basis, bundle=real_bundle, policy=policy
+                )
+            ),
+        )
+        for prec, rounding in AMBIENT_CONTEXTS
+    }
+    assert len(fingerprints) == 1
+
+    fingerprint = next(iter(fingerprints))
+    assert fingerprint[0] != "None"
+    assert len(fingerprint[2]) > 1
+
+
+def test_the_index_denominator_is_the_largest_absolute_net_in_every_context(
+    tmp_path, policy, real_bundle
+):
+    """The denominator sets the scale of every published index, so it must not move."""
+    scenario = context_scenario(tmp_path, policy)
+    for prec, rounding in AMBIENT_CONTEXTS:
+        result = under(
+            prec,
+            rounding,
+            lambda: ex.calculate_scenario_exposure(
+                scenario, basis="total_requirement", bundle=real_bundle, policy=policy
+            ),
+        )
+        largest = max(entry.net_exposure.copy_abs() for entry in result.ranking)
+        assert result.relative_index_denominator == largest
+        assert str(result.relative_index_denominator) == str(largest)
+        assert result.ranking[0].relative_exposure_index.copy_abs() == Decimal(100)

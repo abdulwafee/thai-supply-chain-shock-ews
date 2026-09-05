@@ -1,0 +1,19 @@
+# A price fall, which is cost relief rather than stress. Direction carries the sign, so
+# the contributions are negative and the industries are reported as relief_pressure.
+#
+# IND-06 (Rubber and Plastics) is deliberately visible here by its absence from the
+# ranking: it both produces and consumes this sector, the published direction sign is
+# therefore null, and the pair is EXCLUDED rather than scored as zero. "We cannot sign
+# this" and "there is no exposure" are different statements.
+schema_version: structural_exposure_scenario_v1
+scenario_id: rubber-price-decrease
+scenario_name: RSS3 natural rubber -20%
+scenario_date: 2026-09-04
+note: >-
+  RSS3 is one grade inside an official category that also covers block rubber and crepe.
+  Processed natural rubber, not fabricated rubber goods.
+shocks:
+  - channel: rubber_rss3_usd_kg
+    direction: decrease
+    magnitude: 20
+    magnitude_unit: percent

@@ -47,7 +47,16 @@ import json
 import re
 from dataclasses import dataclass
 from datetime import date
-from decimal import Decimal, InvalidOperation
+from decimal import (
+    ROUND_HALF_EVEN,
+    Context,
+    Decimal,
+    DivisionByZero,
+    Inexact,
+    InvalidOperation,
+    Overflow,
+    localcontext,
+)
 from pathlib import Path
 
 import yaml
@@ -109,6 +118,12 @@ SHOCK_OPTIONAL_FIELDS = frozenset({"note"})
 
 ALLOWED_DIRECTIONS = ("increase", "decrease")
 ALLOWED_MAGNITUDE_UNITS = ("percent", "fraction")
+
+# The policy loader refuses any divisor but 100, so percent-to-fraction is a shift of
+# the decimal point by two places. Both are stated here so the shift and the value it
+# stands for cannot drift apart silently.
+_PERCENT_DIVISOR = Decimal(100)
+_PERCENT_PLACES = 2
 
 #: Fields refused by name with a reason rather than as a generic unknown field.
 #: Each one is a thing a reasonable person would try, and each one would be
@@ -285,20 +300,25 @@ def decimal_text(value: Decimal) -> str:
     """The canonical decimal string for a validated magnitude.
 
     One value, one spelling. ``0.30``, ``0.300`` and ``3.0E-1`` are the same number
-    written three ways and all become ``"0.3"``; ``10``, ``10.0`` and ``1E+1``
-    become ``"10"``. Two properties are load-bearing and neither is free:
+    written three ways and all become ``"0.3"``; ``10``, ``10.0`` and ``1E+1`` become
+    ``"10"``.
 
-    ``normalize()`` strips trailing zeros but may return exponent form —
-    ``Decimal("10.0").normalize()`` is ``Decimal("1E+1")`` — so the result is
-    formatted with ``"f"``, which renders the ordinary decimal form whenever one
-    exists. Without that step the digest would depend on how the author spelled the
-    number, which is the whole thing this function exists to prevent.
+    Built entirely from :meth:`~decimal.Decimal.as_tuple` -- the sign, the digit tuple
+    and the exponent -- with no arithmetic of any kind. That is the point rather than a
+    matter of style. The obvious implementation, ``format(value.normalize(), "f")``, is
+    **context-sensitive**: ``normalize`` rounds to the ambient precision, so under a
+    precision-6 context a twenty-one digit exposure was written out as six digits,
+    silently, in the document a reader quotes. Reading the stored representation cannot
+    round, cannot depend on a global that some other library set, and keeps every
+    significant digit the Decimal holds however long it is.
 
-    Zero is returned as ``"0"`` whatever its sign or scale, so ``-0``, ``-0.00`` and
-    ``0E+5`` cannot produce three different digests for the same absence of a shock.
-    Direction is a separate field, so a zero increase and a zero decrease still
-    differ — because the author said something different, not because of how signed
-    zero happens to encode.
+    Trailing zeros are dropped from the digit tuple with the exponent adjusted to
+    compensate, which is exactly value-preserving, and the result is laid out in
+    ordinary decimal notation, never exponent form. Zero is returned as ``"0"`` whatever
+    its sign or scale, so ``-0``, ``-0.00`` and ``0E+5`` cannot produce three different
+    digests for the same absence of a shock. Direction is a separate field, so a zero
+    increase and a zero decrease still differ -- because the author said something
+    different, not because of how a signed zero happens to encode.
     """
     if not value.is_finite():
         raise ScenarioInternalError(
@@ -306,9 +326,133 @@ def decimal_text(value: Decimal) -> str:
             "means the magnitude check was bypassed rather than that a user wrote something "
             "unusual"
         )
-    if value == 0:
+    sign, digits, exponent = value.as_tuple()
+    if not any(digits):
         return "0"
-    return format(value.normalize(), "f")
+
+    significant = list(digits)
+    while len(significant) > 1 and significant[-1] == 0:
+        significant.pop()
+        exponent += 1
+    text = "".join(str(digit) for digit in significant)
+
+    if exponent >= 0:
+        body = text + "0" * exponent
+    else:
+        point = len(text) + exponent
+        body = f"{text[:point]}.{text[point:]}" if point > 0 else f"0.{'0' * -point}{text}"
+    return f"-{body}" if sign else body
+
+
+def scale_down_by_power_of_ten(value: Decimal, places: int) -> Decimal:
+    """``value`` divided by ``10 ** places``, exactly, without consulting a context.
+
+    Dividing by a power of ten moves the decimal point and does not change a single
+    digit, so the result is rebuilt from the sign, digits and exponent rather than
+    calculated. ``value / Decimal(100)`` looks equivalent and is not: division is a
+    context operation, so under the ambient precision a long magnitude comes back
+    shortened -- a sixty-digit percentage would be scored as a twenty-eight digit one,
+    with no error raised and nothing in the output to say the author's number was not
+    the number used.
+    """
+    sign, digits, exponent = value.as_tuple()
+    return Decimal((sign, digits, exponent - places))
+
+
+# ---------------------------------------------------------------------------
+# Exact decimal arithmetic
+#
+# Every Decimal operation consults a context, and the process-wide one belongs to
+# whatever program is embedding this package. At its default precision the difference
+# is invisible; at a precision some other library set, a coefficient silently loses
+# digits and an exactness check fails on a value that was never wrong.
+#
+# The width is derived from the operands rather than fixed, because a fixed ceiling is
+# a correctness boundary in disguise: the input contract bounds a magnitude's VALUE but
+# not its digit count, so a contract-valid magnitude can be long, and any constant
+# ceiling truncates somewhere.
+#
+# * a product of an m-digit and an n-digit decimal is exact in m + n digits;
+# * a sum is exact across the span from the smallest exponent to the largest adjusted
+#   exponent, with one place per term so no carry is lost.
+#
+# `Inexact` is TRAPPED in the exact contexts. If a derivation were ever short by one
+# digit the operation raises instead of quietly rounding, so "this is exact" is enforced
+# by the arithmetic rather than asserted in a comment.
+#
+# None of these helpers evaluate anything before entering their context, and none take
+# an expression as an argument that a caller had to compute first. That is the whole
+# hazard: `helper(-value)` negates in the CALLER's context, because arguments are
+# evaluated before the callee opens its own.
+_ARITHMETIC_EMIN = -999999
+_ARITHMETIC_EMAX = 999999
+
+#: Conditions that always mean a defect rather than a number needing rounding.
+ARITHMETIC_ERROR_SIGNALS = (InvalidOperation, DivisionByZero, Overflow)
+_EXACT_SIGNALS = (*ARITHMETIC_ERROR_SIGNALS, Inexact)
+
+
+def fixed_context(precision: int) -> Context:
+    """A context that rounds deterministically at a declared width.
+
+    For quotients, where no precision is exact and the width is therefore a declared
+    presentation choice rather than a fact about the operands.
+    """
+    return Context(
+        prec=max(int(precision), 1), rounding=ROUND_HALF_EVEN,
+        Emin=_ARITHMETIC_EMIN, Emax=_ARITHMETIC_EMAX,
+        traps=list(ARITHMETIC_ERROR_SIGNALS),
+    )
+
+
+def exact_context(precision: int) -> Context:
+    """A context wide enough that the operation about to run cannot round."""
+    return Context(
+        prec=max(int(precision), 1), rounding=ROUND_HALF_EVEN,
+        Emin=_ARITHMETIC_EMIN, Emax=_ARITHMETIC_EMAX,
+        traps=list(_EXACT_SIGNALS),
+    )
+
+
+def significant_digits(value: Decimal) -> int:
+    """How many digits the value actually carries, read rather than computed."""
+    return len(value.as_tuple().digits)
+
+
+def exact_product(left: Decimal, right: Decimal) -> Decimal:
+    """``left * right``, exactly. An m-digit by n-digit product needs m + n digits."""
+    with localcontext(exact_context(significant_digits(left) + significant_digits(right))):
+        return left * right
+
+
+def exact_total(values) -> Decimal:
+    """The exact sum of ``values``.
+
+    Width is the span from the least significant exponent to the most significant
+    digit, plus one place per term so no carry is lost.
+    """
+    values = list(values)
+    contributing = [value for value in values if value != 0]
+    if not contributing:
+        return Decimal(0)
+    high = max(value.adjusted() for value in contributing) + len(contributing)
+    low = min(value.as_tuple().exponent for value in contributing)
+    with localcontext(exact_context(high - low + 1)):
+        running = Decimal(0)
+        for value in values:
+            running += value
+        return running
+
+
+def exact_difference(left: Decimal, right: Decimal) -> Decimal:
+    """``left - right``, exactly.
+
+    ``copy_negate`` rather than ``-right``: unary minus is a context operation, and the
+    argument is evaluated before :func:`exact_total` enters its own context, so
+    ``-right`` would already have been rounded to the caller's ambient precision on the
+    way in. ``copy_negate`` only flips the sign bit and is defined to ignore the context.
+    """
+    return exact_total([left, right.copy_negate()])
 
 
 @dataclass(frozen=True)
@@ -1061,14 +1205,21 @@ def _magnitude_fraction(value, unit: str, *, policy: ScenarioPolicy,
                         where: str) -> tuple[Decimal, Decimal]:
     """Return the author's magnitude and its fraction, both exact.
 
-    ``percent`` divides by an exact ``Decimal(100)``. Decimal division is exact when
-    the result terminates, which it always does for a division by a power of ten, so
-    ``0.1`` percent is ``0.001`` and not a value that merely rounds to it.
+    ``percent`` shifts the decimal point two places rather than dividing, which is the
+    same value and, unlike division, cannot be shortened by the ambient precision. So
+    ``0.1`` percent is ``0.001`` and not a value that merely rounds to it, and a long
+    magnitude keeps every digit its author wrote.
     """
     field = f"{where}.magnitude"
     magnitude = _magnitude_decimal(value, field=field)
     if unit == "percent":
-        return magnitude, magnitude / policy.magnitude.percent_to_fraction_divisor
+        divisor = policy.magnitude.percent_to_fraction_divisor
+        if divisor != _PERCENT_DIVISOR:
+            raise ScenarioInternalError(
+                f"percent_to_fraction_divisor is {divisor}, not {_PERCENT_DIVISOR}; the policy "
+                "loader refuses any other value, so reaching this means that check was bypassed"
+            )
+        return magnitude, scale_down_by_power_of_ten(magnitude, _PERCENT_PLACES)
     return magnitude, magnitude
 
 
@@ -1300,7 +1451,9 @@ def validate_scenario_document(document: dict, *, policy: ScenarioPolicy) -> Val
         if "note" in raw:
             shock_note = _text(raw["note"], field=f"{where}.note", maximum=policy.max_note_length)
 
-        signed = fraction if direction == "increase" else -fraction
+        # `copy_negate`, not `-fraction`: unary minus rounds to the ambient precision,
+        # so a decrease could otherwise be stored shorter than the increase it mirrors.
+        signed = fraction if direction == "increase" else fraction.copy_negate()
         seen_channels[channel_name] = index
         seen_sectors[channel.io_sector_code] = channel_name
         shocks.append(
