@@ -164,15 +164,44 @@ def _resolve_output(target: str):
     return path
 
 
-def _emit(text: str, destination, stdout) -> None:
-    """Write a fully rendered document. Exclusive creation, UTF-8, LF.
+def _write_stdout(text: str, stdout) -> None:
+    """Put ``text`` on the stream as UTF-8 bytes, without newline translation.
 
-    The document is complete before this is called, so the only way to leave a partial
-    file is an I/O failure mid-write — and that file is removed rather than left looking
+    A text stream translates newlines on the way out, so on Windows ``\n`` would leave the
+    process as ``\r\n``: a redirected document would not match the same document written
+    to a file, and a checksum taken over a pipe would not verify against one taken over the
+    file. Writing bytes bypasses that layer, so one rendering produces one byte sequence
+    whichever transport carries it and whichever platform runs it.
+
+    The stream is a parameter rather than ``sys.stdout`` because the tests drive the
+    commands in process, and some of those stand-ins are text-only. When no usable binary
+    buffer is present the text is written unchanged: that path adds, removes and normalises
+    nothing itself, and it is never the production path, because the real ``sys.stdout``
+    always exposes ``.buffer``. Nothing global is reconfigured; this function does not own
+    a stream it was handed.
+    """
+    buffer = getattr(stdout, "buffer", None)
+    if buffer is None:
+        stdout.write(text)
+        return
+    buffer.write(text.encode("utf-8"))
+    buffer.flush()
+
+
+def _emit(text: str, destination, stdout) -> None:
+    """Write a fully rendered document as UTF-8 with LF endings, on both branches.
+
+    **To a file:** exclusive creation, ``encoding="utf-8"``, ``newline="\n"``. The
+    document is complete before this is called, so the only way to leave a partial file
+    is an I/O failure mid-write — and that file is removed rather than left looking
     finished. No temporary file is created, so there is none to clean up.
+
+    **To standard output:** through :func:`_write_stdout`, which encodes the document and
+    writes the bytes, so the transport cannot change what was rendered. A file and a pipe
+    carry the same bytes, on every supported platform.
     """
     if destination is None:
-        stdout.write(text)
+        _write_stdout(text, stdout)
         return
     handle = None
     try:
@@ -196,28 +225,31 @@ def _emit(text: str, destination, stdout) -> None:
 def _validate(arguments, stdout) -> int:
     policy = load_policy()
     scenario = load_scenario_document(arguments.input, policy=policy)
-    stdout.write(f"scenario_id            {scenario.scenario_id}\n")
-    stdout.write(f"schema_version         {scenario.schema_version}\n")
-    stdout.write(f"scenario_date          {scenario.scenario_date or '(none)'}\n")
-    stdout.write(f"canonical_input_sha256 {_digest(scenario)}\n")
-    stdout.write(f"shocks                 {len(scenario.shocks)}\n")
+    # Assembled and emitted once, through the same helper the rendered documents use, so
+    # the summary a reader redirects to a file has the same bytes on every platform.
+    lines = [
+        f"scenario_id            {scenario.scenario_id}\n",
+        f"schema_version         {scenario.schema_version}\n",
+        f"scenario_date          {scenario.scenario_date or '(none)'}\n",
+        f"canonical_input_sha256 {_digest(scenario)}\n",
+        f"shocks                 {len(scenario.shocks)}\n",
+    ]
     for shock in scenario.shocks:
         # The magnitude is echoed exactly as written, because that is the author's own
         # text. The fraction is printed in its canonical spelling rather than as a bare
         # Decimal: it is the value the digest on the line above is computed from, and a
         # number should not appear here in one form and inside the digest in another.
-        stdout.write(
+        lines.append(
             f"  {shock.channel:22} {shock.direction:8} {shock.magnitude} "
             f"{shock.magnitude_unit} -> {shock.canonical_signed_fraction}\n"
         )
-    stdout.write(f"warnings               {len(scenario.warnings)}\n")
+    lines.append(f"warnings               {len(scenario.warnings)}\n")
     for warning in scenario.warnings:
         where = warning.channel or "(scenario)"
-        stdout.write(f"  {warning.code:34} {where}\n")
-    stdout.write("result                 valid against the input contract\n")
-    stdout.write(
-        "note                   nothing was calculated and no file was written\n"
-    )
+        lines.append(f"  {warning.code:34} {where}\n")
+    lines.append("result                 valid against the input contract\n")
+    lines.append("note                   nothing was calculated and no file was written\n")
+    _write_stdout("".join(lines), stdout)
     return EXIT_OK
 
 

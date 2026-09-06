@@ -622,3 +622,261 @@ def test_the_cli_imports_no_model_target_or_data_module():
         "thai_supply_chain_ews.scenario.exposure",
         "thai_supply_chain_ews.scenario.report",
     }
+
+
+# ---------------------------------------------------------------------------
+# Standard output carries the document's bytes, not a platform rendering of them
+#
+# `--output <file>` has always opened with `newline="\n"`. `--output -` used to hand the
+# text to `sys.stdout`, whose text layer translates newlines, so on Windows the same
+# rendering left the process as CRLF: `run ... > result.json` produced a file that did
+# not match `run ... --output result.json`, and a checksum taken over the pipe did not
+# verify against one taken over the file.
+#
+# The suite could not see it. Most cases call `main()` in process and read `capsys`,
+# which intercepts above the text layer, and the two subprocess cases used `text=True`,
+# whose universal-newline decoding turns CRLF back into LF before any assertion. So the
+# cases below capture raw bytes with `text=False` and never normalise anything they then
+# assert on. On Windows before the fix they fail; on Linux they passed either way.
+# ---------------------------------------------------------------------------
+
+
+BASES = ("direct", "total_requirement")
+FORMATS = ("json", "markdown")
+
+
+def raw_module_run(*arguments):
+    """Run the module and return undecoded bytes. No universal-newline decoding."""
+    import os
+
+    environment = {**os.environ, "PYTHONPATH": str(ROOT / "src")}
+    process = subprocess.Popen(
+        [sys.executable, "-m", "thai_supply_chain_ews.scenario", *arguments],
+        stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=False,
+        cwd=str(ROOT), env=environment,
+    )
+    out, err = process.communicate()
+    return process.returncode, out, err
+
+
+def document_invocations():
+    """Every invocation that emits a rendered document, as (label, argv-without-output)."""
+    for basis in BASES:
+        for fmt in FORMATS:
+            yield (f"run.{basis}.{fmt}",
+                   ["run", "--input", CRUDE, "--basis", basis, "--format", fmt])
+    for basis in BASES:
+        for tag, extra in (("top5", []), ("all", ["--all"])):
+            for fmt in FORMATS:
+                yield (f"explain.{basis}.{tag}.{fmt}",
+                       ["explain", "--input", CRUDE, "--basis", basis,
+                        "--industry", "IND-04", "--format", fmt, *extra])
+
+
+ALL_INVOCATIONS = list(document_invocations())
+
+
+@pytest.mark.parametrize(("label", "argv"), ALL_INVOCATIONS, ids=[c[0] for c in ALL_INVOCATIONS])
+def test_stdout_bytes_equal_file_bytes_exactly(label, argv, tmp_path):
+    """The transport must not change the document. Raw bytes, no normalisation."""
+    code, out, err = raw_module_run(*argv, "--output", "-")
+    assert code == 0, err
+    destination = tmp_path / f"{label}.out"
+    file_code, _, file_err = raw_module_run(*argv, "--output", str(destination))
+    assert file_code == 0, file_err
+    assert out == destination.read_bytes()
+
+
+@pytest.mark.parametrize(("label", "argv"), ALL_INVOCATIONS, ids=[c[0] for c in ALL_INVOCATIONS])
+def test_stdout_bytes_use_lf_only(label, argv):
+    code, out, err = raw_module_run(*argv, "--output", "-")
+    assert code == 0, err
+    assert b"\r\n" not in out
+    assert out.count(b"\r") == 0
+    assert b"\n" in out
+    out.decode("utf-8")
+    assert out.endswith(b"\n")
+    assert not out.endswith(b"\n\n")
+
+
+def test_validate_stdout_bytes_use_lf_only():
+    """`validate` writes through the same stdout path and must obey the same rule."""
+    code, out, err = raw_module_run("validate", "--input", CRUDE)
+    assert code == 0, err
+    assert b"\r\n" not in out
+    assert out.count(b"\r") == 0
+    out.decode("utf-8")
+    assert out.endswith(b"\n")
+
+
+@pytest.mark.parametrize(("label", "argv"), ALL_INVOCATIONS, ids=[c[0] for c in ALL_INVOCATIONS])
+def test_stdout_bytes_are_deterministic(label, argv):
+    first = raw_module_run(*argv, "--output", "-")
+    second = raw_module_run(*argv, "--output", "-")
+    assert first[0] == second[0] == 0
+    assert first[1] == second[1]
+
+
+@pytest.mark.parametrize(("label", "argv"), ALL_INVOCATIONS, ids=[c[0] for c in ALL_INVOCATIONS])
+def test_stdout_bytes_equal_the_renderer_encoded_as_utf8(label, argv, tmp_path):
+    """The bytes on the wire are the renderer's own text, encoded and nothing else."""
+    code, out, err = raw_module_run(*argv, "--output", "-")
+    assert code == 0, err
+    destination = tmp_path / f"{label}.reference"
+    raw_module_run(*argv, "--output", str(destination))
+    assert out == destination.read_bytes().decode("utf-8").encode("utf-8")
+
+
+def test_file_output_is_unchanged_and_still_refuses_to_overwrite(tmp_path):
+    """The file branch is untouched: same bytes, same exclusive creation, same exit 7."""
+    destination = tmp_path / "result.json"
+    code, _, _ = raw_module_run("run", "--input", CRUDE, "--basis", "direct",
+                                "--format", "json", "--output", str(destination))
+    assert code == 0
+    first_bytes = destination.read_bytes()
+    first_mtime = destination.stat().st_mtime_ns
+    assert b"\r" not in first_bytes
+
+    again, _, err = raw_module_run("run", "--input", CRUDE, "--basis", "direct",
+                                   "--format", "json", "--output", str(destination))
+    assert again == 7
+    assert b"already exists" in err
+    assert destination.read_bytes() == first_bytes
+    assert destination.stat().st_mtime_ns == first_mtime
+
+
+class _TextOnlyStream:
+    """A text stand-in with no binary buffer, like `io.StringIO` or a capture object."""
+
+    def __init__(self) -> None:
+        self.chunks: list[str] = []
+
+    def write(self, text: str) -> int:
+        self.chunks.append(text)
+        return len(text)
+
+    @property
+    def text(self) -> str:
+        return "".join(self.chunks)
+
+
+class _BinaryCapableStream:
+    """A stand-in that exposes `.buffer`; its text `write` must never be reached."""
+
+    class _Buffer:
+        def __init__(self) -> None:
+            self.chunks: list[bytes] = []
+            self.flushed = 0
+
+        def write(self, data: bytes) -> int:
+            assert isinstance(data, bytes)
+            self.chunks.append(data)
+            return len(data)
+
+        def flush(self) -> None:
+            self.flushed += 1
+
+    def __init__(self) -> None:
+        self.buffer = self._Buffer()
+        self.text_writes = 0
+
+    def write(self, text: str) -> int:  # pragma: no cover - reaching this is the failure
+        self.text_writes += 1
+        raise AssertionError("_emit used the text path on a stream that has a buffer")
+
+    @property
+    def data(self) -> bytes:
+        return b"".join(self.buffer.chunks)
+
+
+def test_emit_prefers_the_binary_buffer_and_never_touches_the_text_write():
+    stream = _BinaryCapableStream()
+    cli._emit("alpha\nbeta\n", None, stream)
+    assert stream.data == b"alpha\nbeta\n"
+    assert stream.text_writes == 0
+    assert stream.buffer.flushed == 1
+
+
+def test_emit_falls_back_to_a_text_only_stream_without_altering_the_text():
+    """In-process callers may inject a text stand-in; the fallback must be transparent."""
+    stream = _TextOnlyStream()
+    payload = "alpha\nbeta\n— dash ไทย\n"
+    cli._emit(payload, None, stream)
+    assert stream.text == payload
+    assert "\r" not in stream.text
+
+
+def test_in_process_invocation_still_works_with_an_injected_text_stream(tmp_path):
+    stream = _TextOnlyStream()
+    code = cli._validate(
+        cli._build_parser().parse_args(["validate", "--input", CRUDE]), stream
+    )
+    assert code == 0
+    assert "valid against the input contract" in stream.text
+    assert "\r" not in stream.text
+
+
+def test_document_output_never_returns_to_an_uncontrolled_text_write():
+    """Structural guard, read from the syntax tree rather than from prose.
+
+    Every byte the CLI puts on standard output goes through one helper. The guard pins
+    that: the helper encodes and writes to a binary buffer, both command paths delegate
+    to it rather than writing text themselves, and no global stream is reconfigured or
+    replaced anywhere in the module. A grep would match this docstring; an AST walk
+    cannot, so the check cannot pass on its own wording.
+    """
+    tree = ast.parse(CLI_SOURCE.read_text(encoding="utf-8"))
+    functions = {node.name: node for node in ast.walk(tree)
+                 if isinstance(node, ast.FunctionDef)}
+
+    helper = functions["_write_stdout"]
+    helper_calls = {node.func.attr for node in ast.walk(helper)
+                    if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute)}
+    assert "encode" in helper_calls, "the helper must encode the text itself"
+    buffer_writes = [
+        node for node in ast.walk(helper)
+        if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute)
+        and node.func.attr == "write"
+        and isinstance(node.func.value, ast.Name) and node.func.value.id == "buffer"
+    ]
+    assert buffer_writes, "the helper must write through a binary buffer"
+
+    # Both command paths delegate; neither writes document text to a stream itself.
+    for name in ("_emit", "_validate"):
+        body = functions[name]
+        assert [node for node in ast.walk(body)
+                if isinstance(node, ast.Call) and isinstance(node.func, ast.Name)
+                and node.func.id == "_write_stdout"], f"{name} must delegate to _write_stdout"
+        stray = [node.lineno for node in ast.walk(body)
+                 if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute)
+                 and node.func.attr == "write"
+                 and isinstance(node.func.value, ast.Name)
+                 and node.func.value.id == "stdout"]
+        assert not stray, f"{name} writes text straight to stdout at {stray}"
+
+    # No global stream is reconfigured or replaced, anywhere in the module.
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute):
+            assert node.func.attr != "reconfigure", "stdout must not be reconfigured globally"
+        if isinstance(node, ast.Attribute):
+            assert node.attr != "linesep", "os.linesep must not decide document bytes"
+        if isinstance(node, ast.Assign):
+            for target in node.targets:
+                if isinstance(target, ast.Attribute) and isinstance(target.value, ast.Name):
+                    assert not (target.value.id == "sys" and target.attr in
+                                {"stdout", "stderr"}), "no global stream reassignment"
+
+
+def test_the_file_branch_still_declares_utf8_and_lf():
+    """The fix must not have loosened the file branch while tightening stdout."""
+    tree = ast.parse(CLI_SOURCE.read_text(encoding="utf-8"))
+    emit = next(node for node in ast.walk(tree)
+                if isinstance(node, ast.FunctionDef) and node.name == "_emit")
+    opens = [node for node in ast.walk(emit)
+             if isinstance(node, ast.Call) and isinstance(node.func, ast.Name)
+             and node.func.id == "open"]
+    assert len(opens) == 1
+    keywords = {kw.arg: getattr(kw.value, "value", None) for kw in opens[0].keywords}
+    assert keywords.get("encoding") == "utf-8"
+    assert keywords.get("newline") == "\n"
+    assert opens[0].args[1].value == "x"
