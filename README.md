@@ -42,6 +42,7 @@ nothing.
 | the decision history | [`docs/architecture/decision_log.md`](docs/architecture/decision_log.md) |
 | methods in depth | [`docs/methodology.md`](docs/methodology.md) |
 | how to run the Obsidian vault generator safely | [`docs/obsidian_vault_usage.md`](docs/obsidian_vault_usage.md) |
+| run and interpret structural exposure scenarios | [docs/scenario_cli_usage.md](docs/scenario_cli_usage.md) |
 
 **Running it yourself, and what ships (Task E2-R1).** Task E2-R1 prepared and verified the source-release candidate; publication followed in Task E3. The project is now published as a public GitHub source checkout under the MIT License and requires Python 3.12 or newer. `v1.0.0` is the first published release; see [GitHub Releases](https://github.com/abdulwafee/thai-supply-chain-shock-ews/releases) for published versions. The package is not currently published to PyPI.
 
@@ -545,13 +546,23 @@ material this project analyses, none of which is redistributed here; see
 - `docs/methodology.md` — method summary (draft), pointing into the documents above.
 - `docs/obsidian_vault_usage.md` — how to run `scripts/build_obsidian_vault.py`: dry run first,
   explicit `--vault-root` and `--backup-root`, what it manages, what it refuses to overwrite, and
-  how to roll a run back. A post-`v1.0.0` feature; the released tag does not contain it.
+  how to roll a run back. Introduced after `v1.0.0` and included in the `v1.1.0` source
+  release and later.
+- `docs/scenario_cli_usage.md` — how to validate, run and explain a structural exposure
+  scenario with `python -m thai_supply_chain_ews.scenario`, and how to read what it returns:
+  the two coefficient bases, the four registered commodity channels, the output formats and
+  exit codes, and what the numbers do and do not mean.
 - `configs/` — `data.yaml`, `features.yaml`, `model.yaml`, `targets.yaml`: adjustable settings, with
   unresolved items explicitly marked rather than silently defaulted.
-- `src/thai_supply_chain_ews/` — the installable package. Most modules are currently stubs
-  (`raise NotImplementedError`) — see each module's docstring for what it will do and which
-  roadmap task implements it. `config.py`, `data/validate.py`, and `evaluation/{splits,metrics}.py`
-  contain real, tested logic (generic infrastructure, not business logic).
+- `src/thai_supply_chain_ews/` — the installable package. It now carries substantive, tested
+  workflows: `scenario/` (the structural exposure scenario CLI and its input contract), `vault/`
+  (the transactional Obsidian vault generator) and `release/` (byte-provenance and release
+  verification), alongside the configuration, data-contract and evaluation infrastructure in
+  `config.py`, `data/validate.py` and `evaluation/{splits,metrics}.py`. Some modules remain
+  deliberate stubs (`raise NotImplementedError`) — see each module's docstring for what it will
+  do and which roadmap task implements it. None of this is a deployed forecasting service: the
+  repository stays a research-oriented source project, no model is promoted, and the model
+  training and prediction entry points are unimplemented by design.
 - `tests/` — automated tests for the infrastructure that does exist (config loading, data-quality
   and leakage-check utilities).
 - `notebooks/` — EDA/research only; nothing here is production logic.

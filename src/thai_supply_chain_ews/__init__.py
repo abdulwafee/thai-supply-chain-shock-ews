@@ -1,12 +1,8 @@
 """Thai Supply Chain Shock Early Warning System.
 
-Monthly industry stress scoring and risk-level classification for 12 Thai
-manufacturing industry groups. See docs/methodology.md and
-docs/architecture/data_architecture.md for the design this package implements.
-
-Project status: scaffold only. Most submodules are stubs — see each module's
-docstring for what it will do and which docs/project_roadmap.md task
-implements it.
+The package contains tested scenario, vault, release, configuration, data-contract,
+and evaluation workflows. It remains a research-oriented source project; model
+training and prediction entry points remain intentionally unimplemented.
 """
 
-__version__ = "1.1.0"
+__version__ = "1.2.0"
