@@ -5,4 +5,4 @@ and evaluation workflows. It remains a research-oriented source project; model
 training and prediction entry points remain intentionally unimplemented.
 """
 
-__version__ = "1.2.0"
+__version__ = "1.2.1"

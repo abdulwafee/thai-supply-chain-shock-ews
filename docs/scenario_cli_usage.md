@@ -175,6 +175,13 @@ serialised through binary floating point on its way to a reader.
 
 `--output -` writes to standard output. Any other value is a file path.
 
+Standard output carries **UTF-8 bytes with LF line endings on every supported platform**,
+including Windows. Those bytes are exactly the bytes the same invocation would write with
+`--output <path>`, so redirecting in a shell -- `> result.json` on Windows included --
+produces the same verifiable document, and a checksum taken over the pipe matches a
+checksum taken over the file. Only the document goes to standard output; diagnostics go
+to standard error, which carries no cross-platform byte guarantee.
+
 ### An existing output path is never overwritten
 
 File output uses exclusive creation. If the destination already exists — as a file, a
@@ -189,7 +196,8 @@ timestamp, run identifier, hostname, username or absolute path anywhere in a res
 Listing the shocks in a different order changes nothing, because the contract sorts them
 canonically before scoring. All arithmetic is exact decimal with precision derived from the
 operands, so results do not depend on the decimal settings of whatever program is embedding
-the package. Rendered text is LF-terminated.
+the package. Rendered text is LF-terminated, and stays LF-terminated through both output
+transports -- a file and standard output produce identical bytes.
 
 ### Pinned artifacts, offline
 
