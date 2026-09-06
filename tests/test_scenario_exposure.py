@@ -782,7 +782,7 @@ def test_the_package_ships_only_reviewed_modules():
     package = EXPOSURE_SOURCE.parent
     assert sorted(p.name for p in package.glob("*.py")) == [
         "__init__.py", "__main__.py", "artifacts.py", "contract.py", "exposure.py",
-        "report.py",
+        "interactive.py", "report.py",
     ]
 
 

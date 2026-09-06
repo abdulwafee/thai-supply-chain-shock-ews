@@ -82,7 +82,7 @@ def test_help_exits_zero_and_reads_nothing(capsys, monkeypatch):
     assert "validate" in capsys.readouterr().out
 
 
-@pytest.mark.parametrize("command", ["validate", "run", "explain"])
+@pytest.mark.parametrize("command", ["validate", "run", "explain", "interactive"])
 def test_each_subcommand_has_help(capsys, command):
     with pytest.raises(SystemExit) as caught:
         run([command, "--help"])
@@ -90,11 +90,12 @@ def test_each_subcommand_has_help(capsys, command):
     assert "usage:" in capsys.readouterr().out
 
 
-def test_only_three_subcommands_exist():
+def test_only_the_four_subcommands_exist():
+    """`interactive` joined the three file-based commands in v1.3.0; nothing else has."""
     parser = cli._build_parser()
     actions = [a for a in parser._actions if a.dest == "command"]
     assert len(actions) == 1
-    assert sorted(actions[0].choices) == ["explain", "run", "validate"]
+    assert sorted(actions[0].choices) == ["explain", "interactive", "run", "validate"]
 
 
 def test_the_parser_offers_no_bypass_flag():
@@ -616,10 +617,14 @@ def test_the_cli_imports_no_model_target_or_data_module():
         if isinstance(node, ast.ImportFrom) and node.module
         and node.module.startswith("thai_supply_chain_ews.")
     }
+    # `interactive` joined the set in v1.3.0: the entry point dispatches to it for the
+    # prompting, and it imports only the contract. The set stays closed, so a module
+    # nobody reviewed still makes this fail.
     assert project == {
         "thai_supply_chain_ews.scenario.artifacts",
         "thai_supply_chain_ews.scenario.contract",
         "thai_supply_chain_ews.scenario.exposure",
+        "thai_supply_chain_ews.scenario.interactive",
         "thai_supply_chain_ews.scenario.report",
     }
 
