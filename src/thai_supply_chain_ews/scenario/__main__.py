@@ -1,7 +1,13 @@
-"""The command line: three subcommands, no defaults, no way to skip a check.
+"""The command line: four subcommands, no defaults, no way to skip a check.
 
 ``python -m thai_supply_chain_ews.scenario`` — there is deliberately no console-script
 entry point, so the package's install contract is unchanged by this feature.
+
+``interactive`` is a way of *writing* a scenario, not a second way of *computing* one: it
+asks numbered questions, validates the answers through the same public contract entry
+point a file goes through, and then joins the identical scoring, schema-validation,
+rendering and output path. For semantically identical input its bytes are the bytes
+``run`` would have produced.
 
 Four rules shape the surface, and each of them is a refusal.
 
@@ -41,6 +47,7 @@ from thai_supply_chain_ews.scenario.contract import (
     load_scenario_document,
 )
 from thai_supply_chain_ews.scenario.exposure import SUPPORTED_BASES, calculate_scenario_exposure
+from thai_supply_chain_ews.scenario.interactive import InteractiveCancelled, collect_request
 from thai_supply_chain_ews.scenario.report import (
     build_industry_explanation_document,
     build_scenario_result_document,
@@ -59,6 +66,18 @@ EXIT_ARTIFACT = 4
 EXIT_UNSUPPORTED_CHANNEL = 5
 EXIT_NO_SCORABLE_PAIRS = 6
 EXIT_OUTPUT_EXISTS = 7
+
+#: An interactive session the reader stopped: ``q``/``quit``, ``n`` at the confirmation,
+#: or end of input. It is deliberately not 0. A cancelled session read no artifact,
+#: computed nothing and wrote nothing, and a script that treated that as a completed
+#: calculation would be reading a result that does not exist. Codes 0-7 keep their
+#: existing meanings for every command, including this one.
+EXIT_CANCELLED = 8
+
+#: Ctrl+C during an interactive session. 128 + SIGINT, the conventional shell status for
+#: a process ended by an interrupt, so a shell reports it the way it reports any other
+#: interrupted command rather than as an application error.
+EXIT_INTERRUPTED = 130
 
 STDOUT_TARGET = "-"
 DEFAULT_MEDIATORS = 5
@@ -134,6 +153,20 @@ def _build_parser() -> argparse.ArgumentParser:
                     f"the top {DEFAULT_MEDIATORS}"
                 ),
             )
+
+    subparsers.add_parser(
+        "interactive",
+        help="build and run one scenario by answering numbered prompts",
+        description=(
+            "Build a scenario by answering numbered prompts, then run it. The answers are "
+            "validated against the same input contract a scenario file goes through, and "
+            "the result takes the same scoring, rendering and output path, so an "
+            "equivalent interactive and file-based run produce identical bytes. Prompts go "
+            "to stderr and only the final document goes to stdout, so the report can be "
+            f"redirected on its own. Cancelling exits {EXIT_CANCELLED} and computes "
+            "nothing. This command takes no options: every choice is a prompt."
+        ),
+    )
     return parser
 
 
@@ -259,28 +292,54 @@ def _digest(scenario) -> str:
     return canonical_input_sha256(scenario)
 
 
+def _score(scenario, *, basis, policy):
+    """Load the pinned artifacts and score an already-validated scenario.
+
+    Takes a :class:`ValidatedScenario` rather than a path, because by this point it makes
+    no difference whether the scenario was read from a file or assembled from answers —
+    and the calculation must not be able to tell.
+    """
+    bundle = load_artifact_bundle(REPOSITORY_ROOT, policy=policy)
+    result = calculate_scenario_exposure(scenario, basis=basis, bundle=bundle, policy=policy)
+    return bundle, result
+
+
 def _scored(arguments):
     policy = load_policy()
     scenario = load_scenario_document(arguments.input, policy=policy)
-    bundle = load_artifact_bundle(REPOSITORY_ROOT, policy=policy)
-    result = calculate_scenario_exposure(
-        scenario, basis=arguments.basis, bundle=bundle, policy=policy
-    )
+    bundle, result = _score(scenario, basis=arguments.basis, policy=policy)
     return scenario, bundle, result
 
 
-def _run(arguments, stdout) -> int:
-    destination = _resolve_output(arguments.output)
-    scenario, bundle, result = _scored(arguments)
+def execute_run(scenario, *, policy, basis, output_format, destination, stdout) -> int:
+    """Score, build, schema-check, render and emit one validated scenario.
+
+    The single path from a validated scenario to bytes on a stream. ``run`` reaches it
+    with a scenario read from a file and ``interactive`` with one assembled from answers;
+    everything after that point — the artifact bundle, the calculation, the result
+    document, its schema validation, the renderer and :func:`_emit` — is the same code
+    running on the same inputs, which is why the two produce identical bytes rather than
+    merely similar ones.
+    """
+    bundle, result = _score(scenario, basis=basis, policy=policy)
     document = build_scenario_result_document(scenario, result, bundle)
     validate_result_document(document)
     text = (
         render_scenario_result_json(document)
-        if arguments.output_format == "json"
+        if output_format == "json"
         else render_scenario_result_markdown(document)
     )
     _emit(text, destination, stdout)
     return EXIT_OK
+
+
+def _run(arguments, stdout) -> int:
+    destination = _resolve_output(arguments.output)
+    policy = load_policy()
+    scenario = load_scenario_document(arguments.input, policy=policy)
+    return execute_run(scenario, policy=policy, basis=arguments.basis,
+                       output_format=arguments.output_format, destination=destination,
+                       stdout=stdout)
 
 
 def _explain(arguments, stdout) -> int:
@@ -300,6 +359,24 @@ def _explain(arguments, stdout) -> int:
     return EXIT_OK
 
 
+def _interactive(arguments, stdout, stdin=None, stderr=None) -> int:  # noqa: ARG001
+    """Ask, validate, confirm, then join the ordinary run path.
+
+    The streams are parameters so a session can be driven in process by the tests. The
+    order here mirrors ``_run`` exactly: the destination is resolved — and an existing
+    path refused — before any artifact is loaded, so a scenario that cannot be written
+    is not one that gets computed first.
+    """
+    stdin = sys.stdin if stdin is None else stdin
+    stderr = sys.stderr if stderr is None else stderr
+    policy = load_policy()
+    request = collect_request(policy=policy, stdin=stdin, stderr=stderr)
+    destination = _resolve_output(request.output_target)
+    return execute_run(request.scenario, policy=policy, basis=request.basis,
+                       output_format=request.output_format, destination=destination,
+                       stdout=stdout)
+
+
 def main(argv=None) -> int:
     """Run one command and return its exit code. Never raises for a foreseen failure."""
     stdout = sys.stdout
@@ -308,12 +385,27 @@ def main(argv=None) -> int:
     arguments = parser.parse_args(argv)
     if arguments.command is None:
         parser.print_usage(stderr)
-        stderr.write("error: a command is required: validate, run or explain\n")
+        stderr.write(
+            "error: a command is required: validate, run, explain or interactive\n")
         return EXIT_USAGE
 
-    handlers = {"validate": _validate, "run": _run, "explain": _explain}
+    handlers = {"validate": _validate, "run": _run, "explain": _explain,
+                "interactive": _interactive}
     try:
         return handlers[arguments.command](arguments, stdout)
+    except InteractiveCancelled as reason:
+        # Not an error and not a result. Nothing was read, computed or written.
+        stderr.write(f"cancelled: {reason}\n")
+        return EXIT_CANCELLED
+    except KeyboardInterrupt:
+        # Ctrl+C is a foreseen way to stop an interactive session, so it ends the way any
+        # interrupted command ends: a newline, one line of explanation, no traceback. For
+        # every other command it keeps propagating exactly as it did before, because
+        # there it interrupts work rather than answering a question.
+        if arguments.command != "interactive":
+            raise
+        stderr.write("\ncancelled: interrupted\n")
+        return EXIT_INTERRUPTED
     except _OutputError as error:
         stderr.write(f"error: {error}\n")
         return error.code
@@ -332,8 +424,6 @@ def main(argv=None) -> int:
     except ScenarioInternalError as error:
         stderr.write(f"internal error: {error}\n")
         return EXIT_INTERNAL
-    except KeyboardInterrupt:
-        raise
     except Exception as error:  # noqa: BLE001 - the boundary that must not leak a traceback
         stderr.write(f"internal error: {type(error).__name__}: {error}\n")
         return EXIT_INTERNAL

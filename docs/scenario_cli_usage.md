@@ -19,22 +19,28 @@ Set the environment up as described in the README's *Setup* section, then run th
 Examples below use the Windows interpreter path; on Linux and macOS substitute
 `.venv/bin/python`.
 
-## The three commands
+## The four commands
 
 | command | what it does | reads artifacts? | writes a file? |
 | --- | --- | --- | --- |
 | `validate` | checks a scenario document against the input contract | no | no |
 | `run` | scores the scenario and ranks every industry | yes | yes, unless `--output -` |
 | `explain` | shows one industry's channel contributions and their published mediators | yes | yes, unless `--output -` |
+| `interactive` | builds one scenario from numbered prompts, then runs it | yes, after you confirm | only if you choose a file |
 
 `validate` computes nothing and opens no exposure artifact. It is the cheap way to check a
 document you just wrote.
+
+The three file-based commands remain the recommended interface for automation and for
+committed reproducibility: a scenario file can be reviewed, diffed, committed and re-run
+byte-for-byte later, and `interactive` produces no such record of its own.
 
 ### Arguments
 
 - `validate` requires `--input`.
 - `run` requires `--input`, `--basis`, `--format` and `--output`.
 - `explain` requires those four plus `--industry`, and accepts `--all`.
+- `interactive` takes no arguments at all: every choice is a prompt.
 
 **No argument has a default.** In particular `--basis` must be stated every time: the two
 bases answer different questions, and picking one silently would make the answer depend on a
@@ -51,6 +57,7 @@ python -m thai_supply_chain_ews.scenario --help
 python -m thai_supply_chain_ews.scenario validate --help
 python -m thai_supply_chain_ews.scenario run --help
 python -m thai_supply_chain_ews.scenario explain --help
+python -m thai_supply_chain_ews.scenario interactive --help
 ```
 
 ## Copyable examples
@@ -225,6 +232,151 @@ reordered or interpolated, and the rows are the pinned artifact's own in its own
 Mediator rows are **corroboration, not causation**. They say which intermediate sector the
 accounting runs through, not that a price moved because of it.
 
+## `interactive`
+
+`interactive` asks numbered questions and builds one scenario from the answers. It exists
+for people working in a terminal who do not want to write YAML first; it is a convenience
+layer over the same contract, not a second engine.
+
+```text
+python -m thai_supply_chain_ews.scenario interactive
+```
+
+On Windows, in either `cmd.exe` or PowerShell:
+
+```text
+py -m thai_supply_chain_ews.scenario interactive
+```
+
+### A representative session
+
+Questions and the review summary go to **standard error**; only the finished document goes
+to standard output. Answers are typed after each prompt.
+
+```text
+Thai Supply Chain Shock EWS - Interactive Scenario
+Answer the numbered prompts. Enter q at any question to cancel.
+
+Scenario ID: brent-plus-30
+Scenario name (optional; Enter to omit):
+Scenario date YYYY-MM-DD (optional; Enter to omit):
+
+Select commodity / เลือกสินค้า:
+  1. Brent crude oil  (brent_crude_usd_bbl)
+  2. Aluminium        (aluminum_usd_mt)
+  3. Copper           (copper_usd_mt)
+  4. Rubber RSS3      (rubber_rss3_usd_kg)
+Choice: 1
+Select direction / เลือกทิศทาง:
+  1. Increase  (increase)
+  2. Decrease  (decrease)
+Choice: 1
+Magnitude: 30
+Select unit / เลือกหน่วย:
+  1. Percent   (percent)
+  2. Fraction  (fraction)
+Choice: 1
+
+Add another shock? [y/n]: n
+
+Select calculation basis / เลือกฐานการคำนวณ:
+  1. Direct             (direct)
+  2. Total requirement  (total_requirement)
+Choice: 1
+
+Select output format / เลือกรูปแบบผลลัพธ์:
+  1. JSON      (json)
+  2. Markdown  (markdown)
+Choice: 2
+
+Select output destination / เลือกปลายทาง:
+  1. Terminal  (terminal)
+  2. New file  (file)
+Choice: 1
+
+Review / ตรวจทาน:
+  scenario_id            brent-plus-30
+  scenario_name          (omitted)
+  scenario_date          (omitted)
+  schema_version         structural_exposure_scenario_v1
+  canonical_input_sha256 9c898d63...
+  shocks                 1
+  brent_crude_usd_bbl    increase 30 percent -> 0.3
+  warnings               0
+  basis                  direct
+  format                 markdown
+  output                 terminal (stdout)
+
+Run this scenario? [y/n]: y
+```
+
+The identifier is always printed beside the friendly name, so the value that lands in the
+document is visible and can be copied into a scenario file later.
+
+### Prompts are stderr, the document is stdout
+
+Because the two streams are separated, the report can be redirected on its own while the
+questions stay on screen:
+
+```text
+python -m thai_supply_chain_ews.scenario interactive > result.md
+```
+
+`result.md` contains the report and nothing else — no prompt, no menu, no review summary.
+
+### The same contract, in memory
+
+The answers are assembled into an ordinary scenario mapping and submitted to the same
+public validator a scenario file goes through. No temporary YAML or JSON file is written,
+nothing bypasses the contract, and no rule is relaxed because a person is typing: a
+scenario that would be refused in a file is refused here, with the same message.
+
+After you confirm, the validated scenario takes the identical path a file-based `run`
+takes — the same pinned artifacts, the same exact-decimal calculation, the same result
+schema check, the same renderer and the same output writer. **An interactive run and the
+equivalent `run --input <file>` produce byte-identical output**, including UTF-8 encoding
+and LF line endings on Windows, and including the equality between `--output -` bytes and
+`--output <path>` bytes described under [Output](#output).
+
+### What it will not decide for you
+
+- The **scenario ID** is asked; it is never invented.
+- The **scenario date** is optional and is never filled in with today's date. A scenario
+  date is metadata you assert, and inventing one would put a claim in the record that
+  nobody made.
+- The **basis**, **format** and **destination** are each asked. Nothing is defaulted, for
+  the same reason the flags have no defaults.
+- A magnitude is read as an exact decimal in the same numeric language a scenario file
+  accepts, and never passes through binary floating point.
+- Two channels that resolve to one official sector — aluminium and copper both map to
+  `107` — are refused at the prompt, so you can choose again before anything is computed.
+- A duplicate commodity is refused and re-asked.
+
+Invalid menu choices, identifiers, dates, magnitudes and yes/no answers are re-asked with
+a one-line explanation, so a typo costs one line rather than the whole session.
+
+### Cancelling
+
+`q` or `quit` at any question, `n` at the final confirmation, or end of input all cancel.
+A cancelled session exits **`8`**: no exposure artifact is loaded, nothing is calculated
+and no file is created. Ctrl+C ends the session with exit **`130`**, the conventional
+status for an interrupted command, with no traceback and no partial output.
+
+Nothing is read or written before you answer `y` at the review step. Choosing a file
+destination does not create the file while you are still answering questions, and an
+existing path is refused exactly as it is for `run` — exit `7`, with the file on disk
+untouched.
+
+One invocation builds and runs one scenario. There is no loop that keeps asking.
+
+### When to use a file instead
+
+Use a scenario file for anything that must be repeated, reviewed or automated. A committed
+document is the record of what was asked; an interactive session leaves none of its own.
+The review summary prints the same `canonical_input_sha256` a file-based scenario would
+have, so a scenario built here can be written into a file later and confirmed identical.
+
+
 ## Reading a result
 
 **Net exposure** is signed. A positive figure means the shock pushes toward cost stress for
@@ -287,9 +439,16 @@ magnitude contributes nothing and cannot separate one industry from another) and
 | `5` | the scenario named a channel that is not registered |
 | `6` | the scenario is contract-valid but has no scorable pair |
 | `7` | the output path already exists; nothing was written or overwritten |
+| `8` | an interactive session was cancelled; nothing was read, computed or written |
+| `130` | an interactive session was interrupted with Ctrl+C |
 
 Foreseen failures print a one-line `error:` message to standard error and return one of these
 codes. No traceback is ever printed to a user for a foreseen failure.
+
+Codes `0`-`7` mean exactly what they meant in v1.2.1, for every command including
+`interactive`. Cancellation has its own code precisely so that a script cannot mistake a
+session somebody stopped for a calculation that finished: exit `8` means no artifact was
+read, nothing was computed and no file was created.
 
 ## What the numbers are not
 

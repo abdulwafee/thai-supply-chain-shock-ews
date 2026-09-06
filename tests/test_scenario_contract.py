@@ -1664,6 +1664,7 @@ def test_phase_three_ships_only_reviewed_modules_and_no_unreviewed_module():
         "artifacts.py",
         "contract.py",
         "exposure.py",
+        "interactive.py",
         "report.py",
     ]
 
