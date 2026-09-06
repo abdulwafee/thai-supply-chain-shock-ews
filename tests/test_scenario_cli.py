@@ -724,7 +724,7 @@ def test_stdout_bytes_equal_the_renderer_encoded_as_utf8(label, argv, tmp_path):
     assert code == 0, err
     destination = tmp_path / f"{label}.reference"
     raw_module_run(*argv, "--output", str(destination))
-    assert out == destination.read_text(encoding="utf-8", newline="").encode("utf-8")
+    assert out == destination.read_bytes().decode("utf-8").encode("utf-8")
 
 
 def test_file_output_is_unchanged_and_still_refuses_to_overwrite(tmp_path):
